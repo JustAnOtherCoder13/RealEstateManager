@@ -7,7 +7,6 @@
     <string name="location_maps_view">location maps view</string>
     <string name="area_icon">Area icon</string>
 
-
     <!-- ______________________TEXT VIEW__________________ -->
     <string name="property_type">Property Type</string>
     <string name="town">Town</string>
@@ -16,5 +15,6 @@
     <string name="media">Media</string>
     <string name="surface">Surface</string>
     <string name="_750_sq_m">750 sq m</string>
+    <string name="description_text">Description text</string>
 
 </resources>

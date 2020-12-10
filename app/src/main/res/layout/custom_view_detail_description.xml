@@ -7,25 +7,22 @@
 
     <TextView
         android:id="@+id/custom_view_detail_media_description_title"
+        style="@style/Widget.customViewDescriptionTitleStyle"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:paddingBottom="@dimen/basic_marge"
-        android:text="Description"
-        android:textAppearance="@style/TextAppearance.RealEstateManagerStyles.Headline4"
+        app:layout_constraintBottom_toTopOf="@id/custom_view_detail_media_description_text"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintBottom_toTopOf="@id/custom_view_detail_media_description_text"/>
+        app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
         android:id="@+id/custom_view_detail_media_description_text"
+        style="@style/Widget.customViewDescriptionTextStyle"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:maxLines="8"
-        android:text="Description"
-        android:textAppearance="@style/TextAppearance.RealEstateManagerStyles.Body1"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/custom_view_detail_media_description_title"
         tool:text="@tools:sample/lorem/random" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>

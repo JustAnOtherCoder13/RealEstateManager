@@ -11,15 +11,32 @@
         <item name="textAppearanceHeadline3">@style/TextAppearance.RealEstateManagerStyles.Headline3</item>
         <item name="textAppearanceHeadline4">@style/TextAppearance.RealEstateManagerStyles.Headline4</item>
         <item name="textAppearanceHeadline5">@style/TextAppearance.RealEstateManagerStyles.Headline5</item>
-
-
-
+        <item name="textAppearanceSubtitle1">@style/TextAppearance.RealEstateManagerStyles.Subtitle1</item>
         <item name="textAppearanceBody1">@style/TextAppearance.RealEstateManagerStyles.Body1</item>
     </style>
 
-    <!--__________________________________DETAIL FRAGMENT__________________________________-->
+    <!--__________________________________CUSTOM VIEW__________________________________-->
 
-    <style name="Widget.detailFragmentDescriptionTextViewStyle" parent="Widget.MaterialComponents.TextView">
+    <style name="customViewAdditionalInformationIconStyle" >
+        <item name="android:paddingEnd">@dimen/basic_marge</item>
+        <item name="android:paddingStart">0dp</item>
+        <item name="srcCompat">@drawable/ic_fragment_detail_area_24</item>
+    </style>
+
+    <style name="Widget.customViewDescriptionTitleStyle" parent="Widget.MaterialComponents.TextView">
+        <item name="android:paddingBottom">@dimen/basic_marge</item>
+        <item name="android:text">@string/description</item>
+        <item name="android:textAppearance">@style/TextAppearance.RealEstateManagerStyles.Headline4</item>
+    </style>
+
+    <style name="Widget.customViewDescriptionTextStyle" parent="Widget.MaterialComponents.TextView">
+        <item name="android:maxLines">8</item>
+        <item name="android:text">@string/description_text</item>
+        <item name="android:textAppearance">@style/TextAppearance.RealEstateManagerStyles.Body1</item>
+    </style>
+    <!--__________________________________RECYCLER VIEW__________________________________-->
+
+    <style name="Widget.listRecyclerviewPhotoDescriptionTextViewStyle" parent="Widget.MaterialComponents.TextView">
         <item name="android:text">@string/description</item>
         <item name="android:textAppearance">@style/TextAppearance.RealEstateManagerStyles.Body1</item>
         <item name="android:paddingBottom">15dp</item>

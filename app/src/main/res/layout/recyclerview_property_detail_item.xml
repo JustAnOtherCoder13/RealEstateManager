@@ -9,19 +9,18 @@
         android:id="@+id/property_detail_item_photo"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="20dp"
+        android:layout_marginEnd="@dimen/little_marge"
         android:contentDescription="@string/property_detail_item_photo"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         tools:src="@tools:sample/avatars" />
 
     <TextView
-        style="@style/Widget.detailFragmentDescriptionTextViewStyle"
+        style="@style/Widget.listRecyclerviewPhotoDescriptionTextViewStyle"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         app:layout_constraintBottom_toBottomOf="@id/property_detail_item_photo"
         app:layout_constraintEnd_toEndOf="@id/property_detail_item_photo"
         app:layout_constraintStart_toStartOf="@id/property_detail_item_photo" />
-
 
 </androidx.constraintlayout.widget.ConstraintLayout>

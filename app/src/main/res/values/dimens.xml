@@ -1,8 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
+    <dimen name="little_marge">5dp</dimen>
     <dimen name="basic_marge">15dp</dimen>
     <dimen name="big_marge">30dp</dimen>
+
+    <!-- FRAGMENT DETAIL-->
+    <dimen name="fragment_detail_additional_information_bottom_margin">15dp</dimen>
 
 
 
