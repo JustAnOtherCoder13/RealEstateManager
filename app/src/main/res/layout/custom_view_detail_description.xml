@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tool="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <TextView
+        android:id="@+id/custom_view_detail_media_description_title"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingBottom="@dimen/basic_marge"
+        android:text="Description"
+        android:textAppearance="@style/TextAppearance.RealEstateManagerStyles.Headline4"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toTopOf="@id/custom_view_detail_media_description_text"/>
+
+    <TextView
+        android:id="@+id/custom_view_detail_media_description_text"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:maxLines="8"
+        android:text="Description"
+        android:textAppearance="@style/TextAppearance.RealEstateManagerStyles.Body1"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/custom_view_detail_media_description_title"
+        tool:text="@tools:sample/lorem/random" />
+</androidx.constraintlayout.widget.ConstraintLayout>

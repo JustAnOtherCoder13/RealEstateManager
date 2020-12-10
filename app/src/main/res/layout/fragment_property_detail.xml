@@ -1,0 +1,90 @@
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_marginStart="@dimen/basic_marge"
+    tools:context="com.openclassrooms.realestatemanager.presentation.ui.fragment.PropertyDetailFragment">
+
+    <com.openclassrooms.realestatemanager.presentation.utils.customView.DetailMediaCustomView
+        android:id="@+id/fragment_detail_media_custom_view"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <com.openclassrooms.realestatemanager.presentation.utils.customView.DetailDescriptionCustomView
+        android:id="@+id/fragment_detail_description_custom_view"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toTopOf="@id/fragment_detail_additional_information_layout"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/fragment_detail_media_custom_view" />
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/fragment_detail_additional_information_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        android:layout_marginTop="@dimen/big_marge"
+        app:layout_constraintTop_toBottomOf="@id/fragment_detail_description_custom_view">
+
+        <com.openclassrooms.realestatemanager.presentation.utils.customView.DetailAdditionalInformation
+            android:id="@+id/fragment_detail_area_custom_view"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            app:layout_constraintBottom_toTopOf="@id/fragment_detail_numbers_of_rooms_custom_view"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="parent"
+            android:layout_marginBottom="@dimen/basic_marge"/>
+
+        <com.openclassrooms.realestatemanager.presentation.utils.customView.DetailAdditionalInformation
+            android:id="@+id/fragment_detail_numbers_of_rooms_custom_view"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/basic_marge"
+            app:layout_constraintBottom_toTopOf="@id/fragment_detail_numbers_of_bathrooms_custom_view"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/fragment_detail_area_custom_view" />
+
+        <com.openclassrooms.realestatemanager.presentation.utils.customView.DetailAdditionalInformation
+            android:id="@+id/fragment_detail_numbers_of_bathrooms_custom_view"
+            android:layout_width="0dp"
+            android:layout_marginBottom="@dimen/basic_marge"
+            android:layout_height="wrap_content"
+            app:layout_constraintBottom_toTopOf="@id/fragment_detail_numbers_of_bedrooms_custom_view"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/fragment_detail_numbers_of_rooms_custom_view" />
+
+        <com.openclassrooms.realestatemanager.presentation.utils.customView.DetailAdditionalInformation
+            android:id="@+id/fragment_detail_numbers_of_bedrooms_custom_view"
+            android:layout_width="0dp"
+            android:layout_marginBottom="@dimen/basic_marge"
+            android:layout_height="wrap_content"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/fragment_detail_numbers_of_bathrooms_custom_view" />
+
+        <com.openclassrooms.realestatemanager.presentation.utils.customView.DetailAdditionalInformation
+            android:id="@+id/fragment_detail_location_custom_view"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintEnd_toStartOf="@id/fragment_detail_maps_view"
+            app:layout_constraintStart_toEndOf="@id/fragment_detail_area_custom_view"
+            app:layout_constraintTop_toTopOf="@id/fragment_detail_area_custom_view" />
+
+        <ImageView
+            android:id="@+id/fragment_detail_maps_view"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@id/fragment_detail_location_custom_view"
+            app:layout_constraintTop_toTopOf="@id/fragment_detail_area_custom_view"
+            tools:src="@tools:sample/avatars"
+            android:contentDescription="@string/location_maps_view" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

@@ -8,8 +8,27 @@
         <item name="colorAccent">@color/wildStrawberry</item>
         <!--TEXT-->
         <item name="textAppearanceHeadline1">@style/TextAppearance.RealEstateManagerStyles.Headline1</item>
+        <item name="textAppearanceHeadline3">@style/TextAppearance.RealEstateManagerStyles.Headline3</item>
+        <item name="textAppearanceHeadline4">@style/TextAppearance.RealEstateManagerStyles.Headline4</item>
+        <item name="textAppearanceHeadline5">@style/TextAppearance.RealEstateManagerStyles.Headline5</item>
+
+
+
         <item name="textAppearanceBody1">@style/TextAppearance.RealEstateManagerStyles.Body1</item>
     </style>
 
+    <!--__________________________________DETAIL FRAGMENT__________________________________-->
+
+    <style name="Widget.detailFragmentDescriptionTextViewStyle" parent="Widget.MaterialComponents.TextView">
+        <item name="android:text">@string/description</item>
+        <item name="android:textAppearance">@style/TextAppearance.RealEstateManagerStyles.Body1</item>
+        <item name="android:paddingBottom">15dp</item>
+        <item name="android:paddingTop">15dp</item>
+        <item name="android:paddingEnd">0dp</item>
+        <item name="android:paddingStart">15dp</item>
+        <item name="android:textColor">@color/white</item>
+        <item name="android:background">@color/black</item>
+        <item name="android:alpha">0.5</item>
+    </style>
 
 </resources>
