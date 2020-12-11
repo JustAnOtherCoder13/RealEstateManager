@@ -17,7 +17,7 @@
 
     <!--__________________________________CUSTOM VIEW__________________________________-->
 
-    <style name="customViewAdditionalInformationIconStyle" >
+    <style name="customViewInformationIconStyle" >
         <item name="android:paddingEnd">@dimen/basic_marge</item>
         <item name="android:paddingStart">0dp</item>
         <item name="srcCompat">@drawable/ic_fragment_detail_area_24</item>

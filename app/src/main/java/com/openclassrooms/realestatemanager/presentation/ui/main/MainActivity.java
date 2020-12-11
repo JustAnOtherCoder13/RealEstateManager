@@ -32,7 +32,7 @@ public class MainActivity extends AppCompatActivity {
         mBinding = ActivityMainBinding.inflate(getLayoutInflater());
         setContentView(mBinding.getRoot());
         NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment);
-        navController.navigate(R.id.propertyDetailFragment);
+        navController.navigate(R.id.addPropertyFragment);
 
     }
 

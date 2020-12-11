@@ -17,4 +17,8 @@
     <string name="_750_sq_m">750 sq m</string>
     <string name="description_text">Description text</string>
 
+    <!-- ______________________EDIT TEXT__________________ -->
+    <string name="value">Value</string>
+    <string name="information">Information</string>
+
 </resources>

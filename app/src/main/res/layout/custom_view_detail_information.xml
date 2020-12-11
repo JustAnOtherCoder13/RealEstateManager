@@ -5,31 +5,31 @@
     android:layout_height="match_parent">
 
     <ImageView
-        android:id="@+id/additional_information_custom_view_icon"
-        style="@style/customViewAdditionalInformationIconStyle"
+        android:id="@+id/information_custom_view_icon"
+        style="@style/customViewInformationIconStyle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:contentDescription="@string/area_icon"
-        app:layout_constraintBottom_toBottomOf="@id/additional_information_custom_view_value"
+        app:layout_constraintBottom_toBottomOf="@id/information_custom_view_value"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@id/additional_information_custom_view_title" />
+        app:layout_constraintTop_toTopOf="@id/information_custom_view_title" />
 
 
     <TextView
-        android:id="@+id/additional_information_custom_view_title"
+        android:id="@+id/information_custom_view_title"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:text="@string/surface"
         android:textAppearance="@style/TextAppearance.RealEstateManagerStyles.Subtitle1"
-        app:layout_constraintStart_toEndOf="@id/additional_information_custom_view_icon"
+        app:layout_constraintStart_toEndOf="@id/information_custom_view_icon"
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
-        android:id="@+id/additional_information_custom_view_value"
+        android:id="@+id/information_custom_view_value"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:text="@string/_750_sq_m"
-        app:layout_constraintStart_toEndOf="@id/additional_information_custom_view_icon"
-        app:layout_constraintTop_toBottomOf="@id/additional_information_custom_view_title" />
+        app:layout_constraintStart_toEndOf="@id/information_custom_view_icon"
+        app:layout_constraintTop_toBottomOf="@id/information_custom_view_title" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
