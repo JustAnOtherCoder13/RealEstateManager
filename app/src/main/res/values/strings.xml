@@ -16,9 +16,12 @@
     <string name="surface">Surface</string>
     <string name="_750_sq_m">750 sq m</string>
     <string name="description_text">Description text</string>
+    <string name="sold">Sold</string>
+
 
     <!-- ______________________EDIT TEXT__________________ -->
     <string name="value">Value</string>
     <string name="information">Information</string>
+    <string name="dd_mm_yyyy">dd/MM/yyyy</string>
 
 </resources>
