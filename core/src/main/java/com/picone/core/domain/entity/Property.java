@@ -1,11 +1,10 @@
 package com.picone.core.domain.entity;
 
 
+import androidx.room.ColumnInfo;
 import androidx.room.Entity;
 import androidx.room.ForeignKey;
 import androidx.room.PrimaryKey;
-
-import java.util.Date;
 
 @Entity(tableName = "property", foreignKeys = @ForeignKey(entity = RealEstateAgent.class,
         parentColumns = "id",
@@ -17,6 +16,7 @@ public class Property {
     private final long id;
 
     // ESSENTIALS INFORMATION
+    @ColumnInfo(index = true)
     private int realEstateManagerId;
     private String address;
     private String propertyType;
@@ -31,8 +31,8 @@ public class Property {
     private int numberOfBedrooms;
     private int numberOfBathrooms;
     private boolean isSold;
-    private Date enterOnMarket;
-    private Date soldFrom;
+    private String enterOnMarket;
+    private String soldFrom;
 
 
     public Property(long id, int realEstateManagerId, String address, String propertyType,
@@ -130,19 +130,19 @@ public class Property {
         isSold = sold;
     }
 
-    public Date getEnterOnMarket() {
+    public String getEnterOnMarket() {
         return enterOnMarket;
     }
 
-    public void setEnterOnMarket(Date enterOnMarket) {
+    public void setEnterOnMarket(String enterOnMarket) {
         this.enterOnMarket = enterOnMarket;
     }
 
-    public Date getSoldFrom() {
+    public String getSoldFrom() {
         return soldFrom;
     }
 
-    public void setSoldFrom(Date soldFrom) {
+    public void setSoldFrom(String soldFrom) {
         this.soldFrom = soldFrom;
     }
 }

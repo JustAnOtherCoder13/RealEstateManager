@@ -7,11 +7,11 @@ import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.fragment.app.Fragment;
 
 import com.openclassrooms.realestatemanager.databinding.FragmentAddPropertyBinding;
+import com.openclassrooms.realestatemanager.presentation.ui.main.BaseFragment;
 
-public class AddPropertyFragment extends Fragment {
+public class AddPropertyFragment extends BaseFragment {
 
     private FragmentAddPropertyBinding mBinding;
 
@@ -19,6 +19,7 @@ public class AddPropertyFragment extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         mBinding = FragmentAddPropertyBinding.inflate(getLayoutInflater());
+        mRealEstateAgentViewModel.setAgentValue();
         return mBinding.getRoot();
     }
 }
