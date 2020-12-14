@@ -28,12 +28,4 @@ public class DetailDescriptionCustomView extends ConstraintLayout {
     public DetailDescriptionCustomView(@NonNull Context context, @Nullable AttributeSet attrs, int defStyleAttr, int defStyleRes) {
         super(context, attrs, defStyleAttr, defStyleRes);
     }
-
-    @Override
-    protected void onFinishInflate() {
-        super.onFinishInflate();
-
-        View detailDescription = LayoutInflater.from(getContext()).inflate(R.layout.custom_view_detail_description,this,false);
-        addView(detailDescription);
-    }
 }

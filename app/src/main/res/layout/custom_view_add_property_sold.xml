@@ -6,30 +6,29 @@
 
     <TextView
         android:id="@+id/add_property_sold_custom_view_title"
+        style="@style/Widget.customViewAddPropertySoldTitleStyle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/sold"
-        android:layout_marginStart="@dimen/basic_marge"
-        android:textAppearance="@style/TextAppearance.RealEstateManagerStyles.Headline4"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        />
+        app:layout_constraintTop_toTopOf="parent" />
 
     <com.google.android.material.checkbox.MaterialCheckBox
         android:id="@+id/add_property_sold_custom_view_checkbox"
+        style="@style/Widget.customViewAddPropertySoldCheckBoxStyle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        app:layout_constraintStart_toEndOf="@id/add_property_sold_custom_view_title"
         app:layout_constraintEnd_toStartOf="@id/add_property_sold_custom_view_edit_text"
+        app:layout_constraintStart_toEndOf="@id/add_property_sold_custom_view_title"
         app:layout_constraintTop_toTopOf="parent" />
 
     <EditText
         android:id="@+id/add_property_sold_custom_view_edit_text"
-        android:layout_width="wrap_content"
+        style="@style/Widget.customViewAddPropertySoldEditTextStyle"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:layout_marginEnd="@dimen/big_marge"
         android:autofillHints="@string/dd_mm_yyyy"
         android:hint="@string/dd_mm_yyyy"
-        android:inputType="date"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@id/add_property_sold_custom_view_checkbox"
         app:layout_constraintTop_toTopOf="parent" />

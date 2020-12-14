@@ -27,11 +27,4 @@ public class AddPropertySoldCustomView extends ConstraintLayout {
     public AddPropertySoldCustomView(@NonNull Context context, @Nullable AttributeSet attrs, int defStyleAttr, int defStyleRes) {
         super(context, attrs, defStyleAttr, defStyleRes);
     }
-    @Override
-    protected void onFinishInflate() {
-        super.onFinishInflate();
-
-        View addPropertySold = LayoutInflater.from(getContext()).inflate(R.layout.custom_view_add_property_sold,this,false);
-        addView(addPropertySold);
-    }
 }

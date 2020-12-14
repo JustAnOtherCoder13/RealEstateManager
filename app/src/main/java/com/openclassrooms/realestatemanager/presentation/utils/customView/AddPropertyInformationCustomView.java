@@ -29,11 +29,4 @@ public class AddPropertyInformationCustomView extends ConstraintLayout {
         super(context, attrs, defStyleAttr, defStyleRes);
     }
 
-    @Override
-    protected void onFinishInflate() {
-        super.onFinishInflate();
-
-        View addPropertyInformation = LayoutInflater.from(getContext()).inflate(R.layout.custom_view_add_property_information,this,false);
-        addView(addPropertyInformation);
-    }
 }

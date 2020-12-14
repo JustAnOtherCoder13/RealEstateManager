@@ -29,12 +29,4 @@ public class DetailMediaCustomView extends ConstraintLayout {
     public DetailMediaCustomView(@NonNull Context context, @Nullable AttributeSet attrs, int defStyleAttr, int defStyleRes) {
         super(context, attrs, defStyleAttr, defStyleRes);
     }
-
-    @Override
-    protected void onFinishInflate() {
-        super.onFinishInflate();
-
-        View detailMedia = LayoutInflater.from(getContext()).inflate(R.layout.custom_view_detail_media,this,false);
-        addView(detailMedia);
-    }
 }

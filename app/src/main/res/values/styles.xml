@@ -15,6 +15,14 @@
         <item name="textAppearanceBody1">@style/TextAppearance.RealEstateManagerStyles.Body1</item>
     </style>
 
+
+    <!--__________________________________COMMON STYLES__________________________________-->
+
+    <style name="Widget.TextViewTitleStyle" parent="Widget.MaterialComponents.TextView">
+        <item name="android:paddingBottom">@dimen/basic_marge</item>
+        <item name="android:textAppearance">@style/TextAppearance.RealEstateManagerStyles.Headline4</item>
+    </style>
+
     <!--__________________________________CUSTOM VIEW__________________________________-->
 
     <style name="customViewInformationIconStyle" >
@@ -23,10 +31,27 @@
         <item name="srcCompat">@drawable/ic_fragment_detail_area_24</item>
     </style>
 
-    <style name="Widget.customViewDescriptionTitleStyle" parent="Widget.MaterialComponents.TextView">
-        <item name="android:paddingBottom">@dimen/basic_marge</item>
+    <!--TITLE-->
+    <style name="Widget.customViewDescriptionTitleStyle" parent="Widget.TextViewTitleStyle">
         <item name="android:text">@string/description</item>
-        <item name="android:textAppearance">@style/TextAppearance.RealEstateManagerStyles.Headline4</item>
+    </style>
+
+    <style name="Widget.customViewAddPropertyInformationTypeTitleStyle" parent="Widget.TextViewTitleStyle">
+        <item name="android:text">@string/property_type</item>
+    </style>
+
+    <style name="Widget.customViewAddPropertySoldTitleStyle" parent="Widget.TextViewTitleStyle">
+        <item name="android:text">@string/sold</item>
+    </style>
+
+    <style name="Widget.customViewAddPropertySoldCheckBoxStyle" parent="Widget.AppCompat.CompoundButton.CheckBox">
+        <item name="android:layout_marginStart">@dimen/big_marge</item>
+        <item name="android:layout_marginEnd">@dimen/big_marge</item>
+    </style>
+
+    <style name="Widget.customViewAddPropertySoldEditTextStyle" parent="Widget.AppCompat.EditText">
+        <item name="android:layout_marginEnd">@dimen/big_marge</item>
+        <item name="android:inputType">date</item>
     </style>
 
     <style name="Widget.customViewDescriptionTextStyle" parent="Widget.MaterialComponents.TextView">
