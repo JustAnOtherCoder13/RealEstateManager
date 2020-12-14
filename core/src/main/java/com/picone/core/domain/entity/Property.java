@@ -6,7 +6,9 @@ import androidx.room.Entity;
 import androidx.room.ForeignKey;
 import androidx.room.PrimaryKey;
 
-@Entity(tableName = "property", foreignKeys = @ForeignKey(entity = RealEstateAgent.class,
+import static com.picone.core.utils.ConstantParameters.propertyTable;
+
+@Entity(tableName = propertyTable, foreignKeys = @ForeignKey(entity = RealEstateAgent.class,
         parentColumns = "id",
         childColumns = "realEstateManagerId"))
 

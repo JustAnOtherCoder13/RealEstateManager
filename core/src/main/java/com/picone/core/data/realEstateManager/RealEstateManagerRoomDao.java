@@ -13,6 +13,6 @@ import io.reactivex.Observable;
 public interface RealEstateManagerRoomDao {
 
 
-    @Query("SELECT*FROM real_estate_agent")
+    @Query("SELECT*FROM real_estate_agent_table")
     Observable<List<RealEstateAgent>> getAllAgents();
 }

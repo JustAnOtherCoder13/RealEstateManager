@@ -3,7 +3,9 @@ package com.picone.core.domain.entity;
 import androidx.room.Entity;
 import androidx.room.PrimaryKey;
 
-@Entity(tableName = "real_estate_agent")
+import static com.picone.core.utils.ConstantParameters.realEstateAgentTable;
+
+@Entity(tableName = realEstateAgentTable)
 public class RealEstateAgent {
 
     @PrimaryKey
