@@ -1,6 +1,7 @@
 package com.picone.core.data.property;
 
 import com.picone.core.data.RealEstateManagerRoomDatabase;
+import com.picone.core.domain.entity.PointOfInterest;
 import com.picone.core.domain.entity.Property;
 
 import java.util.List;
@@ -22,5 +23,9 @@ public class PropertyDaoImpl implements PropertyDao {
 
     public Observable<List<Property>> getAllProperties(){
         return mPropertyRoomDao.getAllProperties();
+    }
+
+    public Observable<List<PointOfInterest>> getAllPointOfInterestForPropertyId(int propertyId){
+        return mPropertyRoomDao.getAllPointOfInterestForPropertyId(propertyId);
     }
 }

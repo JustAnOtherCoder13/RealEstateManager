@@ -1,5 +1,6 @@
 package com.picone.core.data.property;
 
+import com.picone.core.domain.entity.PointOfInterest;
 import com.picone.core.domain.entity.Property;
 
 import java.util.List;
@@ -20,4 +21,9 @@ public class PropertyRepository {
     public Observable<List<Property>> getAllProperties() {
         return propertyDao.getAllProperties();
     }
+
+    public Observable<List<PointOfInterest>> getAllPointOfInterestForPropertyId(int propertyId) {
+        return propertyDao.getAllPointOfInterestForPropertyId(propertyId);
     }
+
+}

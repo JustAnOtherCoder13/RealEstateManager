@@ -12,7 +12,7 @@ import static com.picone.core.utils.ConstantParameters.pointOfInterestTable;
         childColumns = "propertyId"))
 public class PointOfInterest {
 
-    @PrimaryKey
+    @PrimaryKey(autoGenerate = true)
     private int id;
     @ColumnInfo(index = true)
     private int propertyId;

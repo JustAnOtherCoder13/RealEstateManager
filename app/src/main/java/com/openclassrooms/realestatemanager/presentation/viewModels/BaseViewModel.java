@@ -3,6 +3,7 @@ package com.openclassrooms.realestatemanager.presentation.viewModels;
 import androidx.lifecycle.ViewModel;
 
 import com.picone.core.domain.interactors.agent.GetAllRoomAgentInteractor;
+import com.picone.core.domain.interactors.property.GetAllPointOfInterestForPropertyIdInteractor;
 import com.picone.core.domain.interactors.property.GetAllRoomPropertiesInteractor;
 import com.picone.core.utils.SchedulerProvider;
 
@@ -25,6 +26,7 @@ public abstract class BaseViewModel extends ViewModel {
     //------------------------PROPERTY INTERACTORS----------------------------
 
     protected GetAllRoomPropertiesInteractor getAllRoomPropertiesInteractor;
+    protected GetAllPointOfInterestForPropertyIdInteractor getAllPointOfInterestForPropertyIdInteractor;
 
 
     @Override

@@ -15,8 +15,8 @@ import static com.picone.core.utils.ConstantParameters.propertyTable;
 
 public class Property {
 
-    @PrimaryKey
-    private final long id;
+    @PrimaryKey(autoGenerate = true)
+    private int id;
 
     // ESSENTIALS INFORMATION
     @ColumnInfo(index = true)
@@ -44,7 +44,7 @@ public class Property {
     private String soldFrom;
 
 
-    public Property(long id, int realEstateManagerId, String address, String propertyType,
+    public Property(int id, int realEstateManagerId, String address, String propertyType,
                     int propertyArea, int numberOfRooms, int price) {
         this.id = id;
         this.realEstateManagerId = realEstateManagerId;
@@ -55,8 +55,12 @@ public class Property {
         this.price = price;
     }
 
-    public long getId() {
+    public int getId() {
         return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
     }
 
     public int getRealEstateManagerId() {

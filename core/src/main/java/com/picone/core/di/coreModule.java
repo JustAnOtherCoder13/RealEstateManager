@@ -9,6 +9,7 @@ import com.picone.core.data.property.PropertyRepository;
 import com.picone.core.data.realEstateManager.RealEstateAgentRepository;
 import com.picone.core.data.realEstateManager.RealEstateManagerDaoImpl;
 import com.picone.core.domain.interactors.agent.GetAllRoomAgentInteractor;
+import com.picone.core.domain.interactors.property.GetAllPointOfInterestForPropertyIdInteractor;
 import com.picone.core.domain.interactors.property.GetAllRoomPropertiesInteractor;
 
 import javax.inject.Singleton;
@@ -67,5 +68,10 @@ public final class coreModule {
     @Provides
     static GetAllRoomPropertiesInteractor provideGetAllProperties(@ApplicationContext Context context){
         return new GetAllRoomPropertiesInteractor(providePropertyDataSource(context));
+    }
+
+    @Provides
+    static GetAllPointOfInterestForPropertyIdInteractor provideGetAllPointOfInterestForPropertyId(@ApplicationContext Context context){
+        return new GetAllPointOfInterestForPropertyIdInteractor(providePropertyDataSource(context));
     }
 }

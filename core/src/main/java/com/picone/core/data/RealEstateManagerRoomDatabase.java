@@ -11,7 +11,9 @@ import androidx.sqlite.db.SupportSQLiteDatabase;
 
 import com.picone.core.data.property.PropertyRoomDao;
 import com.picone.core.data.realEstateManager.RealEstateManagerRoomDao;
+import com.picone.core.domain.entity.PointOfInterest;
 import com.picone.core.domain.entity.Property;
+import com.picone.core.domain.entity.PropertyPhoto;
 import com.picone.core.domain.entity.RealEstateAgent;
 
 import static com.picone.core.data.Generator.generateManagers;
@@ -23,7 +25,7 @@ import static com.picone.core.utils.ConstantParameters.propertyPhotoTable;
 import static com.picone.core.utils.ConstantParameters.propertyTable;
 import static com.picone.core.utils.ConstantParameters.realEstateAgentTable;
 
-@androidx.room.Database(entities = {Property.class, RealEstateAgent.class}, version = 1, exportSchema = false)
+@androidx.room.Database(entities = {Property.class, RealEstateAgent.class, PointOfInterest.class, PropertyPhoto.class}, version = 1, exportSchema = false)
 public abstract class RealEstateManagerRoomDatabase extends RoomDatabase {
 
     public abstract RealEstateManagerRoomDao realEstateManagerRoomDao();
@@ -44,8 +46,8 @@ public abstract class RealEstateManagerRoomDatabase extends RoomDatabase {
                 super.onCreate(db);
                 createManagers(db);
                 createProperties(db);
-                //createPhotos( db);
-                //createPointOfInterest(db);
+                createPhotos( db);
+                createPointOfInterest(db);
             }
         };
     }

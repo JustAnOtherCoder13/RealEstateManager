@@ -8,7 +8,7 @@ import static com.picone.core.utils.ConstantParameters.realEstateAgentTable;
 @Entity(tableName = realEstateAgentTable)
 public class RealEstateAgent {
 
-    @PrimaryKey
+    @PrimaryKey(autoGenerate = true)
     private final long id;
 
     private String address;
