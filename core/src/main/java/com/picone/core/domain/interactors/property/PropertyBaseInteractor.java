@@ -4,7 +4,7 @@ import com.picone.core.data.property.PropertyRepository;
 
 import javax.inject.Inject;
 
-public class PropertyBaseInteractor {
+public abstract class PropertyBaseInteractor {
 
     @Inject
     protected PropertyRepository propertyDataSource;

@@ -1,4 +1,4 @@
-package com.picone.core.data.realEstateManager;
+package com.picone.core.data.realEstateAgent;
 
 import android.annotation.SuppressLint;
 
@@ -12,20 +12,20 @@ import javax.inject.Inject;
 import io.reactivex.Observable;
 
 
-public class RealEstateManagerDaoImpl implements RealEstateManagerDao {
+public class RealEstateAgentDaoImpl implements RealEstateAgentDao {
 
     @Inject
     protected RealEstateManagerRoomDatabase mRoomDatabase;
-    private RealEstateManagerRoomDao mRealEstateManagerRoomDao;
+    private RealEstateAgentRoomDao mRealEstateAgentRoomDao;
 
-    public RealEstateManagerDaoImpl(RealEstateManagerRoomDatabase mRoomDatabase) {
+    public RealEstateAgentDaoImpl(RealEstateManagerRoomDatabase mRoomDatabase) {
         this.mRoomDatabase = mRoomDatabase;
-        this.mRealEstateManagerRoomDao = mRoomDatabase.realEstateManagerRoomDao();
+        this.mRealEstateAgentRoomDao = mRoomDatabase.realEstateManagerRoomDao();
     }
 
     @SuppressLint("CheckResult")
     public Observable<List<RealEstateAgent>> getAllAgents(){
-        return mRealEstateManagerRoomDao.getAllAgents();
+        return mRealEstateAgentRoomDao.getAllAgents();
     }
 
 }

@@ -1,6 +1,6 @@
 package com.picone.core.domain.interactors.agent;
 
-import com.picone.core.data.realEstateManager.RealEstateAgentRepository;
+import com.picone.core.data.realEstateAgent.RealEstateAgentRepository;
 import com.picone.core.domain.entity.RealEstateAgent;
 
 import java.util.List;

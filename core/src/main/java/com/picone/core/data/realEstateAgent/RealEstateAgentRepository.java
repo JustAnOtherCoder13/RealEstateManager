@@ -1,4 +1,4 @@
-package com.picone.core.data.realEstateManager;
+package com.picone.core.data.realEstateAgent;
 
 import com.picone.core.domain.entity.RealEstateAgent;
 
@@ -11,9 +11,9 @@ import io.reactivex.Observable;
 public class RealEstateAgentRepository {
 
     @Inject
-    RealEstateManagerDaoImpl realEstateManagerDao;
+    RealEstateAgentDaoImpl realEstateManagerDao;
 
-    public RealEstateAgentRepository(RealEstateManagerDaoImpl realEstateManagerDao) {
+    public RealEstateAgentRepository(RealEstateAgentDaoImpl realEstateManagerDao) {
         this.realEstateManagerDao = realEstateManagerDao;
     }
 

@@ -15,12 +15,12 @@ import io.reactivex.Observable;
 public interface PropertyRoomDao {
 
     @Query("SELECT*FROM property_table")
-    Observable<List<Property>> getAllProperties();
+    Observable<List<Property>> getAllRoomProperties();
 
     @Query("SELECT*FROM property_point_of_interest_table WHERE property_point_of_interest_table.propertyId = :propertyId")
-    Observable<List<PointOfInterest>> getAllPointOfInterestForPropertyId(int propertyId);
+    Observable<List<PointOfInterest>> getAllRoomPointOfInterestForPropertyId(int propertyId);
 
-   /* @Query("SELECT*FROM property_photo_table WHERE property_photo_table.propertyId = propertyId")
-    Observable<List<PropertyPhoto>> getAllPhotosForPropertyId(int propertyId);*/
+    @Query("SELECT*FROM property_photo_table WHERE property_photo_table.propertyId = :propertyId")
+    Observable<List<PropertyPhoto>> getAllRoomPhotosForPropertyId(int propertyId);
 
 }

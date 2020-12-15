@@ -3,6 +3,7 @@ package com.picone.core.data.property;
 import com.picone.core.data.RealEstateManagerRoomDatabase;
 import com.picone.core.domain.entity.PointOfInterest;
 import com.picone.core.domain.entity.Property;
+import com.picone.core.domain.entity.PropertyPhoto;
 
 import java.util.List;
 
@@ -21,11 +22,15 @@ public class PropertyDaoImpl implements PropertyDao {
         mPropertyRoomDao = mRoomDatabase.propertyRoomDao();
     }
 
-    public Observable<List<Property>> getAllProperties(){
-        return mPropertyRoomDao.getAllProperties();
+    public Observable<List<Property>> getAllRoomProperties(){
+        return mPropertyRoomDao.getAllRoomProperties();
     }
 
-    public Observable<List<PointOfInterest>> getAllPointOfInterestForPropertyId(int propertyId){
-        return mPropertyRoomDao.getAllPointOfInterestForPropertyId(propertyId);
+    public Observable<List<PointOfInterest>> getAllRoomPointOfInterestForPropertyId(int propertyId){
+        return mPropertyRoomDao.getAllRoomPointOfInterestForPropertyId(propertyId);
+    }
+
+    public Observable<List<PropertyPhoto>> getAllRoomPhotosForPropertyId(int propertyId){
+        return mPropertyRoomDao.getAllRoomPhotosForPropertyId(propertyId);
     }
 }

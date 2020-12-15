@@ -6,11 +6,12 @@ import android.content.Context;
 import com.picone.core.data.RealEstateManagerRoomDatabase;
 import com.picone.core.data.property.PropertyDaoImpl;
 import com.picone.core.data.property.PropertyRepository;
-import com.picone.core.data.realEstateManager.RealEstateAgentRepository;
-import com.picone.core.data.realEstateManager.RealEstateManagerDaoImpl;
+import com.picone.core.data.realEstateAgent.RealEstateAgentDaoImpl;
+import com.picone.core.data.realEstateAgent.RealEstateAgentRepository;
 import com.picone.core.domain.interactors.agent.GetAllRoomAgentInteractor;
-import com.picone.core.domain.interactors.property.GetAllPointOfInterestForPropertyIdInteractor;
+import com.picone.core.domain.interactors.property.GetAllRoomPointOfInterestForPropertyIdInteractor;
 import com.picone.core.domain.interactors.property.GetAllRoomPropertiesInteractor;
+import com.picone.core.domain.interactors.property.GetAllRoomPropertyPhotosForPropertyIdInteractor;
 
 import javax.inject.Singleton;
 
@@ -35,8 +36,8 @@ public final class coreModule {
     //--------------------------------------DAO-----------------------------------------------------
 
     @Provides
-    static RealEstateManagerDaoImpl provideRealEstateManagerDao(@ApplicationContext Context context){
-        return new RealEstateManagerDaoImpl(provideRealEstateManagerRoomDatabase(context));
+    static RealEstateAgentDaoImpl provideRealEstateManagerDao(@ApplicationContext Context context){
+        return new RealEstateAgentDaoImpl(provideRealEstateManagerRoomDatabase(context));
     }
 
     @Provides
@@ -46,11 +47,13 @@ public final class coreModule {
 
     //--------------------------------------REPOSITORY-----------------------------------------------------
 
+    @Singleton
     @Provides
     static RealEstateAgentRepository provideRealEstateAgentDataSource(@ApplicationContext Context context){
         return new RealEstateAgentRepository(provideRealEstateManagerDao(context));
     }
 
+    @Singleton
     @Provides
     static PropertyRepository providePropertyDataSource(@ApplicationContext Context context){
         return new PropertyRepository(providePropertyDao(context));
@@ -59,19 +62,24 @@ public final class coreModule {
     //--------------------------------------REAL ESTATE AGENT INTERACTORS-----------------------------------------------------
 
     @Provides
-    static GetAllRoomAgentInteractor provideGetAllAgents(@ApplicationContext Context context){
+    static GetAllRoomAgentInteractor provideGetAllRoomAgents(@ApplicationContext Context context){
         return new GetAllRoomAgentInteractor(provideRealEstateAgentDataSource(context));
     }
 
     //--------------------------------------PROPERTY INTERACTORS-----------------------------------------------------
 
     @Provides
-    static GetAllRoomPropertiesInteractor provideGetAllProperties(@ApplicationContext Context context){
+    static GetAllRoomPropertiesInteractor provideGetAllRoomProperties(@ApplicationContext Context context){
         return new GetAllRoomPropertiesInteractor(providePropertyDataSource(context));
     }
 
     @Provides
-    static GetAllPointOfInterestForPropertyIdInteractor provideGetAllPointOfInterestForPropertyId(@ApplicationContext Context context){
-        return new GetAllPointOfInterestForPropertyIdInteractor(providePropertyDataSource(context));
+    static GetAllRoomPointOfInterestForPropertyIdInteractor provideGetAllRoomPointOfInterestForPropertyId(@ApplicationContext Context context){
+        return new GetAllRoomPointOfInterestForPropertyIdInteractor(providePropertyDataSource(context));
+    }
+
+    @Provides
+    static GetAllRoomPropertyPhotosForPropertyIdInteractor provideGetAllPropertyPhotosForPropertyId(@ApplicationContext Context context){
+        return new GetAllRoomPropertyPhotosForPropertyIdInteractor(providePropertyDataSource(context));
     }
 }

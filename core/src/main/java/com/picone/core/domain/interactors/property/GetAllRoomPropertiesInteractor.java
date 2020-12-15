@@ -14,6 +14,6 @@ public class GetAllRoomPropertiesInteractor extends PropertyBaseInteractor{
     }
 
     public Observable <List<Property>> getAllProperties(){
-        return propertyDataSource.getAllProperties();
+        return propertyDataSource.getAllRoomProperties();
     }
 }
