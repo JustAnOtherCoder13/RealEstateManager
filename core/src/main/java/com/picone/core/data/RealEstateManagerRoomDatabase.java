@@ -16,7 +16,7 @@ import com.picone.core.domain.entity.Property;
 import com.picone.core.domain.entity.PropertyPhoto;
 import com.picone.core.domain.entity.RealEstateAgent;
 
-import static com.picone.core.data.Generator.generateManagers;
+import static com.picone.core.data.Generator.generateAgents;
 import static com.picone.core.data.Generator.generatePhotos;
 import static com.picone.core.data.Generator.generatePointOfInterests;
 import static com.picone.core.data.Generator.generateProperties;
@@ -56,10 +56,10 @@ public abstract class RealEstateManagerRoomDatabase extends RoomDatabase {
     private static void createManagers(SupportSQLiteDatabase db) {
         for (int i = 0; i < 4; i++) {
             ContentValues contentValues = new ContentValues();
-            contentValues.put("id", generateManagers().get(i).getId());
-            contentValues.put("address", generateManagers().get(i).getAddress());
-            contentValues.put("name", generateManagers().get(i).getName());
-            contentValues.put("avatar", generateManagers().get(i).getAvatar());
+            contentValues.put("id", generateAgents().get(i).getId());
+            contentValues.put("address", generateAgents().get(i).getAddress());
+            contentValues.put("name", generateAgents().get(i).getName());
+            contentValues.put("avatar", generateAgents().get(i).getAvatar());
 
             db.insert(realEstateAgentTable, OnConflictStrategy.IGNORE, contentValues);
         }

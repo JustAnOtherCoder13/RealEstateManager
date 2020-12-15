@@ -11,15 +11,15 @@ import java.util.List;
 
 public abstract class Generator {
 
-    private static List<RealEstateAgent> MANAGERS = Arrays.asList(
+    private static List<RealEstateAgent> AGENTS = Arrays.asList(
             new RealEstateAgent(1, "Manager1 address", "Frank", "Manager1Avatar"),
             new RealEstateAgent(2, "Manager2 address", "Luc", "Manager2Avatar"),
             new RealEstateAgent(3, "Manager3 address", "Robert","Manager3Avatar"),
             new RealEstateAgent(4, "Manager4 address", "Andy","Manager4Avatar")
             );
 
-    public static List<RealEstateAgent> generateManagers() {
-        return new ArrayList<>(MANAGERS);
+    public static List<RealEstateAgent> generateAgents() {
+        return new ArrayList<>(AGENTS);
     }
 
     private static List<PropertyPhoto> PHOTOS = Arrays.asList(
