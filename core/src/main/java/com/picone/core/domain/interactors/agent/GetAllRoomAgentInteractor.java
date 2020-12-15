@@ -9,7 +9,6 @@ import io.reactivex.Observable;
 
 public class GetAllRoomAgentInteractor extends RealEstateManagerBaseInteractor {
 
-
     public GetAllRoomAgentInteractor(RealEstateAgentRepository realEstateManagerDataSource) {
         super(realEstateManagerDataSource);
     }

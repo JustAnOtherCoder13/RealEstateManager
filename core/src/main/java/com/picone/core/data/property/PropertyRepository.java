@@ -8,6 +8,7 @@ import java.util.List;
 
 import javax.inject.Inject;
 
+import io.reactivex.Completable;
 import io.reactivex.Observable;
 
 public class PropertyRepository {
@@ -31,4 +32,23 @@ public class PropertyRepository {
         return propertyDao.getAllRoomPhotosForPropertyId(propertyId);
     }
 
+    public Completable addRoomProperty(Property property){
+        return propertyDao.addRoomProperty(property);
+    }
+
+    public Completable addRoomPropertyPointOfInterest(PointOfInterest pointOfInterest) {
+        return propertyDao.addRoomPropertyPointOfInterest(pointOfInterest);
+    }
+
+    public Completable addRoomPropertyPhoto(PropertyPhoto propertyPhoto){
+        return propertyDao.addRoomPropertyPhoto(propertyPhoto);
+    }
+
+    public Completable deleteRoomPropertyPhoto(PropertyPhoto propertyPhoto) {
+        return propertyDao.deleteRoomPropertyPhoto(propertyPhoto);
+    }
+
+    public Completable updateRoomProperty(Property property) {
+        return propertyDao.updateRoomProperty(property);
+    }
 }

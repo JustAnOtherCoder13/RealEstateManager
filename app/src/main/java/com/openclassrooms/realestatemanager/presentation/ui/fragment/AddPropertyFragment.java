@@ -10,7 +10,6 @@ import androidx.annotation.Nullable;
 
 import com.openclassrooms.realestatemanager.databinding.FragmentAddPropertyBinding;
 import com.openclassrooms.realestatemanager.presentation.ui.main.BaseFragment;
-import com.picone.core.data.Generator;
 
 public class AddPropertyFragment extends BaseFragment {
 
@@ -20,10 +19,6 @@ public class AddPropertyFragment extends BaseFragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         mBinding = FragmentAddPropertyBinding.inflate(getLayoutInflater());
-        mRealEstateAgentViewModel.setAgentValue();
-        mPropertyViewModel.setAllRoomProperties();
-        mPropertyViewModel.setAllRoomPointOfInterestForProperty(Generator.generateProperties().get(0));
-        mPropertyViewModel.setAllRoomPhotosForProperty(Generator.generateProperties().get(1));
         return mBinding.getRoot();
     }
 }

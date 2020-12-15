@@ -9,6 +9,7 @@ import java.util.List;
 
 import javax.inject.Inject;
 
+import io.reactivex.Completable;
 import io.reactivex.Observable;
 
 public class PropertyDaoImpl implements PropertyDao {
@@ -22,15 +23,36 @@ public class PropertyDaoImpl implements PropertyDao {
         mPropertyRoomDao = mRoomDatabase.propertyRoomDao();
     }
 
-    public Observable<List<Property>> getAllRoomProperties(){
+    public Observable<List<Property>> getAllRoomProperties() {
         return mPropertyRoomDao.getAllRoomProperties();
     }
 
-    public Observable<List<PointOfInterest>> getAllRoomPointOfInterestForPropertyId(int propertyId){
+    public Observable<List<PointOfInterest>> getAllRoomPointOfInterestForPropertyId(int propertyId) {
         return mPropertyRoomDao.getAllRoomPointOfInterestForPropertyId(propertyId);
     }
 
-    public Observable<List<PropertyPhoto>> getAllRoomPhotosForPropertyId(int propertyId){
+    public Observable<List<PropertyPhoto>> getAllRoomPhotosForPropertyId(int propertyId) {
         return mPropertyRoomDao.getAllRoomPhotosForPropertyId(propertyId);
     }
+
+    public Completable addRoomProperty(Property property) {
+        return mPropertyRoomDao.addRoomProperty(property);
+    }
+
+    public Completable addRoomPropertyPointOfInterest(PointOfInterest pointOfInterest) {
+        return mPropertyRoomDao.addRoomPropertyPointOfInterest(pointOfInterest);
+    }
+
+    public Completable addRoomPropertyPhoto(PropertyPhoto propertyPhoto) {
+        return mPropertyRoomDao.addRoomPropertyPhoto(propertyPhoto);
+    }
+
+    public Completable deleteRoomPropertyPhoto(PropertyPhoto propertyPhoto) {
+        return mPropertyRoomDao.deleteRoomPropertyPhoto(propertyPhoto);
+    }
+
+    public Completable updateRoomProperty(Property property) {
+        return mPropertyRoomDao.updateRoomProperty(property);
+    }
+
 }

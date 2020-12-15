@@ -9,9 +9,14 @@ import com.picone.core.data.property.PropertyRepository;
 import com.picone.core.data.realEstateAgent.RealEstateAgentDaoImpl;
 import com.picone.core.data.realEstateAgent.RealEstateAgentRepository;
 import com.picone.core.domain.interactors.agent.GetAllRoomAgentInteractor;
-import com.picone.core.domain.interactors.property.GetAllRoomPointOfInterestForPropertyIdInteractor;
+import com.picone.core.domain.interactors.property.AddRoomPropertyInteractor;
+import com.picone.core.domain.interactors.property.photo.AddRoomPropertyPhotoInteractor;
+import com.picone.core.domain.interactors.property.pointOfInterest.AddRoomPropertyPointOfInterestInteractor;
+import com.picone.core.domain.interactors.property.photo.DeleteRoomPropertyPhotoInteractor;
+import com.picone.core.domain.interactors.property.pointOfInterest.GetAllRoomPointOfInterestForPropertyIdInteractor;
 import com.picone.core.domain.interactors.property.GetAllRoomPropertiesInteractor;
-import com.picone.core.domain.interactors.property.GetAllRoomPropertyPhotosForPropertyIdInteractor;
+import com.picone.core.domain.interactors.property.photo.GetAllRoomPropertyPhotosForPropertyIdInteractor;
+import com.picone.core.domain.interactors.property.UpdateRoomPropertyInteractor;
 
 import javax.inject.Singleton;
 
@@ -81,5 +86,30 @@ public final class coreModule {
     @Provides
     static GetAllRoomPropertyPhotosForPropertyIdInteractor provideGetAllPropertyPhotosForPropertyId(@ApplicationContext Context context){
         return new GetAllRoomPropertyPhotosForPropertyIdInteractor(providePropertyDataSource(context));
+    }
+
+    @Provides
+    static AddRoomPropertyInteractor provideAddRoomProperty(@ApplicationContext Context context){
+        return new AddRoomPropertyInteractor(providePropertyDataSource(context));
+    }
+
+    @Provides
+    static AddRoomPropertyPointOfInterestInteractor provideAddRoomPropertyPointOfInterest(@ApplicationContext Context context){
+        return new AddRoomPropertyPointOfInterestInteractor(providePropertyDataSource(context));
+    }
+
+    @Provides
+    static AddRoomPropertyPhotoInteractor provideAddRoomPropertyPhoto(@ApplicationContext Context context){
+        return  new AddRoomPropertyPhotoInteractor(providePropertyDataSource(context));
+    }
+
+    @Provides
+    static DeleteRoomPropertyPhotoInteractor provideDeleteRoomPropertyPhoto(@ApplicationContext Context context){
+        return new DeleteRoomPropertyPhotoInteractor(providePropertyDataSource(context));
+    }
+
+    @Provides
+    static UpdateRoomPropertyInteractor provideUpdateRoomProperty(@ApplicationContext Context context){
+        return new UpdateRoomPropertyInteractor(providePropertyDataSource(context));
     }
 }

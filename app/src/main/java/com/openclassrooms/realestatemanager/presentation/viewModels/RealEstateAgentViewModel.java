@@ -1,7 +1,5 @@
 package com.openclassrooms.realestatemanager.presentation.viewModels;
 
-import android.util.Log;
-
 import androidx.hilt.lifecycle.ViewModelInject;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
@@ -13,9 +11,10 @@ import com.picone.core.utils.SchedulerProvider;
 import java.util.List;
 
 public class RealEstateAgentViewModel extends BaseViewModel {
-    private MutableLiveData<List<RealEstateAgent>> allAgentsMutableLD = new MutableLiveData<>();
 
-    public LiveData<List<RealEstateAgent>> getAllAgents = allAgentsMutableLD;
+    private MutableLiveData<List<RealEstateAgent>> allRoomAgentsMutableLD = new MutableLiveData<>();
+
+    public LiveData<List<RealEstateAgent>> getAllRoomAgents = allRoomAgentsMutableLD;
 
     @ViewModelInject
     public RealEstateAgentViewModel(GetAllRoomAgentInteractor getAllRoomAgentInteractor
@@ -24,11 +23,11 @@ public class RealEstateAgentViewModel extends BaseViewModel {
         this.schedulerProvider =schedulerProvider;
     }
 
-    public void setAgentValue (){
+    public void setRoomAgentValue(){
         compositeDisposable.add(
         getAllRoomAgentInteractor.getAllAgents()
                 .subscribeOn(schedulerProvider.getIo())
                 .observeOn(schedulerProvider.getUi())
-                .subscribe(realEstateAgents -> Log.i("TAG", "setAgentValue: "+realEstateAgents)));
+                .subscribe(realEstateAgents -> allRoomAgentsMutableLD.postValue(realEstateAgents)));
     }
 }

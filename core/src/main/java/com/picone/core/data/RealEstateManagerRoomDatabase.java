@@ -29,6 +29,7 @@ import static com.picone.core.utils.ConstantParameters.realEstateAgentTable;
 public abstract class RealEstateManagerRoomDatabase extends RoomDatabase {
 
     public abstract RealEstateAgentRoomDao realEstateManagerRoomDao();
+
     public abstract PropertyRoomDao propertyRoomDao();
 
     public static RealEstateManagerRoomDatabase getInstance(Context context) {
@@ -46,14 +47,14 @@ public abstract class RealEstateManagerRoomDatabase extends RoomDatabase {
                 super.onCreate(db);
                 createManagers(db);
                 createProperties(db);
-                createPhotos( db);
+                createPhotos(db);
                 createPointOfInterest(db);
             }
         };
     }
 
     private static void createManagers(SupportSQLiteDatabase db) {
-        for (int i =0; i<4; i++){
+        for (int i = 0; i < 4; i++) {
             ContentValues contentValues = new ContentValues();
             contentValues.put("id", generateManagers().get(i).getId());
             contentValues.put("address", generateManagers().get(i).getAddress());
@@ -64,8 +65,8 @@ public abstract class RealEstateManagerRoomDatabase extends RoomDatabase {
         }
     }
 
-    private static void createProperties( SupportSQLiteDatabase db) {
-        for (int i =0; i<2; i++) {
+    private static void createProperties(SupportSQLiteDatabase db) {
+        for (int i = 0; i < 2; i++) {
             ContentValues contentValues = new ContentValues();
             contentValues.put("id", generateProperties().get(i).getId());
             contentValues.put("realEstateManagerId", generateProperties().get(i).getRealEstateManagerId());
@@ -79,8 +80,8 @@ public abstract class RealEstateManagerRoomDatabase extends RoomDatabase {
         }
     }
 
-    private static void createPhotos( SupportSQLiteDatabase db) {
-        for (int i =0; i<4; i++) {
+    private static void createPhotos(SupportSQLiteDatabase db) {
+        for (int i = 0; i < 4; i++) {
             ContentValues contentValues = new ContentValues();
             contentValues.put("id", generatePhotos().get(i).getId());
             contentValues.put("photo", generatePhotos().get(i).getPhoto());
@@ -92,7 +93,7 @@ public abstract class RealEstateManagerRoomDatabase extends RoomDatabase {
     }
 
     private static void createPointOfInterest(SupportSQLiteDatabase db) {
-        for (int i =0; i<4; i++) {
+        for (int i = 0; i < 4; i++) {
             ContentValues contentValues = new ContentValues();
             contentValues.put("id", generatePointOfInterests().get(i).getId());
             contentValues.put("propertyId", generatePointOfInterests().get(i).getPropertyId());
