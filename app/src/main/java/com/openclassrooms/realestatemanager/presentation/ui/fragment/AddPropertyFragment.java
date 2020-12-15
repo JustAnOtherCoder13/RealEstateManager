@@ -20,6 +20,7 @@ public class AddPropertyFragment extends BaseFragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         mBinding = FragmentAddPropertyBinding.inflate(getLayoutInflater());
         mRealEstateAgentViewModel.setAgentValue();
+        mPropertyViewModel.setAllProperties();
         return mBinding.getRoot();
     }
 }

@@ -2,11 +2,34 @@ package com.openclassrooms.realestatemanager.presentation.viewModels;
 
 import androidx.lifecycle.ViewModel;
 
-import com.picone.core.domain.interactors.GetAllManagerInteractor;
+import com.picone.core.domain.interactors.agent.GetAllRoomAgentInteractor;
+import com.picone.core.domain.interactors.property.GetAllRoomPropertiesInteractor;
+import com.picone.core.utils.SchedulerProvider;
+
+import javax.inject.Inject;
+
+import io.reactivex.disposables.CompositeDisposable;
 
 public abstract class BaseViewModel extends ViewModel {
 
-    //------------------------REAL ESTATE MANAGER INTERACTORS----------------------------
+    @Inject
+    protected SchedulerProvider schedulerProvider;
 
-    protected GetAllManagerInteractor getAllManagerInteractor;
+    protected CompositeDisposable compositeDisposable = new CompositeDisposable();
+
+
+    //------------------------REAL ESTATE AGENT INTERACTORS----------------------------
+
+    protected GetAllRoomAgentInteractor getAllRoomAgentInteractor;
+
+    //------------------------PROPERTY INTERACTORS----------------------------
+
+    protected GetAllRoomPropertiesInteractor getAllRoomPropertiesInteractor;
+
+
+    @Override
+    protected void onCleared() {
+        compositeDisposable.clear();
+        super.onCleared();
+    }
 }

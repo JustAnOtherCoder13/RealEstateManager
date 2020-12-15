@@ -1,9 +1,8 @@
 package com.picone.core.data.realEstateManager;
 
 import android.annotation.SuppressLint;
-import android.util.Log;
 
-import com.picone.core.data.RealEstateManagerDatabase;
+import com.picone.core.data.RealEstateManagerRoomDatabase;
 import com.picone.core.domain.entity.RealEstateAgent;
 
 import java.util.List;
@@ -16,17 +15,17 @@ import io.reactivex.Observable;
 public class RealEstateManagerDaoImpl implements RealEstateManagerDao {
 
     @Inject
-    protected RealEstateManagerDatabase roomDatabase;
-    private RealEstateManagerRoomDao realEstateManagerRoomDao;
+    protected RealEstateManagerRoomDatabase mRoomDatabase;
+    private RealEstateManagerRoomDao mRealEstateManagerRoomDao;
 
-    public RealEstateManagerDaoImpl(RealEstateManagerDatabase roomDatabase) {
-        this.roomDatabase = roomDatabase;
-        this.realEstateManagerRoomDao = roomDatabase.realEstateManagerRoomDao();
+    public RealEstateManagerDaoImpl(RealEstateManagerRoomDatabase mRoomDatabase) {
+        this.mRoomDatabase = mRoomDatabase;
+        this.mRealEstateManagerRoomDao = mRoomDatabase.realEstateManagerRoomDao();
     }
 
     @SuppressLint("CheckResult")
     public Observable<List<RealEstateAgent>> getAllAgents(){
-        return realEstateManagerRoomDao.getAllAgents();
+        return mRealEstateManagerRoomDao.getAllAgents();
     }
 
 }

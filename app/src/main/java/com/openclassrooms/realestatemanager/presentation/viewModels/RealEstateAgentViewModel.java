@@ -1,17 +1,16 @@
 package com.openclassrooms.realestatemanager.presentation.viewModels;
 
+import android.util.Log;
+
 import androidx.hilt.lifecycle.ViewModelInject;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 
 import com.picone.core.domain.entity.RealEstateAgent;
-import com.picone.core.domain.interactors.GetAllManagerInteractor;
+import com.picone.core.domain.interactors.agent.GetAllRoomAgentInteractor;
+import com.picone.core.utils.SchedulerProvider;
 
 import java.util.List;
-
-import io.reactivex.Scheduler;
-import io.reactivex.android.schedulers.AndroidSchedulers;
-import io.reactivex.schedulers.Schedulers;
 
 public class RealEstateAgentViewModel extends BaseViewModel {
     private MutableLiveData<List<RealEstateAgent>> allAgentsMutableLD = new MutableLiveData<>();
@@ -19,14 +18,17 @@ public class RealEstateAgentViewModel extends BaseViewModel {
     public LiveData<List<RealEstateAgent>> getAllAgents = allAgentsMutableLD;
 
     @ViewModelInject
-    public RealEstateAgentViewModel(GetAllManagerInteractor getAllManagerInteractor){
-        this.getAllManagerInteractor = getAllManagerInteractor;
+    public RealEstateAgentViewModel(GetAllRoomAgentInteractor getAllRoomAgentInteractor
+    , SchedulerProvider schedulerProvider){
+        this.getAllRoomAgentInteractor = getAllRoomAgentInteractor;
+        this.schedulerProvider =schedulerProvider;
     }
 
     public void setAgentValue (){
-        getAllManagerInteractor.getAllAgents()
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe();
+        compositeDisposable.add(
+        getAllRoomAgentInteractor.getAllAgents()
+                .subscribeOn(schedulerProvider.getIo())
+                .observeOn(schedulerProvider.getUi())
+                .subscribe(realEstateAgents -> Log.i("TAG", "setAgentValue: "+realEstateAgents)));
     }
 }

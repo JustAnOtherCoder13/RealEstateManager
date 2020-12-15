@@ -3,12 +3,13 @@ package com.picone.core.di;
 
 import android.content.Context;
 
-import androidx.room.PrimaryKey;
-
-import com.picone.core.data.RealEstateManagerDatabase;
+import com.picone.core.data.RealEstateManagerRoomDatabase;
+import com.picone.core.data.property.PropertyDaoImpl;
+import com.picone.core.data.property.PropertyRepository;
+import com.picone.core.data.realEstateManager.RealEstateAgentRepository;
 import com.picone.core.data.realEstateManager.RealEstateManagerDaoImpl;
-import com.picone.core.data.realEstateManager.RealEstateManagerRepository;
-import com.picone.core.domain.interactors.GetAllManagerInteractor;
+import com.picone.core.domain.interactors.agent.GetAllRoomAgentInteractor;
+import com.picone.core.domain.interactors.property.GetAllRoomPropertiesInteractor;
 
 import javax.inject.Singleton;
 
@@ -26,28 +27,45 @@ public final class coreModule {
 
     @Singleton
     @Provides
-    static RealEstateManagerDatabase provideRealEstateManagerDatabase(@ApplicationContext Context context){
-        return RealEstateManagerDatabase.getInstance(context);
+    static RealEstateManagerRoomDatabase provideRealEstateManagerRoomDatabase(@ApplicationContext Context context){
+        return RealEstateManagerRoomDatabase.getInstance(context);
     }
 
     //--------------------------------------DAO-----------------------------------------------------
 
     @Provides
     static RealEstateManagerDaoImpl provideRealEstateManagerDao(@ApplicationContext Context context){
-        return new RealEstateManagerDaoImpl(provideRealEstateManagerDatabase(context));
+        return new RealEstateManagerDaoImpl(provideRealEstateManagerRoomDatabase(context));
+    }
+
+    @Provides
+    static PropertyDaoImpl providePropertyDao(@ApplicationContext Context context){
+        return new PropertyDaoImpl(provideRealEstateManagerRoomDatabase(context));
     }
 
     //--------------------------------------REPOSITORY-----------------------------------------------------
 
     @Provides
-    static RealEstateManagerRepository provideRealEstateManagerDataSource(@ApplicationContext Context context){
-        return new RealEstateManagerRepository(provideRealEstateManagerDao(context));
+    static RealEstateAgentRepository provideRealEstateAgentDataSource(@ApplicationContext Context context){
+        return new RealEstateAgentRepository(provideRealEstateManagerDao(context));
     }
 
-    //--------------------------------------REAL ESTATE MANAGER INTERACTORS-----------------------------------------------------
+    @Provides
+    static PropertyRepository providePropertyDataSource(@ApplicationContext Context context){
+        return new PropertyRepository(providePropertyDao(context));
+    }
+
+    //--------------------------------------REAL ESTATE AGENT INTERACTORS-----------------------------------------------------
 
     @Provides
-    static GetAllManagerInteractor provideGetAllManagers(@ApplicationContext Context context){
-        return new GetAllManagerInteractor(provideRealEstateManagerDataSource(context));
+    static GetAllRoomAgentInteractor provideGetAllAgents(@ApplicationContext Context context){
+        return new GetAllRoomAgentInteractor(provideRealEstateAgentDataSource(context));
+    }
+
+    //--------------------------------------PROPERTY INTERACTORS-----------------------------------------------------
+
+    @Provides
+    static GetAllRoomPropertiesInteractor provideGetAllProperties(@ApplicationContext Context context){
+        return new GetAllRoomPropertiesInteractor(providePropertyDataSource(context));
     }
 }

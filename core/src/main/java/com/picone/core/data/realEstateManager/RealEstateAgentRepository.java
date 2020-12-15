@@ -8,12 +8,12 @@ import javax.inject.Inject;
 
 import io.reactivex.Observable;
 
-public class RealEstateManagerRepository {
+public class RealEstateAgentRepository {
 
     @Inject
     RealEstateManagerDaoImpl realEstateManagerDao;
 
-    public RealEstateManagerRepository(RealEstateManagerDaoImpl realEstateManagerDao) {
+    public RealEstateAgentRepository(RealEstateManagerDaoImpl realEstateManagerDao) {
         this.realEstateManagerDao = realEstateManagerDao;
     }
 
