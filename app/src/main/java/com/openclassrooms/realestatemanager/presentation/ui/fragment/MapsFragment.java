@@ -28,6 +28,7 @@ public class MapsFragment extends BaseFragment implements OnMapReadyCallback {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         mBinding = FragmentMapsBinding.inflate(inflater,container,false);
         mBinding.mapView.getMapAsync(this);
+        setAppBarVisibility(true);
         return mBinding.getRoot();
     }
 
@@ -39,7 +40,7 @@ public class MapsFragment extends BaseFragment implements OnMapReadyCallback {
     }
 
     @Override
-    public void onMapReady(GoogleMap googleMap) {
+    public void onMapReady(@NonNull GoogleMap googleMap) {
         Log.i("TAG", "onMapReady: ");
 
         LatLng sydney = new LatLng(-33.852, 151.211);

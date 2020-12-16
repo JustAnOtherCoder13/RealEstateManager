@@ -14,19 +14,11 @@ import com.openclassrooms.realestatemanager.databinding.CustomViewDetailMediaBin
 
 public class DetailMediaCustomView extends ConstraintLayout {
 
-    public DetailMediaCustomView(@NonNull Context context) {
-        super(context);
-    }
-
-    public DetailMediaCustomView(@NonNull Context context, @Nullable AttributeSet attrs) {
+    public DetailMediaCustomView(Context context, @Nullable AttributeSet attrs) {
         super(context, attrs);
+        initView();
     }
-
-    public DetailMediaCustomView(@NonNull Context context, @Nullable AttributeSet attrs, int defStyleAttr) {
-        super(context, attrs, defStyleAttr);
-    }
-
-    public DetailMediaCustomView(@NonNull Context context, @Nullable AttributeSet attrs, int defStyleAttr, int defStyleRes) {
-        super(context, attrs, defStyleAttr, defStyleRes);
+    private void initView() {
+        inflate(getContext(), R.layout.custom_view_detail_media, this);
     }
 }

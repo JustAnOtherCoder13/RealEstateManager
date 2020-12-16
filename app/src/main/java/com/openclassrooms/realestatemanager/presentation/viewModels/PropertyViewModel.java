@@ -24,11 +24,13 @@ public class PropertyViewModel extends BaseViewModel {
     private MutableLiveData<List<Property>> allRoomPropertiesMutableLD = new MutableLiveData<>();
     private MutableLiveData<List<PointOfInterest>> allRoomPointOfInterestForPropertyMutableLD = new MutableLiveData<>();
     private MutableLiveData<List<PropertyPhoto>> allRoomPhotosForPropertyMutableLD = new MutableLiveData<>();
+    private MutableLiveData<Property> selectedPropertyMutableLD = new MutableLiveData<>();
+
 
     public LiveData<List<Property>> getAllRoomProperties = allRoomPropertiesMutableLD;
     public LiveData<List<PointOfInterest>> getAllRoomPointOfInterestForProperty = allRoomPointOfInterestForPropertyMutableLD;
     public LiveData<List<PropertyPhoto>> getAllRoomPropertyPhotosForProperty = allRoomPhotosForPropertyMutableLD;
-
+    public LiveData<Property> getSelectedProperty = selectedPropertyMutableLD;
 
     @ViewModelInject
     public PropertyViewModel(GetAllRoomPropertiesInteractor getAllRoomPropertiesInteractor
@@ -119,5 +121,9 @@ public class PropertyViewModel extends BaseViewModel {
                 .observeOn(schedulerProvider.getUi())
                 .andThen(getAllRoomPropertiesInteractor.getAllProperties())
                 .subscribe(properties -> allRoomPropertiesMutableLD.postValue(properties),throwable -> checkException()));
+    }
+
+    public void setSelectedProperty(Property property){
+        selectedPropertyMutableLD.setValue(property);
     }
 }

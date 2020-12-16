@@ -12,19 +12,14 @@ import androidx.constraintlayout.widget.ConstraintLayout;
 import com.openclassrooms.realestatemanager.R;
 
 public class DetailInformationCustomView extends ConstraintLayout {
-    public DetailInformationCustomView(@NonNull Context context) {
-        super(context);
-    }
+
 
     public DetailInformationCustomView(@NonNull Context context, @Nullable AttributeSet attrs) {
         super(context, attrs);
+        initView();
     }
 
-    public DetailInformationCustomView(@NonNull Context context, @Nullable AttributeSet attrs, int defStyleAttr) {
-        super(context, attrs, defStyleAttr);
-    }
-
-    public DetailInformationCustomView(@NonNull Context context, @Nullable AttributeSet attrs, int defStyleAttr, int defStyleRes) {
-        super(context, attrs, defStyleAttr, defStyleRes);
+    private void initView() {
+        inflate(getContext(), R.layout.custom_view_detail_information, this);
     }
 }

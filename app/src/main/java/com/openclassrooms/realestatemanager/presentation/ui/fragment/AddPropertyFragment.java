@@ -22,6 +22,7 @@ public class AddPropertyFragment extends BaseFragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         mBinding = FragmentAddPropertyBinding.inflate(getLayoutInflater());
+        setAppBarVisibility(false);
         return mBinding.getRoot();
     }
 }

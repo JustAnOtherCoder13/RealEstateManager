@@ -2,6 +2,7 @@ package com.openclassrooms.realestatemanager.presentation.viewModels;
 
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
+import androidx.navigation.NavController;
 
 import com.openclassrooms.realestatemanager.presentation.utils.ErrorHandler;
 import com.picone.core.domain.interactors.agent.GetAllRoomAgentInteractor;
@@ -23,6 +24,7 @@ public abstract class BaseViewModel extends ViewModel {
 
     @Inject
     protected SchedulerProvider schedulerProvider;
+
 
     protected CompositeDisposable compositeDisposable = new CompositeDisposable();
     protected MutableLiveData<ErrorHandler> errorState = new MutableLiveData<>(ErrorHandler.NO_ERROR);

@@ -31,6 +31,8 @@ public class PropertyListFragment extends BaseFragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         mBinding = FragmentPropertyListBinding.inflate(inflater, container, false);
+        mNavController = Navigation.findNavController(requireActivity(), R.id.nav_host_fragment);
+        setAppBarVisibility(true);
         return mBinding.getRoot();
     }
 
@@ -39,6 +41,10 @@ public class PropertyListFragment extends BaseFragment {
         super.onViewCreated(view, savedInstanceState);
         initRecyclerView();
         configureOnClickRecyclerView();
+        mPropertyViewModel.getSelectedProperty.observe(getViewLifecycleOwner(),property -> {
+            if (property!=null) mNavController.navigate(R.id.propertyDetailFragment);
+
+        });
     }
 
     private void initRecyclerView() {
@@ -55,8 +61,7 @@ public class PropertyListFragment extends BaseFragment {
                     List<Property> allProperties = mPropertyViewModel.getAllRoomProperties.getValue();
                     assert allProperties != null;
                     Property property = allProperties.get(position);
-                    NavController navController = Navigation.findNavController(requireActivity(), R.id.nav_host_fragment);
-                    navController.navigate(R.id.propertyDetailFragment);
+                    mPropertyViewModel.setSelectedProperty(property);
                 });
     }
 }
