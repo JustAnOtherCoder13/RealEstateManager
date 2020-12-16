@@ -1,11 +1,76 @@
 <resources>
 
-    <!-- Base application theme. -->
-    <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
-        <!-- Customize your theme here. -->
-        <item name="colorPrimary">@color/colorPrimary</item>
-        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
-        <item name="colorAccent">@color/colorAccent</item>
+    <style name="AppTheme" parent="Theme.MaterialComponents.Light.NoActionBar">
+        <!--COLORS-->
+        <item name="colorPrimary">@color/sanMarino</item>
+        <item name="colorPrimaryDark">@color/resolutionBlue</item>
+        <item name="colorOnPrimary">@color/white</item>
+        <item name="colorAccent">@color/wildStrawberry</item>
+        <!--TEXT-->
+        <item name="textAppearanceHeadline1">@style/TextAppearance.RealEstateManagerStyles.Headline1</item>
+        <item name="textAppearanceHeadline3">@style/TextAppearance.RealEstateManagerStyles.Headline3</item>
+        <item name="textAppearanceHeadline4">@style/TextAppearance.RealEstateManagerStyles.Headline4</item>
+        <item name="textAppearanceHeadline5">@style/TextAppearance.RealEstateManagerStyles.Headline5</item>
+        <item name="textAppearanceSubtitle1">@style/TextAppearance.RealEstateManagerStyles.Subtitle1</item>
+        <item name="textAppearanceBody1">@style/TextAppearance.RealEstateManagerStyles.Body1</item>
+    </style>
+
+
+    <!--__________________________________COMMON STYLES__________________________________-->
+
+    <style name="Widget.TextViewTitleStyle" parent="Widget.MaterialComponents.TextView">
+        <item name="android:paddingBottom">@dimen/basic_marge</item>
+        <item name="android:textAppearance">@style/TextAppearance.RealEstateManagerStyles.Headline4</item>
+    </style>
+
+    <!--__________________________________CUSTOM VIEW__________________________________-->
+
+    <style name="customViewInformationIconStyle" >
+        <item name="android:paddingEnd">@dimen/basic_marge</item>
+        <item name="android:paddingStart">0dp</item>
+        <item name="srcCompat">@drawable/ic_fragment_detail_area_24</item>
+    </style>
+
+    <!--TITLE-->
+    <style name="Widget.customViewDescriptionTitleStyle" parent="Widget.TextViewTitleStyle">
+        <item name="android:text">@string/description</item>
+    </style>
+
+    <style name="Widget.customViewAddPropertyInformationTypeTitleStyle" parent="Widget.TextViewTitleStyle">
+        <item name="android:text">@string/property_type</item>
+    </style>
+
+    <style name="Widget.customViewAddPropertySoldTitleStyle" parent="Widget.TextViewTitleStyle">
+        <item name="android:text">@string/sold</item>
+    </style>
+
+    <style name="Widget.customViewAddPropertySoldCheckBoxStyle" parent="Widget.AppCompat.CompoundButton.CheckBox">
+        <item name="android:layout_marginStart">@dimen/big_marge</item>
+        <item name="android:layout_marginEnd">@dimen/big_marge</item>
+    </style>
+
+    <style name="Widget.customViewAddPropertySoldEditTextStyle" parent="Widget.AppCompat.EditText">
+        <item name="android:layout_marginEnd">@dimen/big_marge</item>
+        <item name="android:inputType">date</item>
+    </style>
+
+    <style name="Widget.customViewDescriptionTextStyle" parent="Widget.MaterialComponents.TextView">
+        <item name="android:maxLines">8</item>
+        <item name="android:text">@string/description_text</item>
+        <item name="android:textAppearance">@style/TextAppearance.RealEstateManagerStyles.Body1</item>
+    </style>
+    <!--__________________________________RECYCLER VIEW__________________________________-->
+
+    <style name="Widget.listRecyclerviewPhotoDescriptionTextViewStyle" parent="Widget.MaterialComponents.TextView">
+        <item name="android:text">@string/description</item>
+        <item name="android:textAppearance">@style/TextAppearance.RealEstateManagerStyles.Body1</item>
+        <item name="android:paddingBottom">15dp</item>
+        <item name="android:paddingTop">15dp</item>
+        <item name="android:paddingEnd">0dp</item>
+        <item name="android:paddingStart">15dp</item>
+        <item name="android:textColor">@color/white</item>
+        <item name="android:background">@color/black</item>
+        <item name="android:alpha">0.5</item>
     </style>
 
 </resources>
