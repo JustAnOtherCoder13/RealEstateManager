@@ -1,6 +1,10 @@
 <resources>
     <string name="app_name">Real Estate Manager</string>
 
+
+    <string name="on_error">An error have occurred, please check your parameters and try again</string>
+
+
     <!-- ______________________CONTENT DESCRIPTION__________________ -->
     <string name="property_item_photo">property item photo</string>
     <string name="property_detail_item_photo">property detail item photo</string>
@@ -23,5 +27,7 @@
     <string name="value">Value</string>
     <string name="information">Information</string>
     <string name="dd_mm_yyyy">dd/MM/yyyy</string>
+
+
 
 </resources>
