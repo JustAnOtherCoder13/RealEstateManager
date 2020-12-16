@@ -10,7 +10,7 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 
-public class RealEstateAgentViewModelUnitTest extends BaseTest {
+public class RealEstateAgentViewModelUnitTest extends BaseUnitTest {
 
     @Test
     public void testNotNull() {

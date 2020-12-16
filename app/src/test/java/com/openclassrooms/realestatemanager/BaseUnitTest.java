@@ -40,7 +40,7 @@ import io.reactivex.schedulers.Schedulers;
 
 import static org.mockito.Mockito.when;
 
-public abstract class BaseTest {
+public abstract class BaseUnitTest {
 
     @Rule
     public InstantTaskExecutorRule instantTaskExecutorRule = new InstantTaskExecutorRule();

@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/nav_graph"
     app:startDestination="@id/mapsFragment">
+
     <fragment
         android:id="@+id/mapsFragment"
         android:name="com.openclassrooms.realestatemanager.presentation.ui.fragment.MapsFragment"
@@ -14,15 +15,17 @@
         android:name="com.openclassrooms.realestatemanager.presentation.ui.fragment.PropertyDetailFragment"
         android:label="@string/app_name"
         tools:layout="@layout/fragment_property_detail" />
-    <fragment
-        android:id="@+id/propertyListFragment"
-        android:name="com.openclassrooms.realestatemanager.presentation.ui.fragment.PropertyListFragment"
-        android:label="@string/app_name"
-        tools:layout="@layout/fragment_property_list" />
+
     <fragment
         android:id="@+id/addPropertyFragment"
         android:name="com.openclassrooms.realestatemanager.presentation.ui.fragment.AddPropertyFragment"
         android:label="@string/app_name"
         tools:layout="@layout/fragment_add_property" />
+    <fragment
+        android:id="@+id/propertyListFragment"
+        android:name="com.openclassrooms.realestatemanager.presentation.ui.fragment.PropertyListFragment"
+        android:label="fragment_property_list"
+        tools:layout="@layout/fragment_property_list" />
+
 
 </navigation>
