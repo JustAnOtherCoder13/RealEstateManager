@@ -1,15 +1,11 @@
 package com.openclassrooms.realestatemanager.presentation.ui.main;
 
-import android.content.Context;
 import android.os.Bundle;
-import android.util.AttributeSet;
 import android.view.View;
-import android.widget.TextView;
+import android.widget.ImageButton;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
@@ -17,8 +13,6 @@ import androidx.navigation.ui.NavigationUI;
 
 import com.openclassrooms.realestatemanager.R;
 import com.openclassrooms.realestatemanager.databinding.ActivityMainBinding;
-import com.openclassrooms.realestatemanager.presentation.ui.fragment.PropertyDetailFragment;
-import com.openclassrooms.realestatemanager.presentation.utils.Utils;
 import com.openclassrooms.realestatemanager.presentation.viewModels.PropertyViewModel;
 
 import dagger.hilt.android.AndroidEntryPoint;
@@ -30,6 +24,7 @@ public class MainActivity extends AppCompatActivity {
 
     private ActivityMainBinding mBinding;
     private PropertyViewModel mPropertyViewModel;
+    private NavController mNavController;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,8 +32,9 @@ public class MainActivity extends AppCompatActivity {
         mBinding = ActivityMainBinding.inflate(getLayoutInflater());
         setContentView(mBinding.getRoot());
         mPropertyViewModel = new  ViewModelProvider(this).get(PropertyViewModel.class);
-        NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment);
-        NavigationUI.setupWithNavController(mBinding.bottomNavBar,navController);
+        mNavController = Navigation.findNavController(this, R.id.nav_host_fragment);
+        NavigationUI.setupWithNavController(mBinding.bottomNavBar,mNavController);
+        initTopAppBar();
     }
 
     @Override
@@ -50,8 +46,21 @@ public class MainActivity extends AppCompatActivity {
     protected void setMenuVisibility(@NonNull Boolean isVisible) {
         if (isVisible) {
             mBinding.bottomNavBar.setVisibility(View.VISIBLE);
+            mBinding.topAppBar.setVisibility(View.VISIBLE);
         } else {
             mBinding.bottomNavBar.setVisibility(View.GONE);
+            mBinding.topAppBar.setVisibility(View.GONE);
         }
+    }
+
+    private void initTopAppBar(){
+        ImageButton addPropertyBtn = mBinding.topAppBar.findViewById(R.id.top_bar_add_property);
+        addPropertyBtn.setOnClickListener(v -> {
+            mNavController.navigate(R.id.addPropertyFragment);
+        });
+        ImageButton updatePropertyBtn = mBinding.topAppBar.findViewById(R.id.top_bar_update_property);
+        updatePropertyBtn.setOnClickListener(v -> {
+            mNavController.navigate(R.id.addPropertyFragment);
+        });
     }
 }

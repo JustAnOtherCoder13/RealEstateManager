@@ -2,10 +2,10 @@
 
     <style name="AppTheme" parent="Theme.MaterialComponents.Light.NoActionBar">
         <!--COLORS-->
-        <item name="colorPrimary">@color/sanMarino</item>
-        <item name="colorPrimaryDark">@color/resolutionBlue</item>
+        <item name="colorPrimary">@color/custom_blue</item>
+        <item name="colorPrimaryDark">@color/custom_blue_dark</item>
         <item name="colorOnPrimary">@color/white</item>
-        <item name="colorAccent">@color/wildStrawberry</item>
+        <item name="colorAccent">@color/custom_pink</item>
         <!--TEXT-->
         <item name="textAppearanceHeadline1">@style/TextAppearance.RealEstateManagerStyles.Headline1</item>
         <item name="textAppearanceHeadline3">@style/TextAppearance.RealEstateManagerStyles.Headline3</item>

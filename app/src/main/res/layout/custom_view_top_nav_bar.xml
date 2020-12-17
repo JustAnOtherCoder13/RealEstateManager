@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="?attr/actionBarSize"
+    android:background="@color/custom_blue">
+
+    <ImageButton
+        android:id="@+id/top_bar_menu_icon"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:tint="@color/white"
+        android:background="@color/custom_blue"
+        android:contentDescription="Menu icon"
+        android:paddingStart="@dimen/basic_marge"
+        android:paddingEnd="@dimen/basic_marge"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/ic_top_bar_menu_24" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/app_name"
+        android:textColor="@color/white"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toEndOf="@id/top_bar_menu_icon"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <androidx.appcompat.widget.SearchView
+        android:id="@+id/top_bar_search_view"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        app:searchIcon="@drawable/ic_top_bar_search_24"
+       app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <ImageButton
+        android:id="@+id/top_bar_update_property"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:background="@color/custom_blue"
+        android:tint="@color/white"
+        android:contentDescription="update property icon"
+        android:paddingStart="@dimen/basic_marge"
+        android:paddingEnd="@dimen/basic_marge"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@id/top_bar_search_view"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/ic_top_bar_update_24" />
+
+
+    <ImageButton
+        android:id="@+id/top_bar_add_property"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:tint="@color/white"
+        android:background="@color/custom_blue"
+        android:contentDescription="add property icon"
+        android:paddingStart="@dimen/basic_marge"
+        android:paddingEnd="@dimen/basic_marge"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@id/top_bar_update_property"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/ic_top_bar_add_24" />
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

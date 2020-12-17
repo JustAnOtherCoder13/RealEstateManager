@@ -50,7 +50,7 @@
     <FrameLayout
         android:layout_width="0dp"
         android:layout_height="1dp"
-        android:background="@color/sanMarino"
+        android:background="@color/custom_blue"
         android:layout_marginTop="@dimen/basic_marge"
         app:layout_constraintStart_toEndOf="@id/property_item_photo"
         app:layout_constraintEnd_toEndOf="parent"
