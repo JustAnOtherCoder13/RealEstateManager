@@ -9,7 +9,24 @@
         android:id="@+id/mapsFragment"
         android:name="com.openclassrooms.realestatemanager.presentation.ui.fragment.MapsFragment"
         android:label="@string/app_name"
-        tools:layout="@layout/fragment_maps" />
+        tools:layout="@layout/fragment_maps" >
+        <action
+            android:id="@+id/action_mapsFragment_to_addPropertyFragment"
+            app:destination="@id/addPropertyFragment"
+            app:enterAnim="@anim/fragment_open_enter"
+            app:exitAnim="@anim/fragment_close_exit"
+            app:popEnterAnim="@anim/fragment_open_enter"
+            app:popExitAnim="@anim/fragment_close_exit"
+            />
+        <action
+            android:id="@+id/action_mapsFragment_to_propertyDetailFragment"
+            app:destination="@id/propertyDetailFragment"
+            app:enterAnim="@anim/fragment_open_enter"
+            app:exitAnim="@anim/fragment_close_exit"
+            app:popEnterAnim="@anim/fragment_open_enter"
+            app:popExitAnim="@anim/fragment_close_exit"
+            />
+    </fragment>
     <fragment
         android:id="@+id/propertyDetailFragment"
         android:name="com.openclassrooms.realestatemanager.presentation.ui.fragment.PropertyDetailFragment"
@@ -25,7 +42,23 @@
         android:id="@+id/propertyListFragment"
         android:name="com.openclassrooms.realestatemanager.presentation.ui.fragment.PropertyListFragment"
         android:label="fragment_property_list"
-        tools:layout="@layout/fragment_property_list" />
+        tools:layout="@layout/fragment_property_list" >
+        <action
+            android:id="@+id/action_propertyListFragment_to_propertyDetailFragment"
+            app:destination="@id/propertyDetailFragment"
+            app:enterAnim="@anim/fragment_open_enter"
+            app:exitAnim="@anim/fragment_close_exit"
+            app:popEnterAnim="@anim/fragment_open_enter"
+            app:popExitAnim="@anim/fragment_close_exit" />
+        <action
+            android:id="@+id/action_propertyListFragment_to_addPropertyFragment"
+            app:destination="@id/addPropertyFragment"
+            app:enterAnim="@anim/fragment_open_enter"
+            app:exitAnim="@anim/fragment_close_exit"
+            app:popEnterAnim="@anim/fragment_open_enter"
+            app:popExitAnim="@anim/fragment_close_exit"
+            />
+    </fragment>
 
 
 </navigation>

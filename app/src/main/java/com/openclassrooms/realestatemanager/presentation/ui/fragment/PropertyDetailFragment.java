@@ -12,6 +12,7 @@ import androidx.annotation.Nullable;
 import com.openclassrooms.realestatemanager.R;
 import com.openclassrooms.realestatemanager.databinding.FragmentPropertyDetailBinding;
 import com.openclassrooms.realestatemanager.presentation.ui.main.BaseFragment;
+import com.picone.core.domain.entity.Property;
 
 import java.util.Objects;
 
@@ -31,7 +32,15 @@ public class PropertyDetailFragment extends BaseFragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        TextView addressTextView = mBinding.fragmentDetailInformationLayout.fragmentDetailLocationCustomView.findViewById(R.id.detail_information_custom_view_value);
-        addressTextView.setText(Objects.requireNonNull(mPropertyViewModel.getSelectedProperty.getValue()).getAddress());
+        int valueId = R.id.detail_information_custom_view_value;
+        Property property = Objects.requireNonNull(mPropertyViewModel.getSelectedProperty.getValue());
+
+        TextView addressTextView = mBinding.fragmentDetailInformationLayout.fragmentDetailLocationCustomView.findViewById(valueId);
+        TextView surfaceTextView = mBinding.fragmentDetailInformationLayout.fragmentDetailAreaCustomView.findViewById(valueId);
+        TextView numberOfRoomsTextView = mBinding.fragmentDetailInformationLayout.fragmentDetailNumbersOfRoomsCustomView.findViewById(valueId);
+
+        addressTextView.setText(property.getAddress());
+        surfaceTextView.setText(String.valueOf(property.getPropertyArea()).concat(" ").concat("sq m"));
+        numberOfRoomsTextView.setText(String.valueOf(property.getNumberOfRooms()));
     }
 }

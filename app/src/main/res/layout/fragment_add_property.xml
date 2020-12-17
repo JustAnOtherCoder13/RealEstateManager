@@ -37,12 +37,19 @@
 
     <include
         android:id="@+id/add_property_media_layout"
-        layout="@layout/fragment_add_property_media_layout"
+        layout="@layout/fragment_property_detail_media_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/add_property_description_layout" />
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="@dimen/basic_marge"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@id/add_property_media_layout" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

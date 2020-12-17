@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
 
@@ -10,92 +11,94 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toTopOf="@id/add_property_information_type_title"/>
 
-    <include
-        android:id="@+id/add_property_information_type"
-        layout="@layout/fragment_add_property_information_type_layout"
-        android:layout_width="match_parent"
+    <TextView
+        android:id="@+id/add_property_information_type_title"
+        style="@style/Widget.FragmentAddPropertyInformationTypeTitleStyle"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/basic_marge"
-        app:layout_constraintBottom_toTopOf="@id/add_property_information_layout"
+        app:layout_constraintBottom_toTopOf="@id/add_property_information_type"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/add_property_information_title" />
 
-    <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/add_property_information_layout"
-        android:layout_width="match_parent"
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/add_property_information_type"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/basic_marge"
-        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginBottom="@dimen/basic_marge"
+        app:layout_constraintBottom_toTopOf="@id/add_property_information_price"
+        app:layout_constraintEnd_toEndOf="@id/add_property_information_type_title"
+        app:layout_constraintStart_toStartOf="@id/add_property_information_type_title"
+        app:layout_constraintTop_toBottomOf="@id/add_property_information_title">
+
+        <AutoCompleteTextView
+            android:id="@+id/add_property_information_type_custom_view_autocomplete_text_view"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:enabled="false"
+            tools:ignore="LabelFor" />
+
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <com.openclassrooms.realestatemanager.presentation.utils.customView.AddPropertyInformationCustomView
+        android:id="@+id/add_property_information_price"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toTopOf="@id/add_property_information_area"
+        app:layout_constraintEnd_toStartOf="@id/add_property_information_number_of_bathrooms"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/add_property_information_type">
+        app:layout_constraintTop_toBottomOf="@id/add_property_information_type"
+        app:setIcon="@drawable/ic_fragment_add_property_price_24"
+        app:setTitle="@string/price" />
 
-        <com.openclassrooms.realestatemanager.presentation.utils.customView.AddPropertyInformationCustomView
-            android:id="@+id/add_property_information_price"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            app:layout_constraintBottom_toTopOf="@id/add_property_information_area"
-            app:layout_constraintEnd_toStartOf="@id/add_property_information_number_of_bathrooms"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:setIcon="@drawable/ic_fragment_add_property_price_24"
-            app:setTitle="@string/price"
-            />
+    <com.openclassrooms.realestatemanager.presentation.utils.customView.AddPropertyInformationCustomView
+        android:id="@+id/add_property_information_area"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintStart_toStartOf="@id/add_property_information_price"
+        app:layout_constraintTop_toBottomOf="@id/add_property_information_price"
+        app:setIcon="@drawable/ic_fragment_detail_area_24"
+        app:setTitle="@string/surface" />
 
-        <com.openclassrooms.realestatemanager.presentation.utils.customView.AddPropertyInformationCustomView
-            android:id="@+id/add_property_information_area"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            app:layout_constraintStart_toStartOf="@id/add_property_information_price"
-            app:layout_constraintTop_toBottomOf="@id/add_property_information_price"
-            app:setIcon="@drawable/ic_fragment_detail_area_24"
-            app:setTitle="@string/surface"
-            />
+    <com.openclassrooms.realestatemanager.presentation.utils.customView.AddPropertyInformationCustomView
+        android:id="@+id/add_property_information_address"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintStart_toStartOf="@id/add_property_information_price"
+        app:layout_constraintTop_toBottomOf="@id/add_property_information_area"
+        app:setIcon="@drawable/ic_fragment_detail_location_on_24"
+        app:setTitle="@string/location" />
 
-        <com.openclassrooms.realestatemanager.presentation.utils.customView.AddPropertyInformationCustomView
-            android:id="@+id/add_property_information_address"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            app:layout_constraintStart_toStartOf="@id/add_property_information_price"
-            app:layout_constraintTop_toBottomOf="@id/add_property_information_area"
-            app:setIcon="@drawable/ic_fragment_detail_location_on_24"
-            app:setTitle="@string/location"
-            />
+    <com.openclassrooms.realestatemanager.presentation.utils.customView.AddPropertyInformationCustomView
+        android:id="@+id/add_property_information_number_of_rooms"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintStart_toStartOf="@id/add_property_information_number_of_bathrooms"
+        app:layout_constraintTop_toTopOf="@id/add_property_information_price"
+        app:setIcon="@drawable/ic_fragment_detail_home_24"
+        app:setTitle="@string/number_of_rooms" />
 
-        <com.openclassrooms.realestatemanager.presentation.utils.customView.AddPropertyInformationCustomView
-            android:id="@+id/add_property_information_number_of_rooms"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            app:layout_constraintStart_toStartOf="@id/add_property_information_number_of_bathrooms"
-            app:layout_constraintTop_toTopOf="parent"
-            app:setIcon="@drawable/ic_fragment_detail_home_24"
-            app:setTitle="@string/number_of_rooms"
-            />
+    <com.openclassrooms.realestatemanager.presentation.utils.customView.AddPropertyInformationCustomView
+        android:id="@+id/add_property_information_number_of_bathrooms"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@id/add_property_information_price"
+        app:layout_constraintTop_toBottomOf="@id/add_property_information_number_of_rooms"
+        app:setIcon="@drawable/ic_fragment_detail_bathroom_24"
+        app:setTitle="@string/number_of_bathrooms" />
 
-        <com.openclassrooms.realestatemanager.presentation.utils.customView.AddPropertyInformationCustomView
-            android:id="@+id/add_property_information_number_of_bathrooms"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@id/add_property_information_price"
-            app:layout_constraintTop_toBottomOf="@id/add_property_information_number_of_rooms"
-            app:setIcon="@drawable/ic_fragment_detail_bathroom_24"
-            app:setTitle="@string/number_of_bathrooms"
-            />
-
-        <com.openclassrooms.realestatemanager.presentation.utils.customView.AddPropertyInformationCustomView
-            android:id="@+id/add_property_information_number_of_bedrooms"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            app:layout_constraintStart_toStartOf="@id/add_property_information_number_of_bathrooms"
-            app:layout_constraintTop_toBottomOf="@id/add_property_information_number_of_bathrooms"
-            app:setIcon="@drawable/ic_fragment_detail_bedroom_24"
-            app:setTitle="@string/number_of_bedrooms"
-            />
-
-    </androidx.constraintlayout.widget.ConstraintLayout>
+    <com.openclassrooms.realestatemanager.presentation.utils.customView.AddPropertyInformationCustomView
+        android:id="@+id/add_property_information_number_of_bedrooms"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintStart_toStartOf="@id/add_property_information_number_of_bathrooms"
+        app:layout_constraintTop_toBottomOf="@id/add_property_information_number_of_bathrooms"
+        app:setIcon="@drawable/ic_fragment_detail_bedroom_24"
+        app:setTitle="@string/number_of_bedrooms" />
 
     <FrameLayout
         style="@style/basicSeparatorStyle"
@@ -104,6 +107,6 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/add_property_information_layout" />
+        app:layout_constraintTop_toBottomOf="@id/add_property_information_number_of_bedrooms" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

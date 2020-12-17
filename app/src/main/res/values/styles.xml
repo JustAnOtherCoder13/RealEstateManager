@@ -83,6 +83,7 @@
     <!-- Add property fragment -->
     <style name="Widget.FragmentAddPropertyInformationTitleStyle" parent="Widget.TextViewTitleStyle">
         <item name="android:text">@string/information</item>
+        <item name="android:layout_marginBottom">@dimen/basic_marge</item>
     </style>
 
     <style name="Widget.FragmentAddPropertyInformationTypeTitleStyle" parent="Widget.TextViewSubTitleStyle">

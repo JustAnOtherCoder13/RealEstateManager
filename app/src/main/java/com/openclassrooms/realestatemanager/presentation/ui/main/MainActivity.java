@@ -15,6 +15,8 @@ import com.openclassrooms.realestatemanager.R;
 import com.openclassrooms.realestatemanager.databinding.ActivityMainBinding;
 import com.openclassrooms.realestatemanager.presentation.viewModels.PropertyViewModel;
 
+import java.util.Objects;
+
 import dagger.hilt.android.AndroidEntryPoint;
 import dagger.hilt.android.scopes.ActivityScoped;
 
@@ -55,6 +57,19 @@ public class MainActivity extends AppCompatActivity {
 
     private void initTopAppBar(){
         ImageButton addPropertyBtn = mBinding.topAppBar.findViewById(R.id.top_bar_add_property);
-        addPropertyBtn.setOnClickListener(v -> mNavController.navigate(R.id.addPropertyFragment));
+        addPropertyBtn.setOnClickListener(v ->{
+            switch (Objects.requireNonNull(mNavController.getCurrentDestination()).getId()){
+                case R.id.propertyListFragment :
+                    mNavController.navigate(R.id.action_propertyListFragment_to_addPropertyFragment);
+                    break;
+
+                case R.id.mapsFragment :
+                    mNavController.navigate(R.id.action_mapsFragment_to_addPropertyFragment);
+                    break;
+
+                default:
+                    mNavController.navigate(R.id.addPropertyFragment);
+            }
+        });
     }
 }
