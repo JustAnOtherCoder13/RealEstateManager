@@ -55,12 +55,6 @@ public class MainActivity extends AppCompatActivity {
 
     private void initTopAppBar(){
         ImageButton addPropertyBtn = mBinding.topAppBar.findViewById(R.id.top_bar_add_property);
-        addPropertyBtn.setOnClickListener(v -> {
-            mNavController.navigate(R.id.addPropertyFragment);
-        });
-        ImageButton updatePropertyBtn = mBinding.topAppBar.findViewById(R.id.top_bar_update_property);
-        updatePropertyBtn.setOnClickListener(v -> {
-            mNavController.navigate(R.id.addPropertyFragment);
-        });
+        addPropertyBtn.setOnClickListener(v -> mNavController.navigate(R.id.addPropertyFragment));
     }
 }

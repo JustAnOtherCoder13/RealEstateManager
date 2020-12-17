@@ -38,12 +38,12 @@
     <style name="TextAppearance.RealEstateManagerStyles.Subtitle1" parent="TextAppearance.MaterialComponents.Subtitle1">
         <item name="fontFamily">@font/roboto_regular</item>
         <item name="android:fontFamily">@font/roboto_regular</item>
-        <item name="android:textSize">14sp</item>
+        <item name="android:textSize">16sp</item>
     </style>
     <style name="TextAppearance.RealEstateManagerStyles.Subtitle2" parent="TextAppearance.MaterialComponents.Subtitle2">
         <item name="fontFamily">@font/roboto_regular</item>
         <item name="android:fontFamily">@font/roboto_regular</item>
-        <item name="android:textSize">12sp</item>
+        <item name="android:textSize">14sp</item>
     </style>
 
     <!-- ______________________________BODY_____________________________ -->

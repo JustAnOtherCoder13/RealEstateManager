@@ -6,10 +6,9 @@
 
     <TextView
         android:id="@+id/detail_custom_view_title"
+        style="@style/Widget.FragmentPropertyDetailMediaTitleStyle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/media"
-        android:textAppearance="@style/TextAppearance.RealEstateManagerStyles.Headline4"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 

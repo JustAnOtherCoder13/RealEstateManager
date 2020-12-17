@@ -5,11 +5,11 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:android="http://schemas.android.com/apk/res/android">
 
-        <com.openclassrooms.realestatemanager.presentation.utils.customView.DetailMediaCustomView
+        <include
+            layout="@layout/fragment_property_detail_media_layout"
             android:id="@+id/add_property_information_media"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginStart="@dimen/basic_marge"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />

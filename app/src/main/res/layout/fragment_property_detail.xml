@@ -3,18 +3,19 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:layout_marginStart="@dimen/basic_marge"
     tools:context="com.openclassrooms.realestatemanager.presentation.ui.fragment.PropertyDetailFragment">
 
-    <com.openclassrooms.realestatemanager.presentation.utils.customView.DetailMediaCustomView
+    <include
         android:id="@+id/fragment_detail_media_custom_view"
+        layout="@layout/fragment_property_detail_media_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <com.openclassrooms.realestatemanager.presentation.utils.customView.DetailDescriptionCustomView
+    <include
         android:id="@+id/fragment_detail_description_custom_view"
+        layout="@layout/fragment_property_detail_description_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:layout_constraintBottom_toTopOf="@id/fragment_detail_information_layout"
@@ -23,15 +24,14 @@
         app:layout_constraintTop_toBottomOf="@id/fragment_detail_media_custom_view" />
 
     <include
-        layout="@layout/fragment_property_detail_information"
         android:id="@+id/fragment_detail_information_layout"
+        layout="@layout/fragment_property_detail_information"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/big_marge"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/fragment_detail_description_custom_view"/>
+        app:layout_constraintTop_toBottomOf="@id/fragment_detail_description_custom_view" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

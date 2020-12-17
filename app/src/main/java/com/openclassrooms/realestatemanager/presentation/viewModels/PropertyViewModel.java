@@ -8,13 +8,13 @@ import com.picone.core.domain.entity.PointOfInterest;
 import com.picone.core.domain.entity.Property;
 import com.picone.core.domain.entity.PropertyPhoto;
 import com.picone.core.domain.interactors.property.AddRoomPropertyInteractor;
-import com.picone.core.domain.interactors.property.photo.AddRoomPropertyPhotoInteractor;
-import com.picone.core.domain.interactors.property.pointOfInterest.AddRoomPropertyPointOfInterestInteractor;
-import com.picone.core.domain.interactors.property.photo.DeleteRoomPropertyPhotoInteractor;
-import com.picone.core.domain.interactors.property.pointOfInterest.GetAllRoomPointOfInterestForPropertyIdInteractor;
 import com.picone.core.domain.interactors.property.GetAllRoomPropertiesInteractor;
-import com.picone.core.domain.interactors.property.photo.GetAllRoomPropertyPhotosForPropertyIdInteractor;
 import com.picone.core.domain.interactors.property.UpdateRoomPropertyInteractor;
+import com.picone.core.domain.interactors.property.photo.AddRoomPropertyPhotoInteractor;
+import com.picone.core.domain.interactors.property.photo.DeleteRoomPropertyPhotoInteractor;
+import com.picone.core.domain.interactors.property.photo.GetAllRoomPropertyPhotosForPropertyIdInteractor;
+import com.picone.core.domain.interactors.property.pointOfInterest.AddRoomPropertyPointOfInterestInteractor;
+import com.picone.core.domain.interactors.property.pointOfInterest.GetAllRoomPointOfInterestForPropertyIdInteractor;
 import com.picone.core.utils.SchedulerProvider;
 
 import java.util.List;

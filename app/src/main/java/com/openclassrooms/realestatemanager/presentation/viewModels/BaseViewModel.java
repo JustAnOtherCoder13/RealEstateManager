@@ -2,18 +2,17 @@ package com.openclassrooms.realestatemanager.presentation.viewModels;
 
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
-import androidx.navigation.NavController;
 
 import com.openclassrooms.realestatemanager.presentation.utils.ErrorHandler;
 import com.picone.core.domain.interactors.agent.GetAllRoomAgentInteractor;
 import com.picone.core.domain.interactors.property.AddRoomPropertyInteractor;
-import com.picone.core.domain.interactors.property.photo.AddRoomPropertyPhotoInteractor;
-import com.picone.core.domain.interactors.property.pointOfInterest.AddRoomPropertyPointOfInterestInteractor;
-import com.picone.core.domain.interactors.property.photo.DeleteRoomPropertyPhotoInteractor;
-import com.picone.core.domain.interactors.property.pointOfInterest.GetAllRoomPointOfInterestForPropertyIdInteractor;
 import com.picone.core.domain.interactors.property.GetAllRoomPropertiesInteractor;
-import com.picone.core.domain.interactors.property.photo.GetAllRoomPropertyPhotosForPropertyIdInteractor;
 import com.picone.core.domain.interactors.property.UpdateRoomPropertyInteractor;
+import com.picone.core.domain.interactors.property.photo.AddRoomPropertyPhotoInteractor;
+import com.picone.core.domain.interactors.property.photo.DeleteRoomPropertyPhotoInteractor;
+import com.picone.core.domain.interactors.property.photo.GetAllRoomPropertyPhotosForPropertyIdInteractor;
+import com.picone.core.domain.interactors.property.pointOfInterest.AddRoomPropertyPointOfInterestInteractor;
+import com.picone.core.domain.interactors.property.pointOfInterest.GetAllRoomPointOfInterestForPropertyIdInteractor;
 import com.picone.core.utils.SchedulerProvider;
 
 import javax.inject.Inject;

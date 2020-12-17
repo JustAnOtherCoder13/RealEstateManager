@@ -7,66 +7,123 @@
         <item name="colorOnPrimary">@color/white</item>
         <item name="colorAccent">@color/custom_pink</item>
         <!--TEXT-->
-        <item name="textAppearanceHeadline1">@style/TextAppearance.RealEstateManagerStyles.Headline1</item>
-        <item name="textAppearanceHeadline3">@style/TextAppearance.RealEstateManagerStyles.Headline3</item>
-        <item name="textAppearanceHeadline4">@style/TextAppearance.RealEstateManagerStyles.Headline4</item>
-        <item name="textAppearanceHeadline5">@style/TextAppearance.RealEstateManagerStyles.Headline5</item>
-        <item name="textAppearanceSubtitle1">@style/TextAppearance.RealEstateManagerStyles.Subtitle1</item>
+        <item name="textAppearanceHeadline1">
+            @style/TextAppearance.RealEstateManagerStyles.Headline1
+        </item>
+        <item name="textAppearanceHeadline3">
+            @style/TextAppearance.RealEstateManagerStyles.Headline3
+        </item>
+        <item name="textAppearanceHeadline4">
+            @style/TextAppearance.RealEstateManagerStyles.Headline4
+        </item>
+        <item name="textAppearanceHeadline5">
+            @style/TextAppearance.RealEstateManagerStyles.Headline5
+        </item>
+        <item name="textAppearanceSubtitle1">
+            @style/TextAppearance.RealEstateManagerStyles.Subtitle1
+        </item>
         <item name="textAppearanceBody1">@style/TextAppearance.RealEstateManagerStyles.Body1</item>
     </style>
 
 
     <!--__________________________________COMMON STYLES__________________________________-->
 
-    <style name="Widget.TextViewTitleStyle" parent="Widget.MaterialComponents.TextView">
+    <style name="Widget.TextViewSubTitleStyle" parent="Widget.MaterialComponents.TextView">
         <item name="android:paddingBottom">@dimen/basic_marge</item>
-        <item name="android:textAppearance">@style/TextAppearance.RealEstateManagerStyles.Headline5</item>
+        <item name="android:textAppearance">
+            @style/TextAppearance.RealEstateManagerStyles.Subtitle1
+        </item>
     </style>
 
-    <style name="fragmentWithNavStyle" >
+    <style name="Widget.TextViewTitleStyle" parent="Widget.MaterialComponents.TextView">
+        <item name="android:paddingBottom">@dimen/basic_marge</item>
+        <item name="android:layout_marginStart">@dimen/basic_marge</item>
+        <item name="android:textAppearance">
+            @style/TextAppearance.RealEstateManagerStyles.Headline4
+        </item>
+    </style>
+
+    <style name="Widget.TextViewBodyStyle" parent="Widget.MaterialComponents.TextView">
+        <item name="android:textAppearance">@style/TextAppearance.RealEstateManagerStyles.Body1
+        </item>
+    </style>
+
+    <style name="Widget.EditTextBodyStyle" parent="Widget.AppCompat.EditText">
+        <item name="android:textAppearance">@style/TextAppearance.RealEstateManagerStyles.Body1
+        </item>
+    </style>
+
+    <style name="fragmentWithNavStyle">
         <item name="android:layout_marginTop">?attr/actionBarSize</item>
         <item name="android:layout_marginBottom">?attr/actionBarSize</item>
     </style>
     <!--__________________________________CUSTOM VIEW__________________________________-->
 
-    <style name="customViewInformationIconStyle" >
+    <style name="customViewInformationIconStyle">
         <item name="android:paddingEnd">@dimen/basic_marge</item>
         <item name="android:paddingStart">0dp</item>
     </style>
 
-    <!--TITLE-->
-    <style name="Widget.customViewDescriptionTitleStyle" parent="Widget.TextViewTitleStyle">
+    <!--__________________________________TEXT STYLE__________________________________-->
+
+    <!-- Detail fragment-->
+    <style name="Widget.FragmentPropertyDetailDescriptionTitleStyle" parent="Widget.TextViewTitleStyle">
         <item name="android:text">@string/description</item>
     </style>
 
-    <style name="Widget.customViewAddPropertyInformationTypeTitleStyle" parent="Widget.TextViewTitleStyle">
+    <style name="Widget.FragmentPropertyDetailDescriptionTextStyle" parent="Widget.TextViewBodyStyle">
+        <item name="android:maxLines">8</item>
+        <item name="android:text">@string/description_text</item>
+    </style>
+
+    <style name="Widget.FragmentPropertyDetailMediaTitleStyle" parent="Widget.TextViewTitleStyle">
+        <item name="android:text">@string/media</item>
+    </style>
+
+    <!-- Add property fragment -->
+    <style name="Widget.FragmentAddPropertyInformationTitleStyle" parent="Widget.TextViewTitleStyle">
+        <item name="android:text">@string/information</item>
+    </style>
+
+    <style name="Widget.FragmentAddPropertyInformationTypeTitleStyle" parent="Widget.TextViewSubTitleStyle">
         <item name="android:text">@string/property_type</item>
     </style>
 
-    <style name="Widget.customViewAddPropertySoldTitleStyle" parent="Widget.TextViewTitleStyle">
+    <style name="Widget.FragmentAddPropertySoldTitleStyle" parent="Widget.TextViewTitleStyle">
         <item name="android:text">@string/sold</item>
     </style>
 
-    <style name="Widget.customViewAddPropertySoldCheckBoxStyle" parent="Widget.AppCompat.CompoundButton.CheckBox">
-        <item name="android:layout_marginStart">@dimen/big_marge</item>
-        <item name="android:layout_marginEnd">@dimen/big_marge</item>
-    </style>
-
-    <style name="Widget.customViewAddPropertySoldEditTextStyle" parent="Widget.AppCompat.EditText">
+    <style name="Widget.FragmentAddPropertySoldEditTextStyle" parent="Widget.EditTextBodyStyle">
         <item name="android:layout_marginEnd">@dimen/big_marge</item>
         <item name="android:inputType">date</item>
+        <item name="android:layout_marginBottom">@dimen/basic_marge</item>
     </style>
 
-    <style name="Widget.customViewDescriptionTextStyle" parent="Widget.MaterialComponents.TextView">
-        <item name="android:maxLines">8</item>
-        <item name="android:text">@string/description_text</item>
-        <item name="android:textAppearance">@style/TextAppearance.RealEstateManagerStyles.Body1</item>
+    <style name="Widget.FragmentAddPropertyDescriptionTitleStyle" parent="Widget.TextViewTitleStyle">
+        <item name="android:layout_marginStart">@dimen/basic_marge</item>
+        <item name="android:text">@string/description</item>
+    </style>
+
+    <!-- Recycler view -->
+    <style name="Widget.RecyclerViewPropertyListItemPropertyType" parent="Widget.TextViewTitleStyle">
+        <item name="android:text">@string/property_type</item>
+    </style>
+
+    <style name="Widget.RecyclerViewPropertyListItemTownTextStyle" parent="Widget.TextViewSubTitleStyle">
+        <item name="android:text">@string/town</item>
+    </style>
+
+    <style name="Widget.RecyclerViewPropertyListItemPropertyPrice" parent="Widget.TextViewTitleStyle">
+        <item name="android:text">@string/price</item>
+        <item name="android:textColor">@color/custom_pink</item>
+        <item name="android:layout_marginStart">0dp</item>
     </style>
     <!--__________________________________RECYCLER VIEW__________________________________-->
 
     <style name="Widget.listRecyclerviewPhotoDescriptionTextViewStyle" parent="Widget.MaterialComponents.TextView">
         <item name="android:text">@string/description</item>
-        <item name="android:textAppearance">@style/TextAppearance.RealEstateManagerStyles.Body1</item>
+        <item name="android:textAppearance">@style/TextAppearance.RealEstateManagerStyles.Body1
+        </item>
         <item name="android:paddingBottom">15dp</item>
         <item name="android:paddingTop">15dp</item>
         <item name="android:paddingEnd">0dp</item>
@@ -76,7 +133,47 @@
         <item name="android:alpha">0.5</item>
     </style>
 
-    <!--__________________________________NAV HOST__________________________________-->
+    <!--__________________________________TOP BAR__________________________________-->
 
+    <style name="Widget.TopAppBarIconStyle" parent="Widget.AppCompat.ImageButton">
+        <item name="android:tint">@color/white</item>
+        <item name="android:background">@color/custom_blue</item>
+        <item name="android:paddingStart">@dimen/basic_marge</item>
+        <item name="android:paddingEnd">@dimen/basic_marge</item>
+    </style>
+
+    <style name="Widget.TopBarMenuIconStyle" parent="Widget.TopAppBarIconStyle">
+        <item name="srcCompat">@drawable/ic_top_bar_menu_24</item>
+    </style>
+
+    <style name="Widget.TopBarAddIconStyle" parent="Widget.TopAppBarIconStyle">
+        <item name="srcCompat">@drawable/ic_top_bar_add_24</item>
+    </style>
+
+    <style name="Widget.TopBarTitleStyle" parent="Widget.MaterialComponents.TextView">
+        <item name="android:text">@string/app_name</item>
+        <item name="android:textColor">@color/white</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+
+
+
+
+
+    <style name="Widget.FragmentAddPropertySoldCheckBoxStyle" parent="Widget.AppCompat.CompoundButton.CheckBox">
+        <item name="android:layout_marginStart">@dimen/big_marge</item>
+        <item name="android:layout_marginEnd">@dimen/big_marge</item>
+    </style>
+
+    <style name="basicSeparatorStyle">
+        <item name="android:layout_marginStart">@dimen/big_marge</item>
+        <item name="android:layout_marginEnd">@dimen/big_marge</item>
+        <item name="android:background">@color/custom_blue</item>
+        <item name="layout_constraintBottom_toBottomOf">parent</item>
+        <item name="layout_constraintStart_toStartOf">parent</item>
+        <item name="layout_constraintEnd_toEndOf">parent</item>
+        <item name="android:layout_marginTop">@dimen/basic_marge</item>
+
+    </style>
 
 </resources>

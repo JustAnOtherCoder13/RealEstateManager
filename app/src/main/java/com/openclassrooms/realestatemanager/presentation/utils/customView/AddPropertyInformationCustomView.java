@@ -3,8 +3,7 @@ package com.openclassrooms.realestatemanager.presentation.utils.customView;
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.util.AttributeSet;
-import android.view.LayoutInflater;
-import android.view.View;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -27,11 +26,13 @@ public class AddPropertyInformationCustomView extends ConstraintLayout {
 
         ImageView addPropertyInformationIcon = findViewById(R.id.add_property_information_custom_view_icon);
         TextView addPropertyInformationTitle = findViewById(R.id.add_property_information_custom_view_title);
+        //EditText addPropertyInformationEditText = findViewById(R.id.add_property_information_custom_view_value);
 
         TypedArray attributes = getContext().obtainStyledAttributes(attrs,R.styleable.AddPropertyInformationCustomView);
 
         addPropertyInformationIcon.setImageDrawable(attributes.getDrawable(R.styleable.AddPropertyInformationCustomView_setIcon));
         addPropertyInformationTitle.setText(attributes.getText(R.styleable.AddPropertyInformationCustomView_setTitle));
+        //addPropertyInformationEditText.setInputType(R.styleable.AddPropertyInformationCustomView_android_inputType);
         attributes.recycle();
     }
 }
