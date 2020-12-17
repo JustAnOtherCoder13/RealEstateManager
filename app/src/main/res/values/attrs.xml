@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <declare-styleable name="GlobalAttributeDeclare">
+        <attr name="setIcon" format="reference"/>
+        <attr name="setTitle" format="string"/>
+    </declare-styleable>
+
+
+    <declare-styleable name="DetailInformationCustomView">
+        <attr name="setIcon"/>
+        <attr name="setTitle" />
+    </declare-styleable>
+
+    <declare-styleable name="AddPropertyInformationCustomView">
+        <attr name="setIcon"/>
+        <attr name="setTitle"/>
+    </declare-styleable>
+    
+</resources>

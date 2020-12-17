@@ -8,12 +8,10 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.fragment.app.Fragment;
 
 import com.openclassrooms.realestatemanager.R;
 import com.openclassrooms.realestatemanager.databinding.FragmentPropertyDetailBinding;
 import com.openclassrooms.realestatemanager.presentation.ui.main.BaseFragment;
-import com.picone.core.data.Generator;
 
 import java.util.Objects;
 
@@ -33,7 +31,7 @@ public class PropertyDetailFragment extends BaseFragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        TextView addressTextView = mBinding.fragmentDetailLocationCustomView.findViewById(R.id.information_custom_view_value);
+        TextView addressTextView = mBinding.fragmentDetailInformationLayout.fragmentDetailLocationCustomView.findViewById(R.id.detail_information_custom_view_value);
         addressTextView.setText(Objects.requireNonNull(mPropertyViewModel.getSelectedProperty.getValue()).getAddress());
     }
 }
