@@ -24,7 +24,7 @@ public class PropertyRecyclerViewAdapter extends RecyclerView.Adapter<PropertyRe
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         RecyclerviewPropertyListItemBinding binding = RecyclerviewPropertyListItemBinding.inflate(LayoutInflater.from(parent.getContext())
         ,parent,false);
-        return new PropertyRecyclerViewAdapter.ViewHolder(binding);
+        return new ViewHolder(binding);
     }
 
     @Override

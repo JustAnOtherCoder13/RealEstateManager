@@ -14,6 +14,7 @@ import androidx.navigation.ui.NavigationUI;
 import com.openclassrooms.realestatemanager.R;
 import com.openclassrooms.realestatemanager.databinding.ActivityMainBinding;
 import com.openclassrooms.realestatemanager.presentation.viewModels.PropertyViewModel;
+import com.picone.core.domain.entity.Property;
 
 import java.util.Objects;
 
@@ -43,6 +44,8 @@ public class MainActivity extends AppCompatActivity {
     public void onBackPressed() {
         super.onBackPressed();
         mPropertyViewModel.setSelectedProperty(null);
+        mPropertyViewModel.setAllRoomPointOfInterestForProperty(new Property());
+        mPropertyViewModel.setAllRoomPhotosForProperty(new Property());
     }
 
     protected void setMenuVisibility(@NonNull Boolean isVisible) {

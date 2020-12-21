@@ -47,7 +47,7 @@ public abstract class BaseUnitTest {
 
     final int propertyId = Generator.generateProperties().get(0).getId();
 
-    Property propertyToAdd = new Property(3,2,"property3Adress","House",120,6,350000);
+    Property propertyToAdd = new Property(3,2,"property3Adress","House",120,6,350000,"description",2,1,false,"0","0");
     Property firstPropertyToUpdate = Generator.generateProperties().get(0);
     List<PropertyPhoto> photoForPropertyId = new ArrayList<>();
     PropertyPhoto photoToAdd = new PropertyPhoto(5,"newPhoto","newDescription",1);

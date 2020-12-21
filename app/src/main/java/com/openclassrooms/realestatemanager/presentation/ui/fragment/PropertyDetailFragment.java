@@ -1,6 +1,8 @@
 package com.openclassrooms.realestatemanager.presentation.ui.fragment;
 
 import android.os.Bundle;
+import android.renderscript.ScriptGroup;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -8,12 +10,20 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.openclassrooms.realestatemanager.R;
 import com.openclassrooms.realestatemanager.databinding.FragmentPropertyDetailBinding;
+import com.openclassrooms.realestatemanager.databinding.FragmentPropertyDetailInformationBinding;
+import com.openclassrooms.realestatemanager.presentation.ui.fragment.adapter.PhotoRecyclerViewAdapter;
+import com.openclassrooms.realestatemanager.presentation.ui.fragment.adapter.PropertyRecyclerViewAdapter;
 import com.openclassrooms.realestatemanager.presentation.ui.main.BaseFragment;
+import com.openclassrooms.realestatemanager.presentation.utils.customView.DetailInformationCustomView;
 import com.picone.core.domain.entity.Property;
 
+import java.util.ArrayList;
 import java.util.Objects;
 
 
@@ -32,16 +42,32 @@ public class PropertyDetailFragment extends BaseFragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        int valueId = R.id.detail_information_custom_view_value;
-        TextView addressTextView = mBinding.fragmentDetailInformationLayout.fragmentDetailLocationCustomView.findViewById(valueId);
-        TextView surfaceTextView = mBinding.fragmentDetailInformationLayout.fragmentDetailAreaCustomView.findViewById(valueId);
-        TextView numberOfRoomsTextView = mBinding.fragmentDetailInformationLayout.fragmentDetailNumbersOfRoomsCustomView.findViewById(valueId);
-
+        FragmentPropertyDetailInformationBinding detailInformationLayout = mBinding.fragmentDetailInformationLayout;
         Property property = Objects.requireNonNull(mPropertyViewModel.getSelectedProperty.getValue());
-        addressTextView.setText(property.getAddress());
-        surfaceTextView.setText(String.valueOf(property.getPropertyArea()).concat(" ").concat("sq m"));
-        numberOfRoomsTextView.setText(String.valueOf(property.getNumberOfRooms()));
 
+        setTextForCustomView(detailInformationLayout.fragmentDetailAreaCustomView, String.valueOf(property.getPropertyArea()).concat(" ").concat("sq m"));
+        setTextForCustomView(detailInformationLayout.fragmentDetailLocationCustomView, property.getAddress());
+        setTextForCustomView(detailInformationLayout.fragmentDetailNumbersOfRoomsCustomView, String.valueOf(property.getNumberOfRooms()));
+        setTextForCustomView(detailInformationLayout.fragmentDetailNumbersOfBedroomsCustomView, String.valueOf(property.getNumberOfBedrooms()));
+        setTextForCustomView(detailInformationLayout.fragmentDetailNumbersOfBathroomsCustomView, String.valueOf(property.getNumberOfBathrooms()));
 
+        TextView descriptionTextView = mBinding.fragmentDetailDescriptionLayout.customViewDetailMediaDescriptionText;
+        descriptionTextView.setText(property.getDescription());
+
+        initRecyclerView();
+    }
+
+    private void initRecyclerView() {
+        PhotoRecyclerViewAdapter adapter = new PhotoRecyclerViewAdapter(new ArrayList<>());
+        mBinding.fragmentDetailMediaLayout.detailCustomViewRecyclerView.setAdapter(adapter);
+        mPropertyViewModel.getAllRoomPropertyPhotosForProperty.observe(getViewLifecycleOwner(), propertyPhotos -> {
+            Log.i("TAG", "initRecyclerView: change"+propertyPhotos.size());
+            adapter.updatePhotos(propertyPhotos);
+        });
+    }
+
+    private void setTextForCustomView(DetailInformationCustomView customView, String text) {
+        TextView textView = customView.findViewById(R.id.detail_information_custom_view_value);
+        textView.setText(text);
     }
 }

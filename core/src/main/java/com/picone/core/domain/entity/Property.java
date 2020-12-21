@@ -27,24 +27,19 @@ public class Property {
     private int price;
 
     //DESCRIPTION
-    @Ignore
     private String description;
 
     //ADDITIONAL INFORMATION
-    @Ignore
     private int numberOfBedrooms;
-    @Ignore
     private int numberOfBathrooms;
-    @Ignore
     private boolean isSold;
-    @Ignore
     private String enterOnMarket;
-    @Ignore
     private String soldFrom;
 
+    public Property() {
+    }
 
-    public Property(int id, int realEstateManagerId, String address, String propertyType,
-                    int propertyArea, int numberOfRooms, int price) {
+    public Property(int id, int realEstateManagerId, String address, String propertyType, int propertyArea, int numberOfRooms, int price, String description, int numberOfBedrooms, int numberOfBathrooms, boolean isSold, String enterOnMarket, String soldFrom) {
         this.id = id;
         this.realEstateManagerId = realEstateManagerId;
         this.address = address;
@@ -52,6 +47,12 @@ public class Property {
         this.propertyArea = propertyArea;
         this.numberOfRooms = numberOfRooms;
         this.price = price;
+        this.description = description;
+        this.numberOfBedrooms = numberOfBedrooms;
+        this.numberOfBathrooms = numberOfBathrooms;
+        this.isSold = isSold;
+        this.enterOnMarket = enterOnMarket;
+        this.soldFrom = soldFrom;
     }
 
     public int getId() {

@@ -41,9 +41,11 @@ public class PropertyListFragment extends BaseFragment {
         initRecyclerView();
         configureOnClickRecyclerView();
         mPropertyViewModel.getSelectedProperty.observe(getViewLifecycleOwner(),property -> {
-            if (property!=null)
-            mNavController.navigate(R.id.action_propertyListFragment_to_propertyDetailFragment);
-
+            if (property!=null) {
+                mPropertyViewModel.setAllRoomPhotosForProperty(property);
+                mPropertyViewModel.setAllRoomPointOfInterestForProperty(property);
+                mNavController.navigate(R.id.action_propertyListFragment_to_propertyDetailFragment);
+            }
         });
     }
 

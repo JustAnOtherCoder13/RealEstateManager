@@ -76,6 +76,13 @@ public abstract class RealEstateManagerRoomDatabase extends RoomDatabase {
             contentValues.put("propertyArea", generateProperties().get(i).getPropertyArea());
             contentValues.put("numberOfRooms", generateProperties().get(i).getNumberOfRooms());
             contentValues.put("price", generateProperties().get(i).getPrice());
+            contentValues.put("description", generateProperties().get(i).getDescription());
+            contentValues.put("numberOfBedrooms", generateProperties().get(i).getNumberOfBedrooms());
+            contentValues.put("numberOfBathrooms", generateProperties().get(i).getNumberOfBathrooms());
+            contentValues.put("isSold", generateProperties().get(i).isSold());
+            contentValues.put("enterOnMarket", generateProperties().get(i).getEnterOnMarket());
+            contentValues.put("soldFrom", generateProperties().get(i).getSoldFrom());
+
 
             db.insert(propertyTable, OnConflictStrategy.IGNORE, contentValues);
         }

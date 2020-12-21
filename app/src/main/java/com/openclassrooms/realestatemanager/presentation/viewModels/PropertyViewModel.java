@@ -74,7 +74,7 @@ public class PropertyViewModel extends BaseViewModel {
                 getAllRoomPropertyPhotosForPropertyIdInteractor.getAllPhotosForPropertyId(property.getId())
                         .subscribeOn(schedulerProvider.getIo())
                         .observeOn(schedulerProvider.getUi())
-                        .subscribe(propertyPhotos -> allRoomPhotosForPropertyMutableLD.postValue(propertyPhotos)));
+                        .subscribe(propertyPhotos -> allRoomPhotosForPropertyMutableLD.setValue(propertyPhotos)));
     }
 
     public void addRoomProperty(Property property) {

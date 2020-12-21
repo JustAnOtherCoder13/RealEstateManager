@@ -46,8 +46,8 @@ public abstract class Generator {
     }
 
     private static List<Property> PROPERTY = Arrays.asList(
-            new Property(1, 1, "Property1 address", "cotage",500,15,560000),
-            new Property(2, 3, "Property2 address", "penthouse",200,7,450000)
+            new Property(1, 1, "Property1 address", "cotage",500,15,560000,"First house description",6,3,false,"30/06/2020","0"),
+            new Property(2, 3, "Property2 address", "penthouse",200,7,450000,"Second house description",3,1,false,"15/10/2020","0")
     );
 
     public static List<Property> generateProperties() {
