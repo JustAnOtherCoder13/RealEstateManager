@@ -1,6 +1,7 @@
 package com.openclassrooms.realestatemanager.presentation.ui.main;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.ImageButton;
 
@@ -43,9 +44,9 @@ public class MainActivity extends AppCompatActivity {
     @Override
     public void onBackPressed() {
         super.onBackPressed();
+        if (Objects.requireNonNull(mNavController.getCurrentDestination()).getId() != R.id.propertyDetailFragment)
         mPropertyViewModel.setSelectedProperty(null);
-        mPropertyViewModel.setAllRoomPointOfInterestForProperty(new Property());
-        mPropertyViewModel.setAllRoomPhotosForProperty(new Property());
+
     }
 
     protected void setMenuVisibility(@NonNull Boolean isVisible) {

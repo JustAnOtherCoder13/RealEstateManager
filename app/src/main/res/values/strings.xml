@@ -31,7 +31,7 @@
     <string name="location">Location</string>
     <string name="number_of_rooms">Number of Rooms</string>
     <string name="number_of_bathrooms">Number of bathrooms</string>
-    <string name="number_of_bedrooms">Number of bedroom</string>
+    <string name="number_of_bedrooms">Number of bedrooms</string>
 
     <!-- ______________________EDIT TEXT__________________ -->
     <string name="value">Value</string>

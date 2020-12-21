@@ -5,38 +5,72 @@
     android:layout_height="match_parent"
     tools:context="com.openclassrooms.realestatemanager.presentation.ui.fragment.PropertyDetailFragment">
 
-    <include
-        android:id="@+id/fragment_detail_media_layout"
-        layout="@layout/fragment_property_detail_media_layout"
+    <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <include
-        android:id="@+id/fragment_detail_description_layout"
-        layout="@layout/fragment_property_detail_description_layout"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        app:layout_constraintBottom_toTopOf="@id/fragment_detail_information_layout"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/fragment_detail_media_layout" />
-
-    <include
-        android:id="@+id/fragment_detail_information_layout"
-        layout="@layout/fragment_property_detail_information"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/big_marge"
+        android:layout_height="match_parent"
+        android:paddingBottom="24dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/fragment_detail_description_layout" />
+        app:layout_constraintTop_toTopOf="parent">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <include
+                android:id="@+id/fragment_detail_media_layout"
+                layout="@layout/fragment_property_detail_media_layout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/big_marge"
+                app:layout_constraintBottom_toTopOf="@id/fragment_detail_description_layout"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <FrameLayout
+                android:layout_width="match_parent"
+                android:layout_height="2dp"
+                style="@style/basicSeparatorStyle"
+                app:layout_constraintTop_toBottomOf="@id/fragment_detail_media_layout"
+                app:layout_constraintBottom_toTopOf="@id/fragment_detail_description_layout"
+                />
+
+            <include
+                android:id="@+id/fragment_detail_description_layout"
+                layout="@layout/fragment_property_detail_description_layout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/basic_marge"
+                app:layout_constraintBottom_toTopOf="@id/fragment_detail_information_layout"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/fragment_detail_media_layout" />
+            <FrameLayout
+                android:layout_width="match_parent"
+                android:layout_height="2dp"
+                style="@style/basicSeparatorStyle"
+                app:layout_constraintTop_toBottomOf="@id/fragment_detail_description_layout"
+                app:layout_constraintBottom_toTopOf="@id/fragment_detail_information_layout"
+                />
+            <include
+                android:id="@+id/fragment_detail_information_layout"
+                layout="@layout/fragment_property_detail_information"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/basic_marge"
+                android:layout_marginTop="@dimen/big_marge"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/fragment_detail_description_layout" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </ScrollView>
 
     <FrameLayout
         android:layout_width="match_parent"
-        android:layout_height="20dp"
+        android:layout_height="24dp"
         android:background="@color/custom_pink"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -47,10 +81,10 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:background="@drawable/custom_round_secondary"
+        android:contentDescription="update property button"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:srcCompat="@drawable/ic_top_bar_update_24"
-        android:contentDescription="update property button" />
+        app:srcCompat="@drawable/ic_top_bar_update_24" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

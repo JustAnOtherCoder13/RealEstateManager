@@ -11,6 +11,8 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.navigation.NavController;
+import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -35,6 +37,7 @@ public class PropertyDetailFragment extends BaseFragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         mBinding = FragmentPropertyDetailBinding.inflate(inflater, container, false);
+        mNavController = Navigation.findNavController(requireActivity(),R.id.nav_host_fragment);
         setAppBarVisibility(false);
         return mBinding.getRoot();
     }
@@ -55,6 +58,7 @@ public class PropertyDetailFragment extends BaseFragment {
         descriptionTextView.setText(property.getDescription());
 
         initRecyclerView();
+        mBinding.fragmentDetailInformationUpdateImageButton.setOnClickListener(v -> mNavController.navigate(R.id.action_propertyDetailFragment_to_addPropertyFragment));
     }
 
     private void initRecyclerView() {
