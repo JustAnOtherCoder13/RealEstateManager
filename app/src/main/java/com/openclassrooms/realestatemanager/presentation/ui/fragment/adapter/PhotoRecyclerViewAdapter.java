@@ -13,6 +13,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.target.CustomTarget;
 import com.bumptech.glide.request.transition.Transition;
+import com.openclassrooms.realestatemanager.R;
 import com.openclassrooms.realestatemanager.databinding.RecyclerviewPropertyDetailItemBinding;
 import com.picone.core.domain.entity.PropertyPhoto;
 
@@ -37,8 +38,13 @@ public class PhotoRecyclerViewAdapter extends RecyclerView.Adapter<PhotoRecycler
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         PropertyPhoto photo = mPhotos.get(position);
-        setPropertyPhoto(holder,photo);
-        holder.binding.propertyDetailItemPhotoDescription.setText(photo.getDescription());
+        if (photo.getPhoto().equals("AddPhoto")){
+            holder.binding.propertyDetailItemPhoto.setImageResource(R.drawable.img_add_photo);
+            holder.binding.propertyDetailItemPhotoDescription.setVisibility(View.GONE);
+        }else{
+            setPropertyPhoto(holder, photo);
+            holder.binding.propertyDetailItemPhotoDescription.setVisibility(View.VISIBLE);
+            holder.binding.propertyDetailItemPhotoDescription.setText(photo.getDescription());}
     }
 
     @Override

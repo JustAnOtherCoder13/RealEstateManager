@@ -20,6 +20,7 @@
     <TextView
         android:id="@+id/property_detail_item_photo_description"
         style="@style/Widget.listRecyclerviewPhotoDescriptionTextView"
+        android:gravity="center"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         app:layout_constraintBottom_toBottomOf="@id/property_detail_item_photo"

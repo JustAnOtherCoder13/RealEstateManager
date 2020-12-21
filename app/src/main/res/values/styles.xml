@@ -22,6 +22,7 @@
         <item name="android:textAppearance">
             @style/TextAppearance.RealEstateManagerStyles.Subtitle1
         </item>
+        <item name="paddingStart">@dimen/little_marge</item>
     </style>
 
     <!--__________________________________CUSTOM VIEW__________________________________-->
@@ -57,6 +58,7 @@
 
     <style name="Widget.FragmentAddPropertyInformationTypeTitleTextView" parent="Widget.Subtitle1TextView">
         <item name="android:text">@string/property_type</item>
+        <item name="android:paddingBottom">@dimen/little_marge</item>
     </style>
 
     <style name="Widget.FragmentAddPropertySoldTitleTextView" parent="Widget.Headline1TextView">
@@ -67,6 +69,7 @@
         <item name="android:layout_marginEnd">@dimen/big_marge</item>
         <item name="android:inputType">date</item>
         <item name="android:layout_marginBottom">@dimen/basic_marge</item>
+        <item name="android:textColor">@color/custom_grey</item>
         <item name="android:textAppearance">@style/TextAppearance.RealEstateManagerStyles.Body1
         </item>
     </style>

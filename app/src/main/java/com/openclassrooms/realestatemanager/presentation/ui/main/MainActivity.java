@@ -46,6 +46,7 @@ public class MainActivity extends AppCompatActivity {
         super.onBackPressed();
         if (Objects.requireNonNull(mNavController.getCurrentDestination()).getId() != R.id.propertyDetailFragment)
         mPropertyViewModel.setSelectedProperty(null);
+        mPropertyViewModel.setAllRoomPhotosForProperty(new Property());
 
     }
 

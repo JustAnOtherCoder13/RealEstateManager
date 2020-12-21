@@ -19,6 +19,8 @@
         android:autofillHints="@string/description_text"
         android:hint="@string/description_text"
         android:inputType="textMultiLine"
+        android:layout_marginStart="@dimen/little_marge"
+        android:layout_marginEnd="@dimen/little_marge"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/add_property_description_title" />

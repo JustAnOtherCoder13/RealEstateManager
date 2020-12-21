@@ -64,10 +64,7 @@ public class PropertyDetailFragment extends BaseFragment {
     private void initRecyclerView() {
         PhotoRecyclerViewAdapter adapter = new PhotoRecyclerViewAdapter(new ArrayList<>());
         mBinding.fragmentDetailMediaLayout.detailCustomViewRecyclerView.setAdapter(adapter);
-        mPropertyViewModel.getAllRoomPropertyPhotosForProperty.observe(getViewLifecycleOwner(), propertyPhotos -> {
-            Log.i("TAG", "initRecyclerView: change"+propertyPhotos.size());
-            adapter.updatePhotos(propertyPhotos);
-        });
+        mPropertyViewModel.getAllRoomPropertyPhotosForProperty.observe(getViewLifecycleOwner(), adapter::updatePhotos);
     }
 
     private void setTextForCustomView(DetailInformationCustomView customView, String text) {

@@ -27,6 +27,7 @@
         android:id="@+id/detail_information_custom_view_value"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:textAppearance="@style/TextAppearance.RealEstateManagerStyles.Body1"
         app:layout_constraintStart_toEndOf="@id/detail_information_custom_view_icon"
         app:layout_constraintTop_toBottomOf="@id/detail_information_custom_view_title"
         tool:text="@tools:sample/lorem" />

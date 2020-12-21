@@ -18,11 +18,11 @@
         style="@style/Widget.FragmentAddPropertySoldCheckBox"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        app:layout_constraintEnd_toStartOf="@id/add_property_sold_edit_text"
         app:layout_constraintStart_toEndOf="@id/add_property_sold_title"
         app:layout_constraintTop_toTopOf="parent" />
 
     <EditText
+        android:visibility="gone"
         android:id="@+id/add_property_sold_edit_text"
         style="@style/Widget.FragmentAddPropertySoldEditText"
         android:layout_width="0dp"
@@ -41,7 +41,7 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/add_property_sold_edit_text"
+        app:layout_constraintTop_toBottomOf="@id/add_property_sold_title"
         />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

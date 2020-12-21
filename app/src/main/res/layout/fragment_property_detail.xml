@@ -85,6 +85,6 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:srcCompat="@drawable/ic_top_bar_update_24" />
+        app:srcCompat="@drawable/ic_fragment_detail_update_24" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

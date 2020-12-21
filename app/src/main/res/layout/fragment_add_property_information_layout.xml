@@ -10,9 +10,9 @@
         style="@style/Widget.FragmentAddPropertyInformationTitleTextView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        app:layout_constraintBottom_toTopOf="@id/add_property_information_type_title"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintBottom_toTopOf="@id/add_property_information_type_title"/>
+        app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
         android:id="@+id/add_property_information_type_title"
@@ -58,6 +58,7 @@
         android:id="@+id/add_property_information_area"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/basic_marge"
         app:layout_constraintStart_toStartOf="@id/add_property_information_price"
         app:layout_constraintTop_toBottomOf="@id/add_property_information_price"
         app:setIcon="@drawable/ic_fragment_detail_area_24"
@@ -67,6 +68,7 @@
         android:id="@+id/add_property_information_address"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/basic_marge"
         app:layout_constraintStart_toStartOf="@id/add_property_information_price"
         app:layout_constraintTop_toBottomOf="@id/add_property_information_area"
         app:setIcon="@drawable/ic_fragment_detail_location_on_24"
@@ -85,6 +87,7 @@
         android:id="@+id/add_property_information_number_of_bathrooms"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/basic_marge"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@id/add_property_information_price"
         app:layout_constraintTop_toBottomOf="@id/add_property_information_number_of_rooms"
@@ -95,6 +98,7 @@
         android:id="@+id/add_property_information_number_of_bedrooms"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/basic_marge"
         app:layout_constraintStart_toStartOf="@id/add_property_information_number_of_bathrooms"
         app:layout_constraintTop_toBottomOf="@id/add_property_information_number_of_bathrooms"
         app:setIcon="@drawable/ic_fragment_detail_bedroom_24"
