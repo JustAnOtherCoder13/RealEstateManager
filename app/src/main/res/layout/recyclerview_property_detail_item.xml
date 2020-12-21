@@ -16,7 +16,7 @@
         tools:src="@tools:sample/avatars" />
 
     <TextView
-        style="@style/Widget.listRecyclerviewPhotoDescriptionTextViewStyle"
+        style="@style/Widget.listRecyclerviewPhotoDescriptionTextView"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         app:layout_constraintBottom_toBottomOf="@id/property_detail_item_photo"

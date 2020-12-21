@@ -5,5 +5,5 @@ import android.app.Application;
 import dagger.hilt.android.HiltAndroidApp;
 
 @HiltAndroidApp
-public class RealEstateManager extends Application {
+public class RealEstateManagerApplication extends Application {
 }

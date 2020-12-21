@@ -1,6 +1,9 @@
 package com.openclassrooms.realestatemanager.presentation.ui.fragment;
 
 
+import android.Manifest;
+import android.content.pm.PackageManager;
+import android.location.Location;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -9,24 +12,47 @@ import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 
+import com.google.android.gms.location.FusedLocationProviderClient;
+import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapsInitializer;
 import com.google.android.gms.maps.OnMapReadyCallback;
+import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
-import com.google.android.gms.maps.model.MarkerOptions;
+import com.openclassrooms.realestatemanager.R;
 import com.openclassrooms.realestatemanager.databinding.FragmentMapsBinding;
 import com.openclassrooms.realestatemanager.presentation.ui.main.BaseFragment;
 
+import java.util.Objects;
+
+import static android.Manifest.permission.ACCESS_FINE_LOCATION;
+import static com.picone.core.utils.ConstantParameters.MAPS_CAMERA_ZOOM;
+import static com.picone.core.utils.ConstantParameters.MAPS_KEY;
+import static com.picone.core.utils.ConstantParameters.REQUEST_CODE;
+
 public class MapsFragment extends BaseFragment implements OnMapReadyCallback {
 
-    FragmentMapsBinding mBinding;
+    private FragmentMapsBinding mBinding;
+    private GoogleMap mMap;
+    private boolean mLocationPermissionGranted;
+    private Location mCurrentLocation;
+    private FusedLocationProviderClient mFusedLocationProviderClient;
+
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        mFusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(requireActivity());
+        MAPS_KEY = this.getResources().getString(R.string.google_maps_key);
+    }
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        mBinding = FragmentMapsBinding.inflate(inflater,container,false);
+        mBinding = FragmentMapsBinding.inflate(inflater, container, false);
         mBinding.mapView.getMapAsync(this);
         setAppBarVisibility(true);
         return mBinding.getRoot();
@@ -39,17 +65,6 @@ public class MapsFragment extends BaseFragment implements OnMapReadyCallback {
         mPropertyViewModel.setAllRoomProperties();
     }
 
-    @Override
-    public void onMapReady(@NonNull GoogleMap googleMap) {
-        Log.i("TAG", "onMapReady: ");
-
-        LatLng sydney = new LatLng(-33.852, 151.211);
-        googleMap.addMarker(new MarkerOptions()
-                .position(sydney)
-                .title("Marker in Sydney"));
-        googleMap.moveCamera(CameraUpdateFactory.newLatLng(sydney));
-    }
-
     private void initMapView(@Nullable Bundle savedInstanceState) {
         mBinding.mapView.onCreate(savedInstanceState);
         mBinding.mapView.onResume();
@@ -58,5 +73,61 @@ public class MapsFragment extends BaseFragment implements OnMapReadyCallback {
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+
+    @Override
+    public void onMapReady(@NonNull GoogleMap googleMap) {
+        mMap = googleMap;
+        enableMyLocation();
+    }
+
+    //TODO enable  permission coarse location
+
+    private void enableMyLocation() {
+
+        if (ContextCompat.checkSelfPermission(requireContext(),
+                Manifest.permission.ACCESS_FINE_LOCATION)
+                == PackageManager.PERMISSION_GRANTED) {
+
+            mMap.setMyLocationEnabled(true);
+            mLocationPermissionGranted = true;
+            updateLocationUI();
+
+        } else {
+            ActivityCompat.requestPermissions(this.requireActivity(),
+                    new String[]{ACCESS_FINE_LOCATION},
+                    REQUEST_CODE);
+        }
+    }
+
+    private void updateLocationUI() {
+        try {
+            if (mLocationPermissionGranted) fetchLastLocation();
+            else enableMyLocation();
+
+        } catch (SecurityException e) {
+            Log.e(getString(R.string.exception), Objects.requireNonNull(e.getMessage()));
+        }
+    }
+
+    private void fetchLastLocation() {
+        if (ActivityCompat.checkSelfPermission(this.requireContext(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this.requireContext(), Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(requireActivity(), new String[]
+                    {ACCESS_FINE_LOCATION}, REQUEST_CODE);
+            return;
+        }
+        mFusedLocationProviderClient.getLastLocation().addOnSuccessListener(location -> {
+            if (location != null) {
+                mCurrentLocation = location;
+                setUpMapCurrentPosition();
+            }
+        });
+    }
+
+    private void setUpMapCurrentPosition() {
+        LatLng latLng = new LatLng(mCurrentLocation.getLatitude(), mCurrentLocation.getLongitude());
+        CameraPosition cameraPosition = new CameraPosition.Builder()
+                .target(latLng).zoom(MAPS_CAMERA_ZOOM).build();
+        mMap.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
     }
 }

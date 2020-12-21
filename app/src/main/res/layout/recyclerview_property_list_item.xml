@@ -20,7 +20,7 @@
         android:id="@+id/property_item_type"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        style="@style/Widget.RecyclerViewPropertyListItemPropertyType"
+        style="@style/Widget.RecyclerViewPropertyListItemPropertyTypeTextView"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@id/property_item_photo"
         app:layout_constraintTop_toTopOf="parent" />
@@ -29,7 +29,7 @@
         android:id="@+id/property_item_town"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        style="@style/Widget.RecyclerViewPropertyListItemTownTextStyle"
+        style="@style/Widget.RecyclerViewPropertyListItemTownTextTextView"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="@id/property_item_type"
         app:layout_constraintTop_toBottomOf="@id/property_item_type" />
@@ -38,7 +38,7 @@
         android:id="@+id/property_item_price"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        style="@style/Widget.RecyclerViewPropertyListItemPropertyPrice"
+        style="@style/Widget.RecyclerViewPropertyListItemPropertyPriceTextView"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="@id/property_item_type"
         app:layout_constraintTop_toBottomOf="@id/property_item_town" />

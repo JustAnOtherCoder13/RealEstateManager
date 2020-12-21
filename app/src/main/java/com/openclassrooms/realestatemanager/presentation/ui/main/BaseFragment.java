@@ -19,7 +19,7 @@ public abstract class BaseFragment extends Fragment {
     protected PropertyViewModel mPropertyViewModel;
     protected NavController mNavController;
 
-    private MainActivity mainActivity;
+    protected MainActivity mainActivity;
 
 
     @Override
@@ -29,6 +29,7 @@ public abstract class BaseFragment extends Fragment {
         mRealEstateAgentViewModel = new ViewModelProvider(requireActivity()).get(RealEstateAgentViewModel.class);
         mPropertyViewModel = new  ViewModelProvider(requireActivity()).get(PropertyViewModel.class);
     }
+
     protected void setAppBarVisibility(boolean isVisible) {
         mainActivity.setMenuVisibility(isVisible);
     }

@@ -7,7 +7,7 @@
 
     <TextView
         android:id="@+id/add_property_information_title"
-        style="@style/Widget.FragmentAddPropertyInformationTitleStyle"
+        style="@style/Widget.FragmentAddPropertyInformationTitleTextView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         app:layout_constraintStart_toStartOf="parent"
@@ -16,7 +16,7 @@
 
     <TextView
         android:id="@+id/add_property_information_type_title"
-        style="@style/Widget.FragmentAddPropertyInformationTypeTitleStyle"
+        style="@style/Widget.FragmentAddPropertyInformationTypeTitleTextView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         app:layout_constraintBottom_toTopOf="@id/add_property_information_type"

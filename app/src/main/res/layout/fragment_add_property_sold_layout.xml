@@ -6,7 +6,7 @@
 
     <TextView
         android:id="@+id/add_property_sold_title"
-        style="@style/Widget.FragmentAddPropertySoldTitleStyle"
+        style="@style/Widget.FragmentAddPropertySoldTitleTextView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         app:layout_constraintStart_toStartOf="parent"
@@ -15,7 +15,7 @@
 
     <com.google.android.material.checkbox.MaterialCheckBox
         android:id="@+id/add_property_sold_checkbox"
-        style="@style/Widget.FragmentAddPropertySoldCheckBoxStyle"
+        style="@style/Widget.FragmentAddPropertySoldCheckBox"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         app:layout_constraintEnd_toStartOf="@id/add_property_sold_edit_text"
@@ -24,7 +24,7 @@
 
     <EditText
         android:id="@+id/add_property_sold_edit_text"
-        style="@style/Widget.FragmentAddPropertySoldEditTextStyle"
+        style="@style/Widget.FragmentAddPropertySoldEditText"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:autofillHints="@string/dd_mm_yyyy"

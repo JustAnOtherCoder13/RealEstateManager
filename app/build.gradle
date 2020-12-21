@@ -1,6 +1,5 @@
 apply plugin: "com.android.application"
 apply plugin: "androidx.navigation.safeargs"
-apply plugin: "com.google.gms.google-services"
 apply plugin: 'dagger.hilt.android.plugin'
 
 android {
@@ -24,7 +23,7 @@ android {
         exclude group: 'com.google.protobuf', module: 'protobuf-javalite'
     }
     defaultConfig {
-        applicationId "com.picone.go4lunch"
+        applicationId "com.openclassrooms.realestatemanager"
         minSdkVersion 19
         targetSdkVersion 29
         versionCode 1
@@ -85,11 +84,6 @@ dependencies {
     implementation 'com.google.android.material:material:1.2.1'
     //CardView
     implementation "androidx.cardview:cardview:1.0.0"
-    //Firebase
-    implementation platform('com.google.firebase:firebase-bom:25.12.0')
-    implementation "com.google.firebase:firebase-core"
-    implementation "com.google.firebase:firebase-firestore"
-    implementation "com.google.firebase:firebase-database"
     //MultiDex
     implementation 'androidx.multidex:multidex:2.0.1'
     //Google maps
@@ -105,7 +99,6 @@ dependencies {
     implementation "androidx.hilt:hilt-lifecycle-viewmodel:1.0.0-alpha02"
     annotationProcessor 'androidx.hilt:hilt-compiler:1.0.0-alpha02'
     //Rx2Java
-    api "com.github.FrangSierra:RxFirebase:1.5.6"
     implementation "io.reactivex.rxjava2:rxjava:2.2.9"
     implementation "io.reactivex.rxjava2:rxandroid:2.0.2"
     //Glide

@@ -6,7 +6,7 @@
     tools:context="com.openclassrooms.realestatemanager.presentation.ui.fragment.AddPropertyFragment">
 
     <include
-        android:id="@+id/add_property_sold_custom_view"
+        android:id="@+id/add_property_sold_layout"
         layout="@layout/fragment_add_property_sold_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -23,7 +23,7 @@
         app:layout_constraintBottom_toTopOf="@id/add_property_description_layout"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/add_property_sold_custom_view" />
+        app:layout_constraintTop_toBottomOf="@id/add_property_sold_layout" />
 
     <include
         android:id="@+id/add_property_description_layout"

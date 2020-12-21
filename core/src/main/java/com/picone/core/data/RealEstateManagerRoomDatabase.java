@@ -13,6 +13,7 @@ import com.picone.core.data.property.PropertyRoomDao;
 import com.picone.core.data.realEstateAgent.RealEstateAgentRoomDao;
 import com.picone.core.domain.entity.PointOfInterest;
 import com.picone.core.domain.entity.Property;
+import com.picone.core.domain.entity.PropertyLocation;
 import com.picone.core.domain.entity.PropertyPhoto;
 import com.picone.core.domain.entity.RealEstateAgent;
 
@@ -25,7 +26,7 @@ import static com.picone.core.utils.ConstantParameters.propertyPhotoTable;
 import static com.picone.core.utils.ConstantParameters.propertyTable;
 import static com.picone.core.utils.ConstantParameters.realEstateAgentTable;
 
-@androidx.room.Database(entities = {Property.class, RealEstateAgent.class, PointOfInterest.class, PropertyPhoto.class}, version = 1, exportSchema = false)
+@androidx.room.Database(entities = {Property.class, RealEstateAgent.class, PointOfInterest.class, PropertyPhoto.class, PropertyLocation.class}, version = 1, exportSchema = false)
 public abstract class RealEstateManagerRoomDatabase extends RoomDatabase {
 
     public abstract RealEstateAgentRoomDao realEstateManagerRoomDao();

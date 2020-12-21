@@ -24,7 +24,7 @@ public class PropertyDetailFragment extends BaseFragment {
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        mBinding = FragmentPropertyDetailBinding.inflate(inflater,container,false);
+        mBinding = FragmentPropertyDetailBinding.inflate(inflater, container, false);
         setAppBarVisibility(false);
         return mBinding.getRoot();
     }
@@ -33,14 +33,15 @@ public class PropertyDetailFragment extends BaseFragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         int valueId = R.id.detail_information_custom_view_value;
-        Property property = Objects.requireNonNull(mPropertyViewModel.getSelectedProperty.getValue());
-
         TextView addressTextView = mBinding.fragmentDetailInformationLayout.fragmentDetailLocationCustomView.findViewById(valueId);
         TextView surfaceTextView = mBinding.fragmentDetailInformationLayout.fragmentDetailAreaCustomView.findViewById(valueId);
         TextView numberOfRoomsTextView = mBinding.fragmentDetailInformationLayout.fragmentDetailNumbersOfRoomsCustomView.findViewById(valueId);
 
+        Property property = Objects.requireNonNull(mPropertyViewModel.getSelectedProperty.getValue());
         addressTextView.setText(property.getAddress());
         surfaceTextView.setText(String.valueOf(property.getPropertyArea()).concat(" ").concat("sq m"));
         numberOfRoomsTextView.setText(String.valueOf(property.getNumberOfRooms()));
+
+
     }
 }

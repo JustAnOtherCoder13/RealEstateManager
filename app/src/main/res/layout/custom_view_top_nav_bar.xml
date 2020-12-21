@@ -7,7 +7,7 @@
 
     <ImageButton
         android:id="@+id/top_bar_menu_icon"
-        style="@style/Widget.TopBarMenuIconStyle"
+        style="@style/Widget.TopBarMenuIconImageButton"
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
         android:contentDescription="@string/menu_icon"
@@ -16,7 +16,7 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
-        style="@style/Widget.TopBarTitleStyle"
+        style="@style/Widget.TopBarTitleTextView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -34,7 +34,7 @@
 
     <ImageButton
         android:id="@+id/top_bar_add_property"
-        style="@style/Widget.TopBarAddIconStyle"
+        style="@style/Widget.TopBarAddIconImageButton"
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
         android:contentDescription="@string/add_property_icon"

@@ -8,7 +8,7 @@
     app:layout_constraintBottom_toBottomOf="parent"
     app:layout_constraintEnd_toEndOf="parent"
     app:layout_constraintStart_toStartOf="parent"
-    app:layout_constraintTop_toBottomOf="@id/fragment_detail_description_custom_view">
+    app:layout_constraintTop_toBottomOf="@id/fragment_detail_description_layout">
 
     <com.openclassrooms.realestatemanager.presentation.utils.customView.DetailInformationCustomView
         android:id="@+id/fragment_detail_area_custom_view"

@@ -26,8 +26,6 @@ public class PropertyListFragment extends BaseFragment {
 
     private FragmentPropertyListBinding mBinding;
 
-
-
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -43,7 +41,8 @@ public class PropertyListFragment extends BaseFragment {
         initRecyclerView();
         configureOnClickRecyclerView();
         mPropertyViewModel.getSelectedProperty.observe(getViewLifecycleOwner(),property -> {
-            if (property!=null) mNavController.navigate(R.id.action_propertyListFragment_to_propertyDetailFragment);
+            if (property!=null)
+            mNavController.navigate(R.id.action_propertyListFragment_to_propertyDetailFragment);
 
         });
     }

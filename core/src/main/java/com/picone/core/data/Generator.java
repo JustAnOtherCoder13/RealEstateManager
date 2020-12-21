@@ -2,6 +2,7 @@ package com.picone.core.data;
 
 import com.picone.core.domain.entity.PointOfInterest;
 import com.picone.core.domain.entity.Property;
+import com.picone.core.domain.entity.PropertyLocation;
 import com.picone.core.domain.entity.PropertyPhoto;
 import com.picone.core.domain.entity.RealEstateAgent;
 
@@ -52,4 +53,5 @@ public abstract class Generator {
     public static List<Property> generateProperties() {
         return new ArrayList<>(PROPERTY);
     }
+
 }

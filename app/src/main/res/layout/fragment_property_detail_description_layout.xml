@@ -7,7 +7,7 @@
 
     <TextView
         android:id="@+id/custom_view_detail_media_description_title"
-        style="@style/Widget.FragmentPropertyDetailDescriptionTitleStyle"
+        style="@style/Widget.FragmentPropertyDetailDescriptionTitleTextView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:layout_constraintBottom_toTopOf="@id/custom_view_detail_media_description_text"
@@ -17,7 +17,7 @@
 
     <TextView
         android:id="@+id/custom_view_detail_media_description_text"
-        style="@style/Widget.FragmentPropertyDetailDescriptionTextStyle"
+        style="@style/Widget.FragmentPropertyDetailDescriptionTextView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:layout_constraintEnd_toEndOf="parent"

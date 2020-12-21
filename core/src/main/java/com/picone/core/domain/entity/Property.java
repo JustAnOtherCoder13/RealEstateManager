@@ -12,7 +12,6 @@ import static com.picone.core.utils.ConstantParameters.propertyTable;
 @Entity(tableName = propertyTable, foreignKeys = @ForeignKey(entity = RealEstateAgent.class,
         parentColumns = "id",
         childColumns = "realEstateManagerId"))
-
 public class Property {
 
     @PrimaryKey(autoGenerate = true)
