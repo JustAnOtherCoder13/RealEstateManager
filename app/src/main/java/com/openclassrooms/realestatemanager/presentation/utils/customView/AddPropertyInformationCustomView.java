@@ -29,8 +29,8 @@ public class AddPropertyInformationCustomView extends ConstraintLayout {
 
         TypedArray attributes = getContext().obtainStyledAttributes(attrs,R.styleable.AddPropertyInformationCustomView);
 
-        addPropertyInformationIcon.setImageDrawable(attributes.getDrawable(R.styleable.AddPropertyInformationCustomView_setIcon));
-        addPropertyInformationTitle.setText(attributes.getText(R.styleable.AddPropertyInformationCustomView_setTitle));
+        addPropertyInformationIcon.setImageDrawable(attributes.getDrawable(R.styleable.AddPropertyInformationCustomView_icon));
+        addPropertyInformationTitle.setText(attributes.getText(R.styleable.AddPropertyInformationCustomView_title));
         //addPropertyInformationEditText.setInputType(R.styleable.AddPropertyInformationCustomView_android_inputType);
         attributes.recycle();
     }

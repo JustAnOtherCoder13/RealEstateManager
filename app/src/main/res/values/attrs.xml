@@ -2,19 +2,19 @@
 <resources>
 
     <declare-styleable name="GlobalAttributeDeclare">
-        <attr name="setIcon" format="reference"/>
-        <attr name="setTitle" format="string"/>
+        <attr name="icon" format="reference"/>
+        <attr name="title" format="string"/>
         <attr name="android:inputType"/>
     </declare-styleable>
 
     <declare-styleable name="DetailInformationCustomView">
-        <attr name="setIcon"/>
-        <attr name="setTitle" />
+        <attr name="icon"/>
+        <attr name="title" />
     </declare-styleable>
 
     <declare-styleable name="AddPropertyInformationCustomView">
-        <attr name="setIcon"/>
-        <attr name="setTitle"/>
+        <attr name="icon"/>
+        <attr name="title"/>
         <!-- TODO input type doesn't work -->
         <attr name="android:inputType"/>
     </declare-styleable>

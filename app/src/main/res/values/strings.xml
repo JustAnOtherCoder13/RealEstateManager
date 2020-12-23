@@ -18,6 +18,9 @@
     <string name="property_detail_item_photo">property detail item photo</string>
     <string name="location_maps_view">location maps view</string>
     <string name="icon">Icon</string>
+    <string name="update_property_button">update property button</string>
+    <string name="delete_button">delete button</string>
+
 
     <!-- ______________________TEXT VIEW__________________ -->
     <string name="property_type">Property Type</string>
@@ -40,7 +43,6 @@
 
     <!-- ______________________MAPS FRAGMENT_________________ -->
     <string name="exception">Exception: %s</string>
-
 
 
 </resources>

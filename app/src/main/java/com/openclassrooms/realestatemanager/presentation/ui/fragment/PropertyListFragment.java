@@ -15,7 +15,7 @@ import com.openclassrooms.realestatemanager.R;
 import com.openclassrooms.realestatemanager.databinding.FragmentPropertyListBinding;
 import com.openclassrooms.realestatemanager.presentation.ui.fragment.adapter.PropertyRecyclerViewAdapter;
 import com.openclassrooms.realestatemanager.presentation.ui.main.BaseFragment;
-import com.openclassrooms.realestatemanager.presentation.utils.RecyclerViewItemClickUtil;
+import com.openclassrooms.realestatemanager.presentation.utils.RecyclerViewItemClickListener;
 import com.picone.core.domain.entity.Property;
 
 import java.util.ArrayList;
@@ -32,16 +32,16 @@ public class PropertyListFragment extends BaseFragment {
         mBinding = FragmentPropertyListBinding.inflate(inflater, container, false);
         mNavController = Navigation.findNavController(requireActivity(), R.id.nav_host_fragment);
         setAppBarVisibility(true);
+        initRecyclerView();
         return mBinding.getRoot();
     }
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        initRecyclerView();
         configureOnClickRecyclerView();
-        mPropertyViewModel.getSelectedProperty.observe(getViewLifecycleOwner(),property -> {
-            if (property!=null) {
+        mPropertyViewModel.getSelectedProperty.observe(getViewLifecycleOwner(), property -> {
+            if (property != null) {
                 mPropertyViewModel.setAllRoomPhotosForProperty(property);
                 mPropertyViewModel.setAllRoomPointOfInterestForProperty(property);
                 mNavController.navigate(R.id.action_propertyListFragment_to_propertyDetailFragment);
@@ -58,7 +58,7 @@ public class PropertyListFragment extends BaseFragment {
     }
 
     public void configureOnClickRecyclerView() {
-        RecyclerViewItemClickUtil.addTo(mBinding.fragmentPropertyListRecyclerview, R.layout.fragment_property_list)
+        RecyclerViewItemClickListener.addTo(mBinding.fragmentPropertyListRecyclerview, R.layout.fragment_property_list)
                 .setOnItemClickListener((recyclerView, position, v) -> {
                     List<Property> allProperties = mPropertyViewModel.getAllRoomProperties.getValue();
                     assert allProperties != null;

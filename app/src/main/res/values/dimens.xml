@@ -4,11 +4,19 @@
     <dimen name="little_marge">5dp</dimen>
     <dimen name="basic_marge">15dp</dimen>
     <dimen name="big_marge">30dp</dimen>
+    <dimen name="XL_marge">50dp</dimen>
 
     <dimen name="separator_height">2dp</dimen>
 
+    <dimen name="thumbnail_size">150dp</dimen>
+
     <!-- FRAGMENT DETAIL-->
     <dimen name="fragment_detail_additional_information_bottom_margin">15dp</dimen>
+
+
+    <dimen name="custom_view_add_property_information_edit_text_size">90dp</dimen>
+
+    <dimen name="add_property_information_layout_location_max_width">130dp</dimen>
 
 
 

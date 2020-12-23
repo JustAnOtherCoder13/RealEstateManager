@@ -14,13 +14,12 @@
 
     <EditText
         android:id="@+id/add_property_description_edit_text"
+        style="@style/addPropertyDescriptionEditText"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:autofillHints="@string/description_text"
         android:hint="@string/description_text"
         android:inputType="textMultiLine"
-        android:layout_marginStart="@dimen/little_marge"
-        android:layout_marginEnd="@dimen/little_marge"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/add_property_description_title" />

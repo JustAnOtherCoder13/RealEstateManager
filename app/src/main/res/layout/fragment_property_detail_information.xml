@@ -19,8 +19,8 @@
         app:layout_constraintTop_toTopOf="parent"
         android:layout_marginBottom="@dimen/basic_marge"
         android:layout_marginTop="@dimen/basic_marge"
-        app:setIcon="@drawable/ic_fragment_detail_area_24"
-        app:setTitle="@string/surface" />
+        app:icon="@drawable/ic_fragment_detail_area_24"
+        app:title="@string/surface" />
 
     <com.openclassrooms.realestatemanager.presentation.utils.customView.DetailInformationCustomView
         android:id="@+id/fragment_detail_numbers_of_rooms_custom_view"
@@ -30,8 +30,8 @@
         app:layout_constraintBottom_toTopOf="@id/fragment_detail_numbers_of_bathrooms_custom_view"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/fragment_detail_area_custom_view"
-        app:setIcon="@drawable/ic_fragment_detail_home_24"
-        app:setTitle="@string/number_of_rooms" />
+        app:icon="@drawable/ic_fragment_detail_home_24"
+        app:title="@string/number_of_rooms" />
 
     <com.openclassrooms.realestatemanager.presentation.utils.customView.DetailInformationCustomView
         android:id="@+id/fragment_detail_numbers_of_bathrooms_custom_view"
@@ -41,8 +41,8 @@
         app:layout_constraintBottom_toTopOf="@id/fragment_detail_numbers_of_bedrooms_custom_view"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/fragment_detail_numbers_of_rooms_custom_view"
-        app:setIcon="@drawable/ic_fragment_detail_bathroom_24"
-        app:setTitle="@string/number_of_bathrooms" />
+        app:icon="@drawable/ic_fragment_detail_bathroom_24"
+        app:title="@string/number_of_bathrooms" />
 
     <com.openclassrooms.realestatemanager.presentation.utils.customView.DetailInformationCustomView
         android:id="@+id/fragment_detail_numbers_of_bedrooms_custom_view"
@@ -52,8 +52,8 @@
         app:layout_constraintBottom_toTopOf="@id/fragment_detail_location_custom_view"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/fragment_detail_numbers_of_bathrooms_custom_view"
-        app:setIcon="@drawable/ic_fragment_detail_bedroom_24"
-        app:setTitle="@string/number_of_bedrooms" />
+        app:icon="@drawable/ic_fragment_detail_bedroom_24"
+        app:title="@string/number_of_bedrooms" />
 
     <com.openclassrooms.realestatemanager.presentation.utils.customView.DetailInformationCustomView
         android:id="@+id/fragment_detail_location_custom_view"
@@ -62,8 +62,8 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/fragment_detail_numbers_of_bedrooms_custom_view"
-        app:setIcon="@drawable/ic_fragment_detail_location_on_24"
-        app:setTitle="@string/location" />
+        app:icon="@drawable/ic_fragment_detail_location_on_24"
+        app:title="@string/location" />
 
     <ImageView
         android:id="@+id/fragment_detail_maps_view"

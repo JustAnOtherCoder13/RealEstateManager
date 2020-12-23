@@ -25,12 +25,14 @@ public class PropertyViewModel extends BaseViewModel {
     private MutableLiveData<List<PointOfInterest>> allRoomPointOfInterestForPropertyMutableLD = new MutableLiveData<>();
     private MutableLiveData<List<PropertyPhoto>> allRoomPhotosForPropertyMutableLD = new MutableLiveData<>();
     private MutableLiveData<Property> selectedPropertyMutableLD = new MutableLiveData<>();
+    private MutableLiveData<List<PropertyPhoto>> photosToDeleteMutableLD = new MutableLiveData<>();
 
 
     public LiveData<List<Property>> getAllRoomProperties = allRoomPropertiesMutableLD;
     public LiveData<List<PointOfInterest>> getAllRoomPointOfInterestForProperty = allRoomPointOfInterestForPropertyMutableLD;
     public LiveData<List<PropertyPhoto>> getAllRoomPropertyPhotosForProperty = allRoomPhotosForPropertyMutableLD;
     public LiveData<Property> getSelectedProperty = selectedPropertyMutableLD;
+    public LiveData<List<PropertyPhoto>> getPhotosToDelete = photosToDeleteMutableLD;
 
     @ViewModelInject
     public PropertyViewModel(GetAllRoomPropertiesInteractor getAllRoomPropertiesInteractor
@@ -114,16 +116,20 @@ public class PropertyViewModel extends BaseViewModel {
                         .subscribe(propertyPhotos -> allRoomPhotosForPropertyMutableLD.postValue(propertyPhotos)));
     }
 
-    public void updateRoomProperty(Property property){
+    public void updateRoomProperty(Property property) {
         compositeDisposable.add(
                 updateRoomPropertyInteractor.updateRoomProperty(property)
-                .subscribeOn(schedulerProvider.getIo())
-                .observeOn(schedulerProvider.getUi())
-                .andThen(getAllRoomPropertiesInteractor.getAllProperties())
-                .subscribe(properties -> allRoomPropertiesMutableLD.postValue(properties),throwable -> checkException()));
+                        .subscribeOn(schedulerProvider.getIo())
+                        .observeOn(schedulerProvider.getUi())
+                        .andThen(getAllRoomPropertiesInteractor.getAllProperties())
+                        .subscribe(properties -> allRoomPropertiesMutableLD.postValue(properties), throwable -> checkException()));
     }
 
-    public void setSelectedProperty(Property property){
+    public void setSelectedProperty(Property property) {
         selectedPropertyMutableLD.setValue(property);
+    }
+
+    public void setPhotosToDelete(List<PropertyPhoto> photosToDelete) {
+        photosToDeleteMutableLD.setValue(photosToDelete);
     }
 }

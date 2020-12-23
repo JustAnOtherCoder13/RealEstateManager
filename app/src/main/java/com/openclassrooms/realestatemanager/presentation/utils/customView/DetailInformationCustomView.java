@@ -28,8 +28,8 @@ public class DetailInformationCustomView extends ConstraintLayout {
 
         TypedArray attributes = getContext().obtainStyledAttributes(attrs,R.styleable.DetailInformationCustomView);
 
-        detailInformationIcon.setImageDrawable(attributes.getDrawable(R.styleable.DetailInformationCustomView_setIcon));
-        detailInformationTitle.setText(attributes.getText(R.styleable.DetailInformationCustomView_setTitle));
+        detailInformationIcon.setImageDrawable(attributes.getDrawable(R.styleable.DetailInformationCustomView_icon));
+        detailInformationTitle.setText(attributes.getText(R.styleable.DetailInformationCustomView_title));
         attributes.recycle();
     }
 }

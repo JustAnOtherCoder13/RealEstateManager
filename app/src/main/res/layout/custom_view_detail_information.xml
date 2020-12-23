@@ -7,7 +7,7 @@
 
     <ImageView
         android:id="@+id/detail_information_custom_view_icon"
-        style="@style/customViewInformationIconStyle"
+        style="@style/customViewIconStyle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:contentDescription="@string/icon"
@@ -25,9 +25,9 @@
 
     <TextView
         android:id="@+id/detail_information_custom_view_value"
-        android:layout_width="0dp"
+        style="@style/customViewTextStyle"
+        android:layout_width="@dimen/custom_view_add_property_information_edit_text_size"
         android:layout_height="wrap_content"
-        android:textAppearance="@style/TextAppearance.RealEstateManagerStyles.Body1"
         app:layout_constraintStart_toEndOf="@id/detail_information_custom_view_icon"
         app:layout_constraintTop_toBottomOf="@id/detail_information_custom_view_title"
         tool:text="@tools:sample/lorem" />
