@@ -1,6 +1,5 @@
 package com.openclassrooms.realestatemanager.presentation.ui.fragment;
 
-
 import android.Manifest;
 import android.content.pm.PackageManager;
 import android.location.Location;
@@ -21,15 +20,20 @@ import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapsInitializer;
 import com.google.android.gms.maps.OnMapReadyCallback;
+import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.MarkerOptions;
 import com.openclassrooms.realestatemanager.R;
 import com.openclassrooms.realestatemanager.databinding.FragmentMapsBinding;
 import com.openclassrooms.realestatemanager.presentation.ui.main.BaseFragment;
+import com.picone.core.domain.entity.Property;
 
+import java.util.List;
 import java.util.Objects;
 
 import static android.Manifest.permission.ACCESS_FINE_LOCATION;
+import static com.openclassrooms.realestatemanager.presentation.utils.GetBitmapFromVectorUtil.getBitmapFromVectorDrawable;
 import static com.picone.core.utils.ConstantParameters.MAPS_CAMERA_ZOOM;
 import static com.picone.core.utils.ConstantParameters.MAPS_KEY;
 import static com.picone.core.utils.ConstantParameters.REQUEST_CODE;
@@ -79,9 +83,10 @@ public class MapsFragment extends BaseFragment implements OnMapReadyCallback {
     public void onMapReady(@NonNull GoogleMap googleMap) {
         mMap = googleMap;
         enableMyLocation();
+        mPropertyViewModel.getAllRoomProperties.observe(getViewLifecycleOwner(), this::initMarkers);
     }
 
-    //TODO enable  permission coarse location
+    //TODO force enable gps location
 
     private void enableMyLocation() {
 
@@ -129,5 +134,17 @@ public class MapsFragment extends BaseFragment implements OnMapReadyCallback {
         CameraPosition cameraPosition = new CameraPosition.Builder()
                 .target(latLng).zoom(MAPS_CAMERA_ZOOM).build();
         mMap.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
+    }
+
+    private void initMarkers(List<Property> allProperties){
+        mMap.clear();
+        for (Property property:allProperties){
+            mPropertyViewModel.setPropertyLocationForProperty(property);
+        }
+        mPropertyViewModel.getPropertyLocationForProperty.observe(getViewLifecycleOwner(),propertyLocation -> {
+            LatLng propertyLatLgn = new LatLng(propertyLocation.getLatitude(),propertyLocation.getLongitude());
+            MarkerOptions markerOptions = new MarkerOptions().position(propertyLatLgn);
+            mMap.addMarker(markerOptions.icon(BitmapDescriptorFactory.fromBitmap(getBitmapFromVectorDrawable(requireContext(),R.drawable.ic_fragment_detail_location_on_24))));
+        });
     }
 }

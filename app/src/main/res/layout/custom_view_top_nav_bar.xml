@@ -23,14 +23,6 @@
         app:layout_constraintStart_toEndOf="@id/top_bar_menu_icon"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <androidx.appcompat.widget.SearchView
-        android:id="@+id/top_bar_search_view"
-        android:layout_width="wrap_content"
-        android:layout_height="match_parent"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:searchIcon="@drawable/ic_top_bar_search_24" />
 
     <ImageButton
         android:id="@+id/top_bar_add_property"
@@ -39,7 +31,7 @@
         android:layout_height="match_parent"
         android:contentDescription="@string/add_property_icon"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@id/top_bar_search_view"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

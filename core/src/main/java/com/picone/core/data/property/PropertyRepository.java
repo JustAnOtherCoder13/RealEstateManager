@@ -2,6 +2,7 @@ package com.picone.core.data.property;
 
 import com.picone.core.domain.entity.PointOfInterest;
 import com.picone.core.domain.entity.Property;
+import com.picone.core.domain.entity.PropertyLocation;
 import com.picone.core.domain.entity.PropertyPhoto;
 
 import java.util.List;
@@ -32,7 +33,15 @@ public class PropertyRepository {
         return propertyDao.getAllRoomPhotosForPropertyId(propertyId);
     }
 
-    public Completable addRoomProperty(Property property){
+    public Observable<PropertyLocation> getPropertyLocationForPropertyId(int propertyId){
+        return propertyDao.getPropertyLocationForPropertyId(propertyId);
+    }
+
+    public Completable addPropertyLocation(PropertyLocation propertyLocation) {
+        return propertyDao.addPropertyLocation(propertyLocation);
+    }
+
+        public Completable addRoomProperty(Property property){
         return propertyDao.addRoomProperty(property);
     }
 

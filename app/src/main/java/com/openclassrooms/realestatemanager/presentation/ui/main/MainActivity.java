@@ -14,7 +14,10 @@ import androidx.navigation.ui.NavigationUI;
 import com.openclassrooms.realestatemanager.R;
 import com.openclassrooms.realestatemanager.databinding.ActivityMainBinding;
 import com.openclassrooms.realestatemanager.presentation.viewModels.PropertyViewModel;
+import com.picone.core.domain.entity.Property;
+import com.picone.core.domain.entity.PropertyPhoto;
 
+import java.util.List;
 import java.util.Objects;
 
 import dagger.hilt.android.AndroidEntryPoint;
@@ -41,17 +44,32 @@ public class MainActivity extends AppCompatActivity {
         initTopAppBar();
     }
 
+
+
     @Override
     public void onBackPressed() {
         super.onBackPressed();
         if (Objects.requireNonNull(mNavController.getCurrentDestination()).getId() != R.id.propertyDetailFragment)
-            mPropertyViewModel.setSelectedProperty(null);
+            mPropertyViewModel.setSelectedProperty(new Property());
     }
 
     protected void setMenuVisibility(@NonNull Boolean isVisible) {
         mBinding.topAppBar.setVisibility(isVisible ? View.VISIBLE : View.GONE);
         mBinding.bottomNavBar.setVisibility(isVisible ? View.VISIBLE : View.GONE);
         mBinding.updateButtonCustomView.setVisibility(isVisible ? View.GONE : View.VISIBLE);
+    }
+
+    protected void initUpdateButton(boolean isForUpdate) {
+        mUpdateButton.setImageResource(isForUpdate ?
+                R.drawable.ic_custom_view_update_24
+                : R.drawable.ic_custom_view_save_24);
+
+        mUpdateButton.setOnClickListener(isForUpdate ?
+                v -> mNavController.navigate(R.id.action_propertyDetailFragment_to_addPropertyFragment)
+                : v -> {
+            mPropertyViewModel.setSelectedProperty(new Property());
+            mNavController.navigate(R.id.action_addPropertyFragment_to_propertyListFragment);
+        });
     }
 
     private void initTopAppBar() {

@@ -6,10 +6,13 @@ import androidx.lifecycle.MutableLiveData;
 
 import com.picone.core.domain.entity.PointOfInterest;
 import com.picone.core.domain.entity.Property;
+import com.picone.core.domain.entity.PropertyLocation;
 import com.picone.core.domain.entity.PropertyPhoto;
 import com.picone.core.domain.interactors.property.AddRoomPropertyInteractor;
 import com.picone.core.domain.interactors.property.GetAllRoomPropertiesInteractor;
 import com.picone.core.domain.interactors.property.UpdateRoomPropertyInteractor;
+import com.picone.core.domain.interactors.property.location.AddPropertyLocationInteractor;
+import com.picone.core.domain.interactors.property.location.GetPropertyLocationInteractor;
 import com.picone.core.domain.interactors.property.photo.AddRoomPropertyPhotoInteractor;
 import com.picone.core.domain.interactors.property.photo.DeleteRoomPropertyPhotoInteractor;
 import com.picone.core.domain.interactors.property.photo.GetAllRoomPropertyPhotosForPropertyIdInteractor;
@@ -26,6 +29,7 @@ public class PropertyViewModel extends BaseViewModel {
     private MutableLiveData<List<PropertyPhoto>> allRoomPhotosForPropertyMutableLD = new MutableLiveData<>();
     private MutableLiveData<Property> selectedPropertyMutableLD = new MutableLiveData<>();
     private MutableLiveData<List<PropertyPhoto>> photosToDeleteMutableLD = new MutableLiveData<>();
+    private MutableLiveData<PropertyLocation> propertyLocationForPropertyMutableLd = new MutableLiveData<>();
 
 
     public LiveData<List<Property>> getAllRoomProperties = allRoomPropertiesMutableLD;
@@ -33,6 +37,7 @@ public class PropertyViewModel extends BaseViewModel {
     public LiveData<List<PropertyPhoto>> getAllRoomPropertyPhotosForProperty = allRoomPhotosForPropertyMutableLD;
     public LiveData<Property> getSelectedProperty = selectedPropertyMutableLD;
     public LiveData<List<PropertyPhoto>> getPhotosToDelete = photosToDeleteMutableLD;
+    public LiveData<PropertyLocation> getPropertyLocationForProperty = propertyLocationForPropertyMutableLd;
 
     @ViewModelInject
     public PropertyViewModel(GetAllRoomPropertiesInteractor getAllRoomPropertiesInteractor
@@ -43,6 +48,8 @@ public class PropertyViewModel extends BaseViewModel {
             , AddRoomPropertyPhotoInteractor addRoomPropertyPhotoInteractor
             , DeleteRoomPropertyPhotoInteractor deleteRoomPropertyPhotoInteractor
             , UpdateRoomPropertyInteractor updateRoomPropertyInteractor
+            , GetPropertyLocationInteractor getPropertyLocationInteractor
+            , AddPropertyLocationInteractor addPropertyLocationInteractor
             , SchedulerProvider schedulerProvider) {
         this.getAllRoomPropertiesInteractor = getAllRoomPropertiesInteractor;
         this.getAllRoomPointOfInterestForPropertyIdInteractor = getAllRoomPointOfInterestForPropertyIdInteractor;
@@ -52,6 +59,8 @@ public class PropertyViewModel extends BaseViewModel {
         this.addRoomPropertyPhotoInteractor = addRoomPropertyPhotoInteractor;
         this.deleteRoomPropertyPhotoInteractor = deleteRoomPropertyPhotoInteractor;
         this.updateRoomPropertyInteractor = updateRoomPropertyInteractor;
+        this.getPropertyLocationInteractor = getPropertyLocationInteractor;
+        this.addPropertyLocationInteractor = addPropertyLocationInteractor;
         this.schedulerProvider = schedulerProvider;
     }
 
@@ -77,6 +86,14 @@ public class PropertyViewModel extends BaseViewModel {
                         .subscribeOn(schedulerProvider.getIo())
                         .observeOn(schedulerProvider.getUi())
                         .subscribe(propertyPhotos -> allRoomPhotosForPropertyMutableLD.setValue(propertyPhotos)));
+    }
+
+    public void setPropertyLocationForProperty(Property property){
+        compositeDisposable.add(
+                getPropertyLocationInteractor.getPropertyLocationForPropertyId(property.getId())
+                .subscribeOn(schedulerProvider.getIo())
+                .observeOn(schedulerProvider.getUi())
+                .subscribe(propertyLocation -> propertyLocationForPropertyMutableLd.setValue(propertyLocation) ));
     }
 
     public void addRoomProperty(Property property) {

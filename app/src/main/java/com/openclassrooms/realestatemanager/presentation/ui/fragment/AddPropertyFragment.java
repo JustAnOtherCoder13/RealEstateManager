@@ -54,13 +54,14 @@ public class AddPropertyFragment extends BaseFragment {
         configureOnClickRecyclerView();
         initView();
         initClickListener();
+        if (mPropertyViewModel.getSelectedProperty.getValue()!=null)
         initViewValueWhenUpdate(mBinding.addPropertyInformationLayout, mPropertyViewModel.getSelectedProperty.getValue());
         initDropDownMenu();
     }
 
     private void initView() {
-        //TODO null on rotate
-        mUpdateButton.setImageResource(R.drawable.ic_custom_view_save_24);
+        setUpdateButtonIcon(false);
+
         EditText editText = mBinding.addPropertyInformationLayout.addPropertyInformationAddress.findViewById(R.id.add_property_information_custom_view_value);
         editText.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_FLAG_MULTI_LINE);
         editText.setSingleLine(false);
@@ -70,12 +71,6 @@ public class AddPropertyFragment extends BaseFragment {
     private void initClickListener() {
         mBinding.addPropertyMediaLayout.detailCustomViewDeleteButton.setOnClickListener(v ->
                 Toast.makeText(requireContext(), "delete", Toast.LENGTH_SHORT).show());
-
-        mUpdateButton.setOnClickListener(v -> {
-            Toast.makeText(requireContext(), "saved", Toast.LENGTH_SHORT).show();
-            mNavController.navigate(R.id.action_addPropertyFragment_to_propertyListFragment);
-            mPropertyViewModel.setSelectedProperty(null);
-        });
 
         mBinding.addPropertySoldLayout.addPropertySoldCheckbox.setOnClickListener(v -> {
             if (mBinding.addPropertySoldLayout.addPropertySoldCheckbox.isChecked())
@@ -87,7 +82,8 @@ public class AddPropertyFragment extends BaseFragment {
     private void initViewValueWhenUpdate(FragmentAddPropertyInformationLayoutBinding addPropertyInformationCustomView, Property property) {
         mPropertyViewModel.setPhotosToDelete(new ArrayList<>());
         EditText descriptionEditText = mBinding.addPropertyDescriptionLayout.addPropertyDescriptionEditText;
-        if (property != null) {
+        AutoCompleteTextView propertyTypeDropDownMenu = mBinding.addPropertyInformationLayout.addPropertyInformationTypeCustomViewAutocompleteTextView;
+        if (property.getAddress() != null) {
             setTextForCustomView(addPropertyInformationCustomView.addPropertyInformationPrice, String.valueOf(property.getPrice()));
             setTextForCustomView(addPropertyInformationCustomView.addPropertyInformationArea, String.valueOf(property.getPropertyArea()));
             setTextForCustomView(addPropertyInformationCustomView.addPropertyInformationNumberOfBathrooms, String.valueOf(property.getNumberOfBathrooms()));
@@ -96,7 +92,8 @@ public class AddPropertyFragment extends BaseFragment {
             setTextForCustomView(addPropertyInformationCustomView.addPropertyInformationAddress, property.getAddress());
             mPropertyPhotos.addAll(Objects.requireNonNull(mPropertyViewModel.getAllRoomPropertyPhotosForProperty.getValue()));
             descriptionEditText.setText(property.getDescription());
-        }
+            propertyTypeDropDownMenu.setText(property.getPropertyType());
+            }
     }
 
     private void initRecyclerView() {
@@ -121,13 +118,14 @@ public class AddPropertyFragment extends BaseFragment {
         RecyclerViewItemClickListener.addTo(mBinding.addPropertyMediaLayout.detailCustomViewRecyclerView, R.layout.fragment_add_property)
                 .setOnItemLongClickListener((recyclerView, position, v) -> {
 
+                    if (position==0)return false;
+
                     List<PropertyPhoto> basePhotos = mPropertyViewModel.getAllRoomPropertyPhotosForProperty.getValue();
                     int indexOnBasePhotos = position - 1;
 
                     CheckBox checkBox = v.findViewById(R.id.property_detail_item_check_box);
-                    checkBox.setVisibility(checkBox.isChecked() ? View.GONE : View.VISIBLE);
-
-                    if (position != 0) checkBox.setChecked(!checkBox.isChecked());
+                    checkBox.setChecked(!checkBox.isChecked());
+                    checkBox.setVisibility(checkBox.isChecked() ? View.VISIBLE : View.GONE);
 
                     assert basePhotos != null;
                     if (checkBox.isChecked() && !mPhotosToDelete.contains(basePhotos.get(indexOnBasePhotos)))
@@ -141,12 +139,11 @@ public class AddPropertyFragment extends BaseFragment {
                 });
     }
 
-    //TODO adapter don't show result on view
     //TODO replace property type by R.string enum?
     private void initDropDownMenu() {
         String[] propertyType = {"Flat", "House", "Duplex", "Penthouse"};
 
-        ArrayAdapter<String> adapter = new ArrayAdapter<>(requireContext(), android.R.layout.simple_dropdown_item_1line, propertyType);
+        ArrayAdapter<String> adapter = new ArrayAdapter<>(requireActivity(), android.R.layout.simple_dropdown_item_1line, propertyType);
         AutoCompleteTextView propertyTypeTextView = (AutoCompleteTextView) mBinding.addPropertyInformationLayout.addPropertyInformationType.getEditText();
         assert propertyTypeTextView != null;
         propertyTypeTextView.setAdapter(adapter);

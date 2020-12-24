@@ -20,6 +20,7 @@ public class Property {
     @ColumnInfo(index = true)
     private int realEstateManagerId;
     private String address;
+    private String zone;
     private String propertyType;
     private int propertyArea;
     private int numberOfRooms;
@@ -38,10 +39,11 @@ public class Property {
     public Property() {
     }
 
-    public Property(int id, int realEstateManagerId, String address, String propertyType, int propertyArea, int numberOfRooms, int price, String description, int numberOfBedrooms, int numberOfBathrooms, boolean isSold, String enterOnMarket, String soldFrom) {
+    public Property(int id, int realEstateManagerId, String address, String zone, String propertyType, int propertyArea, int numberOfRooms, int price, String description, int numberOfBedrooms, int numberOfBathrooms, boolean isSold, String enterOnMarket, String soldFrom) {
         this.id = id;
         this.realEstateManagerId = realEstateManagerId;
         this.address = address;
+        this.zone = zone;
         this.propertyType = propertyType;
         this.propertyArea = propertyArea;
         this.numberOfRooms = numberOfRooms;
@@ -156,5 +158,13 @@ public class Property {
 
     public void setSoldFrom(String soldFrom) {
         this.soldFrom = soldFrom;
+    }
+
+    public String getZone() {
+        return zone;
+    }
+
+    public void setZone(String zone) {
+        this.zone = zone;
     }
 }

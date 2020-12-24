@@ -8,6 +8,8 @@ import com.picone.core.domain.interactors.agent.GetAllRoomAgentInteractor;
 import com.picone.core.domain.interactors.property.AddRoomPropertyInteractor;
 import com.picone.core.domain.interactors.property.GetAllRoomPropertiesInteractor;
 import com.picone.core.domain.interactors.property.UpdateRoomPropertyInteractor;
+import com.picone.core.domain.interactors.property.location.AddPropertyLocationInteractor;
+import com.picone.core.domain.interactors.property.location.GetPropertyLocationInteractor;
 import com.picone.core.domain.interactors.property.photo.AddRoomPropertyPhotoInteractor;
 import com.picone.core.domain.interactors.property.photo.DeleteRoomPropertyPhotoInteractor;
 import com.picone.core.domain.interactors.property.photo.GetAllRoomPropertyPhotosForPropertyIdInteractor;
@@ -42,6 +44,8 @@ public abstract class BaseViewModel extends ViewModel {
     protected AddRoomPropertyPhotoInteractor addRoomPropertyPhotoInteractor;
     protected DeleteRoomPropertyPhotoInteractor deleteRoomPropertyPhotoInteractor;
     protected UpdateRoomPropertyInteractor updateRoomPropertyInteractor;
+    protected GetPropertyLocationInteractor getPropertyLocationInteractor;
+    protected AddPropertyLocationInteractor addPropertyLocationInteractor;
 
     @Override
     protected void onCleared() {

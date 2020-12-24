@@ -3,6 +3,7 @@ package com.picone.core.data.property;
 import com.picone.core.data.RealEstateManagerRoomDatabase;
 import com.picone.core.domain.entity.PointOfInterest;
 import com.picone.core.domain.entity.Property;
+import com.picone.core.domain.entity.PropertyLocation;
 import com.picone.core.domain.entity.PropertyPhoto;
 
 import java.util.List;
@@ -35,6 +36,10 @@ public class PropertyDaoImpl implements PropertyDao {
         return mPropertyRoomDao.getAllRoomPhotosForPropertyId(propertyId);
     }
 
+    public Observable<PropertyLocation> getPropertyLocationForPropertyId(int propertyId) {
+        return mPropertyRoomDao.getPropertyLocationForPropertyId(propertyId);
+    }
+
     public Completable addRoomProperty(Property property) {
         return mPropertyRoomDao.addRoomProperty(property);
     }
@@ -46,6 +51,11 @@ public class PropertyDaoImpl implements PropertyDao {
     public Completable addRoomPropertyPhoto(PropertyPhoto propertyPhoto) {
         return mPropertyRoomDao.addRoomPropertyPhoto(propertyPhoto);
     }
+
+    public Completable addPropertyLocation(PropertyLocation propertyLocation){
+        return mPropertyRoomDao.addPropertyLocation(propertyLocation);
+    }
+
 
     public Completable deleteRoomPropertyPhoto(PropertyPhoto propertyPhoto) {
         return mPropertyRoomDao.deleteRoomPropertyPhoto(propertyPhoto);

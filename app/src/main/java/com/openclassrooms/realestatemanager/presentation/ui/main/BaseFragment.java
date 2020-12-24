@@ -10,6 +10,10 @@ import androidx.navigation.NavController;
 
 import com.openclassrooms.realestatemanager.presentation.viewModels.PropertyViewModel;
 import com.openclassrooms.realestatemanager.presentation.viewModels.RealEstateAgentViewModel;
+import com.picone.core.domain.entity.Property;
+import com.picone.core.domain.entity.PropertyPhoto;
+
+import java.util.List;
 
 import dagger.hilt.android.AndroidEntryPoint;
 
@@ -35,6 +39,9 @@ public abstract class BaseFragment extends Fragment {
 
     protected void setAppBarVisibility(boolean isVisible) {
         mainActivity.setMenuVisibility(isVisible);
+    }
+    protected void setUpdateButtonIcon(boolean isForUpdate){
+        mainActivity.initUpdateButton(isForUpdate);
     }
 
 }

@@ -3,6 +3,8 @@ package com.picone.core.di;
 
 import android.content.Context;
 
+import androidx.room.PrimaryKey;
+
 import com.picone.core.data.RealEstateManagerRoomDatabase;
 import com.picone.core.data.property.PropertyDaoImpl;
 import com.picone.core.data.property.PropertyRepository;
@@ -12,6 +14,8 @@ import com.picone.core.domain.interactors.agent.GetAllRoomAgentInteractor;
 import com.picone.core.domain.interactors.property.AddRoomPropertyInteractor;
 import com.picone.core.domain.interactors.property.GetAllRoomPropertiesInteractor;
 import com.picone.core.domain.interactors.property.UpdateRoomPropertyInteractor;
+import com.picone.core.domain.interactors.property.location.AddPropertyLocationInteractor;
+import com.picone.core.domain.interactors.property.location.GetPropertyLocationInteractor;
 import com.picone.core.domain.interactors.property.photo.AddRoomPropertyPhotoInteractor;
 import com.picone.core.domain.interactors.property.photo.DeleteRoomPropertyPhotoInteractor;
 import com.picone.core.domain.interactors.property.photo.GetAllRoomPropertyPhotosForPropertyIdInteractor;
@@ -111,5 +115,15 @@ public final class coreModule {
     @Provides
     static UpdateRoomPropertyInteractor provideUpdateRoomProperty(@ApplicationContext Context context){
         return new UpdateRoomPropertyInteractor(providePropertyDataSource(context));
+    }
+
+    @Provides
+    static GetPropertyLocationInteractor provideGetPropertyLocation(@ApplicationContext Context context){
+        return new GetPropertyLocationInteractor(providePropertyDataSource(context));
+    }
+
+    @Provides
+    static AddPropertyLocationInteractor provideAddPropertyLocation(@ApplicationContext Context context){
+        return new AddPropertyLocationInteractor(providePropertyDataSource(context));
     }
 }

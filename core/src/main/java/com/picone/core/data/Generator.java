@@ -2,6 +2,7 @@ package com.picone.core.data;
 
 import com.picone.core.domain.entity.PointOfInterest;
 import com.picone.core.domain.entity.Property;
+import com.picone.core.domain.entity.PropertyLocation;
 import com.picone.core.domain.entity.PropertyPhoto;
 import com.picone.core.domain.entity.RealEstateAgent;
 
@@ -44,13 +45,20 @@ public abstract class Generator {
         return new ArrayList<>(POINT_OF_INTEREST);
     }
 
-    private static List<Property> PROPERTY = Arrays.asList(
-            new Property(1, 1, "Avenue Henry Barbusse, Les Tilleuls, 13250 Saint Chamas", "cotage",500,15,560000,"First house description",6,3,false,"30/06/2020","0"),
-            new Property(2, 3, "Property2 address", "penthouse",200,7,450000,"Second house description",3,1,false,"15/10/2020","0")
+    private static List<Property> PROPERTIES = Arrays.asList(
+            new Property(1, 1, "Avenue Henry Barbusse, Les Tilleuls, 13250 Saint Chamas","PACA", "cotage",500,15,560000,"First house description",6,3,false,"30/06/2020","0"),
+            new Property(2, 3, "Property2 address","Ile de France", "penthouse",200,7,450000,"Second house description",3,1,false,"15/10/2020","0")
     );
 
     public static List<Property> generateProperties() {
-        return new ArrayList<>(PROPERTY);
+        return new ArrayList<>(PROPERTIES);
     }
+
+    private static List<PropertyLocation> PROPERTIES_LOCATION = Arrays.asList(
+            new PropertyLocation(1,43.543732,5.036901,1),
+            new PropertyLocation(2,43.560711,5.072869,2)
+    );
+
+    public static List<PropertyLocation> generatePropertyLocation(){return new ArrayList<>(PROPERTIES_LOCATION);}
 
 }

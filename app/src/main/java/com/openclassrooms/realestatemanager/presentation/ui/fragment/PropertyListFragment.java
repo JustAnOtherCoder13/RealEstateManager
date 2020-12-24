@@ -41,7 +41,7 @@ public class PropertyListFragment extends BaseFragment {
         super.onViewCreated(view, savedInstanceState);
         configureOnClickRecyclerView();
         mPropertyViewModel.getSelectedProperty.observe(getViewLifecycleOwner(), property -> {
-            if (property != null) {
+            if (property.getAddress() != null) {
                 mPropertyViewModel.setAllRoomPhotosForProperty(property);
                 mPropertyViewModel.setAllRoomPointOfInterestForProperty(property);
                 mNavController.navigate(R.id.action_propertyListFragment_to_propertyDetailFragment);

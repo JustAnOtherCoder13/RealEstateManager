@@ -16,6 +16,8 @@ import com.picone.core.domain.interactors.agent.GetAllRoomAgentInteractor;
 import com.picone.core.domain.interactors.property.AddRoomPropertyInteractor;
 import com.picone.core.domain.interactors.property.GetAllRoomPropertiesInteractor;
 import com.picone.core.domain.interactors.property.UpdateRoomPropertyInteractor;
+import com.picone.core.domain.interactors.property.location.AddPropertyLocationInteractor;
+import com.picone.core.domain.interactors.property.location.GetPropertyLocationInteractor;
 import com.picone.core.domain.interactors.property.photo.AddRoomPropertyPhotoInteractor;
 import com.picone.core.domain.interactors.property.photo.DeleteRoomPropertyPhotoInteractor;
 import com.picone.core.domain.interactors.property.photo.GetAllRoomPropertyPhotosForPropertyIdInteractor;
@@ -47,7 +49,7 @@ public abstract class BaseUnitTest {
 
     final int propertyId = Generator.generateProperties().get(0).getId();
 
-    Property propertyToAdd = new Property(3,2,"property3Adress","House",120,6,350000,"description",2,1,false,"0","0");
+    Property propertyToAdd = new Property(3,2,"property3Adress","zone","House",120,6,350000,"description",2,1,false,"0","0");
     Property firstPropertyToUpdate = Generator.generateProperties().get(0);
     List<PropertyPhoto> photoForPropertyId = new ArrayList<>();
     PropertyPhoto photoToAdd = new PropertyPhoto(5,"newPhoto","newDescription",1);
@@ -77,6 +79,10 @@ public abstract class BaseUnitTest {
     DeleteRoomPropertyPhotoInteractor deleteRoomPropertyPhotoInteractor;
     @InjectMocks
     GetAllRoomPropertyPhotosForPropertyIdInteractor getAllRoomPropertyPhotosForPropertyIdInteractor;
+    @InjectMocks
+    GetPropertyLocationInteractor getPropertyLocationInteractor;
+    @InjectMocks
+    AddPropertyLocationInteractor addPropertyLocationInteractor;
 
     //mock realEstateAgentViewModel
     RealEstateAgentViewModel realEstateAgentViewModel;
@@ -105,7 +111,7 @@ public abstract class BaseUnitTest {
         pointOfInterestForPropertyId.add(Generator.generatePointOfInterests().get(0));
 
         //initViewModels
-        propertyViewModel = new PropertyViewModel(getAllRoomPropertiesInteractor,getAllRoomPointOfInterestForPropertyIdInteractor,getAllRoomPropertyPhotosForPropertyIdInteractor,addRoomPropertyInteractor,addRoomPropertyPointOfInterestInteractor,addRoomPropertyPhotoInteractor,deleteRoomPropertyPhotoInteractor,updateRoomPropertyInteractor,schedulerProvider);
+        propertyViewModel = new PropertyViewModel(getAllRoomPropertiesInteractor,getAllRoomPointOfInterestForPropertyIdInteractor,getAllRoomPropertyPhotosForPropertyIdInteractor,addRoomPropertyInteractor,addRoomPropertyPointOfInterestInteractor,addRoomPropertyPhotoInteractor,deleteRoomPropertyPhotoInteractor,updateRoomPropertyInteractor,getPropertyLocationInteractor,addPropertyLocationInteractor,schedulerProvider);
         realEstateAgentViewModel = new RealEstateAgentViewModel(getAllRoomAgentInteractor,schedulerProvider);
 
         //initObserver

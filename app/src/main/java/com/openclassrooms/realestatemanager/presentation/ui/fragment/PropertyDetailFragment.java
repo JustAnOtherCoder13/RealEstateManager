@@ -40,16 +40,14 @@ public class PropertyDetailFragment extends BaseFragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        mUpdateButton.setImageResource(R.drawable.ic_custom_view_update_24);
+        setUpdateButtonIcon(true);
 
-        initValue(mBinding.fragmentDetailInformationLayout,
-                Objects.requireNonNull(mPropertyViewModel.getSelectedProperty.getValue()),
+        mPropertyViewModel.getSelectedProperty.observe(getViewLifecycleOwner(),property ->
+                initValue(mBinding.fragmentDetailInformationLayout,
+                Objects.requireNonNull(property),
                 mBinding.fragmentDetailDescriptionLayout.customViewDetailMediaDescriptionText,
-                mBinding.fragmentDetailInformationLayout.fragmentDetailLocationCustomView.findViewById(R.id.detail_information_custom_view_value));
-        //TODO null on rotate
-        mUpdateButton.setOnClickListener(v ->
-                mNavController.navigate(R.id.action_propertyDetailFragment_to_addPropertyFragment));
-    }
+                mBinding.fragmentDetailInformationLayout.fragmentDetailLocationCustomView.findViewById(R.id.detail_information_custom_view_value)));
+        }
 
     private void initValue(FragmentPropertyDetailInformationBinding detailInformationLayout, Property property, TextView descriptionTextView, TextView addressTextView) {
         setTextForCustomView(detailInformationLayout.fragmentDetailAreaCustomView, String.valueOf(property.getPropertyArea()).concat(" ").concat("sq m"));

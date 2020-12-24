@@ -8,6 +8,7 @@ import androidx.room.Update;
 
 import com.picone.core.domain.entity.PointOfInterest;
 import com.picone.core.domain.entity.Property;
+import com.picone.core.domain.entity.PropertyLocation;
 import com.picone.core.domain.entity.PropertyPhoto;
 
 import java.util.List;
@@ -27,6 +28,9 @@ public interface PropertyRoomDao {
     @Query("SELECT*FROM property_photo_table WHERE property_photo_table.propertyId = :propertyId")
     Observable<List<PropertyPhoto>> getAllRoomPhotosForPropertyId(int propertyId);
 
+    @Query("SELECT*FROM property_location_table WHERE property_location_table.propertyId = :propertyId")
+    Observable<PropertyLocation> getPropertyLocationForPropertyId(int propertyId);
+
     @Insert
     Completable addRoomProperty(Property property);
 
@@ -35,6 +39,9 @@ public interface PropertyRoomDao {
 
     @Insert
     Completable addRoomPropertyPhoto(PropertyPhoto propertyPhoto);
+
+    @Insert
+    Completable addPropertyLocation(PropertyLocation propertyLocation);
 
     @Delete
     Completable deleteRoomPropertyPhoto(PropertyPhoto propertyPhoto);
