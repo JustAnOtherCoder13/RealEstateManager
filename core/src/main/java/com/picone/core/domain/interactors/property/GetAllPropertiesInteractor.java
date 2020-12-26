@@ -7,13 +7,13 @@ import java.util.List;
 
 import io.reactivex.Observable;
 
-public class GetAllRoomPropertiesInteractor extends PropertyBaseInteractor{
+public class GetAllPropertiesInteractor extends PropertyBaseInteractor{
 
-    public GetAllRoomPropertiesInteractor(PropertyRepository propertyDataSource) {
+    public GetAllPropertiesInteractor(PropertyRepository propertyDataSource) {
         super(propertyDataSource);
     }
 
     public Observable <List<Property>> getAllProperties(){
-        return propertyDataSource.getAllRoomProperties();
+        return propertyDataSource.getAllProperties();
     }
 }

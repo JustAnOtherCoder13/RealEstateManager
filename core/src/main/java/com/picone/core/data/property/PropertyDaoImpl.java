@@ -13,7 +13,7 @@ import javax.inject.Inject;
 import io.reactivex.Completable;
 import io.reactivex.Observable;
 
-public class PropertyDaoImpl implements PropertyDao {
+public class PropertyDaoImpl {
 
     @Inject
     protected RealEstateManagerRoomDatabase mRoomDatabase;
@@ -24,32 +24,32 @@ public class PropertyDaoImpl implements PropertyDao {
         mPropertyRoomDao = mRoomDatabase.propertyRoomDao();
     }
 
-    public Observable<List<Property>> getAllRoomProperties() {
-        return mPropertyRoomDao.getAllRoomProperties();
+    public Observable<List<Property>> getAllProperties() {
+        return mPropertyRoomDao.getAllProperties();
     }
 
-    public Observable<List<PointOfInterest>> getAllRoomPointOfInterestForPropertyId(int propertyId) {
-        return mPropertyRoomDao.getAllRoomPointOfInterestForPropertyId(propertyId);
+    public Observable<List<PointOfInterest>> getAllPointOfInterestForPropertyId(int propertyId) {
+        return mPropertyRoomDao.getAllPointOfInterestForPropertyId(propertyId);
     }
 
-    public Observable<List<PropertyPhoto>> getAllRoomPhotosForPropertyId(int propertyId) {
-        return mPropertyRoomDao.getAllRoomPhotosForPropertyId(propertyId);
+    public Observable<List<PropertyPhoto>> getAllPhotosForPropertyId(int propertyId) {
+        return mPropertyRoomDao.getAllPhotosForPropertyId(propertyId);
     }
 
     public Observable<PropertyLocation> getPropertyLocationForPropertyId(int propertyId) {
         return mPropertyRoomDao.getPropertyLocationForPropertyId(propertyId);
     }
 
-    public Completable addRoomProperty(Property property) {
-        return mPropertyRoomDao.addRoomProperty(property);
+    public Completable addProperty(Property property) {
+        return mPropertyRoomDao.addProperty(property);
     }
 
-    public Completable addRoomPropertyPointOfInterest(PointOfInterest pointOfInterest) {
-        return mPropertyRoomDao.addRoomPropertyPointOfInterest(pointOfInterest);
+    public Completable addPropertyPointOfInterest(PointOfInterest pointOfInterest) {
+        return mPropertyRoomDao.addPropertyPointOfInterest(pointOfInterest);
     }
 
-    public Completable addRoomPropertyPhoto(PropertyPhoto propertyPhoto) {
-        return mPropertyRoomDao.addRoomPropertyPhoto(propertyPhoto);
+    public Completable addPropertyPhoto(PropertyPhoto propertyPhoto) {
+        return mPropertyRoomDao.addPropertyPhoto(propertyPhoto);
     }
 
     public Completable addPropertyLocation(PropertyLocation propertyLocation){
@@ -57,12 +57,12 @@ public class PropertyDaoImpl implements PropertyDao {
     }
 
 
-    public Completable deleteRoomPropertyPhoto(PropertyPhoto propertyPhoto) {
-        return mPropertyRoomDao.deleteRoomPropertyPhoto(propertyPhoto);
+    public Completable deletePropertyPhoto(PropertyPhoto propertyPhoto) {
+        return mPropertyRoomDao.deletePropertyPhoto(propertyPhoto);
     }
 
-    public Completable updateRoomProperty(Property property) {
-        return mPropertyRoomDao.updateRoomProperty(property);
+    public Completable updateProperty(Property property) {
+        return mPropertyRoomDao.updateProperty(property);
     }
 
 }

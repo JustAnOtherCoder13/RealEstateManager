@@ -5,13 +5,13 @@ import com.picone.core.domain.entity.Property;
 
 import io.reactivex.Completable;
 
-public class AddRoomPropertyInteractor extends PropertyBaseInteractor {
+public class AddPropertyInteractor extends PropertyBaseInteractor {
 
-    public AddRoomPropertyInteractor(PropertyRepository propertyDataSource) {
+    public AddPropertyInteractor(PropertyRepository propertyDataSource) {
         super(propertyDataSource);
     }
 
     public Completable addRoomProperty(Property property){
-        return propertyDataSource.addRoomProperty(property);
+        return propertyDataSource.addProperty(property);
     }
 }

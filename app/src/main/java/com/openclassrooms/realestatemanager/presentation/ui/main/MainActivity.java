@@ -13,11 +13,10 @@ import androidx.navigation.ui.NavigationUI;
 
 import com.openclassrooms.realestatemanager.R;
 import com.openclassrooms.realestatemanager.databinding.ActivityMainBinding;
+import com.openclassrooms.realestatemanager.presentation.viewModels.AgentViewModel;
 import com.openclassrooms.realestatemanager.presentation.viewModels.PropertyViewModel;
 import com.picone.core.domain.entity.Property;
-import com.picone.core.domain.entity.PropertyPhoto;
 
-import java.util.List;
 import java.util.Objects;
 
 import dagger.hilt.android.AndroidEntryPoint;
@@ -29,6 +28,7 @@ public class MainActivity extends AppCompatActivity {
 
     private ActivityMainBinding mBinding;
     private PropertyViewModel mPropertyViewModel;
+    private AgentViewModel mAgentViewModel;
     private NavController mNavController;
     protected ImageButton mUpdateButton;
 
@@ -39,11 +39,12 @@ public class MainActivity extends AppCompatActivity {
         setContentView(mBinding.getRoot());
         mUpdateButton = mBinding.updateButtonCustomView.findViewById(R.id.custom_view_update_image_button);
         mPropertyViewModel = new ViewModelProvider(this).get(PropertyViewModel.class);
+        mAgentViewModel = new ViewModelProvider(this).get(AgentViewModel.class);
         mNavController = Navigation.findNavController(this, R.id.nav_host_fragment);
         NavigationUI.setupWithNavController(mBinding.bottomNavBar, mNavController);
         initTopAppBar();
+        mAgentViewModel.setAgent();
     }
-
 
 
     @Override
@@ -64,12 +65,9 @@ public class MainActivity extends AppCompatActivity {
                 R.drawable.ic_custom_view_update_24
                 : R.drawable.ic_custom_view_save_24);
 
-        mUpdateButton.setOnClickListener(isForUpdate ?
-                v -> mNavController.navigate(R.id.action_propertyDetailFragment_to_addPropertyFragment)
-                : v -> {
-            mPropertyViewModel.setSelectedProperty(new Property());
-            mNavController.navigate(R.id.action_addPropertyFragment_to_propertyListFragment);
-        });
+        if (isForUpdate) mUpdateButton.setOnClickListener
+                (v -> mNavController.navigate
+                        (R.id.action_propertyDetailFragment_to_addPropertyFragment));
     }
 
     private void initTopAppBar() {
@@ -77,15 +75,18 @@ public class MainActivity extends AppCompatActivity {
         addPropertyBtn.setOnClickListener(v -> {
             switch (Objects.requireNonNull(mNavController.getCurrentDestination()).getId()) {
                 case R.id.propertyListFragment:
-                    mNavController.navigate(R.id.action_propertyListFragment_to_addPropertyFragment);
+                    mNavController.navigate
+                            (R.id.action_propertyListFragment_to_addPropertyFragment);
                     break;
 
                 case R.id.mapsFragment:
-                    mNavController.navigate(R.id.action_mapsFragment_to_addPropertyFragment);
+                    mNavController.navigate
+                            (R.id.action_mapsFragment_to_addPropertyFragment);
                     break;
 
                 default:
-                    mNavController.navigate(R.id.addPropertyFragment);
+                    mNavController.navigate
+                            (R.id.addPropertyFragment);
             }
         });
     }

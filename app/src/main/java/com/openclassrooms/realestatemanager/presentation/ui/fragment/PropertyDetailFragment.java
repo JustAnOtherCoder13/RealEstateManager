@@ -33,21 +33,25 @@ public class PropertyDetailFragment extends BaseFragment {
         mNavController = Navigation.findNavController(requireActivity(), R.id.nav_host_fragment);
         setAppBarVisibility(false);
         initRecyclerView();
+        setUpdateButtonIcon(true);
         return mBinding.getRoot();
     }
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-
-        setUpdateButtonIcon(true);
-
         mPropertyViewModel.getSelectedProperty.observe(getViewLifecycleOwner(),property ->
                 initValue(mBinding.fragmentDetailInformationLayout,
                 Objects.requireNonNull(property),
                 mBinding.fragmentDetailDescriptionLayout.customViewDetailMediaDescriptionText,
                 mBinding.fragmentDetailInformationLayout.fragmentDetailLocationCustomView.findViewById(R.id.detail_information_custom_view_value)));
         }
+
+    private void initRecyclerView() {
+        PhotoRecyclerViewAdapter adapter = new PhotoRecyclerViewAdapter(new ArrayList<>());
+        mBinding.fragmentDetailMediaLayout.detailCustomViewRecyclerView.setAdapter(adapter);
+        mPropertyViewModel.getAllPropertyPhotosForProperty.observe(getViewLifecycleOwner(), adapter::updatePhotos);
+    }
 
     private void initValue(FragmentPropertyDetailInformationBinding detailInformationLayout, Property property, TextView descriptionTextView, TextView addressTextView) {
         setTextForCustomView(detailInformationLayout.fragmentDetailAreaCustomView, String.valueOf(property.getPropertyArea()).concat(" ").concat("sq m"));
@@ -59,12 +63,6 @@ public class PropertyDetailFragment extends BaseFragment {
         descriptionTextView.setText(property.getDescription());
         addressTextView.setLines(6);
         addressTextView.setSingleLine(false);
-    }
-
-    private void initRecyclerView() {
-        PhotoRecyclerViewAdapter adapter = new PhotoRecyclerViewAdapter(new ArrayList<>());
-        mBinding.fragmentDetailMediaLayout.detailCustomViewRecyclerView.setAdapter(adapter);
-        mPropertyViewModel.getAllRoomPropertyPhotosForProperty.observe(getViewLifecycleOwner(), adapter::updatePhotos);
     }
 
     private void setTextForCustomView(DetailInformationCustomView customView, String text) {

@@ -6,13 +6,13 @@ import com.picone.core.domain.interactors.property.PropertyBaseInteractor;
 
 import io.reactivex.Completable;
 
-public class DeleteRoomPropertyPhotoInteractor extends PropertyBaseInteractor {
+public class AddPropertyPhotoInteractor extends PropertyBaseInteractor {
 
-    public DeleteRoomPropertyPhotoInteractor(PropertyRepository propertyDataSource) {
+    public AddPropertyPhotoInteractor(PropertyRepository propertyDataSource) {
         super(propertyDataSource);
     }
 
-    public Completable deleteRoomPropertyPhoto(PropertyPhoto propertyPhoto) {
-        return propertyDataSource.deleteRoomPropertyPhoto(propertyPhoto);
+    public Completable addRoomPropertyPhoto(PropertyPhoto propertyPhoto){
+        return propertyDataSource.addPropertyPhoto(propertyPhoto);
     }
 }

@@ -6,14 +6,14 @@ import com.picone.core.domain.interactors.property.PropertyBaseInteractor;
 
 import io.reactivex.Completable;
 
-public class AddRoomPropertyPointOfInterestInteractor extends PropertyBaseInteractor {
+public class AddPropertyPointOfInterestInteractor extends PropertyBaseInteractor {
 
-    public AddRoomPropertyPointOfInterestInteractor(PropertyRepository propertyDataSource) {
+    public AddPropertyPointOfInterestInteractor(PropertyRepository propertyDataSource) {
         super(propertyDataSource);
     }
 
     public Completable addRoomPropertyPointOfInterest(PointOfInterest pointOfInterest) {
-        return propertyDataSource.addRoomPropertyPointOfInterest(pointOfInterest);
+        return propertyDataSource.addPropertyPointOfInterest(pointOfInterest);
     }
 
 }

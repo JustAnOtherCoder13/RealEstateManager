@@ -5,14 +5,12 @@ import android.annotation.SuppressLint;
 import com.picone.core.data.RealEstateManagerRoomDatabase;
 import com.picone.core.domain.entity.RealEstateAgent;
 
-import java.util.List;
-
 import javax.inject.Inject;
 
 import io.reactivex.Observable;
 
 
-public class RealEstateAgentDaoImpl implements RealEstateAgentDao {
+public class RealEstateAgentDaoImpl {
 
     @Inject
     protected RealEstateManagerRoomDatabase mRoomDatabase;
@@ -24,8 +22,8 @@ public class RealEstateAgentDaoImpl implements RealEstateAgentDao {
     }
 
     @SuppressLint("CheckResult")
-    public Observable<List<RealEstateAgent>> getAllAgents(){
-        return mRealEstateAgentRoomDao.getAllAgents();
+    public Observable<RealEstateAgent> getAgent(){
+        return mRealEstateAgentRoomDao.getAgent();
     }
 
 }

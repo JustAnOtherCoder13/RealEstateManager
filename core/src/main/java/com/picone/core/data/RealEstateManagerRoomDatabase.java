@@ -35,7 +35,8 @@ public abstract class RealEstateManagerRoomDatabase extends RoomDatabase {
 
     public abstract PropertyRoomDao propertyRoomDao();
 
-    public static RealEstateManagerRoomDatabase getInstance(Context context) {
+    @NonNull
+    public static RealEstateManagerRoomDatabase getInstance(@NonNull Context context) {
         return Room.databaseBuilder(context.getApplicationContext(),
                 RealEstateManagerRoomDatabase.class, "RealEstateManager.db")
                 .fallbackToDestructiveMigration()
@@ -57,23 +58,23 @@ public abstract class RealEstateManagerRoomDatabase extends RoomDatabase {
         };
     }
 
-    private static void createManagers(SupportSQLiteDatabase db) {
-        for (int i = 0; i < 4; i++) {
+    private static void createManagers(@NonNull SupportSQLiteDatabase db) {
+
             ContentValues contentValues = new ContentValues();
-            contentValues.put("id", generateAgents().get(i).getId());
-            contentValues.put("address", generateAgents().get(i).getAddress());
-            contentValues.put("name", generateAgents().get(i).getName());
-            contentValues.put("avatar", generateAgents().get(i).getAvatar());
+            contentValues.put("id", generateAgents().getId());
+            contentValues.put("address", generateAgents().getAddress());
+            contentValues.put("name", generateAgents().getName());
+            contentValues.put("avatar", generateAgents().getAvatar());
 
             db.insert(realEstateAgentTable, OnConflictStrategy.IGNORE, contentValues);
-        }
+
     }
 
     private static void createProperties(SupportSQLiteDatabase db) {
         for (int i = 0; i < 2; i++) {
             ContentValues contentValues = new ContentValues();
             contentValues.put("id", generateProperties().get(i).getId());
-            contentValues.put("realEstateManagerId", generateProperties().get(i).getRealEstateManagerId());
+            contentValues.put("realEstateAgentId", generateProperties().get(i).getRealEstateAgentId());
             contentValues.put("address", generateProperties().get(i).getAddress());
             contentValues.put("zone", generateProperties().get(i).getZone());
             contentValues.put("propertyType", generateProperties().get(i).getPropertyType());

@@ -8,13 +8,13 @@ import java.util.List;
 
 import io.reactivex.Observable;
 
-public class GetAllRoomPropertyPhotosForPropertyIdInteractor extends PropertyBaseInteractor {
+public class GetAllPropertyPhotosForPropertyIdInteractor extends PropertyBaseInteractor {
 
-    public GetAllRoomPropertyPhotosForPropertyIdInteractor(PropertyRepository propertyDataSource) {
+    public GetAllPropertyPhotosForPropertyIdInteractor(PropertyRepository propertyDataSource) {
         super(propertyDataSource);
     }
 
     public Observable<List<PropertyPhoto>> getAllPhotosForPropertyId(int propertyId){
-        return propertyDataSource.getAllRoomPhotosForPropertyId(propertyId);
+        return propertyDataSource.getAllPhotosForPropertyId(propertyId);
     }
 }

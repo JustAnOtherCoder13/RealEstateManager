@@ -4,12 +4,12 @@ import com.picone.core.data.realEstateAgent.RealEstateAgentRepository;
 
 import javax.inject.Inject;
 
-public abstract class RealEstateManagerBaseInteractor {
+public abstract class AgentBaseInteractor {
 
     @Inject
     protected RealEstateAgentRepository realEstateManagerDataSource;
 
-    public RealEstateManagerBaseInteractor(RealEstateAgentRepository realEstateManagerDataSource) {
+    public AgentBaseInteractor(RealEstateAgentRepository realEstateManagerDataSource) {
         this.realEstateManagerDataSource = realEstateManagerDataSource;
     }
 }

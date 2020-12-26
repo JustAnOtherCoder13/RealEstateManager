@@ -45,4 +45,11 @@
     <string name="exception">Exception: %s</string>
 
 
+    <!--_______________________PROPERTY TYPE___________________ -->
+    <string-array name="property_type">
+        <item>HOUSE</item>
+        <item>FLAT</item>
+        <item>DUPLEX</item>
+        <item>PENTHOUSE</item>
+    </string-array>
 </resources>

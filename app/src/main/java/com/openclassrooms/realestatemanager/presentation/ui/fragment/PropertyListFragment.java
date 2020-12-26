@@ -33,6 +33,7 @@ public class PropertyListFragment extends BaseFragment {
         mNavController = Navigation.findNavController(requireActivity(), R.id.nav_host_fragment);
         setAppBarVisibility(true);
         initRecyclerView();
+        mPropertyViewModel.resetUpdateCompleteValue();
         return mBinding.getRoot();
     }
 
@@ -42,8 +43,8 @@ public class PropertyListFragment extends BaseFragment {
         configureOnClickRecyclerView();
         mPropertyViewModel.getSelectedProperty.observe(getViewLifecycleOwner(), property -> {
             if (property.getAddress() != null) {
-                mPropertyViewModel.setAllRoomPhotosForProperty(property);
-                mPropertyViewModel.setAllRoomPointOfInterestForProperty(property);
+                mPropertyViewModel.setAllPhotosForProperty(property);
+                mPropertyViewModel.setAllPointOfInterestForProperty(property);
                 mNavController.navigate(R.id.action_propertyListFragment_to_propertyDetailFragment);
             }
         });
@@ -54,13 +55,13 @@ public class PropertyListFragment extends BaseFragment {
         RecyclerView.LayoutManager linearLayout = new LinearLayoutManager(getContext());
         mBinding.fragmentPropertyListRecyclerview.setLayoutManager(linearLayout);
         mBinding.fragmentPropertyListRecyclerview.setAdapter(adapter);
-        mPropertyViewModel.getAllRoomProperties.observe(getViewLifecycleOwner(), adapter::updateProperties);
+        mPropertyViewModel.getAllProperties.observe(getViewLifecycleOwner(), adapter::updateProperties);
     }
 
     public void configureOnClickRecyclerView() {
         RecyclerViewItemClickListener.addTo(mBinding.fragmentPropertyListRecyclerview, R.layout.fragment_property_list)
                 .setOnItemClickListener((recyclerView, position, v) -> {
-                    List<Property> allProperties = mPropertyViewModel.getAllRoomProperties.getValue();
+                    List<Property> allProperties = mPropertyViewModel.getAllProperties.getValue();
                     assert allProperties != null;
                     Property property = allProperties.get(position);
                     mPropertyViewModel.setSelectedProperty(property);

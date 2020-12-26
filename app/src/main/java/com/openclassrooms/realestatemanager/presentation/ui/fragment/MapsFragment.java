@@ -66,7 +66,7 @@ public class MapsFragment extends BaseFragment implements OnMapReadyCallback {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         initMapView(savedInstanceState);
-        mPropertyViewModel.setAllRoomProperties();
+        mPropertyViewModel.setAllProperties();
     }
 
     private void initMapView(@Nullable Bundle savedInstanceState) {
@@ -83,7 +83,7 @@ public class MapsFragment extends BaseFragment implements OnMapReadyCallback {
     public void onMapReady(@NonNull GoogleMap googleMap) {
         mMap = googleMap;
         enableMyLocation();
-        mPropertyViewModel.getAllRoomProperties.observe(getViewLifecycleOwner(), this::initMarkers);
+        mPropertyViewModel.getAllProperties.observe(getViewLifecycleOwner(), this::initMarkers);
     }
 
     //TODO force enable gps location
@@ -136,7 +136,7 @@ public class MapsFragment extends BaseFragment implements OnMapReadyCallback {
         mMap.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
     }
 
-    private void initMarkers(List<Property> allProperties){
+    private void initMarkers(@NonNull List<Property> allProperties){
         mMap.clear();
         for (Property property:allProperties){
             mPropertyViewModel.setPropertyLocationForProperty(property);

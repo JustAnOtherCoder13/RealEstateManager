@@ -3,26 +3,27 @@ package com.openclassrooms.realestatemanager;
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule;
 import androidx.lifecycle.Observer;
 
+import com.openclassrooms.realestatemanager.presentation.viewModels.AgentViewModel;
 import com.openclassrooms.realestatemanager.presentation.viewModels.PropertyViewModel;
-import com.openclassrooms.realestatemanager.presentation.viewModels.RealEstateAgentViewModel;
 import com.picone.core.data.Generator;
 import com.picone.core.data.property.PropertyRepository;
 import com.picone.core.data.realEstateAgent.RealEstateAgentRepository;
 import com.picone.core.domain.entity.PointOfInterest;
 import com.picone.core.domain.entity.Property;
+import com.picone.core.domain.entity.PropertyLocation;
 import com.picone.core.domain.entity.PropertyPhoto;
 import com.picone.core.domain.entity.RealEstateAgent;
-import com.picone.core.domain.interactors.agent.GetAllRoomAgentInteractor;
-import com.picone.core.domain.interactors.property.AddRoomPropertyInteractor;
-import com.picone.core.domain.interactors.property.GetAllRoomPropertiesInteractor;
-import com.picone.core.domain.interactors.property.UpdateRoomPropertyInteractor;
+import com.picone.core.domain.interactors.agent.GetAgentInteractor;
+import com.picone.core.domain.interactors.property.AddPropertyInteractor;
+import com.picone.core.domain.interactors.property.GetAllPropertiesInteractor;
+import com.picone.core.domain.interactors.property.UpdatePropertyInteractor;
 import com.picone.core.domain.interactors.property.location.AddPropertyLocationInteractor;
 import com.picone.core.domain.interactors.property.location.GetPropertyLocationInteractor;
-import com.picone.core.domain.interactors.property.photo.AddRoomPropertyPhotoInteractor;
-import com.picone.core.domain.interactors.property.photo.DeleteRoomPropertyPhotoInteractor;
-import com.picone.core.domain.interactors.property.photo.GetAllRoomPropertyPhotosForPropertyIdInteractor;
-import com.picone.core.domain.interactors.property.pointOfInterest.AddRoomPropertyPointOfInterestInteractor;
-import com.picone.core.domain.interactors.property.pointOfInterest.GetAllRoomPointOfInterestForPropertyIdInteractor;
+import com.picone.core.domain.interactors.property.photo.AddPropertyPhotoInteractor;
+import com.picone.core.domain.interactors.property.photo.DeletePropertyPhotoInteractor;
+import com.picone.core.domain.interactors.property.photo.GetAllPropertyPhotosForPropertyIdInteractor;
+import com.picone.core.domain.interactors.property.pointOfInterest.AddPropertyPointOfInterestInteractor;
+import com.picone.core.domain.interactors.property.pointOfInterest.GetAllPointOfInterestForPropertyIdInteractor;
 import com.picone.core.utils.SchedulerProvider;
 
 import org.junit.Before;
@@ -56,6 +57,7 @@ public abstract class BaseUnitTest {
     PropertyPhoto photoToDelete = Generator.generatePhotos().get(1);
     List<PointOfInterest> pointOfInterestForPropertyId = new ArrayList<>();
     PointOfInterest pointOfInterestToAdd = new PointOfInterest(5,1);
+    PropertyLocation propertyLocationToAdd = new PropertyLocation(3,42.543732,5.036950,propertyToAdd.getId());
 
     SchedulerProvider schedulerProvider = new SchedulerProvider(Schedulers.trampoline(), Schedulers.trampoline());
 
@@ -64,32 +66,32 @@ public abstract class BaseUnitTest {
     @Mock
     PropertyRepository propertyRepository;
     @InjectMocks
-    GetAllRoomPropertiesInteractor getAllRoomPropertiesInteractor;
+    GetAllPropertiesInteractor getAllPropertiesInteractor;
     @InjectMocks
-    AddRoomPropertyInteractor addRoomPropertyInteractor;
+    AddPropertyInteractor addPropertyInteractor;
     @InjectMocks
-    UpdateRoomPropertyInteractor updateRoomPropertyInteractor;
+    UpdatePropertyInteractor updatePropertyInteractor;
     @InjectMocks
-    AddRoomPropertyPointOfInterestInteractor addRoomPropertyPointOfInterestInteractor;
+    AddPropertyPointOfInterestInteractor addPropertyPointOfInterestInteractor;
     @InjectMocks
-    GetAllRoomPointOfInterestForPropertyIdInteractor getAllRoomPointOfInterestForPropertyIdInteractor;
+    GetAllPointOfInterestForPropertyIdInteractor getAllPointOfInterestForPropertyIdInteractor;
     @InjectMocks
-    AddRoomPropertyPhotoInteractor addRoomPropertyPhotoInteractor;
+    AddPropertyPhotoInteractor addPropertyPhotoInteractor;
     @InjectMocks
-    DeleteRoomPropertyPhotoInteractor deleteRoomPropertyPhotoInteractor;
+    DeletePropertyPhotoInteractor deletePropertyPhotoInteractor;
     @InjectMocks
-    GetAllRoomPropertyPhotosForPropertyIdInteractor getAllRoomPropertyPhotosForPropertyIdInteractor;
+    GetAllPropertyPhotosForPropertyIdInteractor getAllPropertyPhotosForPropertyIdInteractor;
     @InjectMocks
     GetPropertyLocationInteractor getPropertyLocationInteractor;
     @InjectMocks
     AddPropertyLocationInteractor addPropertyLocationInteractor;
 
     //mock realEstateAgentViewModel
-    RealEstateAgentViewModel realEstateAgentViewModel;
+    AgentViewModel agentViewModel;
     @Mock
     RealEstateAgentRepository realEstateAgentRepository;
     @InjectMocks
-    GetAllRoomAgentInteractor getAllRoomAgentInteractor;
+    GetAgentInteractor getAgentInteractor;
 
     //mock observer
     @Mock
@@ -99,7 +101,9 @@ public abstract class BaseUnitTest {
     @Mock
     Observer<List<PropertyPhoto>> photoObserver;
     @Mock
-    Observer<List<RealEstateAgent>> agentObserver;
+    Observer<RealEstateAgent> agentObserver;
+    @Mock
+    Observer<PropertyLocation> locationObserver;
 
     @Before
     public void setup(){
@@ -111,45 +115,53 @@ public abstract class BaseUnitTest {
         pointOfInterestForPropertyId.add(Generator.generatePointOfInterests().get(0));
 
         //initViewModels
-        propertyViewModel = new PropertyViewModel(getAllRoomPropertiesInteractor,getAllRoomPointOfInterestForPropertyIdInteractor,getAllRoomPropertyPhotosForPropertyIdInteractor,addRoomPropertyInteractor,addRoomPropertyPointOfInterestInteractor,addRoomPropertyPhotoInteractor,deleteRoomPropertyPhotoInteractor,updateRoomPropertyInteractor,getPropertyLocationInteractor,addPropertyLocationInteractor,schedulerProvider);
-        realEstateAgentViewModel = new RealEstateAgentViewModel(getAllRoomAgentInteractor,schedulerProvider);
+        propertyViewModel = new PropertyViewModel(getAllPropertiesInteractor, getAllPointOfInterestForPropertyIdInteractor, getAllPropertyPhotosForPropertyIdInteractor, addPropertyInteractor, addPropertyPointOfInterestInteractor, addPropertyPhotoInteractor, deletePropertyPhotoInteractor, updatePropertyInteractor,getPropertyLocationInteractor,addPropertyLocationInteractor,schedulerProvider);
+        agentViewModel = new AgentViewModel(getAgentInteractor,schedulerProvider);
 
         //initObserver
-        propertyViewModel.getAllRoomProperties.observeForever(propertyObserver);
-        propertyViewModel.getAllRoomPointOfInterestForProperty.observeForever(pointOfInterestObserver);
-        propertyViewModel.getAllRoomPropertyPhotosForProperty.observeForever(photoObserver);
+        propertyViewModel.getAllProperties.observeForever(propertyObserver);
+        propertyViewModel.getAllPointOfInterestForProperty.observeForever(pointOfInterestObserver);
+        propertyViewModel.getAllPropertyPhotosForProperty.observeForever(photoObserver);
+        propertyViewModel.getPropertyLocationForProperty.observeForever(locationObserver);
 
-        realEstateAgentViewModel.getAllRoomAgents.observeForever(agentObserver);
+        agentViewModel.getAgent.observeForever(agentObserver);
 
         //stub return
-        when(propertyRepository.getAllRoomProperties())
+        when(propertyRepository.getAllProperties())
                 .thenReturn(Observable.create(emitter -> emitter.onNext(Generator.generateProperties())));
-        when(propertyRepository.addRoomProperty(propertyToAdd))
+        when(propertyRepository.addProperty(propertyToAdd))
                 .thenReturn(Completable.create
-                        (emitter -> Objects.requireNonNull(propertyViewModel.getAllRoomProperties.getValue()).add(propertyToAdd)));
-        when(propertyRepository.updateRoomProperty(firstPropertyToUpdate))
+                        (emitter -> Objects.requireNonNull(propertyViewModel.getAllProperties.getValue()).add(propertyToAdd)));
+        when(propertyRepository.updateProperty(firstPropertyToUpdate))
                 .thenReturn(Completable.create(CompletableEmitter::onComplete));
 
-        when(propertyRepository.getAllRoomPhotosForPropertyId(propertyId))
+        when(propertyRepository.getAllPhotosForPropertyId(propertyId))
                 .thenReturn(Observable.create(emitter -> emitter.onNext(photoForPropertyId) ));
-        when(propertyRepository.deleteRoomPropertyPhoto(photoToDelete))
-                .thenReturn(Completable.create(emitter -> Objects.requireNonNull(propertyViewModel.getAllRoomPropertyPhotosForProperty.getValue()).remove(photoToDelete)));
-        when(propertyRepository.addRoomPropertyPhoto(photoToAdd))
-                .thenReturn(Completable.create(emitter -> Objects.requireNonNull(propertyViewModel.getAllRoomPropertyPhotosForProperty.getValue()).add(photoToAdd)));
+        when(propertyRepository.deletePropertyPhoto(photoToDelete))
+                .thenReturn(Completable.create(emitter -> Objects.requireNonNull(propertyViewModel.getAllPropertyPhotosForProperty.getValue()).remove(photoToDelete)));
+        when(propertyRepository.addPropertyPhoto(photoToAdd))
+                .thenReturn(Completable.create(emitter -> Objects.requireNonNull(propertyViewModel.getAllPropertyPhotosForProperty.getValue()).add(photoToAdd)));
 
-        when(propertyRepository.getAllRoomPointOfInterestForPropertyId(propertyId))
+        when(propertyRepository.getAllPointOfInterestForPropertyId(propertyId))
                 .thenReturn(Observable.create(emitter -> emitter.onNext(pointOfInterestForPropertyId)));
-        when(propertyRepository.addRoomPropertyPointOfInterest(pointOfInterestToAdd))
-                .thenReturn(Completable.create(emitter -> Objects.requireNonNull(propertyViewModel.getAllRoomPointOfInterestForProperty.getValue()).add(pointOfInterestToAdd)));
+        when(propertyRepository.addPropertyPointOfInterest(pointOfInterestToAdd))
+                .thenReturn(Completable.create(emitter -> Objects.requireNonNull(propertyViewModel.getAllPointOfInterestForProperty.getValue()).add(pointOfInterestToAdd)));
 
-        when(realEstateAgentRepository.getAllAgents())
+        when(propertyRepository.getPropertyLocationForPropertyId(propertyId))
+                .thenReturn(Observable.create(emitter -> emitter.onNext(Generator.generatePropertyLocation().get(0))));
+        when(propertyRepository.getPropertyLocationForPropertyId(propertyToAdd.getId()))
+                .thenReturn(Observable.create(emitter -> emitter.onNext(propertyLocationToAdd)));
+        when(propertyRepository.addPropertyLocation(propertyLocationToAdd))
+                .thenReturn(Completable.create(CompletableEmitter::onComplete));
+
+        when(realEstateAgentRepository.getAgent())
                 .thenReturn(Observable.create(emitter -> emitter.onNext(Generator.generateAgents())));
         //set initial values
-        propertyViewModel.setAllRoomProperties();
-        propertyViewModel.setAllRoomPhotosForProperty(Generator.generateProperties().get(0));
-        propertyViewModel.setAllRoomPointOfInterestForProperty(Generator.generateProperties().get(0));
+        propertyViewModel.setAllProperties();
+        propertyViewModel.setAllPhotosForProperty(Generator.generateProperties().get(0));
+        propertyViewModel.setAllPointOfInterestForProperty(Generator.generateProperties().get(0));
 
-        realEstateAgentViewModel.setRoomAgentValue();
+        agentViewModel.setAgent();
     }
 
 }

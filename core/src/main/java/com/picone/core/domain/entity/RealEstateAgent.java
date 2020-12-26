@@ -8,21 +8,21 @@ import static com.picone.core.utils.ConstantParameters.realEstateAgentTable;
 @Entity(tableName = realEstateAgentTable)
 public class RealEstateAgent {
 
-    @PrimaryKey(autoGenerate = true)
-    private final long id;
+    @PrimaryKey
+    private final int id;
 
     private String address;
     private String name;
     private String avatar;
 
-    public RealEstateAgent(long id, String address, String name, String avatar) {
+    public RealEstateAgent(int id, String address, String name, String avatar) {
         this.id = id;
         this.address = address;
         this.name = name;
         this.avatar = avatar;
     }
 
-    public long getId() {
+    public int getId() {
         return id;
     }
 

@@ -18,6 +18,8 @@ import com.picone.core.domain.entity.PropertyPhoto;
 
 import java.util.List;
 
+import static com.picone.core.utils.ConstantParameters.ADD_PHOTO;
+
 public class PhotoRecyclerViewAdapter extends RecyclerView.Adapter<PhotoRecyclerViewAdapter.ViewHolder> {
 
     private List<PropertyPhoto> mPhotos;
@@ -33,11 +35,10 @@ public class PhotoRecyclerViewAdapter extends RecyclerView.Adapter<PhotoRecycler
         return new ViewHolder(binding);
     }
 
-    //TODO sometimes bind doesn't work... why?
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         PropertyPhoto photo = mPhotos.get(position);
-        if (photo.getPhoto().equals("AddPhoto")){
+        if (photo.getPhoto().equals(ADD_PHOTO)){
             holder.binding.propertyDetailItemPhoto.setImageResource(R.drawable.img_add_photo);
             holder.binding.propertyDetailItemPhotoDescription.setVisibility(View.GONE);
         }else{
@@ -55,7 +56,7 @@ public class PhotoRecyclerViewAdapter extends RecyclerView.Adapter<PhotoRecycler
 
         RecyclerviewPropertyDetailItemBinding binding;
 
-        public ViewHolder(RecyclerviewPropertyDetailItemBinding binding) {
+        public ViewHolder(@NonNull RecyclerviewPropertyDetailItemBinding binding) {
             super(binding.getRoot());
             this.binding = binding;
         }

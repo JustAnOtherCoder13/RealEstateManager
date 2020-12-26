@@ -8,19 +8,15 @@ import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.NavController;
 
+import com.openclassrooms.realestatemanager.presentation.viewModels.AgentViewModel;
 import com.openclassrooms.realestatemanager.presentation.viewModels.PropertyViewModel;
-import com.openclassrooms.realestatemanager.presentation.viewModels.RealEstateAgentViewModel;
-import com.picone.core.domain.entity.Property;
-import com.picone.core.domain.entity.PropertyPhoto;
-
-import java.util.List;
 
 import dagger.hilt.android.AndroidEntryPoint;
 
 @AndroidEntryPoint
 public abstract class BaseFragment extends Fragment {
 
-    protected RealEstateAgentViewModel mRealEstateAgentViewModel;
+    protected AgentViewModel mAgentViewModel;
     protected PropertyViewModel mPropertyViewModel;
     protected NavController mNavController;
 
@@ -33,7 +29,7 @@ public abstract class BaseFragment extends Fragment {
         mainActivity = (MainActivity) getActivity();
         assert mainActivity != null;
         mUpdateButton = mainActivity.mUpdateButton;
-        mRealEstateAgentViewModel = new ViewModelProvider(requireActivity()).get(RealEstateAgentViewModel.class);
+        mAgentViewModel = new ViewModelProvider(requireActivity()).get(AgentViewModel.class);
         mPropertyViewModel = new ViewModelProvider(requireActivity()).get(PropertyViewModel.class);
     }
 

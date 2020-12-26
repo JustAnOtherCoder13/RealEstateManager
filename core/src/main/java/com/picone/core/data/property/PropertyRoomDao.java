@@ -20,33 +20,33 @@ import io.reactivex.Observable;
 public interface PropertyRoomDao {
 
     @Query("SELECT*FROM property_table")
-    Observable<List<Property>> getAllRoomProperties();
+    Observable<List<Property>> getAllProperties();
 
     @Query("SELECT*FROM property_point_of_interest_table WHERE property_point_of_interest_table.propertyId = :propertyId")
-    Observable<List<PointOfInterest>> getAllRoomPointOfInterestForPropertyId(int propertyId);
+    Observable<List<PointOfInterest>> getAllPointOfInterestForPropertyId(int propertyId);
 
     @Query("SELECT*FROM property_photo_table WHERE property_photo_table.propertyId = :propertyId")
-    Observable<List<PropertyPhoto>> getAllRoomPhotosForPropertyId(int propertyId);
+    Observable<List<PropertyPhoto>> getAllPhotosForPropertyId(int propertyId);
 
     @Query("SELECT*FROM property_location_table WHERE property_location_table.propertyId = :propertyId")
     Observable<PropertyLocation> getPropertyLocationForPropertyId(int propertyId);
 
     @Insert
-    Completable addRoomProperty(Property property);
+    Completable addProperty(Property property);
 
     @Insert
-    Completable addRoomPropertyPointOfInterest(PointOfInterest pointOfInterest);
+    Completable addPropertyPointOfInterest(PointOfInterest pointOfInterest);
 
     @Insert
-    Completable addRoomPropertyPhoto(PropertyPhoto propertyPhoto);
+    Completable addPropertyPhoto(PropertyPhoto propertyPhoto);
 
     @Insert
     Completable addPropertyLocation(PropertyLocation propertyLocation);
 
     @Delete
-    Completable deleteRoomPropertyPhoto(PropertyPhoto propertyPhoto);
+    Completable deletePropertyPhoto(PropertyPhoto propertyPhoto);
 
     @Update
-    Completable updateRoomProperty(Property property);
+    Completable updateProperty(Property property);
 
 }
