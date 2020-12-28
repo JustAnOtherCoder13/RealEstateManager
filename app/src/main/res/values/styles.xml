@@ -93,11 +93,11 @@
     </style>
 
     <style name="Widget.TopBarMenuIconImageButton" parent="Widget.TopAppBarIconImageButton">
-        <item name="icon">@drawable/ic_top_bar_menu_24</item>
+        <item name="srcCompat">@drawable/ic_top_bar_menu_24</item>
     </style>
 
     <style name="Widget.TopBarAddIconImageButton" parent="Widget.TopAppBarIconImageButton">
-        <item name="icon">@drawable/ic_top_bar_add_24</item>
+        <item name="srcCompat">@drawable/ic_top_bar_add_24</item>
     </style>
 
     <style name="top_bar_title" parent="TextAppearance.RealEstateManagerStyles.Subtitle1">

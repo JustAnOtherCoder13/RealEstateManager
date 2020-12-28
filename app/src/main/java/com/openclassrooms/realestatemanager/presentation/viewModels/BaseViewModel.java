@@ -13,6 +13,7 @@ import com.picone.core.domain.interactors.property.location.GetPropertyLocationI
 import com.picone.core.domain.interactors.property.photo.AddPropertyPhotoInteractor;
 import com.picone.core.domain.interactors.property.photo.DeletePropertyPhotoInteractor;
 import com.picone.core.domain.interactors.property.photo.GetAllPropertyPhotosForPropertyIdInteractor;
+import com.picone.core.domain.interactors.property.places.GetPropertyLocationForAddressInteractor;
 import com.picone.core.domain.interactors.property.pointOfInterest.AddPropertyPointOfInterestInteractor;
 import com.picone.core.domain.interactors.property.pointOfInterest.GetAllPointOfInterestForPropertyIdInteractor;
 import com.picone.core.utils.SchedulerProvider;
@@ -46,6 +47,10 @@ public abstract class BaseViewModel extends ViewModel {
     protected UpdatePropertyInteractor updatePropertyInteractor;
     protected GetPropertyLocationInteractor getPropertyLocationInteractor;
     protected AddPropertyLocationInteractor addPropertyLocationInteractor;
+
+    //------------------------PLACES INTERACTORS----------------------------
+
+    protected GetPropertyLocationForAddressInteractor getPropertyLocationForAddressInteractor;
 
     @Override
     protected void onCleared() {
