@@ -2,6 +2,7 @@ package com.picone.core.data;
 
 import com.picone.core.domain.entity.PointOfInterest;
 import com.picone.core.domain.entity.Property;
+import com.picone.core.domain.entity.PropertyLocation;
 import com.picone.core.domain.entity.PropertyPhoto;
 import com.picone.core.domain.entity.RealEstateAgent;
 
@@ -11,15 +12,8 @@ import java.util.List;
 
 public abstract class Generator {
 
-    private static List<RealEstateAgent> AGENTS = Arrays.asList(
-            new RealEstateAgent(1, "Manager1 address", "Frank", "Manager1Avatar"),
-            new RealEstateAgent(2, "Manager2 address", "Luc", "Manager2Avatar"),
-            new RealEstateAgent(3, "Manager3 address", "Robert","Manager3Avatar"),
-            new RealEstateAgent(4, "Manager4 address", "Andy","Manager4Avatar")
-            );
-
-    public static List<RealEstateAgent> generateAgents() {
-        return new ArrayList<>(AGENTS);
+    public static RealEstateAgent generateAgents() {
+        return new RealEstateAgent(1, "Manager1 address", "Frank", "Manager1Avatar");
     }
 
     private static List<PropertyPhoto> PHOTOS = Arrays.asList(
@@ -44,12 +38,20 @@ public abstract class Generator {
         return new ArrayList<>(POINT_OF_INTEREST);
     }
 
-    private static List<Property> PROPERTY = Arrays.asList(
-            new Property(1, 1, "Property1 address", "cotage",500,15,560000),
-            new Property(2, 3, "Property2 address", "penthouse",200,7,450000)
+    private static List<Property> PROPERTIES = Arrays.asList(
+            new Property(1, 1, "Avenue Henry Barbusse, Les Tilleuls, 13250 Saint Chamas","PACA", "cotage",500,15,560000,"First house description",6,3,false,"30/06/2020","0"),
+            new Property(2, 1, "Property2 address","Ile de France", "penthouse",200,7,450000,"Second house description",3,1,false,"15/10/2020","0")
     );
 
     public static List<Property> generateProperties() {
-        return new ArrayList<>(PROPERTY);
+        return new ArrayList<>(PROPERTIES);
     }
+
+    private static List<PropertyLocation> PROPERTIES_LOCATION = Arrays.asList(
+            new PropertyLocation(1,43.543732,5.036901,1),
+            new PropertyLocation(2,43.560711,5.072869,2)
+    );
+
+    public static List<PropertyLocation> generatePropertyLocation(){return new ArrayList<>(PROPERTIES_LOCATION);}
+
 }

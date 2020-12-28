@@ -2,6 +2,7 @@ package com.picone.core.data.property;
 
 import com.picone.core.domain.entity.PointOfInterest;
 import com.picone.core.domain.entity.Property;
+import com.picone.core.domain.entity.PropertyLocation;
 import com.picone.core.domain.entity.PropertyPhoto;
 
 import java.util.List;
@@ -20,35 +21,43 @@ public class PropertyRepository {
         this.propertyDao = propertyDao;
     }
 
-    public Observable<List<Property>> getAllRoomProperties() {
-        return propertyDao.getAllRoomProperties();
+    public Observable<List<Property>> getAllProperties() {
+        return propertyDao.getAllProperties();
     }
 
-    public Observable<List<PointOfInterest>> getAllRoomPointOfInterestForPropertyId(int propertyId) {
-        return propertyDao.getAllRoomPointOfInterestForPropertyId(propertyId);
+    public Observable<List<PointOfInterest>> getAllPointOfInterestForPropertyId(int propertyId) {
+        return propertyDao.getAllPointOfInterestForPropertyId(propertyId);
     }
 
-    public Observable<List<PropertyPhoto>> getAllRoomPhotosForPropertyId(int propertyId){
-        return propertyDao.getAllRoomPhotosForPropertyId(propertyId);
+    public Observable<List<PropertyPhoto>> getAllPhotosForPropertyId(int propertyId){
+        return propertyDao.getAllPhotosForPropertyId(propertyId);
     }
 
-    public Completable addRoomProperty(Property property){
-        return propertyDao.addRoomProperty(property);
+    public Observable<PropertyLocation> getPropertyLocationForPropertyId(int propertyId){
+        return propertyDao.getPropertyLocationForPropertyId(propertyId);
     }
 
-    public Completable addRoomPropertyPointOfInterest(PointOfInterest pointOfInterest) {
-        return propertyDao.addRoomPropertyPointOfInterest(pointOfInterest);
+    public Completable addPropertyLocation(PropertyLocation propertyLocation) {
+        return propertyDao.addPropertyLocation(propertyLocation);
     }
 
-    public Completable addRoomPropertyPhoto(PropertyPhoto propertyPhoto){
-        return propertyDao.addRoomPropertyPhoto(propertyPhoto);
+        public Completable addProperty(Property property){
+        return propertyDao.addProperty(property);
     }
 
-    public Completable deleteRoomPropertyPhoto(PropertyPhoto propertyPhoto) {
-        return propertyDao.deleteRoomPropertyPhoto(propertyPhoto);
+    public Completable addPropertyPointOfInterest(PointOfInterest pointOfInterest) {
+        return propertyDao.addPropertyPointOfInterest(pointOfInterest);
     }
 
-    public Completable updateRoomProperty(Property property) {
-        return propertyDao.updateRoomProperty(property);
+    public Completable addPropertyPhoto(PropertyPhoto propertyPhoto){
+        return propertyDao.addPropertyPhoto(propertyPhoto);
+    }
+
+    public Completable deletePropertyPhoto(PropertyPhoto propertyPhoto) {
+        return propertyDao.deletePropertyPhoto(propertyPhoto);
+    }
+
+    public Completable updateProperty(Property property) {
+        return propertyDao.updateProperty(property);
     }
 }

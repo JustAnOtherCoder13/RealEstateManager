@@ -1,35 +1,35 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tool="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
     <ImageView
-        android:id="@+id/information_custom_view_icon"
-        style="@style/customViewInformationIconStyle"
+        android:id="@+id/detail_information_custom_view_icon"
+        style="@style/customViewIconStyle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:contentDescription="@string/area_icon"
-        app:layout_constraintBottom_toBottomOf="@id/information_custom_view_value"
+        android:contentDescription="@string/icon"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@id/information_custom_view_title" />
-
-
-    <TextView
-        android:id="@+id/information_custom_view_title"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:text="@string/surface"
-        android:textAppearance="@style/TextAppearance.RealEstateManagerStyles.Subtitle1"
-        app:layout_constraintStart_toEndOf="@id/information_custom_view_icon"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="@id/detail_information_custom_view_title" />
 
     <TextView
-        android:id="@+id/information_custom_view_value"
+        android:id="@+id/detail_information_custom_view_title"
+        style="@style/subtitle_style"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:text="@string/_750_sq_m"
-        app:layout_constraintStart_toEndOf="@id/information_custom_view_icon"
-        app:layout_constraintTop_toBottomOf="@id/information_custom_view_title" />
+        app:layout_constraintStart_toEndOf="@id/detail_information_custom_view_icon"
+        app:layout_constraintTop_toTopOf="parent"
+        tool:text="@tools:sample/lorem" />
+
+    <TextView
+        android:id="@+id/detail_information_custom_view_value"
+        style="@style/customViewTextStyle"
+        android:layout_width="@dimen/custom_view_add_property_information_edit_text_size"
+        android:layout_height="wrap_content"
+        app:layout_constraintStart_toEndOf="@id/detail_information_custom_view_icon"
+        app:layout_constraintTop_toBottomOf="@id/detail_information_custom_view_title"
+        tool:text="@tools:sample/lorem" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

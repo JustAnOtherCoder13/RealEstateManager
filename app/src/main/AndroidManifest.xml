@@ -14,7 +14,7 @@
         />
 
     <application
-        android:name=".presentation.ui.main.RealEstateManager"
+        android:name=".presentation.ui.main.RealEstateManagerApplication"
         android:allowBackup="false"
         android:fullBackupContent="true"
         android:icon="@mipmap/ic_launcher"
@@ -33,12 +33,8 @@
         <!--google maps-->
 
         <meta-data
-            android:name="com.google.android.gms.version"
-            android:value="@integer/google_play_services_version" />
-        <!--TODO replace with real value-->
-        <meta-data
             android:name="com.google.android.geo.API_KEY"
-            android:value="value" />
+            android:value="@string/google_maps_key" />
 
     </application>
 

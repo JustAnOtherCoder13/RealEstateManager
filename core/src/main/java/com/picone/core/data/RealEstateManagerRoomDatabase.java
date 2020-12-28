@@ -13,6 +13,7 @@ import com.picone.core.data.property.PropertyRoomDao;
 import com.picone.core.data.realEstateAgent.RealEstateAgentRoomDao;
 import com.picone.core.domain.entity.PointOfInterest;
 import com.picone.core.domain.entity.Property;
+import com.picone.core.domain.entity.PropertyLocation;
 import com.picone.core.domain.entity.PropertyPhoto;
 import com.picone.core.domain.entity.RealEstateAgent;
 
@@ -20,19 +21,22 @@ import static com.picone.core.data.Generator.generateAgents;
 import static com.picone.core.data.Generator.generatePhotos;
 import static com.picone.core.data.Generator.generatePointOfInterests;
 import static com.picone.core.data.Generator.generateProperties;
+import static com.picone.core.data.Generator.generatePropertyLocation;
 import static com.picone.core.utils.ConstantParameters.pointOfInterestTable;
+import static com.picone.core.utils.ConstantParameters.propertyLocationTable;
 import static com.picone.core.utils.ConstantParameters.propertyPhotoTable;
 import static com.picone.core.utils.ConstantParameters.propertyTable;
 import static com.picone.core.utils.ConstantParameters.realEstateAgentTable;
 
-@androidx.room.Database(entities = {Property.class, RealEstateAgent.class, PointOfInterest.class, PropertyPhoto.class}, version = 1, exportSchema = false)
+@androidx.room.Database(entities = {Property.class, RealEstateAgent.class, PointOfInterest.class, PropertyPhoto.class, PropertyLocation.class}, version = 1, exportSchema = false)
 public abstract class RealEstateManagerRoomDatabase extends RoomDatabase {
 
     public abstract RealEstateAgentRoomDao realEstateManagerRoomDao();
 
     public abstract PropertyRoomDao propertyRoomDao();
 
-    public static RealEstateManagerRoomDatabase getInstance(Context context) {
+    @NonNull
+    public static RealEstateManagerRoomDatabase getInstance(@NonNull Context context) {
         return Room.databaseBuilder(context.getApplicationContext(),
                 RealEstateManagerRoomDatabase.class, "RealEstateManager.db")
                 .fallbackToDestructiveMigration()
@@ -49,32 +53,40 @@ public abstract class RealEstateManagerRoomDatabase extends RoomDatabase {
                 createProperties(db);
                 createPhotos(db);
                 createPointOfInterest(db);
+                createPropertiesLocation(db);
             }
         };
     }
 
-    private static void createManagers(SupportSQLiteDatabase db) {
-        for (int i = 0; i < 4; i++) {
+    private static void createManagers(@NonNull SupportSQLiteDatabase db) {
+
             ContentValues contentValues = new ContentValues();
-            contentValues.put("id", generateAgents().get(i).getId());
-            contentValues.put("address", generateAgents().get(i).getAddress());
-            contentValues.put("name", generateAgents().get(i).getName());
-            contentValues.put("avatar", generateAgents().get(i).getAvatar());
+            contentValues.put("id", generateAgents().getId());
+            contentValues.put("address", generateAgents().getAddress());
+            contentValues.put("name", generateAgents().getName());
+            contentValues.put("avatar", generateAgents().getAvatar());
 
             db.insert(realEstateAgentTable, OnConflictStrategy.IGNORE, contentValues);
-        }
+
     }
 
     private static void createProperties(SupportSQLiteDatabase db) {
         for (int i = 0; i < 2; i++) {
             ContentValues contentValues = new ContentValues();
             contentValues.put("id", generateProperties().get(i).getId());
-            contentValues.put("realEstateManagerId", generateProperties().get(i).getRealEstateManagerId());
+            contentValues.put("realEstateAgentId", generateProperties().get(i).getRealEstateAgentId());
             contentValues.put("address", generateProperties().get(i).getAddress());
+            contentValues.put("zone", generateProperties().get(i).getZone());
             contentValues.put("propertyType", generateProperties().get(i).getPropertyType());
             contentValues.put("propertyArea", generateProperties().get(i).getPropertyArea());
             contentValues.put("numberOfRooms", generateProperties().get(i).getNumberOfRooms());
             contentValues.put("price", generateProperties().get(i).getPrice());
+            contentValues.put("description", generateProperties().get(i).getDescription());
+            contentValues.put("numberOfBedrooms", generateProperties().get(i).getNumberOfBedrooms());
+            contentValues.put("numberOfBathrooms", generateProperties().get(i).getNumberOfBathrooms());
+            contentValues.put("isSold", generateProperties().get(i).isSold());
+            contentValues.put("enterOnMarket", generateProperties().get(i).getEnterOnMarket());
+            contentValues.put("soldFrom", generateProperties().get(i).getSoldFrom());
 
             db.insert(propertyTable, OnConflictStrategy.IGNORE, contentValues);
         }
@@ -99,6 +111,19 @@ public abstract class RealEstateManagerRoomDatabase extends RoomDatabase {
             contentValues.put("propertyId", generatePointOfInterests().get(i).getPropertyId());
 
             db.insert(pointOfInterestTable, OnConflictStrategy.IGNORE, contentValues);
+        }
+    }
+
+    private static void createPropertiesLocation(SupportSQLiteDatabase db){
+        for (int i = 0; i<2; i++){
+            ContentValues contentValues = new ContentValues();
+            contentValues.put("id", generatePropertyLocation().get(i).getId());
+            contentValues.put("latitude", generatePropertyLocation().get(i).getLatitude());
+            contentValues.put("longitude", generatePropertyLocation().get(i).getLongitude());
+            contentValues.put("propertyId", generatePropertyLocation().get(i).getPropertyId());
+
+            db.insert(propertyLocationTable, OnConflictStrategy.IGNORE, contentValues);
+
         }
     }
 

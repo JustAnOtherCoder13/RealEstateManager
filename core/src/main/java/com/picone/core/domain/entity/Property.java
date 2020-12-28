@@ -4,15 +4,13 @@ package com.picone.core.domain.entity;
 import androidx.room.ColumnInfo;
 import androidx.room.Entity;
 import androidx.room.ForeignKey;
-import androidx.room.Ignore;
 import androidx.room.PrimaryKey;
 
 import static com.picone.core.utils.ConstantParameters.propertyTable;
 
 @Entity(tableName = propertyTable, foreignKeys = @ForeignKey(entity = RealEstateAgent.class,
         parentColumns = "id",
-        childColumns = "realEstateManagerId"))
-
+        childColumns = "realEstateAgentId"))
 public class Property {
 
     @PrimaryKey(autoGenerate = true)
@@ -20,39 +18,42 @@ public class Property {
 
     // ESSENTIALS INFORMATION
     @ColumnInfo(index = true)
-    private int realEstateManagerId;
+    private int realEstateAgentId;
     private String address;
+    private String zone;
     private String propertyType;
     private int propertyArea;
     private int numberOfRooms;
     private int price;
 
     //DESCRIPTION
-    @Ignore
     private String description;
 
     //ADDITIONAL INFORMATION
-    @Ignore
     private int numberOfBedrooms;
-    @Ignore
     private int numberOfBathrooms;
-    @Ignore
     private boolean isSold;
-    @Ignore
     private String enterOnMarket;
-    @Ignore
     private String soldFrom;
 
+    public Property() {
+    }
 
-    public Property(int id, int realEstateManagerId, String address, String propertyType,
-                    int propertyArea, int numberOfRooms, int price) {
+    public Property(int id, int realEstateAgentId, String address, String zone, String propertyType, int propertyArea, int numberOfRooms, int price, String description, int numberOfBedrooms, int numberOfBathrooms, boolean isSold, String enterOnMarket, String soldFrom) {
         this.id = id;
-        this.realEstateManagerId = realEstateManagerId;
+        this.realEstateAgentId = realEstateAgentId;
         this.address = address;
+        this.zone = zone;
         this.propertyType = propertyType;
         this.propertyArea = propertyArea;
         this.numberOfRooms = numberOfRooms;
         this.price = price;
+        this.description = description;
+        this.numberOfBedrooms = numberOfBedrooms;
+        this.numberOfBathrooms = numberOfBathrooms;
+        this.isSold = isSold;
+        this.enterOnMarket = enterOnMarket;
+        this.soldFrom = soldFrom;
     }
 
     public int getId() {
@@ -63,12 +64,12 @@ public class Property {
         this.id = id;
     }
 
-    public int getRealEstateManagerId() {
-        return realEstateManagerId;
+    public int getRealEstateAgentId() {
+        return realEstateAgentId;
     }
 
-    public void setRealEstateManagerId(int realEstateManagerId) {
-        this.realEstateManagerId = realEstateManagerId;
+    public void setRealEstateAgentId(int realEstateAgentId) {
+        this.realEstateAgentId = realEstateAgentId;
     }
 
     public String getAddress() {
@@ -157,5 +158,13 @@ public class Property {
 
     public void setSoldFrom(String soldFrom) {
         this.soldFrom = soldFrom;
+    }
+
+    public String getZone() {
+        return zone;
+    }
+
+    public void setZone(String zone) {
+        this.zone = zone;
     }
 }

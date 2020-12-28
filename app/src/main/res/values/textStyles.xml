@@ -3,47 +3,26 @@
 
     <!-- ______________________________HEADERS_____________________________ -->
 
-    <style name="TextAppearance.RealEstateManagerStyles.Headline1" parent="TextAppearance.MaterialComponents.Headline1">
-        <item name="fontFamily">@font/roboto_regular</item>
-        <item name="android:fontFamily">@font/roboto_regular</item>
-        <item name="android:textSize">96sp</item>
-    </style>
-    <style name="TextAppearance.RealEstateManagerStyles.Headline2" parent="TextAppearance.MaterialComponents.Headline2">
-        <item name="fontFamily">@font/roboto_regular</item>
-        <item name="android:fontFamily">@font/roboto_regular</item>
-        <item name="android:textSize">60sp</item>
-    </style>
-    <style name="TextAppearance.RealEstateManagerStyles.Headline3" parent="TextAppearance.MaterialComponents.Headline3">
-        <item name="fontFamily">@font/roboto_regular</item>
-        <item name="android:fontFamily">@font/roboto_bold</item>
-        <item name="android:textColor">@color/wildStrawberry</item>
-        <item name="android:textSize">48sp</item>
-    </style>
-    <style name="TextAppearance.RealEstateManagerStyles.Headline4" parent="TextAppearance.MaterialComponents.Headline4">
+    <style name="TextAppearance.RealEstateManagerStyles.Headline1" parent="TextAppearance.MaterialComponents.Headline4">
         <item name="fontFamily">@font/roboto_bold</item>
         <item name="android:fontFamily">@font/roboto_bold</item>
         <item name="android:textColor">@color/black</item>
-        <item name="android:textSize">34sp</item>
+        <item name="android:paddingBottom">@dimen/basic_marge</item>
+        <item name="android:layout_marginStart">@dimen/basic_marge</item>
+        <item name="android:textSize">30sp</item>
     </style>
-    <style name="TextAppearance.RealEstateManagerStyles.Headline5" parent="TextAppearance.MaterialComponents.Headline5">
-        <item name="fontFamily">@font/roboto_regular</item>
-        <item name="android:fontFamily">@font/roboto_regular</item>
-        <item name="android:textSize">24sp</item>
+
+    <style name="TextAppearance.RealEstateManagerStyles.Headline2" parent="TextAppearance.MaterialComponents.Headline5">
+        <item name="fontFamily">@font/roboto_bold</item>
+        <item name="android:fontFamily">@font/roboto_bold</item>
+        <item name="android:textSize">19sp</item>
     </style>
-    <style name="TextAppearance.RealEstateManagerStyles.Headline6" parent="TextAppearance.MaterialComponents.Headline6">
-        <item name="fontFamily">@font/roboto_regular</item>
-        <item name="android:fontFamily">@font/roboto_regular</item>
-        <item name="android:textSize">20sp</item>
-    </style>
+
     <style name="TextAppearance.RealEstateManagerStyles.Subtitle1" parent="TextAppearance.MaterialComponents.Subtitle1">
-        <item name="fontFamily">@font/roboto_regular</item>
+        <item name="fontFamily">@font/roboto_bold</item>
         <item name="android:fontFamily">@font/roboto_regular</item>
-        <item name="android:textSize">16sp</item>
-    </style>
-    <style name="TextAppearance.RealEstateManagerStyles.Subtitle2" parent="TextAppearance.MaterialComponents.Subtitle2">
-        <item name="fontFamily">@font/roboto_regular</item>
-        <item name="android:fontFamily">@font/roboto_regular</item>
-        <item name="android:textSize">14sp</item>
+        <item name="android:textSize">17sp</item>
+        <item name="paddingStart">@dimen/little_marge</item>
     </style>
 
     <!-- ______________________________BODY_____________________________ -->
@@ -51,29 +30,7 @@
     <style name="TextAppearance.RealEstateManagerStyles.Body1" parent="TextAppearance.MaterialComponents.Body1">
         <item name="fontFamily">@font/roboto_regular</item>
         <item name="android:fontFamily">@font/roboto_regular</item>
-        <item name="android:textSize">16sp</item>
-    </style>
-    <style name="TextAppearance.RealEstateManagerStyles.Body2" parent="TextAppearance.MaterialComponents.Body2">
-        <item name="fontFamily">@font/roboto_regular</item>
-        <item name="android:fontFamily">@font/roboto_regular</item>
         <item name="android:textSize">14sp</item>
-    </style>
-
-    <!-- ______________________________OTHERS_____________________________ -->
-    <style name="TextAppearance.RealEstateManagerStyles.Button" parent="TextAppearance.MaterialComponents.Button">
-        <item name="fontFamily">@font/roboto_regular</item>
-        <item name="android:fontFamily">@font/roboto_regular</item>
-        <item name="android:textSize">14sp</item>
-    </style>
-    <style name="TextAppearance.RealEstateManagerStyles.Caption" parent="TextAppearance.MaterialComponents.Caption">
-        <item name="fontFamily">@font/roboto_regular</item>
-        <item name="android:fontFamily">@font/roboto_regular</item>
-        <item name="android:textSize">12sp</item>
-    </style>
-    <style name="TextAppearance.RealEstateManagerStyles.Overline" parent="TextAppearance.MaterialComponents.Overline">
-        <item name="fontFamily">@font/roboto_regular</item>
-        <item name="android:fontFamily">@font/roboto_regular</item>
-        <item name="android:textSize">10sp</item>
     </style>
 
 </resources>

@@ -4,30 +4,52 @@
 
     <string name="on_error">An error have occurred, please check your parameters and try again</string>
 
+    <!-- ______________________BOTTOM NAV__________________ -->
+    <string name="maps">Maps</string>
+    <string name="list">List</string>
+
+    <!-- ______________________TOP BAR__________________ -->
+    <string name="menu_icon">Menu icon</string>
+    <string name="update_property_icon">update property icon</string>
+    <string name="add_property_icon">add property icon</string>
 
     <!-- ______________________CONTENT DESCRIPTION__________________ -->
     <string name="property_item_photo">property item photo</string>
     <string name="property_detail_item_photo">property detail item photo</string>
     <string name="location_maps_view">location maps view</string>
-    <string name="area_icon">Area icon</string>
+    <string name="icon">Icon</string>
+    <string name="update_property_button">update property button</string>
+    <string name="delete_button">delete button</string>
+
 
     <!-- ______________________TEXT VIEW__________________ -->
     <string name="property_type">Property Type</string>
     <string name="town">Town</string>
-    <string name="price">PRICE</string>
+    <string name="price">Price</string>
     <string name="description">Description</string>
     <string name="media">Media</string>
     <string name="surface">Surface</string>
-    <string name="_750_sq_m">750 sq m</string>
     <string name="description_text">Description text</string>
     <string name="sold">Sold</string>
-
+    <string name="location">Location</string>
+    <string name="number_of_rooms">Number of Rooms</string>
+    <string name="number_of_bathrooms">Number of bathrooms</string>
+    <string name="number_of_bedrooms">Number of bedrooms</string>
 
     <!-- ______________________EDIT TEXT__________________ -->
     <string name="value">Value</string>
     <string name="information">Information</string>
     <string name="dd_mm_yyyy">dd/MM/yyyy</string>
 
+    <!-- ______________________MAPS FRAGMENT_________________ -->
+    <string name="exception">Exception: %s</string>
 
 
+    <!--_______________________PROPERTY TYPE___________________ -->
+    <string-array name="property_type">
+        <item>HOUSE</item>
+        <item>FLAT</item>
+        <item>DUPLEX</item>
+        <item>PENTHOUSE</item>
+    </string-array>
 </resources>
