@@ -8,93 +8,64 @@
         <item name="colorAccent">@color/custom_pink</item>
     </style>
 
-    <!--__________________________________COMMON STYLES__________________________________-->
-
-    <style name="Widget.Headline1TextView" parent="Widget.MaterialComponents.TextView">
-        <item name="android:paddingBottom">@dimen/basic_marge</item>
-        <item name="android:layout_marginStart">@dimen/basic_marge</item>
-        <item name="android:textAppearance">
-            @style/TextAppearance.RealEstateManagerStyles.Headline1
-        </item>
-    </style>
-
-    <style name="Widget.Subtitle1TextView" parent="Widget.MaterialComponents.TextView">
-        <item name="android:textAppearance">
-            @style/TextAppearance.RealEstateManagerStyles.Subtitle1
-        </item>
-        <item name="paddingStart">@dimen/little_marge</item>
-    </style>
-
-    <!--__________________________________CUSTOM VIEW__________________________________-->
-
-    <style name="customViewIconStyle">
-        <item name="android:paddingEnd">@dimen/basic_marge</item>
-    </style>
-
-    <style name="customViewTextStyle">
-        <item name="android:textAppearance">@style/TextAppearance.RealEstateManagerStyles.Body1
-        </item>
-        <item name="android:background">@color/white</item>
-    </style>
-
     <!--__________________________________TEXT VIEW STYLE__________________________________-->
 
+    <style name="subtitle_style" parent="TextAppearance.RealEstateManagerStyles.Subtitle1"/>
     <!-- Detail fragment-->
-    <style name="Widget.FragmentPropertyDetailDescriptionTitleTextView" parent="Widget.Headline1TextView">
+    <style name="fragment_property_detail_title" parent="TextAppearance.RealEstateManagerStyles.Headline1">
         <item name="android:text">@string/description</item>
     </style>
 
-    <style name="Widget.FragmentPropertyDetailDescriptionTextView" parent="Widget.AppCompat.TextView">
-        <item name="android:textAppearance">@style/TextAppearance.RealEstateManagerStyles.Body1
-        </item>
+    <style name="fragment_property_detail_description" parent="TextAppearance.RealEstateManagerStyles.Body1">
         <item name="android:maxLines">8</item>
         <item name="android:text">@string/description_text</item>
     </style>
 
-    <style name="Widget.FragmentPropertyDetailMediaTitleTextView" parent="Widget.Headline1TextView">
+    <style name="fragment_property_detail_media" parent="TextAppearance.RealEstateManagerStyles.Headline1">
         <item name="android:text">@string/media</item>
         <item name="android:layout_marginStart">@dimen/big_marge</item>
     </style>
 
     <!-- Add property fragment -->
-    <style name="Widget.FragmentAddPropertyInformationTitleTextView" parent="Widget.Headline1TextView">
+    <style name="fragment_property_information_title" parent="TextAppearance.RealEstateManagerStyles.Headline1">
         <item name="android:text">@string/information</item>
         <item name="android:layout_marginBottom">@dimen/basic_marge</item>
     </style>
 
-    <style name="Widget.FragmentAddPropertyInformationTypeTitleTextView" parent="Widget.Subtitle1TextView">
+    <style name="fragment_add_property_information_type" parent="TextAppearance.RealEstateManagerStyles.Subtitle1">
         <item name="android:text">@string/property_type</item>
         <item name="android:paddingBottom">@dimen/little_marge</item>
     </style>
 
-    <style name="Widget.FragmentAddPropertySoldTitleTextView" parent="Widget.Headline1TextView">
+    <style name="fragment_add_property_sold_title" parent="TextAppearance.RealEstateManagerStyles.Headline1">
         <item name="android:text">@string/sold</item>
     </style>
 
-    <style name="Widget.FragmentAddPropertySoldEditText" parent="Widget.AppCompat.TextView">
+    <style name="fragment_add_property_sold_date" parent="TextAppearance.RealEstateManagerStyles.Body1">
         <item name="android:layout_marginEnd">@dimen/big_marge</item>
         <item name="android:inputType">date</item>
         <item name="android:layout_marginBottom">@dimen/basic_marge</item>
+        <item name="android:visibility">gone</item>
         <item name="android:textColor">@color/custom_grey</item>
         <item name="android:textAppearance">@style/TextAppearance.RealEstateManagerStyles.Body1
         </item>
     </style>
 
-    <style name="Widget.FragmentAddPropertyDescriptionTitleTextView" parent="Widget.Headline1TextView">
+    <style name="fragment_add_property_description_title" parent="TextAppearance.RealEstateManagerStyles.Headline1">
         <item name="android:layout_marginStart">@dimen/basic_marge</item>
         <item name="android:text">@string/description</item>
     </style>
 
     <!-- Recycler view -->
-    <style name="Widget.RecyclerViewPropertyListItemPropertyTypeTextView" parent="Widget.Headline1TextView">
+    <style name="recycler_view_property_list_item_type" parent="TextAppearance.RealEstateManagerStyles.Headline1">
         <item name="android:text">@string/property_type</item>
     </style>
 
-    <style name="Widget.RecyclerViewPropertyListItemTownTextTextView" parent="Widget.Subtitle1TextView">
+    <style name="recycler_view_property_list_item_town" parent="TextAppearance.RealEstateManagerStyles.Subtitle1">
         <item name="android:text">@string/town</item>
     </style>
 
-    <style name="Widget.RecyclerViewPropertyListItemPropertyPriceTextView" parent="Widget.Headline1TextView">
+    <style name="recycler_view_property_list_item_price" parent="TextAppearance.RealEstateManagerStyles.Headline1">
         <item name="android:text">@string/price</item>
         <item name="android:textColor">@color/custom_pink</item>
         <item name="android:layout_marginStart">0dp</item>
@@ -102,10 +73,8 @@
     </style>
     <!--__________________________________RECYCLER VIEW__________________________________-->
 
-    <style name="Widget.listRecyclerviewPhotoDescriptionTextView" parent="Widget.MaterialComponents.TextView">
+    <style name="recycler_view_photo_description" parent="TextAppearance.RealEstateManagerStyles.Body1">
         <item name="android:text">@string/description</item>
-        <item name="android:textAppearance">@style/TextAppearance.RealEstateManagerStyles.Body1
-        </item>
         <item name="android:paddingBottom">15dp</item>
         <item name="android:paddingTop">15dp</item>
         <item name="android:paddingEnd">0dp</item>
@@ -116,7 +85,7 @@
 
     <!--__________________________________TOP BAR__________________________________-->
 
-    <style name="Widget.TopAppBarIconImageButton" parent="Widget.AppCompat.ImageButton">
+    <style name="Widget.TopAppBarIconImageButton" parent="Widget.MaterialComponents.Button">
         <item name="android:tint">@color/white</item>
         <item name="android:background">@color/custom_blue</item>
         <item name="android:paddingStart">@dimen/basic_marge</item>
@@ -124,24 +93,20 @@
     </style>
 
     <style name="Widget.TopBarMenuIconImageButton" parent="Widget.TopAppBarIconImageButton">
-        <item name="srcCompat">@drawable/ic_top_bar_menu_24</item>
+        <item name="icon">@drawable/ic_top_bar_menu_24</item>
     </style>
 
     <style name="Widget.TopBarAddIconImageButton" parent="Widget.TopAppBarIconImageButton">
-        <item name="srcCompat">@drawable/ic_top_bar_add_24</item>
+        <item name="icon">@drawable/ic_top_bar_add_24</item>
     </style>
 
-    <style name="Widget.TopBarTitleTextView" parent="Widget.MaterialComponents.TextView">
+    <style name="top_bar_title" parent="TextAppearance.RealEstateManagerStyles.Subtitle1">
         <item name="android:text">@string/app_name</item>
         <item name="android:textColor">@color/white</item>
         <item name="android:textStyle">bold</item>
-        <item name="android:textAppearance">
-            @style/TextAppearance.RealEstateManagerStyles.Subtitle1
-        </item>
     </style>
 
-
-    <style name="Widget.FragmentAddPropertySoldCheckBox" parent="Widget.AppCompat.CompoundButton.CheckBox">
+    <style name="Widget.FragmentAddPropertySoldCheckBox" parent="Widget.MaterialComponents.CompoundButton.CheckBox">
         <item name="android:layout_marginStart">@dimen/big_marge</item>
         <item name="android:layout_marginEnd">@dimen/big_marge</item>
     </style>
@@ -194,5 +159,55 @@
         <item name="android:visibility">gone</item>
     </style>
 
+    <!--__________________________________CUSTOM VIEW__________________________________-->
+
+    <style name="customViewIconStyle">
+        <item name="android:paddingEnd">@dimen/basic_marge</item>
+    </style>
+
+    <style name="customViewTextStyle">
+        <item name="android:textAppearance">@style/TextAppearance.RealEstateManagerStyles.Body1
+        </item>
+        <item name="android:background">@color/white</item>
+    </style>
+
+    <style name="add_property_information_custom_view_area_and_bedroom">
+        <item name="android:layout_marginTop">@dimen/basic_marge</item>
+    </style>
+
+    <style name="add_property_information_custom_view_location">
+        <item name="android:layout_marginStart">@dimen/basic_marge</item>
+        <item name="android:layout_marginTop">@dimen/basic_marge</item>
+        <item name="android:inputType">textMultiLine</item>
+        <item name="android:lines">6</item>
+        <item name="android:maxWidth">@dimen/add_property_information_layout_location_max_width
+        </item>
+        <item name="android:singleLine">false</item>
+    </style>
+
+    <style name="add_property_information_custom_view_bathrooms">
+        <item name="android:layout_marginEnd">@dimen/basic_marge</item>
+        <item name="android:layout_marginTop">@dimen/basic_marge</item>
+    </style>
+
+    <style name="Widget.add_property_information_custom_view_property_type" parent="Widget.MaterialComponents.TextInputLayout.FilledBox.ExposedDropdownMenu">
+        <item name="android:layout_marginBottom">@dimen/basic_marge</item>
+    </style>
+
+    <style name="property_detail_information_custom_view_location">
+        <item name="android:inputType">textMultiLine</item>
+        <item name="android:lines">6</item>
+        <item name="android:maxWidth">@dimen/add_property_information_layout_location_max_width
+        </item>
+        <item name="android:singleLine">false</item>
+    </style>
+
+    <style name="property_detail_custom_view_margin_bottom">
+        <item name="android:layout_marginBottom">@dimen/basic_marge</item>
+    </style>
+
+    <style name="property_detail_custom_view_area" parent="property_detail_custom_view_margin_bottom">
+        <item name="android:layout_marginTop">@dimen/basic_marge</item>
+    </style>
 
 </resources>

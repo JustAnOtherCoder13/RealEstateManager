@@ -6,7 +6,7 @@
 
     <TextView
         android:id="@+id/add_property_description_title"
-        style="@style/Widget.FragmentAddPropertyDescriptionTitleTextView"
+        style="@style/fragment_add_property_description_title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         app:layout_constraintStart_toStartOf="parent"

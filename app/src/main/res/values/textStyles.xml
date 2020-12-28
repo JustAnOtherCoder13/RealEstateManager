@@ -7,6 +7,8 @@
         <item name="fontFamily">@font/roboto_bold</item>
         <item name="android:fontFamily">@font/roboto_bold</item>
         <item name="android:textColor">@color/black</item>
+        <item name="android:paddingBottom">@dimen/basic_marge</item>
+        <item name="android:layout_marginStart">@dimen/basic_marge</item>
         <item name="android:textSize">30sp</item>
     </style>
 
@@ -20,6 +22,7 @@
         <item name="fontFamily">@font/roboto_bold</item>
         <item name="android:fontFamily">@font/roboto_regular</item>
         <item name="android:textSize">17sp</item>
+        <item name="paddingStart">@dimen/little_marge</item>
     </style>
 
     <!-- ______________________________BODY_____________________________ -->

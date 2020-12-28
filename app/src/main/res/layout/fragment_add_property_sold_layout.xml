@@ -6,12 +6,12 @@
 
     <TextView
         android:id="@+id/add_property_sold_title"
-        style="@style/Widget.FragmentAddPropertySoldTitleTextView"
+        style="@style/fragment_add_property_sold_title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        app:layout_constraintBottom_toBottomOf="@id/add_property_sold_checkbox"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@id/add_property_sold_checkbox"
-        app:layout_constraintBottom_toBottomOf="@id/add_property_sold_checkbox"/>
+        app:layout_constraintTop_toTopOf="@id/add_property_sold_checkbox" />
 
     <com.google.android.material.checkbox.MaterialCheckBox
         android:id="@+id/add_property_sold_checkbox"
@@ -22,17 +22,15 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <EditText
-        android:visibility="gone"
         android:id="@+id/add_property_sold_edit_text"
-        style="@style/Widget.FragmentAddPropertySoldEditText"
+        style="@style/fragment_add_property_sold_date"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:autofillHints="@string/dd_mm_yyyy"
         android:hint="@string/dd_mm_yyyy"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@id/add_property_sold_checkbox"
-        app:layout_constraintTop_toTopOf="parent"
-        />
+        app:layout_constraintTop_toTopOf="parent" />
 
     <FrameLayout
         style="@style/basicSeparatorStyle"
@@ -41,7 +39,6 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/add_property_sold_title"
-        />
+        app:layout_constraintTop_toBottomOf="@id/add_property_sold_title" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

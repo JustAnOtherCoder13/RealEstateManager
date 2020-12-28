@@ -19,7 +19,7 @@
 
     <TextView
         android:id="@+id/property_detail_item_photo_description"
-        style="@style/Widget.listRecyclerviewPhotoDescriptionTextView"
+        style="@style/recycler_view_photo_description"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:gravity="center"

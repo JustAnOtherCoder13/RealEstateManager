@@ -42,7 +42,6 @@ public class MainActivity extends AppCompatActivity {
         mAgentViewModel = new ViewModelProvider(this).get(AgentViewModel.class);
         mNavController = Navigation.findNavController(this, R.id.nav_host_fragment);
         NavigationUI.setupWithNavController(mBinding.bottomNavBar, mNavController);
-        initTopAppBar();
         mAgentViewModel.setAgent();
     }
 
@@ -68,26 +67,5 @@ public class MainActivity extends AppCompatActivity {
         if (isForUpdate) mUpdateButton.setOnClickListener
                 (v -> mNavController.navigate
                         (R.id.action_propertyDetailFragment_to_addPropertyFragment));
-    }
-
-    private void initTopAppBar() {
-        ImageButton addPropertyBtn = mBinding.topAppBar.findViewById(R.id.top_bar_add_property);
-        addPropertyBtn.setOnClickListener(v -> {
-            switch (Objects.requireNonNull(mNavController.getCurrentDestination()).getId()) {
-                case R.id.propertyListFragment:
-                    mNavController.navigate
-                            (R.id.action_propertyListFragment_to_addPropertyFragment);
-                    break;
-
-                case R.id.mapsFragment:
-                    mNavController.navigate
-                            (R.id.action_mapsFragment_to_addPropertyFragment);
-                    break;
-
-                default:
-                    mNavController.navigate
-                            (R.id.addPropertyFragment);
-            }
-        });
     }
 }

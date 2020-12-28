@@ -10,6 +10,8 @@
 
     <dimen name="thumbnail_size">150dp</dimen>
 
+    <dimen name="static_map_size">140dp</dimen>
+
     <!-- FRAGMENT DETAIL-->
     <dimen name="fragment_detail_additional_information_bottom_margin">15dp</dimen>
 

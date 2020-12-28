@@ -16,7 +16,7 @@
 
     <TextView
         android:id="@+id/detail_information_custom_view_title"
-        style="@style/Widget.Subtitle1TextView"
+        style="@style/subtitle_style"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         app:layout_constraintStart_toEndOf="@id/detail_information_custom_view_icon"

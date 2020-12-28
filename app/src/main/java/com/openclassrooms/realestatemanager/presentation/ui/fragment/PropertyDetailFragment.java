@@ -59,10 +59,6 @@ public class PropertyDetailFragment extends BaseFragment {
         setTextForCustomView(detailInformationLayout.fragmentDetailNumbersOfRoomsCustomView, String.valueOf(property.getNumberOfRooms()));
         setTextForCustomView(detailInformationLayout.fragmentDetailNumbersOfBedroomsCustomView, String.valueOf(property.getNumberOfBedrooms()));
         setTextForCustomView(detailInformationLayout.fragmentDetailNumbersOfBathroomsCustomView, String.valueOf(property.getNumberOfBathrooms()));
-
-        descriptionTextView.setText(property.getDescription());
-        addressTextView.setLines(6);
-        addressTextView.setSingleLine(false);
     }
 
     private void setTextForCustomView(DetailInformationCustomView customView, String text) {

@@ -2,6 +2,8 @@ package com.openclassrooms.realestatemanager.presentation.ui.fragment;
 
 import android.os.Bundle;
 import android.text.InputType;
+import android.util.AttributeSet;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -31,6 +33,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
+import static com.openclassrooms.realestatemanager.presentation.utils.customView.AddPropertyInformationCustomView.getValueForView;
+import static com.openclassrooms.realestatemanager.presentation.utils.customView.AddPropertyInformationCustomView.setValueText;
 import static com.picone.core.utils.ConstantParameters.ADD_PHOTO;
 import static com.picone.core.utils.ConstantParameters.PROPERTY_TO_ADD;
 
@@ -85,22 +89,18 @@ public class AddPropertyFragment extends BaseFragment {
         mPropertyViewModel.getPhotosToDelete.observe(getViewLifecycleOwner(), photosToDelete ->
                 mBinding.addPropertyMediaLayout.detailCustomViewDeleteButton.setVisibility(photosToDelete.isEmpty() ? View.GONE : View.VISIBLE));
 
-        EditText editText = mBinding.addPropertyInformationLayout.addPropertyInformationAddress.findViewById(R.id.add_property_information_custom_view_value);
-        editText.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_FLAG_MULTI_LINE);
-        editText.setSingleLine(false);
-        editText.setLines(6);
     }
 
     private void initViewValueWhenUpdate(@NonNull FragmentAddPropertyInformationLayoutBinding addPropertyInformationCustomView, @NonNull Property property) {
         mPropertyViewModel.setPhotosToDelete(new ArrayList<>());
         EditText descriptionEditText = mBinding.addPropertyDescriptionLayout.addPropertyDescriptionEditText;
         AutoCompleteTextView propertyTypeDropDownMenu = mBinding.addPropertyInformationLayout.addPropertyInformationTypeCustomViewAutocompleteTextView;
-        setTextForCustomView(addPropertyInformationCustomView.addPropertyInformationPrice, String.valueOf(property.getPrice()));
-        setTextForCustomView(addPropertyInformationCustomView.addPropertyInformationArea, String.valueOf(property.getPropertyArea()));
-        setTextForCustomView(addPropertyInformationCustomView.addPropertyInformationNumberOfBathrooms, String.valueOf(property.getNumberOfBathrooms()));
-        setTextForCustomView(addPropertyInformationCustomView.addPropertyInformationNumberOfBedrooms, String.valueOf(property.getNumberOfBedrooms()));
-        setTextForCustomView(addPropertyInformationCustomView.addPropertyInformationNumberOfRooms, String.valueOf(property.getNumberOfRooms()));
-        setTextForCustomView(addPropertyInformationCustomView.addPropertyInformationAddress, property.getAddress());
+        setValueText(addPropertyInformationCustomView.addPropertyInformationPrice,String.valueOf(property.getPrice()));
+        setValueText(addPropertyInformationCustomView.addPropertyInformationArea, String.valueOf(property.getPropertyArea()));
+        setValueText(addPropertyInformationCustomView.addPropertyInformationNumberOfBathrooms, String.valueOf(property.getNumberOfBathrooms()));
+        setValueText(addPropertyInformationCustomView.addPropertyInformationNumberOfBedrooms, String.valueOf(property.getNumberOfBedrooms()));
+        setValueText(addPropertyInformationCustomView.addPropertyInformationNumberOfRooms, String.valueOf(property.getNumberOfRooms()));
+        setValueText(addPropertyInformationCustomView.addPropertyInformationAddress, property.getAddress());
         mPropertyPhotos.addAll(Objects.requireNonNull(mPropertyViewModel.getAllPropertyPhotosForProperty.getValue()));
         descriptionEditText.setText(property.getDescription());
         propertyTypeDropDownMenu.setText(property.getPropertyType());
@@ -158,26 +158,15 @@ public class AddPropertyFragment extends BaseFragment {
 
     //___________________________________HELPERS_____________________________________________
 
-    private void setTextForCustomView(@NonNull AddPropertyInformationCustomView customView, String text) {
-        EditText editText = customView.findViewById(R.id.add_property_information_custom_view_value);
-        editText.setText(text);
-    }
-
-    @NonNull
-    private String getTextForCustomView(@NonNull AddPropertyInformationCustomView customView) {
-        EditText editText = customView.findViewById(R.id.add_property_information_custom_view_value);
-        return editText.getText().toString();
-    }
-
     @NonNull
     @Contract("_ -> param1")
     private Property updatedProperty(@NonNull Property property) {
-        property.setAddress(getTextForCustomView(mBinding.addPropertyInformationLayout.addPropertyInformationAddress));
-        property.setNumberOfRooms(Integer.parseInt(getTextForCustomView(mBinding.addPropertyInformationLayout.addPropertyInformationNumberOfRooms)));
-        property.setNumberOfBathrooms(Integer.parseInt((getTextForCustomView(mBinding.addPropertyInformationLayout.addPropertyInformationNumberOfBathrooms))));
-        property.setNumberOfBedrooms(Integer.parseInt(getTextForCustomView(mBinding.addPropertyInformationLayout.addPropertyInformationNumberOfBedrooms)));
-        property.setPropertyArea(Integer.parseInt(getTextForCustomView(mBinding.addPropertyInformationLayout.addPropertyInformationArea)));
-        property.setPrice(Integer.parseInt(getTextForCustomView(mBinding.addPropertyInformationLayout.addPropertyInformationPrice)));
+        property.setAddress(getValueForView(mBinding.addPropertyInformationLayout.addPropertyInformationAddress));
+        property.setNumberOfRooms(Integer.parseInt(getValueForView(mBinding.addPropertyInformationLayout.addPropertyInformationNumberOfRooms)));
+        property.setNumberOfBathrooms(Integer.parseInt((getValueForView(mBinding.addPropertyInformationLayout.addPropertyInformationNumberOfBathrooms))));
+        property.setNumberOfBedrooms(Integer.parseInt(getValueForView(mBinding.addPropertyInformationLayout.addPropertyInformationNumberOfBedrooms)));
+        property.setPropertyArea(Integer.parseInt(getValueForView(mBinding.addPropertyInformationLayout.addPropertyInformationArea)));
+        property.setPrice(Integer.parseInt(getValueForView(mBinding.addPropertyInformationLayout.addPropertyInformationPrice)));
         property.setPropertyType(mBinding.addPropertyInformationLayout.addPropertyInformationTypeCustomViewAutocompleteTextView.getText().toString());
         property.setDescription(mBinding.addPropertyDescriptionLayout.addPropertyDescriptionEditText.getText().toString());
         property.setSold(mBinding.addPropertySoldLayout.addPropertySoldCheckbox.isChecked());
