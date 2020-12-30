@@ -26,6 +26,9 @@ public class PropertyLocation {
         this.propertyId = propertyId;
     }
 
+    public PropertyLocation() {
+    }
+
     public int getId() {
         return id;
     }

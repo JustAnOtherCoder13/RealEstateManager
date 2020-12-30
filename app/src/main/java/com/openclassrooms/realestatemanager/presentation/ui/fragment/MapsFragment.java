@@ -140,11 +140,14 @@ public class MapsFragment extends BaseFragment implements OnMapReadyCallback {
         mMap.clear();
         for (Property property:allProperties){
             mPropertyViewModel.setPropertyLocationForProperty(property);
+            //Log.i("TAG", "initMarkers: "+property.getId());
         }
         mPropertyViewModel.getPropertyLocationForProperty.observe(getViewLifecycleOwner(),propertyLocation -> {
+            //Log.i("TAG", "initMarkers: "+propertyLocation.getPropertyId());
             LatLng propertyLatLgn = new LatLng(propertyLocation.getLatitude(),propertyLocation.getLongitude());
             MarkerOptions markerOptions = new MarkerOptions().position(propertyLatLgn);
             mMap.addMarker(markerOptions.icon(BitmapDescriptorFactory.fromBitmap(getBitmapFromVectorDrawable(requireContext(),R.drawable.ic_fragment_detail_location_on_24))));
+            //mPropertyViewModel.setStaticMapForLatLng(propertyLatLgn);
         });
     }
 }

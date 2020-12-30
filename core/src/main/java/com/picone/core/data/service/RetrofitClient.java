@@ -8,6 +8,7 @@ import retrofit2.converter.gson.GsonConverterFactory;
 
 public class RetrofitClient {
 
+
     public GooglePlaceService googlePlaceService() {
         return new Retrofit.Builder()
                 .baseUrl("https://maps.googleapis.com/maps/")

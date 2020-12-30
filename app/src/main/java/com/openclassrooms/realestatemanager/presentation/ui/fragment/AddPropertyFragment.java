@@ -1,8 +1,6 @@
 package com.openclassrooms.realestatemanager.presentation.ui.fragment;
 
 import android.os.Bundle;
-import android.text.InputType;
-import android.util.AttributeSet;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -23,8 +21,8 @@ import com.openclassrooms.realestatemanager.databinding.FragmentAddPropertyInfor
 import com.openclassrooms.realestatemanager.presentation.ui.fragment.adapter.PhotoRecyclerViewAdapter;
 import com.openclassrooms.realestatemanager.presentation.ui.main.BaseFragment;
 import com.openclassrooms.realestatemanager.presentation.utils.RecyclerViewItemClickListener;
-import com.openclassrooms.realestatemanager.presentation.utils.customView.AddPropertyInformationCustomView;
 import com.picone.core.domain.entity.Property;
+import com.picone.core.domain.entity.PropertyLocation;
 import com.picone.core.domain.entity.PropertyPhoto;
 
 import org.jetbrains.annotations.Contract;
@@ -60,19 +58,57 @@ public class AddPropertyFragment extends BaseFragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         mIsPropertyValuesAreNull = Objects.requireNonNull(mPropertyViewModel.getSelectedProperty.getValue()).getAddress() == null;
-
         initView();
         initDropDownMenu();
         initClickListener();
         configureOnClickRecyclerView();
 
+        mPropertyViewModel.getSelectedProperty.observe(getViewLifecycleOwner(),property ->{
+            Log.i("TAG", "onViewCreated: selected property address "+property.getAddress());
+            if (property.getAddress()!=null)
+            mPropertyViewModel.setPropertyLocationForProperty(mPropertyViewModel.getSelectedProperty.getValue());
+        });
+
         mPropertyViewModel.isUpdateComplete.observe(getViewLifecycleOwner(), isUpdateComplete -> {
-            if (!isUpdateComplete) return;
-            mPropertyViewModel.setSelectedProperty(new Property());
-            mNavController.navigate(R.id.action_addPropertyFragment_to_propertyListFragment);
+
+            if (isUpdateComplete) {
+                setLocationForPropertyAddress();
+
+                //mPropertyViewModel.setSelectedProperty(new Property());
+                //mNavController.navigate(R.id.action_addPropertyFragment_to_propertyListFragment);
+            }
+        });
+        mPropertyViewModel.getLocationForAddress.observe(getViewLifecycleOwner(),propertyLocation -> {
+            if (propertyLocation.getPropertyId()!=0)mPropertyViewModel.addPropertyLocationForProperty(propertyLocation);
+            Log.i("TAG", "onViewCreated: location property id "+propertyLocation.getPropertyId());
         });
     }
 
+    //TODO review method. algo is not good
+    private void setLocationForPropertyAddress() {
+
+        mPropertyViewModel.getAllProperties.observe(getViewLifecycleOwner(),properties ->{
+            Log.i("TAG", "setLocationForPropertyAddress: address of last property "+mPropertyViewModel.getAllProperties.getValue().get(mPropertyViewModel.getAllProperties.getValue().size()-1).getAddress());
+            mPropertyViewModel.setPropertyLocationForPropertyAddress(mPropertyViewModel.getAllProperties.getValue().get(mPropertyViewModel.getAllProperties.getValue().size()-1));
+        });
+
+        mPropertyViewModel.getPropertyLocationForProperty.observe(getViewLifecycleOwner(),propertyLocation -> {
+            Log.i("TAG", "setLocationForPropertyAddress: "+propertyLocation.getPropertyId());
+        });
+      /*  mPropertyViewModel.getPropertyLocationForProperty.observe(getViewLifecycleOwner(),propertyLocation -> Log.i("TAG", "setLocationForPropertyAddress: "+propertyLocation.getPropertyId()));
+        //Log.i("TAG", "setLocationForPropertyAddress: "+mPropertyViewModel.getPropertyLocationForProperty.getValue().getPropertyId());
+        if (mPropertyViewModel.getPropertyLocationForProperty.getValue() == null) {
+            PropertyLocation propertyLocation = new PropertyLocation();
+            mPropertyViewModel.setPropertyLocationForPropertyAddress(getValueForView(mBinding.addPropertyInformationLayout.addPropertyInformationAddress));
+            propertyLocation.setId(Objects.requireNonNull(mPropertyViewModel.getAllProperties.getValue().size()));
+            propertyLocation.setLatitude(Objects.requireNonNull(mPropertyViewModel.getLocationForAddress.getValue()).latitude);
+            propertyLocation.setLongitude(mPropertyViewModel.getLocationForAddress.getValue().longitude);
+            mPropertyViewModel.getSelectedProperty.observe(getViewLifecycleOwner(),property ->{
+                propertyLocation.setPropertyId(property.getId());
+            });
+            mPropertyViewModel.addPropertyLocationForProperty(propertyLocation);
+        }*/
+    }
     //___________________________________VIEW_____________________________________________
 
     private void initRecyclerView() {
@@ -95,7 +131,7 @@ public class AddPropertyFragment extends BaseFragment {
         mPropertyViewModel.setPhotosToDelete(new ArrayList<>());
         EditText descriptionEditText = mBinding.addPropertyDescriptionLayout.addPropertyDescriptionEditText;
         AutoCompleteTextView propertyTypeDropDownMenu = mBinding.addPropertyInformationLayout.addPropertyInformationTypeCustomViewAutocompleteTextView;
-        setValueText(addPropertyInformationCustomView.addPropertyInformationPrice,String.valueOf(property.getPrice()));
+        setValueText(addPropertyInformationCustomView.addPropertyInformationPrice, String.valueOf(property.getPrice()));
         setValueText(addPropertyInformationCustomView.addPropertyInformationArea, String.valueOf(property.getPropertyArea()));
         setValueText(addPropertyInformationCustomView.addPropertyInformationNumberOfBathrooms, String.valueOf(property.getNumberOfBathrooms()));
         setValueText(addPropertyInformationCustomView.addPropertyInformationNumberOfBedrooms, String.valueOf(property.getNumberOfBedrooms()));
@@ -125,10 +161,22 @@ public class AddPropertyFragment extends BaseFragment {
                         mBinding.addPropertySoldLayout.addPropertySoldCheckbox.isChecked() ?
                                 View.VISIBLE : View.GONE));
 
-        mUpdateButton.setOnClickListener(mIsPropertyValuesAreNull ?
-                (v -> mPropertyViewModel.addProperty(updatedProperty(PROPERTY_TO_ADD(Objects.requireNonNull(mAgentViewModel.getAgent.getValue())))))
-                : (v -> mPropertyViewModel.updateProperty(updatedProperty(Objects.requireNonNull(mPropertyViewModel.getSelectedProperty.getValue())))));
+        mUpdateButton.setOnClickListener(v -> addProperty());
 
+    }
+
+    private void addProperty() {
+        if (!isRequiredInformationAreFilled()) {
+            if (mIsPropertyValuesAreNull)
+                mPropertyViewModel.addProperty(updatedProperty(PROPERTY_TO_ADD(Objects.requireNonNull(mAgentViewModel.getAgent.getValue()))));
+            else
+                mPropertyViewModel.updateProperty(updatedProperty(Objects.requireNonNull(mPropertyViewModel.getSelectedProperty.getValue())));
+
+        } else Toast.makeText(requireContext(), "fill it", Toast.LENGTH_SHORT).show();
+    }
+
+    private boolean isRequiredInformationAreFilled() {
+        return getValueForView(mBinding.addPropertyInformationLayout.addPropertyInformationAddress).trim().isEmpty();
     }
 
     public void configureOnClickRecyclerView() {
