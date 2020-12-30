@@ -13,6 +13,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
+import androidx.navigation.Navigation;
 
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
@@ -23,6 +24,7 @@ import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.openclassrooms.realestatemanager.R;
 import com.openclassrooms.realestatemanager.databinding.FragmentMapsBinding;
@@ -38,7 +40,7 @@ import static com.picone.core.utils.ConstantParameters.MAPS_CAMERA_ZOOM;
 import static com.picone.core.utils.ConstantParameters.MAPS_KEY;
 import static com.picone.core.utils.ConstantParameters.REQUEST_CODE;
 
-public class MapsFragment extends BaseFragment implements OnMapReadyCallback {
+public class MapsFragment extends BaseFragment implements GoogleMap.OnInfoWindowClickListener,OnMapReadyCallback {
 
     private FragmentMapsBinding mBinding;
     private GoogleMap mMap;
@@ -58,6 +60,7 @@ public class MapsFragment extends BaseFragment implements OnMapReadyCallback {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         mBinding = FragmentMapsBinding.inflate(inflater, container, false);
         mBinding.mapView.getMapAsync(this);
+        mNavController = Navigation.findNavController(requireActivity(), R.id.nav_host_fragment);
         setAppBarVisibility(true);
         return mBinding.getRoot();
     }
@@ -83,6 +86,7 @@ public class MapsFragment extends BaseFragment implements OnMapReadyCallback {
     public void onMapReady(@NonNull GoogleMap googleMap) {
         mMap = googleMap;
         enableMyLocation();
+        mMap.setOnInfoWindowClickListener(this);
         mPropertyViewModel.getAllProperties.observe(getViewLifecycleOwner(), this::initMarkers);
     }
 
@@ -136,18 +140,40 @@ public class MapsFragment extends BaseFragment implements OnMapReadyCallback {
         mMap.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
     }
 
-    private void initMarkers(@NonNull List<Property> allProperties){
+    private MarkerOptions markerOptions = new MarkerOptions();
+
+    private void initMarkers(@NonNull List<Property> allProperties) {
         mMap.clear();
-        for (Property property:allProperties){
+        for (Property property : allProperties) {
             mPropertyViewModel.setPropertyLocationForProperty(property);
-            //Log.i("TAG", "initMarkers: "+property.getId());
         }
-        mPropertyViewModel.getPropertyLocationForProperty.observe(getViewLifecycleOwner(),propertyLocation -> {
-            //Log.i("TAG", "initMarkers: "+propertyLocation.getPropertyId());
-            LatLng propertyLatLgn = new LatLng(propertyLocation.getLatitude(),propertyLocation.getLongitude());
-            MarkerOptions markerOptions = new MarkerOptions().position(propertyLatLgn);
-            mMap.addMarker(markerOptions.icon(BitmapDescriptorFactory.fromBitmap(getBitmapFromVectorDrawable(requireContext(),R.drawable.ic_fragment_detail_location_on_24))));
+
+        mPropertyViewModel.getPropertyLocationForProperty.observe(getViewLifecycleOwner(), propertyLocation -> {
+            Log.i("TAG", "initMarkers: " + getPropertyForId(String.valueOf(propertyLocation.getPropertyId())).getAddress() + " " + propertyLocation.getPropertyId());
+
+            markerOptions.position(new LatLng(propertyLocation.getLatitude(), propertyLocation.getLongitude()))
+                    .title(String.valueOf(propertyLocation.getPropertyId()))
+                    .snippet(getPropertyForId(String.valueOf(propertyLocation.getPropertyId())).getAddress());
+            mMap.addMarker(markerOptions.icon(BitmapDescriptorFactory.fromBitmap(getBitmapFromVectorDrawable(requireContext(), R.drawable.ic_fragment_detail_location_on_24))));
+
             //mPropertyViewModel.setStaticMapForLatLng(propertyLatLgn);
         });
+
+    }
+
+    private Property getPropertyForId(String propertyId) {
+        Property propertyToReturn = new Property();
+        for (Property property : Objects.requireNonNull(mPropertyViewModel.getAllProperties.getValue())) {
+            if (String.valueOf(property.getId()).equalsIgnoreCase(propertyId))
+                propertyToReturn = property;
+        }
+        return propertyToReturn;
+    }
+
+    @Override
+    public void onInfoWindowClick(Marker marker) {
+        mPropertyViewModel.setSelectedProperty(getPropertyForId(marker.getTitle()));
+        mNavController.navigate(R.id.action_mapsFragment_to_propertyDetailFragment);
+
     }
 }
