@@ -66,4 +66,10 @@ public abstract class BaseViewModel extends ViewModel {
     protected void checkException() {
         errorState.postValue(ErrorHandler.ON_ERROR);
     }
+
+    public enum CompletionState {
+        START_STATE,
+        ADD_PROPERTY_COMPLETE,
+        ADD_LOCATION_COMPLETE
+    }
 }

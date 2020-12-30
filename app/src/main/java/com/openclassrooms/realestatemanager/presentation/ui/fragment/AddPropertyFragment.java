@@ -1,7 +1,6 @@
 package com.openclassrooms.realestatemanager.presentation.ui.fragment;
 
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -22,7 +21,6 @@ import com.openclassrooms.realestatemanager.presentation.ui.fragment.adapter.Pho
 import com.openclassrooms.realestatemanager.presentation.ui.main.BaseFragment;
 import com.openclassrooms.realestatemanager.presentation.utils.RecyclerViewItemClickListener;
 import com.picone.core.domain.entity.Property;
-import com.picone.core.domain.entity.PropertyLocation;
 import com.picone.core.domain.entity.PropertyPhoto;
 
 import org.jetbrains.annotations.Contract;
@@ -42,6 +40,7 @@ public class AddPropertyFragment extends BaseFragment {
     private List<PropertyPhoto> mPropertyPhotos = new ArrayList<>();
     private List<PropertyPhoto> mPhotosToDelete = new ArrayList<>();
     private boolean mIsPropertyValuesAreNull;
+    private String mInitialLastPropertyAddress;
 
     @Nullable
     @Override
@@ -58,56 +57,41 @@ public class AddPropertyFragment extends BaseFragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         mIsPropertyValuesAreNull = Objects.requireNonNull(mPropertyViewModel.getSelectedProperty.getValue()).getAddress() == null;
+        mInitialLastPropertyAddress = Objects.requireNonNull(mPropertyViewModel.getAllProperties.getValue()).get(mPropertyViewModel.getAllProperties.getValue().size() - 1).getAddress();
         initView();
         initDropDownMenu();
         initClickListener();
         configureOnClickRecyclerView();
 
-        mPropertyViewModel.getSelectedProperty.observe(getViewLifecycleOwner(),property ->{
-            Log.i("TAG", "onViewCreated: selected property address "+property.getAddress());
-            if (property.getAddress()!=null)
-            mPropertyViewModel.setPropertyLocationForProperty(mPropertyViewModel.getSelectedProperty.getValue());
+        mPropertyViewModel.getSelectedProperty.observe(getViewLifecycleOwner(), property -> {
+            if (property.getAddress() != null)
+                mPropertyViewModel.setPropertyLocationForProperty(mPropertyViewModel.getSelectedProperty.getValue());
         });
 
-        mPropertyViewModel.isUpdateComplete.observe(getViewLifecycleOwner(), isUpdateComplete -> {
+        mPropertyViewModel.getCompletionState.observe(getViewLifecycleOwner(), completionState -> {
+            switch (completionState) {
+                case ADD_PROPERTY_COMPLETE:
+                    setLocationForPropertyAddress();
+                    break;
 
-            if (isUpdateComplete) {
-                setLocationForPropertyAddress();
-
-                //mPropertyViewModel.setSelectedProperty(new Property());
-                //mNavController.navigate(R.id.action_addPropertyFragment_to_propertyListFragment);
+                case ADD_LOCATION_COMPLETE:
+                    mNavController.navigate(R.id.action_addPropertyFragment_to_propertyListFragment);
             }
-        });
-        mPropertyViewModel.getLocationForAddress.observe(getViewLifecycleOwner(),propertyLocation -> {
-            if (propertyLocation.getPropertyId()!=0)mPropertyViewModel.addPropertyLocationForProperty(propertyLocation);
-            Log.i("TAG", "onViewCreated: location property id "+propertyLocation.getPropertyId());
         });
     }
 
-    //TODO review method. algo is not good
     private void setLocationForPropertyAddress() {
 
-        mPropertyViewModel.getAllProperties.observe(getViewLifecycleOwner(),properties ->{
-            Log.i("TAG", "setLocationForPropertyAddress: address of last property "+mPropertyViewModel.getAllProperties.getValue().get(mPropertyViewModel.getAllProperties.getValue().size()-1).getAddress());
-            mPropertyViewModel.setPropertyLocationForPropertyAddress(mPropertyViewModel.getAllProperties.getValue().get(mPropertyViewModel.getAllProperties.getValue().size()-1));
+        mPropertyViewModel.getAllProperties.observe(getViewLifecycleOwner(), properties -> {
+            String actualLastPropertyAddress = Objects.requireNonNull(mPropertyViewModel.getAllProperties.getValue()).get(mPropertyViewModel.getAllProperties.getValue().size() - 1).getAddress();
+            if (!mInitialLastPropertyAddress.equals(actualLastPropertyAddress))
+                mPropertyViewModel.setPropertyLocationForPropertyAddress(mPropertyViewModel.getAllProperties.getValue().get(mPropertyViewModel.getAllProperties.getValue().size() - 1));
         });
 
-        mPropertyViewModel.getPropertyLocationForProperty.observe(getViewLifecycleOwner(),propertyLocation -> {
-            Log.i("TAG", "setLocationForPropertyAddress: "+propertyLocation.getPropertyId());
+        mPropertyViewModel.getLocationForAddress.observe(getViewLifecycleOwner(), propertyLocation -> {
+            if (propertyLocation.getPropertyId() != 0)
+                mPropertyViewModel.addPropertyLocationForProperty(propertyLocation);
         });
-      /*  mPropertyViewModel.getPropertyLocationForProperty.observe(getViewLifecycleOwner(),propertyLocation -> Log.i("TAG", "setLocationForPropertyAddress: "+propertyLocation.getPropertyId()));
-        //Log.i("TAG", "setLocationForPropertyAddress: "+mPropertyViewModel.getPropertyLocationForProperty.getValue().getPropertyId());
-        if (mPropertyViewModel.getPropertyLocationForProperty.getValue() == null) {
-            PropertyLocation propertyLocation = new PropertyLocation();
-            mPropertyViewModel.setPropertyLocationForPropertyAddress(getValueForView(mBinding.addPropertyInformationLayout.addPropertyInformationAddress));
-            propertyLocation.setId(Objects.requireNonNull(mPropertyViewModel.getAllProperties.getValue().size()));
-            propertyLocation.setLatitude(Objects.requireNonNull(mPropertyViewModel.getLocationForAddress.getValue()).latitude);
-            propertyLocation.setLongitude(mPropertyViewModel.getLocationForAddress.getValue().longitude);
-            mPropertyViewModel.getSelectedProperty.observe(getViewLifecycleOwner(),property ->{
-                propertyLocation.setPropertyId(property.getId());
-            });
-            mPropertyViewModel.addPropertyLocationForProperty(propertyLocation);
-        }*/
     }
     //___________________________________VIEW_____________________________________________
 
