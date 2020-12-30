@@ -85,7 +85,7 @@ public class PropertyViewModel extends BaseViewModel {
         photosToDeleteMutableLD.setValue(photosToDelete);
     }
 
-    public void resetUpdateCompleteValue() {
+    public void resetCompletionState() {
         completionStateMutableLD.setValue(CompletionState.START_STATE);
     }
 
@@ -135,10 +135,10 @@ public class PropertyViewModel extends BaseViewModel {
 
     public void updateProperty(Property property) {
         compositeDisposable.add(
-                updatePropertyInteractor.updateRoomProperty(property)
+                updatePropertyInteractor.updateProperty(property)
                         .subscribeOn(schedulerProvider.getIo())
                         .observeOn(schedulerProvider.getUi())
-                        .doOnComplete(() -> completionStateMutableLD.setValue(CompletionState.ADD_PROPERTY_COMPLETE))
+                        .doOnComplete(() -> completionStateMutableLD.setValue(CompletionState.UPDATE_PROPERTY_COMPLETE))
                         .andThen(getAllPropertiesInteractor.getAllProperties())
                         .subscribe(properties -> allPropertiesMutableLD.postValue(properties), throwable -> checkException()));
     }

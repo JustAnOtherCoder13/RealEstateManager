@@ -48,8 +48,8 @@ public abstract class Generator {
     }
 
     private static List<PropertyLocation> PROPERTIES_LOCATION = Arrays.asList(
-            new PropertyLocation(1,43.543732,5.036901,1),
-            new PropertyLocation(2,43.560711,5.072869,2)
+            new PropertyLocation(1,43.543732,5.036901,"PACA",1),
+            new PropertyLocation(2,43.560711,5.072869,"PACA",2)
     );
 
     public static List<PropertyLocation> generatePropertyLocation(){return new ArrayList<>(PROPERTIES_LOCATION);}

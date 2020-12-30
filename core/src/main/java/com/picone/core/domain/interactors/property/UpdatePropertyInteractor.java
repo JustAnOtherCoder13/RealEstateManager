@@ -11,7 +11,7 @@ public class UpdatePropertyInteractor extends PropertyBaseInteractor {
         super(propertyDataSource);
     }
 
-    public Completable updateRoomProperty(Property property) {
+    public Completable updateProperty(Property property) {
         return propertyDataSource.updateProperty(property);
     }
 }

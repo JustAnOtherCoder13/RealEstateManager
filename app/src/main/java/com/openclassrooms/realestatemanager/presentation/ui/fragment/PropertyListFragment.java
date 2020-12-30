@@ -33,7 +33,7 @@ public class PropertyListFragment extends BaseFragment {
         mNavController = Navigation.findNavController(requireActivity(), R.id.nav_host_fragment);
         setAppBarVisibility(true);
         initRecyclerView();
-        mPropertyViewModel.resetUpdateCompleteValue();
+        mPropertyViewModel.resetCompletionState();
         return mBinding.getRoot();
     }
 

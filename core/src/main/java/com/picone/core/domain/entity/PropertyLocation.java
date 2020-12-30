@@ -16,13 +16,15 @@ public class PropertyLocation {
     private int id;
     private double latitude;
     private double longitude;
+    private String region;
     @ColumnInfo(index = true)
     private int propertyId;
 
-    public PropertyLocation(int id, double latitude, double longitude, int propertyId) {
+    public PropertyLocation(int id, double latitude, double longitude, String region, int propertyId) {
         this.id = id;
         this.latitude = latitude;
         this.longitude = longitude;
+        this.region = region;
         this.propertyId = propertyId;
     }
 
@@ -60,4 +62,8 @@ public class PropertyLocation {
     public void setPropertyId(int propertyId) {
         this.propertyId = propertyId;
     }
+
+    public String getRegion() { return region; }
+
+    public void setRegion(String region) { this.region = region; }
 }

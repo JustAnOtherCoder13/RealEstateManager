@@ -149,8 +149,6 @@ public class MapsFragment extends BaseFragment implements GoogleMap.OnInfoWindow
         }
 
         mPropertyViewModel.getPropertyLocationForProperty.observe(getViewLifecycleOwner(), propertyLocation -> {
-            Log.i("TAG", "initMarkers: " + getPropertyForId(String.valueOf(propertyLocation.getPropertyId())).getAddress() + " " + propertyLocation.getPropertyId());
-
             markerOptions.position(new LatLng(propertyLocation.getLatitude(), propertyLocation.getLongitude()))
                     .title(String.valueOf(propertyLocation.getPropertyId()))
                     .snippet(getPropertyForId(String.valueOf(propertyLocation.getPropertyId())).getAddress());
@@ -161,19 +159,12 @@ public class MapsFragment extends BaseFragment implements GoogleMap.OnInfoWindow
 
     }
 
-    private Property getPropertyForId(String propertyId) {
-        Property propertyToReturn = new Property();
-        for (Property property : Objects.requireNonNull(mPropertyViewModel.getAllProperties.getValue())) {
-            if (String.valueOf(property.getId()).equalsIgnoreCase(propertyId))
-                propertyToReturn = property;
-        }
-        return propertyToReturn;
-    }
+
 
     @Override
-    public void onInfoWindowClick(Marker marker) {
+    public void onInfoWindowClick(@NonNull Marker marker) {
         mPropertyViewModel.setSelectedProperty(getPropertyForId(marker.getTitle()));
+        mPropertyViewModel.setAllPhotosForProperty(getPropertyForId(marker.getTitle()));
         mNavController.navigate(R.id.action_mapsFragment_to_propertyDetailFragment);
-
     }
 }

@@ -76,7 +76,7 @@ public abstract class RealEstateManagerRoomDatabase extends RoomDatabase {
             contentValues.put("id", generateProperties().get(i).getId());
             contentValues.put("realEstateAgentId", generateProperties().get(i).getRealEstateAgentId());
             contentValues.put("address", generateProperties().get(i).getAddress());
-            contentValues.put("zone", generateProperties().get(i).getZone());
+            contentValues.put("region", generateProperties().get(i).getRegion());
             contentValues.put("propertyType", generateProperties().get(i).getPropertyType());
             contentValues.put("propertyArea", generateProperties().get(i).getPropertyArea());
             contentValues.put("numberOfRooms", generateProperties().get(i).getNumberOfRooms());

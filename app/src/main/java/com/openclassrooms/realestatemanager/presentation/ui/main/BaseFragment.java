@@ -10,6 +10,9 @@ import androidx.navigation.NavController;
 
 import com.openclassrooms.realestatemanager.presentation.viewModels.AgentViewModel;
 import com.openclassrooms.realestatemanager.presentation.viewModels.PropertyViewModel;
+import com.picone.core.domain.entity.Property;
+
+import java.util.Objects;
 
 import dagger.hilt.android.AndroidEntryPoint;
 
@@ -38,6 +41,15 @@ public abstract class BaseFragment extends Fragment {
     }
     protected void setUpdateButtonIcon(boolean isForUpdate){
         mainActivity.initUpdateButton(isForUpdate);
+    }
+
+    protected Property getPropertyForId(String propertyId) {
+        Property propertyToReturn = new Property();
+        for (Property property : Objects.requireNonNull(mPropertyViewModel.getAllProperties.getValue())) {
+            if (String.valueOf(property.getId()).equalsIgnoreCase(propertyId))
+                propertyToReturn = property;
+        }
+        return propertyToReturn;
     }
 
 }

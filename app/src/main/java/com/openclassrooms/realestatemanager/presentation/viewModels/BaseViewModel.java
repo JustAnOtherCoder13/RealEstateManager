@@ -70,6 +70,7 @@ public abstract class BaseViewModel extends ViewModel {
     public enum CompletionState {
         START_STATE,
         ADD_PROPERTY_COMPLETE,
-        ADD_LOCATION_COMPLETE
+        ADD_LOCATION_COMPLETE,
+        UPDATE_PROPERTY_COMPLETE
     }
 }

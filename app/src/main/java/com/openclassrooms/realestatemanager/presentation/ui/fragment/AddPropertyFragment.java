@@ -89,9 +89,12 @@ public class AddPropertyFragment extends BaseFragment {
         });
 
         mPropertyViewModel.getLocationForAddress.observe(getViewLifecycleOwner(), propertyLocation -> {
-            if (propertyLocation.getPropertyId() != 0)
+            if (propertyLocation.getPropertyId() != 0){
+                Property property = getPropertyForId(String.valueOf(propertyLocation.getPropertyId()));
+                property.setRegion(propertyLocation.getRegion());
+                mPropertyViewModel.updateProperty(property);
                 mPropertyViewModel.addPropertyLocationForProperty(propertyLocation);
-        });
+        }});
     }
     //___________________________________VIEW_____________________________________________
 
