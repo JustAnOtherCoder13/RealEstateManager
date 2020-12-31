@@ -27,12 +27,12 @@ public class GetPropertyLocationForAddressInteractor extends PropertyBaseInterac
         if (propertyLocationPojo.getResults() != null
                 && !propertyLocationPojo.getResults().isEmpty())
             return new PropertyLocation(
-                        property.getId(),
-                        propertyLocationPojo.getResults().get(0).getGeometry().getLocation().getLat(),
-                        propertyLocationPojo.getResults().get(0).getGeometry().getLocation().getLng(),
-                        propertyLocationPojo.getResults().get(0).getAddressComponents().get(3).getShortName(),
-                        property.getId()
-                );
-            else return new PropertyLocation();
+                    property.getId(),
+                    propertyLocationPojo.getResults().get(0).getGeometry().getLocation().getLat(),
+                    propertyLocationPojo.getResults().get(0).getGeometry().getLocation().getLng(),
+                    propertyLocationPojo.getResults().get(0).getAddressComponents().get(2).getShortName(),
+                    property.getId()
+            );
+        else return new PropertyLocation();
     }
 }

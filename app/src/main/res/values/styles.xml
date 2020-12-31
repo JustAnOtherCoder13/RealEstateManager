@@ -163,6 +163,7 @@
 
     <style name="customViewIconStyle">
         <item name="android:paddingEnd">@dimen/basic_marge</item>
+        <item name="android:color">@color/black</item>
     </style>
 
     <style name="customViewTextStyle">

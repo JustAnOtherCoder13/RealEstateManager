@@ -15,7 +15,7 @@ public class ConstantParameters {
 
     public static String MAPS_KEY;
     public static final int REQUEST_CODE = 13700;
-    public static final int MAPS_CAMERA_ZOOM = 16;
+    public static final int MAPS_CAMERA_ZOOM = 10;
 
     @NonNull
     public static Property PROPERTY_TO_ADD(@NonNull RealEstateAgent agent) {

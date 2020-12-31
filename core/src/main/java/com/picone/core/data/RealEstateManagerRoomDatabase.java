@@ -120,6 +120,7 @@ public abstract class RealEstateManagerRoomDatabase extends RoomDatabase {
             contentValues.put("id", generatePropertyLocation().get(i).getId());
             contentValues.put("latitude", generatePropertyLocation().get(i).getLatitude());
             contentValues.put("longitude", generatePropertyLocation().get(i).getLongitude());
+            contentValues.put("region", generatePropertyLocation().get(i).getRegion());
             contentValues.put("propertyId", generatePropertyLocation().get(i).getPropertyId());
 
             db.insert(propertyLocationTable, OnConflictStrategy.IGNORE, contentValues);

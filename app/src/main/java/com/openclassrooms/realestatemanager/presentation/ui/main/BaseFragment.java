@@ -12,6 +12,8 @@ import com.openclassrooms.realestatemanager.presentation.viewModels.AgentViewMod
 import com.openclassrooms.realestatemanager.presentation.viewModels.PropertyViewModel;
 import com.picone.core.domain.entity.Property;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 
 import dagger.hilt.android.AndroidEntryPoint;
@@ -51,5 +53,6 @@ public abstract class BaseFragment extends Fragment {
         }
         return propertyToReturn;
     }
+
 
 }

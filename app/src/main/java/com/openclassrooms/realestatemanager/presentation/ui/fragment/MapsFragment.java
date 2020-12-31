@@ -29,8 +29,10 @@ import com.google.android.gms.maps.model.MarkerOptions;
 import com.openclassrooms.realestatemanager.R;
 import com.openclassrooms.realestatemanager.databinding.FragmentMapsBinding;
 import com.openclassrooms.realestatemanager.presentation.ui.main.BaseFragment;
+import com.openclassrooms.realestatemanager.presentation.utils.AgentRegionUnderResponsibility;
 import com.picone.core.domain.entity.Property;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
@@ -144,15 +146,30 @@ public class MapsFragment extends BaseFragment implements GoogleMap.OnInfoWindow
 
     private void initMarkers(@NonNull List<Property> allProperties) {
         mMap.clear();
+        List<Property> propertyByRegion = new ArrayList<>();
         for (Property property : allProperties) {
             mPropertyViewModel.setPropertyLocationForProperty(property);
+            if (property.getRegion().equalsIgnoreCase(getResources().getString(AgentRegionUnderResponsibility.PACA.label)))
+                propertyByRegion.add(property);
+
+            Log.i("TAG", "initMarkers: "+propertyByRegion+" "+getResources().getString(AgentRegionUnderResponsibility.PACA.label));
+
         }
 
         mPropertyViewModel.getPropertyLocationForProperty.observe(getViewLifecycleOwner(), propertyLocation -> {
             markerOptions.position(new LatLng(propertyLocation.getLatitude(), propertyLocation.getLongitude()))
                     .title(String.valueOf(propertyLocation.getPropertyId()))
                     .snippet(getPropertyForId(String.valueOf(propertyLocation.getPropertyId())).getAddress());
-            mMap.addMarker(markerOptions.icon(BitmapDescriptorFactory.fromBitmap(getBitmapFromVectorDrawable(requireContext(), R.drawable.ic_fragment_detail_location_on_24))));
+            Log.i("TAG", "initMarkers: "+propertyLocation.getRegion()+" "+getResources().getString(AgentRegionUnderResponsibility.PACA.label));
+            if (propertyLocation.getRegion().equalsIgnoreCase(getResources().getString(AgentRegionUnderResponsibility.PACA.label)))
+            mMap.addMarker(markerOptions.icon(BitmapDescriptorFactory.fromBitmap(getBitmapFromVectorDrawable(requireContext(), R.drawable.ic_fragment_detail_location_on_zone1_24))));
+            else if (propertyLocation.getRegion().equalsIgnoreCase(getResources().getString(AgentRegionUnderResponsibility.HERAULT.label)))
+                mMap.addMarker(markerOptions.icon(BitmapDescriptorFactory.fromBitmap(getBitmapFromVectorDrawable(requireContext(),R.drawable.ic_fragment_detail_location_on_zone2_24))));
+            else if (propertyLocation.getRegion().equalsIgnoreCase(getResources().getString(AgentRegionUnderResponsibility.AUVERGNE_RHONE_ALPES.label)))
+                mMap.addMarker(markerOptions.icon(BitmapDescriptorFactory.fromBitmap(getBitmapFromVectorDrawable(requireContext(),R.drawable.ic_fragment_detail_location_on_zone3_24))));
+
+            else mMap.addMarker(markerOptions.icon(BitmapDescriptorFactory.fromBitmap(getBitmapFromVectorDrawable(requireContext(),R.drawable.ic_location_on_24))));
+
 
             //mPropertyViewModel.setStaticMapForLatLng(propertyLatLgn);
         });

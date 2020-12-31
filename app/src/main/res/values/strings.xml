@@ -52,4 +52,11 @@
         <item>DUPLEX</item>
         <item>PENTHOUSE</item>
     </string-array>
+
+    <!--_______________________REGION UNDER RESPONSIBILITY___________________ -->
+
+    <string name="PACA">Provence-Alpes-Côte d\'Azur</string>
+    <string name="OCCITANIE">Occitanie</string>
+    <string name="AUVERGNE_RHONE_ALPES">Auvergne-Rhône-Alpes</string>
+
 </resources>
