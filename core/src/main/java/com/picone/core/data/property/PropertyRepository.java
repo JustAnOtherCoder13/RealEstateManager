@@ -1,11 +1,14 @@
 package com.picone.core.data.property;
 
+import androidx.annotation.NonNull;
+
 import com.google.android.gms.maps.model.LatLng;
 import com.picone.core.domain.entity.PointOfInterest;
 import com.picone.core.domain.entity.Property;
 import com.picone.core.domain.entity.PropertyLocation;
-import com.picone.core.domain.entity.pojo.propertyLocation.PropertyLocationPojo;
 import com.picone.core.domain.entity.PropertyPhoto;
+import com.picone.core.domain.entity.pojo.nearBySearch.NearBySearch;
+import com.picone.core.domain.entity.pojo.propertyLocation.PropertyLocationPojo;
 import com.picone.core.domain.entity.pojo.staticMap.StaticMapPojo;
 
 import java.util.List;
@@ -76,4 +79,9 @@ public class PropertyRepository {
     public Observable<StaticMapPojo> getStaticMapForLatLng(LatLng latLng, String googleKey){
         return placeServiceDao.getStaticMapForLatLng(latLng, googleKey);
     }
-}
+
+    public Observable<NearBySearch> getNearBySchoolForPropertyLocation(@NonNull PropertyLocation propertyLocation, String googleKey) {
+        return placeServiceDao.getNearBySchoolForPropertyLocation(propertyLocation, googleKey);
+    }
+
+    }

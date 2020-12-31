@@ -2,8 +2,12 @@ package com.picone.core.data.property;
 
 import android.util.Log;
 
+import androidx.annotation.NonNull;
+
 import com.google.android.gms.maps.model.LatLng;
 import com.picone.core.data.service.RetrofitClient;
+import com.picone.core.domain.entity.PropertyLocation;
+import com.picone.core.domain.entity.pojo.nearBySearch.NearBySearch;
 import com.picone.core.domain.entity.pojo.propertyLocation.PropertyLocationPojo;
 import com.picone.core.domain.entity.pojo.staticMap.StaticMapPojo;
 
@@ -17,6 +21,7 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 import static com.picone.core.utils.ConstantParameters.MAPS_CAMERA_ZOOM;
+import static com.picone.core.utils.ConstantParameters.RADIUS;
 
 public class PlaceServiceDaoImpl {
 
@@ -29,6 +34,11 @@ public class PlaceServiceDaoImpl {
 
     public Observable<PropertyLocationPojo> getPropertyLocationForAddress(String address, String googleKey) {
         return retrofitClient.googlePlaceService().getLocationForAddress(address, googleKey);
+    }
+
+    public Observable<NearBySearch> getNearBySchoolForPropertyLocation( PropertyLocation propertyLocation, String googleKey){
+        Log.i("TAG", "getNearBySchoolForPropertyLocation: dao");
+        return retrofitClient.googlePlaceService().getNearbySchool(propertyLocation.getLatitude()+","+propertyLocation.getLongitude(),RADIUS,googleKey);
     }
 
     //TODO error on static map, due to return type as png?

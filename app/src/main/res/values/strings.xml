@@ -16,7 +16,7 @@
     <!-- ______________________CONTENT DESCRIPTION__________________ -->
     <string name="property_item_photo">property item photo</string>
     <string name="property_detail_item_photo">property detail item photo</string>
-    <string name="location_maps_view">location maps view</string>
+    <string name="location_maps_view">propertyLocation maps view</string>
     <string name="icon">Icon</string>
     <string name="update_property_button">update property button</string>
     <string name="delete_button">delete button</string>
@@ -31,7 +31,7 @@
     <string name="surface">Surface</string>
     <string name="description_text">Description text</string>
     <string name="sold">Sold</string>
-    <string name="location">Location</string>
+    <string name="propertyLocation">Location</string>
     <string name="number_of_rooms">Number of Rooms</string>
     <string name="number_of_bathrooms">Number of bathrooms</string>
     <string name="number_of_bedrooms">Number of bedrooms</string>
@@ -55,8 +55,9 @@
 
     <!--_______________________REGION UNDER RESPONSIBILITY___________________ -->
 
-    <string name="PACA">Provence-Alpes-Côte d\'Azur</string>
-    <string name="OCCITANIE">Occitanie</string>
-    <string name="AUVERGNE_RHONE_ALPES">Auvergne-Rhône-Alpes</string>
+    <string name="BOUCHES_DU_RHONE">Bouches-du-rhône</string>
+    <string name="VAR">Var</string>
+    <string name="VAUCLUSE">Vaucluse</string>
+    <string name="gps_warning_message">GPS is Disabled in your device, enable it to be located</string>
 
 </resources>

@@ -1,8 +1,10 @@
 package com.openclassrooms.realestatemanager.presentation.ui.main;
 
+import android.location.LocationManager;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageButton;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -43,6 +45,11 @@ public class MainActivity extends AppCompatActivity {
         mNavController = Navigation.findNavController(this, R.id.nav_host_fragment);
         NavigationUI.setupWithNavController(mBinding.bottomNavBar, mNavController);
         mAgentViewModel.setAgent();
+        LocationManager locationManager = (LocationManager) getSystemService(LOCATION_SERVICE);
+        assert locationManager != null;
+        if (!locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)) {
+            Toast.makeText(this, R.string.gps_warning_message, Toast.LENGTH_LONG).show();
+        }
     }
 
 

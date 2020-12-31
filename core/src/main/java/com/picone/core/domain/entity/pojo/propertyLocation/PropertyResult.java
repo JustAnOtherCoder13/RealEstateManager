@@ -1,10 +1,11 @@
 package com.picone.core.domain.entity.pojo.propertyLocation;
 
-import java.util.List;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
-public class Result {
+import java.util.List;
+
+public class PropertyResult {
 
     @SerializedName("address_components")
     @Expose
@@ -14,7 +15,7 @@ public class Result {
     private String formattedAddress;
     @SerializedName("geometry")
     @Expose
-    private Geometry geometry;
+    private PropertyGeometry propertyGeometry;
     @SerializedName("place_id")
     @Expose
     private String placeId;
@@ -38,12 +39,12 @@ public class Result {
         this.formattedAddress = formattedAddress;
     }
 
-    public Geometry getGeometry() {
-        return geometry;
+    public PropertyGeometry getPropertyGeometry() {
+        return propertyGeometry;
     }
 
-    public void setGeometry(Geometry geometry) {
-        this.geometry = geometry;
+    public void setPropertyGeometry(PropertyGeometry propertyGeometry) {
+        this.propertyGeometry = propertyGeometry;
     }
 
     public String getPlaceId() {

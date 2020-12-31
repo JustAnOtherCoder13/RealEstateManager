@@ -1,5 +1,7 @@
 package com.openclassrooms.realestatemanager.presentation.viewModels;
 
+import android.util.Log;
+
 import androidx.annotation.NonNull;
 import androidx.hilt.lifecycle.ViewModelInject;
 import androidx.lifecycle.LiveData;
@@ -15,6 +17,7 @@ import com.picone.core.domain.interactors.property.GetAllPropertiesInteractor;
 import com.picone.core.domain.interactors.property.UpdatePropertyInteractor;
 import com.picone.core.domain.interactors.property.location.AddPropertyLocationInteractor;
 import com.picone.core.domain.interactors.property.location.GetPropertyLocationInteractor;
+import com.picone.core.domain.interactors.property.maps.GetNearBySchoolForPropertyLocation;
 import com.picone.core.domain.interactors.property.maps.GetPropertyLocationForAddressInteractor;
 import com.picone.core.domain.interactors.property.maps.GetStaticMapForLatLngInteractor;
 import com.picone.core.domain.interactors.property.photo.AddPropertyPhotoInteractor;
@@ -30,6 +33,7 @@ import static com.picone.core.utils.ConstantParameters.MAPS_KEY;
 
 public class PropertyViewModel extends BaseViewModel {
 
+    private MutableLiveData<CompletionState> completionStateMutableLD = new MutableLiveData<>(CompletionState.START_STATE);
     private MutableLiveData<List<Property>> allPropertiesMutableLD = new MutableLiveData<>();
     private MutableLiveData<List<PointOfInterest>> allPointOfInterestForPropertyMutableLD = new MutableLiveData<>();
     private MutableLiveData<List<PropertyPhoto>> allPhotosForPropertyMutableLD = new MutableLiveData<>();
@@ -38,6 +42,7 @@ public class PropertyViewModel extends BaseViewModel {
     private MutableLiveData<PropertyLocation> propertyLocationForPropertyMutableLd = new MutableLiveData<>();
     private MutableLiveData<PropertyLocation> locationForAddressMutableLD = new MutableLiveData<>();
 
+    public LiveData<CompletionState> getCompletionState = completionStateMutableLD;
     public LiveData<List<Property>> getAllProperties = allPropertiesMutableLD;
     public LiveData<List<PointOfInterest>> getAllPointOfInterestForProperty = allPointOfInterestForPropertyMutableLD;
     public LiveData<List<PropertyPhoto>> getAllPropertyPhotosForProperty = allPhotosForPropertyMutableLD;
@@ -59,6 +64,7 @@ public class PropertyViewModel extends BaseViewModel {
             , AddPropertyLocationInteractor addPropertyLocationInteractor
             , GetPropertyLocationForAddressInteractor getPropertyLocationForAddressInteractor
             , GetStaticMapForLatLngInteractor getStaticMapForLatLngInteractor
+            , GetNearBySchoolForPropertyLocation getNearBySchoolForPropertyLocation
             , SchedulerProvider schedulerProvider) {
         this.getAllPropertiesInteractor = getAllPropertiesInteractor;
         this.getAllPointOfInterestForPropertyIdInteractor = getAllPointOfInterestForPropertyIdInteractor;
@@ -72,6 +78,7 @@ public class PropertyViewModel extends BaseViewModel {
         this.addPropertyLocationInteractor = addPropertyLocationInteractor;
         this.getPropertyLocationForAddressInteractor = getPropertyLocationForAddressInteractor;
         this.getStaticMapForLatLngInteractor = getStaticMapForLatLngInteractor;
+        this.getNearBySchoolForPropertyLocation = getNearBySchoolForPropertyLocation;
         this.schedulerProvider = schedulerProvider;
     }
 
@@ -145,8 +152,6 @@ public class PropertyViewModel extends BaseViewModel {
 
     //___________________________________PROPERTY LOCATION__________________________________
 
-    private MutableLiveData<CompletionState> completionStateMutableLD = new MutableLiveData<>(CompletionState.START_STATE);
-    public LiveData<CompletionState> getCompletionState = completionStateMutableLD;
 
     public void addPropertyLocationForProperty(PropertyLocation propertyLocation) {
         compositeDisposable.add(
@@ -189,7 +194,9 @@ public class PropertyViewModel extends BaseViewModel {
                         .subscribe(propertyPhotos -> allPhotosForPropertyMutableLD.postValue(propertyPhotos)));
     }
 
-    public void setPropertyLocationForPropertyAddress(Property property) {
+    //___________________________________MAPS__________________________________
+
+    public void setPropertyLocationForPropertyAddress(@NonNull Property property) {
         if (property.getAddress() != null)
             compositeDisposable.add(
                     getPropertyLocationForAddressInteractor.getPropertyLocationForAddress(property, MAPS_KEY)
@@ -208,4 +215,16 @@ public class PropertyViewModel extends BaseViewModel {
         );
     }
 
+    public void setNearBySearchForPropertyLocation(int propertyId) {
+        compositeDisposable.add(
+                getPropertyLocationInteractor.getPropertyLocationForPropertyId(propertyId)
+                        .subscribeOn(schedulerProvider.getIo())
+                        .observeOn(schedulerProvider.getUi())
+                        .flatMap(propertyLocation ->
+                                getNearBySchoolForPropertyLocation.getNearBySchoolForPropertyLocation(propertyLocation, MAPS_KEY))
+                        .subscribe(nearBySearch -> {
+                            Log.i("TAG", "setNearBySearchForPropertyLocation: "+nearBySearch.getNearBySearchResults());
+                        },throwable -> checkException())
+        );
+    }
 }

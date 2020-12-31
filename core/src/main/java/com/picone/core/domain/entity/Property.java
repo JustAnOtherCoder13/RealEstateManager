@@ -4,6 +4,7 @@ package com.picone.core.domain.entity;
 import androidx.room.ColumnInfo;
 import androidx.room.Entity;
 import androidx.room.ForeignKey;
+import androidx.room.Ignore;
 import androidx.room.PrimaryKey;
 
 import static com.picone.core.utils.ConstantParameters.propertyTable;
@@ -36,6 +37,7 @@ public class Property {
     private String enterOnMarket;
     private String soldFrom;
 
+    @Ignore
     public Property() {
     }
 

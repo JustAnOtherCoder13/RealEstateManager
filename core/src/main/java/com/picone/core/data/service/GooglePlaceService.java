@@ -1,5 +1,6 @@
 package com.picone.core.data.service;
 
+import com.picone.core.domain.entity.pojo.nearBySearch.NearBySearch;
 import com.picone.core.domain.entity.pojo.propertyLocation.PropertyLocationPojo;
 import com.picone.core.domain.entity.pojo.staticMap.StaticMapPojo;
 
@@ -22,6 +23,14 @@ public interface GooglePlaceService {
             @Query("zoom") int zoom,
             @Query("size") String size,
             @Query("key") String googleKey
+    );
+
+    //TODO doesn' pass value with observable but do with call
+    @GET("api/place/nearbysearch/json?sensor=true&type=school&fields=formatted_address,name,geometry")
+    Observable<NearBySearch> getNearbySchool(
+            @Query("location") String location,
+            @Query("radius") String radius,
+            @Query("key") String key
     );
 
 }

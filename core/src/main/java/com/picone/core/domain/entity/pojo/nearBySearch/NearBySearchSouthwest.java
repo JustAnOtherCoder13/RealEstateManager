@@ -1,9 +1,9 @@
-package com.picone.core.domain.entity.pojo.propertyLocation;
+package com.picone.core.domain.entity.pojo.nearBySearch;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
-public class Location {
+public class NearBySearchSouthwest {
 
     @SerializedName("lat")
     @Expose

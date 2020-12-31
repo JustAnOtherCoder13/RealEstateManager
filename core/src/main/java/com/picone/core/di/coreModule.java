@@ -16,11 +16,12 @@ import com.picone.core.domain.interactors.property.GetAllPropertiesInteractor;
 import com.picone.core.domain.interactors.property.UpdatePropertyInteractor;
 import com.picone.core.domain.interactors.property.location.AddPropertyLocationInteractor;
 import com.picone.core.domain.interactors.property.location.GetPropertyLocationInteractor;
+import com.picone.core.domain.interactors.property.maps.GetNearBySchoolForPropertyLocation;
+import com.picone.core.domain.interactors.property.maps.GetPropertyLocationForAddressInteractor;
 import com.picone.core.domain.interactors.property.maps.GetStaticMapForLatLngInteractor;
 import com.picone.core.domain.interactors.property.photo.AddPropertyPhotoInteractor;
 import com.picone.core.domain.interactors.property.photo.DeletePropertyPhotoInteractor;
 import com.picone.core.domain.interactors.property.photo.GetAllPropertyPhotosForPropertyIdInteractor;
-import com.picone.core.domain.interactors.property.maps.GetPropertyLocationForAddressInteractor;
 import com.picone.core.domain.interactors.property.pointOfInterest.AddPropertyPointOfInterestInteractor;
 import com.picone.core.domain.interactors.property.pointOfInterest.GetAllPointOfInterestForPropertyIdInteractor;
 
@@ -148,5 +149,10 @@ public final class coreModule {
     @Provides
     static GetStaticMapForLatLngInteractor provideGetStaticMapForLatLng(@ApplicationContext Context context){
         return new GetStaticMapForLatLngInteractor(providePropertyDataSource(context));
+    }
+
+    @Provides
+    static GetNearBySchoolForPropertyLocation provideGetNearBySearchForProperty(@ApplicationContext Context context){
+        return new GetNearBySchoolForPropertyLocation(providePropertyDataSource(context));
     }
 }

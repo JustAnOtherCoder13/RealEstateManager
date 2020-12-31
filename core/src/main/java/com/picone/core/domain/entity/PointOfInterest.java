@@ -3,6 +3,7 @@ package com.picone.core.domain.entity;
 import androidx.room.ColumnInfo;
 import androidx.room.Entity;
 import androidx.room.ForeignKey;
+import androidx.room.Ignore;
 import androidx.room.PrimaryKey;
 
 import static com.picone.core.utils.ConstantParameters.pointOfInterestTable;
@@ -20,6 +21,10 @@ public class PointOfInterest {
     public PointOfInterest(int id, int propertyId) {
         this.id = id;
         this.propertyId = propertyId;
+    }
+
+    @Ignore
+    public PointOfInterest() {
     }
 
     public int getId() {

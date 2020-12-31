@@ -4,9 +4,9 @@ import com.openclassrooms.realestatemanager.R;
 
 public enum AgentRegionUnderResponsibility {
 
-    PACA(R.string.PACA),
-    HERAULT(R.string.OCCITANIE),
-    AUVERGNE_RHONE_ALPES(R.string.AUVERGNE_RHONE_ALPES);
+    BOUCHES_DU_RHONE(R.string.BOUCHES_DU_RHONE),
+    VAR(R.string.VAR),
+    VAUCLUSE(R.string.VAUCLUSE);
 
     public final int label;
 

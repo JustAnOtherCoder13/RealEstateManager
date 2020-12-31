@@ -3,7 +3,7 @@ package com.picone.core.domain.entity.pojo.propertyLocation;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
-public class Southwest {
+public class PropertySouthwest {
 
     @SerializedName("lat")
     @Expose

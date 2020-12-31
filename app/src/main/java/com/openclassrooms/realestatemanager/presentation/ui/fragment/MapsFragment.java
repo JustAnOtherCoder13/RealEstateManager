@@ -32,7 +32,6 @@ import com.openclassrooms.realestatemanager.presentation.ui.main.BaseFragment;
 import com.openclassrooms.realestatemanager.presentation.utils.AgentRegionUnderResponsibility;
 import com.picone.core.domain.entity.Property;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
@@ -42,13 +41,15 @@ import static com.picone.core.utils.ConstantParameters.MAPS_CAMERA_ZOOM;
 import static com.picone.core.utils.ConstantParameters.MAPS_KEY;
 import static com.picone.core.utils.ConstantParameters.REQUEST_CODE;
 
-public class MapsFragment extends BaseFragment implements GoogleMap.OnInfoWindowClickListener,OnMapReadyCallback {
+public class MapsFragment extends BaseFragment implements GoogleMap.OnInfoWindowClickListener, OnMapReadyCallback {
 
     private FragmentMapsBinding mBinding;
     private GoogleMap mMap;
     private boolean mLocationPermissionGranted;
     private Location mCurrentLocation;
     private FusedLocationProviderClient mFusedLocationProviderClient;
+    private MarkerOptions mMarkerOptions = new MarkerOptions();
+
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -91,8 +92,6 @@ public class MapsFragment extends BaseFragment implements GoogleMap.OnInfoWindow
         mMap.setOnInfoWindowClickListener(this);
         mPropertyViewModel.getAllProperties.observe(getViewLifecycleOwner(), this::initMarkers);
     }
-
-    //TODO force enable gps location
 
     private void enableMyLocation() {
 
@@ -142,41 +141,35 @@ public class MapsFragment extends BaseFragment implements GoogleMap.OnInfoWindow
         mMap.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
     }
 
-    private MarkerOptions markerOptions = new MarkerOptions();
 
     private void initMarkers(@NonNull List<Property> allProperties) {
         mMap.clear();
-        List<Property> propertyByRegion = new ArrayList<>();
-        for (Property property : allProperties) {
+        for (Property property : allProperties)
             mPropertyViewModel.setPropertyLocationForProperty(property);
-            if (property.getRegion().equalsIgnoreCase(getResources().getString(AgentRegionUnderResponsibility.PACA.label)))
-                propertyByRegion.add(property);
 
-            Log.i("TAG", "initMarkers: "+propertyByRegion+" "+getResources().getString(AgentRegionUnderResponsibility.PACA.label));
-
-        }
 
         mPropertyViewModel.getPropertyLocationForProperty.observe(getViewLifecycleOwner(), propertyLocation -> {
-            markerOptions.position(new LatLng(propertyLocation.getLatitude(), propertyLocation.getLongitude()))
+            mMarkerOptions.position(new LatLng(propertyLocation.getLatitude(), propertyLocation.getLongitude()))
                     .title(String.valueOf(propertyLocation.getPropertyId()))
                     .snippet(getPropertyForId(String.valueOf(propertyLocation.getPropertyId())).getAddress());
-            Log.i("TAG", "initMarkers: "+propertyLocation.getRegion()+" "+getResources().getString(AgentRegionUnderResponsibility.PACA.label));
-            if (propertyLocation.getRegion().equalsIgnoreCase(getResources().getString(AgentRegionUnderResponsibility.PACA.label)))
-            mMap.addMarker(markerOptions.icon(BitmapDescriptorFactory.fromBitmap(getBitmapFromVectorDrawable(requireContext(), R.drawable.ic_fragment_detail_location_on_zone1_24))));
-            else if (propertyLocation.getRegion().equalsIgnoreCase(getResources().getString(AgentRegionUnderResponsibility.HERAULT.label)))
-                mMap.addMarker(markerOptions.icon(BitmapDescriptorFactory.fromBitmap(getBitmapFromVectorDrawable(requireContext(),R.drawable.ic_fragment_detail_location_on_zone2_24))));
-            else if (propertyLocation.getRegion().equalsIgnoreCase(getResources().getString(AgentRegionUnderResponsibility.AUVERGNE_RHONE_ALPES.label)))
-                mMap.addMarker(markerOptions.icon(BitmapDescriptorFactory.fromBitmap(getBitmapFromVectorDrawable(requireContext(),R.drawable.ic_fragment_detail_location_on_zone3_24))));
-
-            else mMap.addMarker(markerOptions.icon(BitmapDescriptorFactory.fromBitmap(getBitmapFromVectorDrawable(requireContext(),R.drawable.ic_location_on_24))));
-
+            Log.i("TAG", "initMarkers: " + propertyLocation.getRegion() + " " + getResources().getString(AgentRegionUnderResponsibility.BOUCHES_DU_RHONE.label));
+            if (propertyLocation.getRegion().equalsIgnoreCase(getResources().getString(AgentRegionUnderResponsibility.BOUCHES_DU_RHONE.label)))
+                mMap.addMarker(mMarkerOptions.icon(BitmapDescriptorFactory.fromBitmap(getBitmapFromVectorDrawable(requireContext(), R.drawable.ic_fragment_detail_location_on_zone1_24))));
+            else if (propertyLocation.getRegion().equalsIgnoreCase(getResources().getString(AgentRegionUnderResponsibility.VAR.label)))
+                mMap.addMarker(mMarkerOptions.icon(BitmapDescriptorFactory.fromBitmap(getBitmapFromVectorDrawable(requireContext(), R.drawable.ic_fragment_detail_location_on_zone2_24))));
+            else if (propertyLocation.getRegion().equalsIgnoreCase(getResources().getString(AgentRegionUnderResponsibility.VAUCLUSE.label)))
+                mMap.addMarker(mMarkerOptions.icon(BitmapDescriptorFactory.fromBitmap(getBitmapFromVectorDrawable(requireContext(), R.drawable.ic_fragment_detail_location_on_zone3_24))));
+            else
+                mMap.addMarker(mMarkerOptions.icon(BitmapDescriptorFactory.fromBitmap(getBitmapFromVectorDrawable(requireContext(), R.drawable.ic_location_on_24))));
 
             //mPropertyViewModel.setStaticMapForLatLng(propertyLatLgn);
         });
 
+        mMap.setOnMarkerClickListener(marker ->{
+            mPropertyViewModel.setNearBySearchForPropertyLocation(Integer.parseInt(marker.getTitle()));
+            return false;
+        } );
     }
-
-
 
     @Override
     public void onInfoWindowClick(@NonNull Marker marker) {

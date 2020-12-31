@@ -81,7 +81,6 @@ public class AddPropertyFragment extends BaseFragment {
     }
 
     private void setLocationForPropertyAddress() {
-
         mPropertyViewModel.getAllProperties.observe(getViewLifecycleOwner(), properties -> {
             String actualLastPropertyAddress = Objects.requireNonNull(mPropertyViewModel.getAllProperties.getValue()).get(mPropertyViewModel.getAllProperties.getValue().size() - 1).getAddress();
             if (!mInitialLastPropertyAddress.equals(actualLastPropertyAddress))
@@ -89,12 +88,13 @@ public class AddPropertyFragment extends BaseFragment {
         });
 
         mPropertyViewModel.getLocationForAddress.observe(getViewLifecycleOwner(), propertyLocation -> {
-            if (propertyLocation.getPropertyId() != 0){
+            if (propertyLocation.getPropertyId() != 0) {
                 Property property = getPropertyForId(String.valueOf(propertyLocation.getPropertyId()));
                 property.setRegion(propertyLocation.getRegion());
                 mPropertyViewModel.updateProperty(property);
                 mPropertyViewModel.addPropertyLocationForProperty(propertyLocation);
-        }});
+            }
+        });
     }
     //___________________________________VIEW_____________________________________________
 

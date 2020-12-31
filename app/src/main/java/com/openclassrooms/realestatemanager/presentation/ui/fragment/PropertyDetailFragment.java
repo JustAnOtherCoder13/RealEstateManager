@@ -40,12 +40,12 @@ public class PropertyDetailFragment extends BaseFragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        mPropertyViewModel.getSelectedProperty.observe(getViewLifecycleOwner(),property ->
+        mPropertyViewModel.getSelectedProperty.observe(getViewLifecycleOwner(), property ->
                 initValue(mBinding.fragmentDetailInformationLayout,
-                Objects.requireNonNull(property),
-                mBinding.fragmentDetailDescriptionLayout.customViewDetailMediaDescriptionText,
-                mBinding.fragmentDetailInformationLayout.fragmentDetailLocationCustomView.findViewById(R.id.detail_information_custom_view_value)));
-        }
+                        Objects.requireNonNull(property),
+                        mBinding.fragmentDetailDescriptionLayout.customViewDetailMediaDescriptionText,
+                        mBinding.fragmentDetailInformationLayout.fragmentDetailLocationCustomView.findViewById(R.id.detail_information_custom_view_value)));
+    }
 
     private void initRecyclerView() {
         PhotoRecyclerViewAdapter adapter = new PhotoRecyclerViewAdapter(new ArrayList<>());

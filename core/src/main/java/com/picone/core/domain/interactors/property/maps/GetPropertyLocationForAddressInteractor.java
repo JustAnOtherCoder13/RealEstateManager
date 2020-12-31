@@ -1,12 +1,8 @@
 package com.picone.core.domain.interactors.property.maps;
 
-import android.util.Log;
-
-import com.google.android.gms.maps.model.LatLng;
 import com.picone.core.data.property.PropertyRepository;
 import com.picone.core.domain.entity.Property;
 import com.picone.core.domain.entity.PropertyLocation;
-import com.picone.core.domain.entity.pojo.propertyLocation.AddressComponent;
 import com.picone.core.domain.entity.pojo.propertyLocation.PropertyLocationPojo;
 import com.picone.core.domain.interactors.property.PropertyBaseInteractor;
 
@@ -24,13 +20,13 @@ public class GetPropertyLocationForAddressInteractor extends PropertyBaseInterac
     }
 
     private PropertyLocation propertyLocationPojoToPropertyLocationModel(PropertyLocationPojo propertyLocationPojo, Property property) {
-        if (propertyLocationPojo.getResults() != null
-                && !propertyLocationPojo.getResults().isEmpty())
+        if (propertyLocationPojo.getPropertyResults() != null
+                && !propertyLocationPojo.getPropertyResults().isEmpty())
             return new PropertyLocation(
                     property.getId(),
-                    propertyLocationPojo.getResults().get(0).getGeometry().getLocation().getLat(),
-                    propertyLocationPojo.getResults().get(0).getGeometry().getLocation().getLng(),
-                    propertyLocationPojo.getResults().get(0).getAddressComponents().get(2).getShortName(),
+                    propertyLocationPojo.getPropertyResults().get(0).getPropertyGeometry().getPropertyLocation().getLat(),
+                    propertyLocationPojo.getPropertyResults().get(0).getPropertyGeometry().getPropertyLocation().getLng(),
+                    propertyLocationPojo.getPropertyResults().get(0).getAddressComponents().get(2).getShortName(),
                     property.getId()
             );
         else return new PropertyLocation();
