@@ -28,10 +28,10 @@ public abstract class Generator {
     }
 
     private static List<PointOfInterest> POINT_OF_INTEREST = Arrays.asList(
-            new PointOfInterest(1, 1),
-            new PointOfInterest(2, 2),
-            new PointOfInterest(3, 2),
-            new PointOfInterest(4, 2)
+            new PointOfInterest(1, 1,"ecole elementaire",0.0,0.0,"school","icon"),
+            new PointOfInterest(2, 2,"restaurant le chateau",0.0,0.0,"restaurant","icon"),
+            new PointOfInterest(3, 2,"hotel mercure",0.0,0.0,"hostel","icon"),
+            new PointOfInterest(4, 2,"SuperU",0.0,0.0,"super market","icon")
     );
 
     public static List<PointOfInterest> generatePointOfInterests() {

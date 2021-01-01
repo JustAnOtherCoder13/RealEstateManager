@@ -17,7 +17,7 @@ import com.picone.core.domain.interactors.property.GetAllPropertiesInteractor;
 import com.picone.core.domain.interactors.property.UpdatePropertyInteractor;
 import com.picone.core.domain.interactors.property.location.AddPropertyLocationInteractor;
 import com.picone.core.domain.interactors.property.location.GetPropertyLocationInteractor;
-import com.picone.core.domain.interactors.property.maps.GetNearBySchoolForPropertyLocation;
+import com.picone.core.domain.interactors.property.maps.GetNearBySchoolForPropertyLocationInteractor;
 import com.picone.core.domain.interactors.property.maps.GetPropertyLocationForAddressInteractor;
 import com.picone.core.domain.interactors.property.maps.GetStaticMapForLatLngInteractor;
 import com.picone.core.domain.interactors.property.photo.AddPropertyPhotoInteractor;
@@ -64,7 +64,7 @@ public class PropertyViewModel extends BaseViewModel {
             , AddPropertyLocationInteractor addPropertyLocationInteractor
             , GetPropertyLocationForAddressInteractor getPropertyLocationForAddressInteractor
             , GetStaticMapForLatLngInteractor getStaticMapForLatLngInteractor
-            , GetNearBySchoolForPropertyLocation getNearBySchoolForPropertyLocation
+            , GetNearBySchoolForPropertyLocationInteractor getNearBySchoolForPropertyLocationInteractor
             , SchedulerProvider schedulerProvider) {
         this.getAllPropertiesInteractor = getAllPropertiesInteractor;
         this.getAllPointOfInterestForPropertyIdInteractor = getAllPointOfInterestForPropertyIdInteractor;
@@ -78,7 +78,7 @@ public class PropertyViewModel extends BaseViewModel {
         this.addPropertyLocationInteractor = addPropertyLocationInteractor;
         this.getPropertyLocationForAddressInteractor = getPropertyLocationForAddressInteractor;
         this.getStaticMapForLatLngInteractor = getStaticMapForLatLngInteractor;
-        this.getNearBySchoolForPropertyLocation = getNearBySchoolForPropertyLocation;
+        this.getNearBySchoolForPropertyLocationInteractor = getNearBySchoolForPropertyLocationInteractor;
         this.schedulerProvider = schedulerProvider;
     }
 
@@ -164,13 +164,18 @@ public class PropertyViewModel extends BaseViewModel {
 
     //___________________________________PROPERTY POINT OF INTEREST__________________________________
 
-    public void addPropertyPointOfInterest(PointOfInterest pointOfInterest) {
-        compositeDisposable.add(
-                addPropertyPointOfInterestInteractor.addRoomPropertyPointOfInterest(pointOfInterest)
-                        .subscribeOn(schedulerProvider.getIo())
-                        .observeOn(schedulerProvider.getUi())
-                        .andThen(getAllPointOfInterestForPropertyIdInteractor.getAllPointOfInterestForPropertyId(pointOfInterest.getPropertyId()))
-                        .subscribe(pointOfInterests -> allPointOfInterestForPropertyMutableLD.postValue(pointOfInterests), throwable -> checkException()));
+    public void addPropertyPointOfInterest(List<PointOfInterest> pointOfInterests) {
+        if (pointOfInterests.isEmpty())completionStateMutableLD.setValue(CompletionState.ADD_POINT_OF_INTEREST_COMPLETE);
+
+        for (int i = 0; i < pointOfInterests.size(); i++) {
+            if (pointOfInterests.size()-1==i)completionStateMutableLD.setValue(CompletionState.ADD_POINT_OF_INTEREST_COMPLETE);
+            compositeDisposable.add(
+                    addPropertyPointOfInterestInteractor.addRoomPropertyPointOfInterest(pointOfInterests.get(i))
+                            .subscribeOn(schedulerProvider.getIo())
+                            .observeOn(schedulerProvider.getUi())
+                            .subscribe(() -> {
+                            }, throwable -> checkException()));
+        }
     }
 
     //___________________________________PROPERTY PHOTO__________________________________
@@ -203,7 +208,6 @@ public class PropertyViewModel extends BaseViewModel {
                             .subscribeOn(schedulerProvider.getIo())
                             .observeOn(schedulerProvider.getUi())
                             .subscribe(propertyLocation -> locationForAddressMutableLD.setValue(propertyLocation)));
-        else locationForAddressMutableLD.setValue(new PropertyLocation());
     }
 
     public void setStaticMapForLatLng(LatLng latLng) {
@@ -215,16 +219,17 @@ public class PropertyViewModel extends BaseViewModel {
         );
     }
 
-    public void setNearBySearchForPropertyLocation(int propertyId) {
+    private MutableLiveData<List<PointOfInterest>> mapsPointOfInterestForPropertyMutableLD = new MutableLiveData<>();
+    public LiveData<List<PointOfInterest>> getMapsPointOfInterest = mapsPointOfInterestForPropertyMutableLD;
+
+    public void setNearBySearchForPropertyLocation(PropertyLocation propertyLocation) {
         compositeDisposable.add(
-                getPropertyLocationInteractor.getPropertyLocationForPropertyId(propertyId)
+                getNearBySchoolForPropertyLocationInteractor.getNearBySchoolForPropertyLocation(propertyLocation, MAPS_KEY)
                         .subscribeOn(schedulerProvider.getIo())
                         .observeOn(schedulerProvider.getUi())
-                        .flatMap(propertyLocation ->
-                                getNearBySchoolForPropertyLocation.getNearBySchoolForPropertyLocation(propertyLocation, MAPS_KEY))
-                        .subscribe(nearBySearch -> {
-                            Log.i("TAG", "setNearBySearchForPropertyLocation: "+nearBySearch.getNearBySearchResults());
-                        },throwable -> checkException())
-        );
+                        .subscribe(pointOfInterests -> {
+                            Log.i("TAG", "setNearBySearchForPropertyLocation: ");
+                            mapsPointOfInterestForPropertyMutableLD.setValue(pointOfInterests);
+                        }));
     }
 }

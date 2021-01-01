@@ -73,8 +73,7 @@ public class AddPropertyFragment extends BaseFragment {
                 case ADD_PROPERTY_COMPLETE:
                     setLocationForPropertyAddress();
                     break;
-
-                case ADD_LOCATION_COMPLETE:
+                case ADD_POINT_OF_INTEREST_COMPLETE:
                     mNavController.navigate(R.id.action_addPropertyFragment_to_propertyListFragment);
             }
         });
@@ -93,7 +92,12 @@ public class AddPropertyFragment extends BaseFragment {
                 property.setRegion(propertyLocation.getRegion());
                 mPropertyViewModel.updateProperty(property);
                 mPropertyViewModel.addPropertyLocationForProperty(propertyLocation);
+                mPropertyViewModel.setNearBySearchForPropertyLocation(propertyLocation);
             }
+        });
+
+        mPropertyViewModel.getMapsPointOfInterest.observe(getViewLifecycleOwner(),pointOfInterests -> {
+            mPropertyViewModel.addPropertyPointOfInterest(pointOfInterests);
         });
     }
     //___________________________________VIEW_____________________________________________

@@ -10,7 +10,7 @@ import com.picone.core.domain.interactors.property.GetAllPropertiesInteractor;
 import com.picone.core.domain.interactors.property.UpdatePropertyInteractor;
 import com.picone.core.domain.interactors.property.location.AddPropertyLocationInteractor;
 import com.picone.core.domain.interactors.property.location.GetPropertyLocationInteractor;
-import com.picone.core.domain.interactors.property.maps.GetNearBySchoolForPropertyLocation;
+import com.picone.core.domain.interactors.property.maps.GetNearBySchoolForPropertyLocationInteractor;
 import com.picone.core.domain.interactors.property.maps.GetPropertyLocationForAddressInteractor;
 import com.picone.core.domain.interactors.property.maps.GetStaticMapForLatLngInteractor;
 import com.picone.core.domain.interactors.property.photo.AddPropertyPhotoInteractor;
@@ -53,7 +53,7 @@ public abstract class BaseViewModel extends ViewModel {
 
     protected AddPropertyLocationInteractor addPropertyLocationInteractor;
     protected GetStaticMapForLatLngInteractor getStaticMapForLatLngInteractor;
-    protected GetNearBySchoolForPropertyLocation getNearBySchoolForPropertyLocation;
+    protected GetNearBySchoolForPropertyLocationInteractor getNearBySchoolForPropertyLocationInteractor;
 
     //------------------------PLACES INTERACTORS----------------------------
 
@@ -73,6 +73,7 @@ public abstract class BaseViewModel extends ViewModel {
         START_STATE,
         ADD_PROPERTY_COMPLETE,
         ADD_LOCATION_COMPLETE,
-        UPDATE_PROPERTY_COMPLETE
+        UPDATE_PROPERTY_COMPLETE,
+        ADD_POINT_OF_INTEREST_COMPLETE
     }
 }

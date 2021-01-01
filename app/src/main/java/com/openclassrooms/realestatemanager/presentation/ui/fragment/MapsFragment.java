@@ -2,6 +2,11 @@ package com.openclassrooms.realestatemanager.presentation.ui.fragment;
 
 import android.Manifest;
 import android.content.pm.PackageManager;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.Canvas;
+import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
 import android.location.Location;
 import android.os.Bundle;
 import android.util.Log;
@@ -15,6 +20,9 @@ import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.navigation.Navigation;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.target.CustomTarget;
+import com.bumptech.glide.request.transition.Transition;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.maps.CameraUpdateFactory;
@@ -30,8 +38,10 @@ import com.openclassrooms.realestatemanager.R;
 import com.openclassrooms.realestatemanager.databinding.FragmentMapsBinding;
 import com.openclassrooms.realestatemanager.presentation.ui.main.BaseFragment;
 import com.openclassrooms.realestatemanager.presentation.utils.AgentRegionUnderResponsibility;
+import com.picone.core.domain.entity.PointOfInterest;
 import com.picone.core.domain.entity.Property;
 
+import java.io.InputStream;
 import java.util.List;
 import java.util.Objects;
 
@@ -166,9 +176,41 @@ public class MapsFragment extends BaseFragment implements GoogleMap.OnInfoWindow
         });
 
         mMap.setOnMarkerClickListener(marker ->{
-            mPropertyViewModel.setNearBySearchForPropertyLocation(Integer.parseInt(marker.getTitle()));
+            mPropertyViewModel.setAllPointOfInterestForProperty(getPropertyForId(marker.getTitle()));
+            setPointOfInterestForProperty();
             return false;
         } );
+    }
+
+    private void setPointOfInterestForProperty(){
+        mPropertyViewModel.getAllPointOfInterestForProperty.observe(getViewLifecycleOwner(),pointOfInterests -> {
+            for (PointOfInterest pointOfInterest:pointOfInterests){
+                MarkerOptions pointOfInterestMarkerOptions = new MarkerOptions();
+
+                pointOfInterestMarkerOptions
+                        .position(new LatLng(pointOfInterest.getLatitude(),pointOfInterest.getLongitude()))
+                        .title(pointOfInterest.getType())
+                        .snippet(pointOfInterest.getName());
+
+                 Glide.with(requireContext())
+                        .load(pointOfInterest.getIcon())
+                        .centerCrop()
+                        .into(new CustomTarget<Drawable>() {
+                            @Override
+                            public void onResourceReady(@NonNull Drawable resource, @Nullable Transition<? super Drawable> transition) {
+                                pointOfInterestMarkerOptions.icon(BitmapDescriptorFactory.fromBitmap(drawableToBitmap(resource)));
+                                mMap.addMarker(pointOfInterestMarkerOptions);
+
+                            }
+
+                            @Override
+                            public void onLoadCleared(@Nullable Drawable placeholder) {
+
+                            }
+                        });
+                Log.i("TAG", "setPointOfInterestForProperty: "+pointOfInterest.getIcon());
+            }
+        });
     }
 
     @Override
@@ -176,5 +218,27 @@ public class MapsFragment extends BaseFragment implements GoogleMap.OnInfoWindow
         mPropertyViewModel.setSelectedProperty(getPropertyForId(marker.getTitle()));
         mPropertyViewModel.setAllPhotosForProperty(getPropertyForId(marker.getTitle()));
         mNavController.navigate(R.id.action_mapsFragment_to_propertyDetailFragment);
+    }
+
+    public static Bitmap drawableToBitmap (Drawable drawable) {
+        Bitmap bitmap = null;
+
+        if (drawable instanceof BitmapDrawable) {
+            BitmapDrawable bitmapDrawable = (BitmapDrawable) drawable;
+            if(bitmapDrawable.getBitmap() != null) {
+                return bitmapDrawable.getBitmap();
+            }
+        }
+
+        if(drawable.getIntrinsicWidth() <= 0 || drawable.getIntrinsicHeight() <= 0) {
+            bitmap = Bitmap.createBitmap(1, 1, Bitmap.Config.ARGB_8888); // Single color bitmap will be created of 1x1 pixel
+        } else {
+            bitmap = Bitmap.createBitmap(drawable.getIntrinsicWidth(), drawable.getIntrinsicHeight(), Bitmap.Config.ARGB_8888);
+        }
+
+        Canvas canvas = new Canvas(bitmap);
+        drawable.setBounds(0, 0, canvas.getWidth(), canvas.getHeight());
+        drawable.draw(canvas);
+        return bitmap;
     }
 }

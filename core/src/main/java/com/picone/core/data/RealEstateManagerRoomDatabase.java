@@ -109,6 +109,11 @@ public abstract class RealEstateManagerRoomDatabase extends RoomDatabase {
             ContentValues contentValues = new ContentValues();
             contentValues.put("id", generatePointOfInterests().get(i).getId());
             contentValues.put("propertyId", generatePointOfInterests().get(i).getPropertyId());
+            contentValues.put("name", generatePointOfInterests().get(i).getName());
+            contentValues.put("latitude", generatePointOfInterests().get(i).getLatitude());
+            contentValues.put("longitude", generatePointOfInterests().get(i).getLongitude());
+            contentValues.put("type", generatePointOfInterests().get(i).getType());
+            contentValues.put("icon", generatePointOfInterests().get(i).getIcon());
 
             db.insert(pointOfInterestTable, OnConflictStrategy.IGNORE, contentValues);
         }

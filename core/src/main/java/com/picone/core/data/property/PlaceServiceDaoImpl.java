@@ -37,7 +37,6 @@ public class PlaceServiceDaoImpl {
     }
 
     public Observable<NearBySearch> getNearBySchoolForPropertyLocation( PropertyLocation propertyLocation, String googleKey){
-        Log.i("TAG", "getNearBySchoolForPropertyLocation: dao");
         return retrofitClient.googlePlaceService().getNearbySchool(propertyLocation.getLatitude()+","+propertyLocation.getLongitude(),RADIUS,googleKey);
     }
 

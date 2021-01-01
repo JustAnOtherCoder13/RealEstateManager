@@ -25,7 +25,6 @@ public interface GooglePlaceService {
             @Query("key") String googleKey
     );
 
-    //TODO doesn' pass value with observable but do with call
     @GET("api/place/nearbysearch/json?sensor=true&type=school&fields=formatted_address,name,geometry")
     Observable<NearBySearch> getNearbySchool(
             @Query("location") String location,
