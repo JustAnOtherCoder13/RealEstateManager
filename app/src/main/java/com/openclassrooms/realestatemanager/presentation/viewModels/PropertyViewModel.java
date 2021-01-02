@@ -27,6 +27,7 @@ import com.picone.core.domain.interactors.property.pointOfInterest.AddPropertyPo
 import com.picone.core.domain.interactors.property.pointOfInterest.GetAllPointOfInterestForPropertyIdInteractor;
 import com.picone.core.utils.SchedulerProvider;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import static com.picone.core.utils.ConstantParameters.MAPS_KEY;
@@ -105,11 +106,13 @@ public class PropertyViewModel extends BaseViewModel {
     }
 
     public void setAllPointOfInterestForProperty(@NonNull Property property) {
+        if (property.getAddress()!=null)
         compositeDisposable.add(
                 getAllPointOfInterestForPropertyIdInteractor.getAllPointOfInterestForPropertyId(property.getId())
                         .observeOn(schedulerProvider.getIo())
                         .subscribeOn(schedulerProvider.getUi())
                         .subscribe(pointOfInterests -> allPointOfInterestForPropertyMutableLD.postValue(pointOfInterests)));
+        else allPointOfInterestForPropertyMutableLD.setValue(new ArrayList<>());
     }
 
     public void setAllPhotosForProperty(@NonNull Property property) {
