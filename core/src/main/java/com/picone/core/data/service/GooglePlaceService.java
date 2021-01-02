@@ -25,10 +25,11 @@ public interface GooglePlaceService {
             @Query("key") String googleKey
     );
 
-    @GET("api/place/nearbysearch/json?sensor=true&type=school&fields=formatted_address,name,geometry")
+    @GET("api/place/nearbysearch/json?sensor=true&fields=formatted_address,name,geometry")
     Observable<NearBySearch> getNearbySchool(
             @Query("location") String location,
             @Query("radius") String radius,
+            @Query("type") String type,
             @Query("key") String key
     );
 

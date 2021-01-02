@@ -5,6 +5,9 @@ import androidx.annotation.NonNull;
 import com.picone.core.domain.entity.Property;
 import com.picone.core.domain.entity.RealEstateAgent;
 
+import java.util.Arrays;
+import java.util.List;
+
 public class ConstantParameters {
 
     public static final String realEstateAgentTable = "real_estate_agent_table";
@@ -16,7 +19,7 @@ public class ConstantParameters {
     public static String MAPS_KEY;
     public static final int REQUEST_CODE = 13700;
     public static final int MAPS_CAMERA_ZOOM = 9;
-    public static final String RADIUS = "500";
+    public static final String RADIUS = "400";
 
 
     @NonNull
@@ -28,6 +31,11 @@ public class ConstantParameters {
 
     public static String ADD_PHOTO = "AddPhoto";
 
+    public static final List<String> POINT_OF_INTEREST_TYPE = Arrays.asList(
+            "school",
+            "supermarket",
+            "restaurant"
+    );
 
 
 

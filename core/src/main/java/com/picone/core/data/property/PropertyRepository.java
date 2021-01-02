@@ -80,8 +80,8 @@ public class PropertyRepository {
         return placeServiceDao.getStaticMapForLatLng(latLng, googleKey);
     }
 
-    public Observable<NearBySearch> getNearBySchoolForPropertyLocation(@NonNull PropertyLocation propertyLocation, String googleKey) {
-        return placeServiceDao.getNearBySchoolForPropertyLocation(propertyLocation, googleKey);
+    public Observable<NearBySearch> getNearBySchoolForPropertyLocation(@NonNull PropertyLocation propertyLocation,String type, String googleKey) {
+        return placeServiceDao.getNearBySchoolForPropertyLocation(propertyLocation,type, googleKey);
     }
 
     }

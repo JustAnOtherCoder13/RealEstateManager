@@ -138,9 +138,10 @@ public class PropertyViewModel extends BaseViewModel {
                 addPropertyInteractor.addRoomProperty(property)
                         .subscribeOn(schedulerProvider.getIo())
                         .observeOn(schedulerProvider.getUi())
-                        .doOnComplete(() -> completionStateMutableLD.setValue(CompletionState.ADD_PROPERTY_COMPLETE))
                         .andThen(getAllPropertiesInteractor.getAllProperties())
-                        .subscribe(properties -> allPropertiesMutableLD.postValue(properties), throwable -> checkException()));
+                        .subscribe(properties -> {
+                            completionStateMutableLD.postValue(CompletionState.ADD_PROPERTY_COMPLETE);
+                            allPropertiesMutableLD.postValue(properties);}, throwable -> checkException()));
     }
 
     public void updateProperty(Property property) {
@@ -168,8 +169,7 @@ public class PropertyViewModel extends BaseViewModel {
     //___________________________________PROPERTY POINT OF INTEREST__________________________________
 
     public void addPropertyPointOfInterest(List<PointOfInterest> pointOfInterests) {
-        if (pointOfInterests.isEmpty())completionStateMutableLD.setValue(CompletionState.ADD_POINT_OF_INTEREST_COMPLETE);
-
+       if (!pointOfInterests.isEmpty())
         for (int i = 0; i < pointOfInterests.size(); i++) {
             if (pointOfInterests.size()-1==i)completionStateMutableLD.setValue(CompletionState.ADD_POINT_OF_INTEREST_COMPLETE);
             compositeDisposable.add(
@@ -230,9 +230,6 @@ public class PropertyViewModel extends BaseViewModel {
                 getNearBySchoolForPropertyLocationInteractor.getNearBySchoolForPropertyLocation(propertyLocation, MAPS_KEY)
                         .subscribeOn(schedulerProvider.getIo())
                         .observeOn(schedulerProvider.getUi())
-                        .subscribe(pointOfInterests -> {
-                            Log.i("TAG", "setNearBySearchForPropertyLocation: ");
-                            mapsPointOfInterestForPropertyMutableLD.setValue(pointOfInterests);
-                        }));
+                        .subscribe(pointOfInterests -> mapsPointOfInterestForPropertyMutableLD.setValue(pointOfInterests)));
     }
 }

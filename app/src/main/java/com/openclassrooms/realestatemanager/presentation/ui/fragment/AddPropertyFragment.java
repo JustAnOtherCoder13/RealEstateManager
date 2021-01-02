@@ -1,6 +1,7 @@
 package com.openclassrooms.realestatemanager.presentation.ui.fragment;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -62,10 +63,14 @@ public class AddPropertyFragment extends BaseFragment {
         initDropDownMenu();
         initClickListener();
         configureOnClickRecyclerView();
+        mPropertyViewModel.resetCompletionState();
+        mPropertyViewModel.setPropertyLocationForPropertyAddress(new Property());
+
 
         mPropertyViewModel.getSelectedProperty.observe(getViewLifecycleOwner(), property -> {
             if (property.getAddress() != null)
                 mPropertyViewModel.setPropertyLocationForProperty(mPropertyViewModel.getSelectedProperty.getValue());
+            else if (mPropertyViewModel.getAllPointOfInterestForProperty.getValue()!=null)mPropertyViewModel.getAllPointOfInterestForProperty.getValue().clear();
         });
 
         mPropertyViewModel.getCompletionState.observe(getViewLifecycleOwner(), completionState -> {
@@ -74,20 +79,23 @@ public class AddPropertyFragment extends BaseFragment {
                     setLocationForPropertyAddress();
                     break;
                 case ADD_POINT_OF_INTEREST_COMPLETE:
-                    mNavController.navigate(R.id.action_addPropertyFragment_to_propertyListFragment);
+                    if (Objects.requireNonNull(mNavController.getCurrentDestination()).getId()==R.id.addPropertyFragment)
+                        mNavController.navigate(R.id.action_addPropertyFragment_to_propertyListFragment);
+                    break;
             }
         });
     }
 
     private void setLocationForPropertyAddress() {
+
         mPropertyViewModel.getAllProperties.observe(getViewLifecycleOwner(), properties -> {
-            String actualLastPropertyAddress = Objects.requireNonNull(mPropertyViewModel.getAllProperties.getValue()).get(mPropertyViewModel.getAllProperties.getValue().size() - 1).getAddress();
-            if (!mInitialLastPropertyAddress.equals(actualLastPropertyAddress))
-                mPropertyViewModel.setPropertyLocationForPropertyAddress(mPropertyViewModel.getAllProperties.getValue().get(mPropertyViewModel.getAllProperties.getValue().size() - 1));
+            if (!mInitialLastPropertyAddress.equals(properties.get(properties.size()-1).getAddress())){
+                mPropertyViewModel.setPropertyLocationForPropertyAddress(properties.get(properties.size() - 1));
+            }
         });
 
         mPropertyViewModel.getLocationForAddress.observe(getViewLifecycleOwner(), propertyLocation -> {
-            if (propertyLocation.getPropertyId() != 0) {
+            if (propertyLocation.getPropertyId() != 0 && !mInitialLastPropertyAddress.equals(getPropertyForId(String.valueOf(propertyLocation.getPropertyId())).getAddress())) {
                 Property property = getPropertyForId(String.valueOf(propertyLocation.getPropertyId()));
                 property.setRegion(propertyLocation.getRegion());
                 mPropertyViewModel.updateProperty(property);
@@ -97,6 +105,7 @@ public class AddPropertyFragment extends BaseFragment {
         });
 
         mPropertyViewModel.getMapsPointOfInterest.observe(getViewLifecycleOwner(),pointOfInterests -> {
+            if (!pointOfInterests.isEmpty()&& !getPropertyForId(String.valueOf(pointOfInterests.get(pointOfInterests.size()-1).getPropertyId())).getAddress().equals(mInitialLastPropertyAddress))
             mPropertyViewModel.addPropertyPointOfInterest(pointOfInterests);
         });
     }
@@ -115,7 +124,6 @@ public class AddPropertyFragment extends BaseFragment {
 
         mPropertyViewModel.getPhotosToDelete.observe(getViewLifecycleOwner(), photosToDelete ->
                 mBinding.addPropertyMediaLayout.detailCustomViewDeleteButton.setVisibility(photosToDelete.isEmpty() ? View.GONE : View.VISIBLE));
-
     }
 
     private void initViewValueWhenUpdate(@NonNull FragmentAddPropertyInformationLayoutBinding addPropertyInformationCustomView, @NonNull Property property) {
@@ -153,7 +161,6 @@ public class AddPropertyFragment extends BaseFragment {
                                 View.VISIBLE : View.GONE));
 
         mUpdateButton.setOnClickListener(v -> addProperty());
-
     }
 
     private void addProperty() {
@@ -198,7 +205,6 @@ public class AddPropertyFragment extends BaseFragment {
     //___________________________________HELPERS_____________________________________________
 
     @NonNull
-    @Contract("_ -> param1")
     private Property updatedProperty(@NonNull Property property) {
         property.setAddress(getValueForView(mBinding.addPropertyInformationLayout.addPropertyInformationAddress));
         property.setNumberOfRooms(Integer.parseInt(getValueForView(mBinding.addPropertyInformationLayout.addPropertyInformationNumberOfRooms)));

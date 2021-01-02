@@ -55,6 +55,5 @@ public class TopAppBarCustomView extends ConstraintLayout {
     private void resetPropertyValues() {
         propertyViewModel.setSelectedProperty(new Property());
         propertyViewModel.setPropertyLocationForProperty(new Property());
-        propertyViewModel.setPropertyLocationForPropertyAddress(new Property());
     }
 }
