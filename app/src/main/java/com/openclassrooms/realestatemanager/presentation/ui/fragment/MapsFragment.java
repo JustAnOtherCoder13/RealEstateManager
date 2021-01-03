@@ -3,7 +3,6 @@ package com.openclassrooms.realestatemanager.presentation.ui.fragment;
 import android.Manifest;
 import android.content.pm.PackageManager;
 import android.graphics.drawable.Drawable;
-import android.location.Location;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -53,7 +52,6 @@ public class MapsFragment extends BaseFragment implements GoogleMap.OnInfoWindow
     private FragmentMapsBinding mBinding;
     private GoogleMap mMap;
     private boolean mLocationPermissionGranted;
-    private Location mCurrentLocation;
     private FusedLocationProviderClient mFusedLocationProviderClient;
     private MarkerOptions mMarkerOptions = new MarkerOptions();
     private List<Marker> mPointOfInterestMarkers = new ArrayList<>();
@@ -95,7 +93,7 @@ public class MapsFragment extends BaseFragment implements GoogleMap.OnInfoWindow
 
     @Override
     public void onInfoWindowClick(@NonNull Marker marker) {
-        if (getPropertyForId(marker.getTitle()).getAddress() != null) {
+        if (isPropertyMarker(marker)) {
             mPropertyViewModel.setSelectedProperty(getPropertyForId(marker.getTitle()));
             mPropertyViewModel.setAllPhotosForProperty(getPropertyForId(marker.getTitle()));
             mNavController.navigate(R.id.action_mapsFragment_to_propertyDetailFragment);
@@ -118,8 +116,6 @@ public class MapsFragment extends BaseFragment implements GoogleMap.OnInfoWindow
         if (ContextCompat.checkSelfPermission(requireContext(),
                 Manifest.permission.ACCESS_FINE_LOCATION)
                 == PackageManager.PERMISSION_GRANTED) {
-
-            mMap.setMyLocationEnabled(true);
             mLocationPermissionGranted = true;
             updateLocationUI();
 
@@ -132,6 +128,7 @@ public class MapsFragment extends BaseFragment implements GoogleMap.OnInfoWindow
 
     private void updateLocationUI() {
         try {
+            mMap.setMyLocationEnabled(true);
             if (mLocationPermissionGranted) fetchLastLocation();
             else enableMyLocation();
 
@@ -147,14 +144,13 @@ public class MapsFragment extends BaseFragment implements GoogleMap.OnInfoWindow
             return;
         }
         mFusedLocationProviderClient.getLastLocation().addOnSuccessListener(location -> {
-            if (location != null) {
-                mCurrentLocation = location;
-                setUpMapPosition(new LatLng(location.getLatitude(),location.getLongitude()),MAPS_CAMERA_LARGE_ZOOM);
-            }
+            if (location != null)
+                setUpMapPosition(new LatLng(location.getLatitude(), location.getLongitude()), MAPS_CAMERA_LARGE_ZOOM);
+
         });
     }
 
-    private void setUpMapPosition(@NonNull LatLng location,int zoom) {
+    private void setUpMapPosition(@NonNull LatLng location, int zoom) {
         CameraPosition cameraPosition = new CameraPosition.Builder()
                 .target(location).zoom(zoom).build();
         mMap.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
@@ -167,24 +163,28 @@ public class MapsFragment extends BaseFragment implements GoogleMap.OnInfoWindow
         mMap.clear();
         mPointOfInterestMarkers.clear();
 
-        for (Property property : allProperties){
-            mPropertyViewModel.setPropertyLocationForProperty(property);}
+        for (Property property : allProperties)
+            mPropertyViewModel.setPropertyLocationForProperty(property);
 
         mMap.setOnMarkerClickListener(marker -> {
-            if(marker.isInfoWindowShown())marker.hideInfoWindow();
-            else marker.showInfoWindow();
-            if (getPropertyForId(marker.getTitle()).getAddress() != null) {
-                setUpMapPosition(marker.getPosition(),MAPS_CAMERA_NEAR_ZOOM);
+            if (!marker.isInfoWindowShown()) marker.showInfoWindow();
+            if (isPropertyMarker(marker)) {
+                setUpMapPosition(marker.getPosition(), MAPS_CAMERA_NEAR_ZOOM);
                 mPropertyViewModel.setAllPointOfInterestForProperty(getPropertyForId(marker.getTitle()));
-                removePointOfInterestOnNewPropertyClicked(mPropertyViewModel.getAllPointOfInterestForProperty.getValue());
+                removePointOfInterestOnNewPropertyClicked();
             }
             return true;
+        });
+
+        mMap.setOnMyLocationButtonClickListener(() -> {
+            removePointOfInterestOnNewPropertyClicked();
+            return false;
         });
     }
 
     private void placePropertyMarkers() {
         mPropertyViewModel.getPropertyLocationForProperty.observe(getViewLifecycleOwner(), propertyLocation -> {
-            if (mMap!=null){
+            if (mMap != null) {
                 mMarkerOptions.position(new LatLng(propertyLocation.getLatitude(), propertyLocation.getLongitude()))
                         .title(String.valueOf(propertyLocation.getPropertyId()))
                         .snippet(getPropertyForId(String.valueOf(propertyLocation.getPropertyId())).getAddress());
@@ -197,44 +197,55 @@ public class MapsFragment extends BaseFragment implements GoogleMap.OnInfoWindow
                     mMap.addMarker(mMarkerOptions.icon(BitmapDescriptorFactory.fromBitmap(getBitmapFromVectorOrDrawable(requireContext(), R.drawable.ic_fragment_detail_location_on_zone3_24))));
                 else
                     mMap.addMarker(mMarkerOptions.icon(BitmapDescriptorFactory.fromBitmap(getBitmapFromVectorOrDrawable(requireContext(), R.drawable.ic_location_on_24))));
-            }});
+            }
+        });
     }
 
     private void placePointOfInterestMarkersForClickedProperty() {
         mPropertyViewModel.getAllPointOfInterestForProperty.observe(getViewLifecycleOwner(), allPointOfInterests -> {
             mPointOfInterestMarkers.clear();
-            for (PointOfInterest pointOfInterest : allPointOfInterests) {
-                MarkerOptions pointOfInterestMarkerOptions = new MarkerOptions();
-
-                pointOfInterestMarkerOptions
-                        .position(new LatLng(pointOfInterest.getLatitude(), pointOfInterest.getLongitude()))
-                        .title(pointOfInterest.getType())
-                        .snippet(pointOfInterest.getName());
-
-                Glide.with(requireContext())
-                        .load(pointOfInterest.getIcon())
-                        .centerCrop()
-                        .into(new CustomTarget<Drawable>() {
-                            @Override
-                            public void onResourceReady(@NonNull Drawable resource, @Nullable Transition<? super Drawable> transition) {
-                                pointOfInterestMarkerOptions.icon(BitmapDescriptorFactory.fromBitmap(getBitmapFromVectorOrDrawable(requireContext(),resource)));
-                                mMarkerToAdd = mMap.addMarker(pointOfInterestMarkerOptions);
-                                updateMarkerList(mMarkerToAdd);
-                            }
-                            @Override
-                            public void onLoadCleared(@Nullable Drawable placeholder) {}
-                        });
-            }
+            for (PointOfInterest pointOfInterest : allPointOfInterests)
+                createPointOfInterestMarker(pointOfInterest);
         });
     }
 
     //----------------------------------HELPERS----------------------------------------------
 
+    private void createPointOfInterestMarker(@NonNull PointOfInterest pointOfInterest) {
+        MarkerOptions pointOfInterestMarkerOptions = new MarkerOptions();
+
+        pointOfInterestMarkerOptions
+                .position(new LatLng(pointOfInterest.getLatitude(), pointOfInterest.getLongitude()))
+                .title(pointOfInterest.getType())
+                .snippet(pointOfInterest.getName());
+
+        Glide.with(requireContext())
+                .load(pointOfInterest.getIcon())
+                .centerCrop()
+                .into(new CustomTarget<Drawable>() {
+                    @Override
+                    public void onResourceReady(@NonNull Drawable resource, @Nullable Transition<? super Drawable> transition) {
+                        pointOfInterestMarkerOptions.icon(BitmapDescriptorFactory.fromBitmap(getBitmapFromVectorOrDrawable(requireContext(), resource)));
+                        mMarkerToAdd = mMap.addMarker(pointOfInterestMarkerOptions);
+                        updateMarkerList(mMarkerToAdd);
+                    }
+
+                    @Override
+                    public void onLoadCleared(@Nullable Drawable placeholder) {
+                    }
+                });
+    }
+
     private void updateMarkerList(Marker marker) {
         if (!mPointOfInterestMarkers.contains(marker)) mPointOfInterestMarkers.add(marker);
     }
 
-    private void removePointOfInterestOnNewPropertyClicked(List<PointOfInterest> pointOfInterests) {
+    private boolean isPropertyMarker(@NonNull Marker marker) {
+        return getPropertyForId(marker.getTitle()).getAddress() != null;
+    }
+
+    private void removePointOfInterestOnNewPropertyClicked() {
+        List<PointOfInterest> pointOfInterests = mPropertyViewModel.getAllPointOfInterestForProperty.getValue();
         if (pointOfInterests != null) {
             for (Marker marker1 : mPointOfInterestMarkers)
                 for (PointOfInterest pointOfInterest : pointOfInterests) {
