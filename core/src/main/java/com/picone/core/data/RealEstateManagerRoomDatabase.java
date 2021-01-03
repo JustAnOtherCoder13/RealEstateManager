@@ -76,7 +76,7 @@ public abstract class RealEstateManagerRoomDatabase extends RoomDatabase {
             contentValues.put("id", generateProperties().get(i).getId());
             contentValues.put("realEstateAgentId", generateProperties().get(i).getRealEstateAgentId());
             contentValues.put("address", generateProperties().get(i).getAddress());
-            contentValues.put("zone", generateProperties().get(i).getZone());
+            contentValues.put("region", generateProperties().get(i).getRegion());
             contentValues.put("propertyType", generateProperties().get(i).getPropertyType());
             contentValues.put("propertyArea", generateProperties().get(i).getPropertyArea());
             contentValues.put("numberOfRooms", generateProperties().get(i).getNumberOfRooms());
@@ -109,6 +109,11 @@ public abstract class RealEstateManagerRoomDatabase extends RoomDatabase {
             ContentValues contentValues = new ContentValues();
             contentValues.put("id", generatePointOfInterests().get(i).getId());
             contentValues.put("propertyId", generatePointOfInterests().get(i).getPropertyId());
+            contentValues.put("name", generatePointOfInterests().get(i).getName());
+            contentValues.put("latitude", generatePointOfInterests().get(i).getLatitude());
+            contentValues.put("longitude", generatePointOfInterests().get(i).getLongitude());
+            contentValues.put("type", generatePointOfInterests().get(i).getType());
+            contentValues.put("icon", generatePointOfInterests().get(i).getIcon());
 
             db.insert(pointOfInterestTable, OnConflictStrategy.IGNORE, contentValues);
         }
@@ -120,6 +125,7 @@ public abstract class RealEstateManagerRoomDatabase extends RoomDatabase {
             contentValues.put("id", generatePropertyLocation().get(i).getId());
             contentValues.put("latitude", generatePropertyLocation().get(i).getLatitude());
             contentValues.put("longitude", generatePropertyLocation().get(i).getLongitude());
+            contentValues.put("region", generatePropertyLocation().get(i).getRegion());
             contentValues.put("propertyId", generatePropertyLocation().get(i).getPropertyId());
 
             db.insert(propertyLocationTable, OnConflictStrategy.IGNORE, contentValues);

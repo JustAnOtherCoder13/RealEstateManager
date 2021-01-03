@@ -73,7 +73,7 @@ public class PropertyViewModelUnitTest extends BaseUnitTest {
 
     @Test
     public void addPointOfInterestShouldUpdatePointList(){
-        propertyViewModel.addPropertyPointOfInterest(pointOfInterestToAdd);
+        propertyViewModel.addPropertyPointOfInterest(pointOfInterestsToAdd);
         assertEquals(2, Objects.requireNonNull(propertyViewModel.getAllPointOfInterestForProperty.getValue()).size());
         assertTrue(propertyViewModel.getAllPointOfInterestForProperty.getValue().contains(pointOfInterestToAdd));
     }

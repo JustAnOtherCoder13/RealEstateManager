@@ -31,7 +31,7 @@ public class PropertyRecyclerViewAdapter extends RecyclerView.Adapter<PropertyRe
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         final Property property = mProperties.get(position);
         holder.binding.propertyItemPrice.setText(String.valueOf(property.getPrice()));
-        holder.binding.propertyItemTown.setText(property.getZone());
+        holder.binding.propertyItemTown.setText(property.getRegion());
         holder.binding.propertyItemType.setText(property.getPropertyType());
     }
 

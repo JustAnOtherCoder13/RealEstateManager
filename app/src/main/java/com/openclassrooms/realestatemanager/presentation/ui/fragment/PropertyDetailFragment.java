@@ -40,12 +40,12 @@ public class PropertyDetailFragment extends BaseFragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        mPropertyViewModel.getSelectedProperty.observe(getViewLifecycleOwner(),property ->
+        mPropertyViewModel.getSelectedProperty.observe(getViewLifecycleOwner(), property ->
                 initValue(mBinding.fragmentDetailInformationLayout,
-                Objects.requireNonNull(property),
-                mBinding.fragmentDetailDescriptionLayout.customViewDetailMediaDescriptionText,
-                mBinding.fragmentDetailInformationLayout.fragmentDetailLocationCustomView.findViewById(R.id.detail_information_custom_view_value)));
-        }
+                        Objects.requireNonNull(property),
+                        mBinding.fragmentDetailDescriptionLayout.customViewDetailMediaDescriptionText,
+                        mBinding.fragmentDetailInformationLayout.fragmentDetailLocationCustomView.findViewById(R.id.detail_information_custom_view_value)));
+    }
 
     private void initRecyclerView() {
         PhotoRecyclerViewAdapter adapter = new PhotoRecyclerViewAdapter(new ArrayList<>());
@@ -53,7 +53,7 @@ public class PropertyDetailFragment extends BaseFragment {
         mPropertyViewModel.getAllPropertyPhotosForProperty.observe(getViewLifecycleOwner(), adapter::updatePhotos);
     }
 
-    private void initValue(FragmentPropertyDetailInformationBinding detailInformationLayout, Property property, TextView descriptionTextView, TextView addressTextView) {
+    private void initValue(@NonNull FragmentPropertyDetailInformationBinding detailInformationLayout, @NonNull Property property, TextView descriptionTextView, TextView addressTextView) {
         setTextForCustomView(detailInformationLayout.fragmentDetailAreaCustomView, String.valueOf(property.getPropertyArea()).concat(" ").concat("sq m"));
         setTextForCustomView(detailInformationLayout.fragmentDetailLocationCustomView, property.getAddress());
         setTextForCustomView(detailInformationLayout.fragmentDetailNumbersOfRoomsCustomView, String.valueOf(property.getNumberOfRooms()));
@@ -61,7 +61,7 @@ public class PropertyDetailFragment extends BaseFragment {
         setTextForCustomView(detailInformationLayout.fragmentDetailNumbersOfBathroomsCustomView, String.valueOf(property.getNumberOfBathrooms()));
     }
 
-    private void setTextForCustomView(DetailInformationCustomView customView, String text) {
+    private void setTextForCustomView(@NonNull DetailInformationCustomView customView, String text) {
         TextView textView = customView.findViewById(R.id.detail_information_custom_view_value);
         textView.setText(text);
     }

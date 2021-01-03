@@ -19,6 +19,9 @@ import com.picone.core.domain.interactors.property.GetAllPropertiesInteractor;
 import com.picone.core.domain.interactors.property.UpdatePropertyInteractor;
 import com.picone.core.domain.interactors.property.location.AddPropertyLocationInteractor;
 import com.picone.core.domain.interactors.property.location.GetPropertyLocationInteractor;
+import com.picone.core.domain.interactors.property.maps.GetNearBySchoolForPropertyLocationInteractor;
+import com.picone.core.domain.interactors.property.maps.GetPropertyLocationForAddressInteractor;
+import com.picone.core.domain.interactors.property.maps.GetStaticMapForLatLngInteractor;
 import com.picone.core.domain.interactors.property.photo.AddPropertyPhotoInteractor;
 import com.picone.core.domain.interactors.property.photo.DeletePropertyPhotoInteractor;
 import com.picone.core.domain.interactors.property.photo.GetAllPropertyPhotosForPropertyIdInteractor;
@@ -56,8 +59,10 @@ public abstract class BaseUnitTest {
     PropertyPhoto photoToAdd = new PropertyPhoto(5,"newPhoto","newDescription",1);
     PropertyPhoto photoToDelete = Generator.generatePhotos().get(1);
     List<PointOfInterest> pointOfInterestForPropertyId = new ArrayList<>();
-    PointOfInterest pointOfInterestToAdd = new PointOfInterest(5,1);
-    PropertyLocation propertyLocationToAdd = new PropertyLocation(3,42.543732,5.036950,propertyToAdd.getId());
+    PointOfInterest pointOfInterestToAdd = new PointOfInterest(5,1,"school",0.0,0.0,"school","icon");
+    List<PointOfInterest> pointOfInterestsToAdd = new ArrayList<>();
+
+    PropertyLocation propertyLocationToAdd = new PropertyLocation(3,42.543732,5.036950,"region",propertyToAdd.getId());
 
     SchedulerProvider schedulerProvider = new SchedulerProvider(Schedulers.trampoline(), Schedulers.trampoline());
 
@@ -85,6 +90,12 @@ public abstract class BaseUnitTest {
     GetPropertyLocationInteractor getPropertyLocationInteractor;
     @InjectMocks
     AddPropertyLocationInteractor addPropertyLocationInteractor;
+    @InjectMocks
+    GetNearBySchoolForPropertyLocationInteractor getNearBySchoolForPropertyLocationInteractor;
+    @InjectMocks
+    GetPropertyLocationForAddressInteractor getPropertyLocationForAddressInteractor;
+    @InjectMocks
+    GetStaticMapForLatLngInteractor getStaticMapForLatLngInteractor;
 
     //mock realEstateAgentViewModel
     AgentViewModel agentViewModel;
@@ -113,9 +124,10 @@ public abstract class BaseUnitTest {
         photoForPropertyId.add(Generator.generatePhotos().get(i));
 
         pointOfInterestForPropertyId.add(Generator.generatePointOfInterests().get(0));
+        pointOfInterestsToAdd.add(pointOfInterestToAdd);
 
         //initViewModels
-        propertyViewModel = new PropertyViewModel(getAllPropertiesInteractor, getAllPointOfInterestForPropertyIdInteractor, getAllPropertyPhotosForPropertyIdInteractor, addPropertyInteractor, addPropertyPointOfInterestInteractor, addPropertyPhotoInteractor, deletePropertyPhotoInteractor, updatePropertyInteractor,getPropertyLocationInteractor,addPropertyLocationInteractor,schedulerProvider);
+        propertyViewModel = new PropertyViewModel(getAllPropertiesInteractor, getAllPointOfInterestForPropertyIdInteractor, getAllPropertyPhotosForPropertyIdInteractor, addPropertyInteractor, addPropertyPointOfInterestInteractor, addPropertyPhotoInteractor, deletePropertyPhotoInteractor, updatePropertyInteractor,getPropertyLocationInteractor,addPropertyLocationInteractor,getPropertyLocationForAddressInteractor,getStaticMapForLatLngInteractor,getNearBySchoolForPropertyLocationInteractor,schedulerProvider);
         agentViewModel = new AgentViewModel(getAgentInteractor,schedulerProvider);
 
         //initObserver

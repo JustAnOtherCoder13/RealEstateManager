@@ -2,10 +2,11 @@ package com.picone.core.domain.interactors.property.location;
 
 import com.picone.core.data.property.PropertyRepository;
 import com.picone.core.domain.entity.PropertyLocation;
+import com.picone.core.domain.interactors.property.PropertyBaseInteractor;
 
 import io.reactivex.Completable;
 
-public class AddPropertyLocationInteractor extends BasePropertyLocationInteractor {
+public class AddPropertyLocationInteractor extends PropertyBaseInteractor {
 
     public AddPropertyLocationInteractor(PropertyRepository propertyDataSource) {
         super(propertyDataSource);

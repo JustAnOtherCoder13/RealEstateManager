@@ -56,7 +56,6 @@ public class PropertyDaoImpl {
         return mPropertyRoomDao.addPropertyLocation(propertyLocation);
     }
 
-
     public Completable deletePropertyPhoto(PropertyPhoto propertyPhoto) {
         return mPropertyRoomDao.deletePropertyPhoto(propertyPhoto);
     }

@@ -4,16 +4,21 @@ package com.picone.core.di;
 import android.content.Context;
 
 import com.picone.core.data.RealEstateManagerRoomDatabase;
+import com.picone.core.data.property.PlaceServiceDaoImpl;
 import com.picone.core.data.property.PropertyDaoImpl;
 import com.picone.core.data.property.PropertyRepository;
 import com.picone.core.data.realEstateAgent.RealEstateAgentDaoImpl;
 import com.picone.core.data.realEstateAgent.RealEstateAgentRepository;
+import com.picone.core.data.service.RetrofitClient;
 import com.picone.core.domain.interactors.agent.GetAgentInteractor;
 import com.picone.core.domain.interactors.property.AddPropertyInteractor;
 import com.picone.core.domain.interactors.property.GetAllPropertiesInteractor;
 import com.picone.core.domain.interactors.property.UpdatePropertyInteractor;
 import com.picone.core.domain.interactors.property.location.AddPropertyLocationInteractor;
 import com.picone.core.domain.interactors.property.location.GetPropertyLocationInteractor;
+import com.picone.core.domain.interactors.property.maps.GetNearBySchoolForPropertyLocationInteractor;
+import com.picone.core.domain.interactors.property.maps.GetPropertyLocationForAddressInteractor;
+import com.picone.core.domain.interactors.property.maps.GetStaticMapForLatLngInteractor;
 import com.picone.core.domain.interactors.property.photo.AddPropertyPhotoInteractor;
 import com.picone.core.domain.interactors.property.photo.DeletePropertyPhotoInteractor;
 import com.picone.core.domain.interactors.property.photo.GetAllPropertyPhotosForPropertyIdInteractor;
@@ -40,6 +45,10 @@ public final class coreModule {
         return RealEstateManagerRoomDatabase.getInstance(context);
     }
 
+    @Singleton
+    @Provides
+    static RetrofitClient provideRetrofitClient(){return new RetrofitClient();}
+
     //--------------------------------------DAO-----------------------------------------------------
 
     @Provides
@@ -50,6 +59,11 @@ public final class coreModule {
     @Provides
     static PropertyDaoImpl providePropertyDao(@ApplicationContext Context context){
         return new PropertyDaoImpl(provideRealEstateManagerRoomDatabase(context));
+    }
+
+    @Provides
+    static PlaceServiceDaoImpl providePlaceService(){
+        return new PlaceServiceDaoImpl(provideRetrofitClient());
     }
 
     //--------------------------------------REPOSITORY-----------------------------------------------------
@@ -63,7 +77,7 @@ public final class coreModule {
     @Singleton
     @Provides
     static PropertyRepository providePropertyDataSource(@ApplicationContext Context context){
-        return new PropertyRepository(providePropertyDao(context));
+        return new PropertyRepository(providePropertyDao(context),providePlaceService());
     }
 
     //--------------------------------------REAL ESTATE AGENT INTERACTORS-----------------------------------------------------
@@ -123,5 +137,22 @@ public final class coreModule {
     @Provides
     static AddPropertyLocationInteractor provideAddPropertyLocation(@ApplicationContext Context context){
         return new AddPropertyLocationInteractor(providePropertyDataSource(context));
+    }
+
+    //place interactor
+
+    @Provides
+    static GetPropertyLocationForAddressInteractor provideGetPropertyLocationForAddress(@ApplicationContext Context context){
+        return new GetPropertyLocationForAddressInteractor(providePropertyDataSource(context));
+    }
+
+    @Provides
+    static GetStaticMapForLatLngInteractor provideGetStaticMapForLatLng(@ApplicationContext Context context){
+        return new GetStaticMapForLatLngInteractor(providePropertyDataSource(context));
+    }
+
+    @Provides
+    static GetNearBySchoolForPropertyLocationInteractor provideGetNearBySearchForProperty(@ApplicationContext Context context){
+        return new GetNearBySchoolForPropertyLocationInteractor(providePropertyDataSource(context));
     }
 }

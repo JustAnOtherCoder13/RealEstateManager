@@ -10,6 +10,9 @@ import com.picone.core.domain.interactors.property.GetAllPropertiesInteractor;
 import com.picone.core.domain.interactors.property.UpdatePropertyInteractor;
 import com.picone.core.domain.interactors.property.location.AddPropertyLocationInteractor;
 import com.picone.core.domain.interactors.property.location.GetPropertyLocationInteractor;
+import com.picone.core.domain.interactors.property.maps.GetNearBySchoolForPropertyLocationInteractor;
+import com.picone.core.domain.interactors.property.maps.GetPropertyLocationForAddressInteractor;
+import com.picone.core.domain.interactors.property.maps.GetStaticMapForLatLngInteractor;
 import com.picone.core.domain.interactors.property.photo.AddPropertyPhotoInteractor;
 import com.picone.core.domain.interactors.property.photo.DeletePropertyPhotoInteractor;
 import com.picone.core.domain.interactors.property.photo.GetAllPropertyPhotosForPropertyIdInteractor;
@@ -45,7 +48,16 @@ public abstract class BaseViewModel extends ViewModel {
     protected DeletePropertyPhotoInteractor deletePropertyPhotoInteractor;
     protected UpdatePropertyInteractor updatePropertyInteractor;
     protected GetPropertyLocationInteractor getPropertyLocationInteractor;
+
+    //------------------------PLACE INTERACTORS----------------------------
+
     protected AddPropertyLocationInteractor addPropertyLocationInteractor;
+    protected GetStaticMapForLatLngInteractor getStaticMapForLatLngInteractor;
+    protected GetNearBySchoolForPropertyLocationInteractor getNearBySchoolForPropertyLocationInteractor;
+
+    //------------------------PLACES INTERACTORS----------------------------
+
+    protected GetPropertyLocationForAddressInteractor getPropertyLocationForAddressInteractor;
 
     @Override
     protected void onCleared() {
@@ -55,5 +67,13 @@ public abstract class BaseViewModel extends ViewModel {
 
     protected void checkException() {
         errorState.postValue(ErrorHandler.ON_ERROR);
+    }
+
+    public enum CompletionState {
+        START_STATE,
+        ADD_PROPERTY_COMPLETE,
+        ADD_LOCATION_COMPLETE,
+        UPDATE_PROPERTY_COMPLETE,
+        ADD_POINT_OF_INTEREST_COMPLETE
     }
 }
