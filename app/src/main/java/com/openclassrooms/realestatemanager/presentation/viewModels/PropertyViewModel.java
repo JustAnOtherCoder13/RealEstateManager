@@ -34,6 +34,7 @@ import static com.picone.core.utils.ConstantParameters.MAPS_KEY;
 
 public class PropertyViewModel extends BaseViewModel {
 
+    private MutableLiveData<List<PointOfInterest>> mapsPointOfInterestForPropertyMutableLD = new MutableLiveData<>();
     private MutableLiveData<CompletionState> completionStateMutableLD = new MutableLiveData<>(CompletionState.START_STATE);
     private MutableLiveData<List<Property>> allPropertiesMutableLD = new MutableLiveData<>();
     private MutableLiveData<List<PointOfInterest>> allPointOfInterestForPropertyMutableLD = new MutableLiveData<>();
@@ -43,6 +44,7 @@ public class PropertyViewModel extends BaseViewModel {
     private MutableLiveData<PropertyLocation> propertyLocationForPropertyMutableLd = new MutableLiveData<>();
     private MutableLiveData<PropertyLocation> locationForAddressMutableLD = new MutableLiveData<>();
 
+    public LiveData<List<PointOfInterest>> getMapsPointOfInterest = mapsPointOfInterestForPropertyMutableLD;
     public LiveData<CompletionState> getCompletionState = completionStateMutableLD;
     public LiveData<List<Property>> getAllProperties = allPropertiesMutableLD;
     public LiveData<List<PointOfInterest>> getAllPointOfInterestForProperty = allPointOfInterestForPropertyMutableLD;
@@ -168,8 +170,8 @@ public class PropertyViewModel extends BaseViewModel {
 
     //___________________________________PROPERTY POINT OF INTEREST__________________________________
 
-    public void addPropertyPointOfInterest(List<PointOfInterest> pointOfInterests) {
-       if (!pointOfInterests.isEmpty())
+    public void addPropertyPointOfInterest(@NonNull List<PointOfInterest> pointOfInterests) {
+        if (!pointOfInterests.isEmpty())
         for (int i = 0; i < pointOfInterests.size(); i++) {
             if (pointOfInterests.size()-1==i)completionStateMutableLD.setValue(CompletionState.ADD_POINT_OF_INTEREST_COMPLETE);
             compositeDisposable.add(
@@ -213,6 +215,14 @@ public class PropertyViewModel extends BaseViewModel {
                             .subscribe(propertyLocation -> locationForAddressMutableLD.setValue(propertyLocation)));
     }
 
+    public void setNearBySearchForPropertyLocation(PropertyLocation propertyLocation) {
+        compositeDisposable.add(
+                getNearBySchoolForPropertyLocationInteractor.getNearBySchoolForPropertyLocation(propertyLocation, MAPS_KEY)
+                        .subscribeOn(schedulerProvider.getIo())
+                        .observeOn(schedulerProvider.getUi())
+                        .subscribe(pointOfInterests -> mapsPointOfInterestForPropertyMutableLD.setValue(pointOfInterests)));
+    }
+
     public void setStaticMapForLatLng(LatLng latLng) {
         compositeDisposable.add(
                 getStaticMapForLatLngInteractor.getStaticMapForLatLng(latLng, MAPS_KEY)
@@ -220,16 +230,5 @@ public class PropertyViewModel extends BaseViewModel {
                         .observeOn(schedulerProvider.getUi())
                         .subscribe()
         );
-    }
-
-    private MutableLiveData<List<PointOfInterest>> mapsPointOfInterestForPropertyMutableLD = new MutableLiveData<>();
-    public LiveData<List<PointOfInterest>> getMapsPointOfInterest = mapsPointOfInterestForPropertyMutableLD;
-
-    public void setNearBySearchForPropertyLocation(PropertyLocation propertyLocation) {
-        compositeDisposable.add(
-                getNearBySchoolForPropertyLocationInteractor.getNearBySchoolForPropertyLocation(propertyLocation, MAPS_KEY)
-                        .subscribeOn(schedulerProvider.getIo())
-                        .observeOn(schedulerProvider.getUi())
-                        .subscribe(pointOfInterests -> mapsPointOfInterestForPropertyMutableLD.setValue(pointOfInterests)));
     }
 }
