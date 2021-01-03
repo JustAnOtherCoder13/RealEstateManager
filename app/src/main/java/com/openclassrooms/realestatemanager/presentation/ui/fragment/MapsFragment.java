@@ -43,7 +43,8 @@ import java.util.Objects;
 
 import static android.Manifest.permission.ACCESS_FINE_LOCATION;
 import static com.openclassrooms.realestatemanager.presentation.utils.BitmapConverterUtil.getBitmapFromVectorOrDrawable;
-import static com.picone.core.utils.ConstantParameters.MAPS_CAMERA_ZOOM;
+import static com.picone.core.utils.ConstantParameters.MAPS_CAMERA_LARGE_ZOOM;
+import static com.picone.core.utils.ConstantParameters.MAPS_CAMERA_NEAR_ZOOM;
 import static com.picone.core.utils.ConstantParameters.MAPS_KEY;
 import static com.picone.core.utils.ConstantParameters.REQUEST_CODE;
 
@@ -94,9 +95,11 @@ public class MapsFragment extends BaseFragment implements GoogleMap.OnInfoWindow
 
     @Override
     public void onInfoWindowClick(@NonNull Marker marker) {
-        mPropertyViewModel.setSelectedProperty(getPropertyForId(marker.getTitle()));
-        mPropertyViewModel.setAllPhotosForProperty(getPropertyForId(marker.getTitle()));
-        mNavController.navigate(R.id.action_mapsFragment_to_propertyDetailFragment);
+        if (getPropertyForId(marker.getTitle()).getAddress() != null) {
+            mPropertyViewModel.setSelectedProperty(getPropertyForId(marker.getTitle()));
+            mPropertyViewModel.setAllPhotosForProperty(getPropertyForId(marker.getTitle()));
+            mNavController.navigate(R.id.action_mapsFragment_to_propertyDetailFragment);
+        }
     }
 
     //----------------------------------INIT MAPS----------------------------------------------
@@ -146,15 +149,14 @@ public class MapsFragment extends BaseFragment implements GoogleMap.OnInfoWindow
         mFusedLocationProviderClient.getLastLocation().addOnSuccessListener(location -> {
             if (location != null) {
                 mCurrentLocation = location;
-                setUpMapCurrentPosition();
+                setUpMapPosition(new LatLng(location.getLatitude(),location.getLongitude()),MAPS_CAMERA_LARGE_ZOOM);
             }
         });
     }
 
-    private void setUpMapCurrentPosition() {
-        LatLng latLng = new LatLng(mCurrentLocation.getLatitude(), mCurrentLocation.getLongitude());
+    private void setUpMapPosition(@NonNull LatLng location,int zoom) {
         CameraPosition cameraPosition = new CameraPosition.Builder()
-                .target(latLng).zoom(MAPS_CAMERA_ZOOM).build();
+                .target(location).zoom(zoom).build();
         mMap.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
     }
 
@@ -169,11 +171,14 @@ public class MapsFragment extends BaseFragment implements GoogleMap.OnInfoWindow
             mPropertyViewModel.setPropertyLocationForProperty(property);}
 
         mMap.setOnMarkerClickListener(marker -> {
+            if(marker.isInfoWindowShown())marker.hideInfoWindow();
+            else marker.showInfoWindow();
             if (getPropertyForId(marker.getTitle()).getAddress() != null) {
+                setUpMapPosition(marker.getPosition(),MAPS_CAMERA_NEAR_ZOOM);
                 mPropertyViewModel.setAllPointOfInterestForProperty(getPropertyForId(marker.getTitle()));
                 removePointOfInterestOnNewPropertyClicked(mPropertyViewModel.getAllPointOfInterestForProperty.getValue());
             }
-            return false;
+            return true;
         });
     }
 
@@ -197,10 +202,8 @@ public class MapsFragment extends BaseFragment implements GoogleMap.OnInfoWindow
 
     private void placePointOfInterestMarkersForClickedProperty() {
         mPropertyViewModel.getAllPointOfInterestForProperty.observe(getViewLifecycleOwner(), allPointOfInterests -> {
-            Log.i("TAG", "placePointOfInterestMarkersForClickedProperty: "+allPointOfInterests);
             mPointOfInterestMarkers.clear();
             for (PointOfInterest pointOfInterest : allPointOfInterests) {
-                Log.i("TAG", "pointOfInterest in allPointOfInterest : "+pointOfInterest.getName());
                 MarkerOptions pointOfInterestMarkerOptions = new MarkerOptions();
 
                 pointOfInterestMarkerOptions

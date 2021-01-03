@@ -15,7 +15,7 @@ import io.reactivex.Observable;
 import io.reactivex.Observer;
 import io.reactivex.disposables.Disposable;
 
-import static com.picone.core.utils.ConstantParameters.MAPS_CAMERA_ZOOM;
+import static com.picone.core.utils.ConstantParameters.MAPS_CAMERA_LARGE_ZOOM;
 import static com.picone.core.utils.ConstantParameters.RADIUS;
 
 public class PlaceServiceDaoImpl {
@@ -40,7 +40,7 @@ public class PlaceServiceDaoImpl {
 
         return Observable.create(emitter -> {
             String latLng = location.latitude+(",")+location.longitude;
-            retrofitClient.googlePlaceService().getStaticMapForLatLng(latLng, MAPS_CAMERA_ZOOM, "140x140", googleKey)
+            retrofitClient.googlePlaceService().getStaticMapForLatLng(latLng, MAPS_CAMERA_LARGE_ZOOM, "140x140", googleKey)
                     .subscribe(new Observer<StaticMapPojo>() {
                         @Override
                         public void onSubscribe(Disposable d) {

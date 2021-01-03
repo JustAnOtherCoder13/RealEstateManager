@@ -18,7 +18,9 @@ public class ConstantParameters {
 
     public static String MAPS_KEY;
     public static final int REQUEST_CODE = 13700;
-    public static final int MAPS_CAMERA_ZOOM = 9;
+    public static final int MAPS_CAMERA_LARGE_ZOOM = 9;
+    public static final int MAPS_CAMERA_NEAR_ZOOM = 15;
+
     public static final String RADIUS = "400";
 
 
