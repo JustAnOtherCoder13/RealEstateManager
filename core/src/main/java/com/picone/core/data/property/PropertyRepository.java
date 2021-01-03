@@ -70,6 +70,10 @@ public class PropertyRepository {
         return propertyDao.updateProperty(property);
     }
 
+    public Completable updatePropertyLocation(PropertyLocation propertyLocation){
+        return propertyDao.updatePropertyLocation(propertyLocation);
+    }
+
     //----------------------place
 
     public Observable<PropertyLocationPojo> getPropertyLocationForAddress(String address, String googleKey){

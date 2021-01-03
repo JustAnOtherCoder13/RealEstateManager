@@ -1,7 +1,6 @@
 package com.openclassrooms.realestatemanager.presentation.ui.fragment;
 
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -22,9 +21,8 @@ import com.openclassrooms.realestatemanager.presentation.ui.fragment.adapter.Pho
 import com.openclassrooms.realestatemanager.presentation.ui.main.BaseFragment;
 import com.openclassrooms.realestatemanager.presentation.utils.RecyclerViewItemClickListener;
 import com.picone.core.domain.entity.Property;
+import com.picone.core.domain.entity.PropertyLocation;
 import com.picone.core.domain.entity.PropertyPhoto;
-
-import org.jetbrains.annotations.Contract;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -32,6 +30,7 @@ import java.util.Objects;
 
 import static com.openclassrooms.realestatemanager.presentation.utils.customView.AddPropertyInformationCustomView.getValueForView;
 import static com.openclassrooms.realestatemanager.presentation.utils.customView.AddPropertyInformationCustomView.setValueText;
+import static com.openclassrooms.realestatemanager.presentation.viewModels.BaseViewModel.CompletionState.UPDATE_PROPERTY_COMPLETE;
 import static com.picone.core.utils.ConstantParameters.ADD_PHOTO;
 import static com.picone.core.utils.ConstantParameters.PROPERTY_TO_ADD;
 
@@ -40,8 +39,8 @@ public class AddPropertyFragment extends BaseFragment {
     private FragmentAddPropertyBinding mBinding;
     private List<PropertyPhoto> mPropertyPhotos = new ArrayList<>();
     private List<PropertyPhoto> mPhotosToDelete = new ArrayList<>();
-    private boolean mIsPropertyValuesAreNull;
-    private String mInitialLastPropertyAddress;
+    private boolean isNewPropertyToPersist;
+    private String mPreviousSavedPropertyAddress;
 
     @Nullable
     @Override
@@ -57,45 +56,43 @@ public class AddPropertyFragment extends BaseFragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        mIsPropertyValuesAreNull = Objects.requireNonNull(mPropertyViewModel.getSelectedProperty.getValue()).getAddress() == null;
-        mInitialLastPropertyAddress = Objects.requireNonNull(mPropertyViewModel.getAllProperties.getValue()).get(mPropertyViewModel.getAllProperties.getValue().size() - 1).getAddress();
+        isNewPropertyToPersist = Objects.requireNonNull(mPropertyViewModel.getSelectedProperty.getValue()).getAddress() == null;
+        mPreviousSavedPropertyAddress = Objects.requireNonNull(mPropertyViewModel.getAllProperties.getValue()).get(mPropertyViewModel.getAllProperties.getValue().size() - 1).getAddress();
+
         initView();
         initDropDownMenu();
         initClickListener();
         configureOnClickRecyclerView();
         mPropertyViewModel.resetCompletionState();
-        mPropertyViewModel.setPropertyLocationForPropertyAddress(new Property());
-
 
         mPropertyViewModel.getSelectedProperty.observe(getViewLifecycleOwner(), property -> {
             if (property.getAddress() != null)
                 mPropertyViewModel.setPropertyLocationForProperty(mPropertyViewModel.getSelectedProperty.getValue());
-            else if (mPropertyViewModel.getAllPointOfInterestForProperty.getValue()!=null)mPropertyViewModel.getAllPointOfInterestForProperty.getValue().clear();
         });
 
         mPropertyViewModel.getCompletionState.observe(getViewLifecycleOwner(), completionState -> {
             switch (completionState) {
                 case ADD_PROPERTY_COMPLETE:
-                    setLocationForPropertyAddress();
+                    setValuesForNewProperty();
                     break;
                 case ADD_POINT_OF_INTEREST_COMPLETE:
-                    if (Objects.requireNonNull(mNavController.getCurrentDestination()).getId()==R.id.addPropertyFragment)
+                    if (Objects.requireNonNull(mNavController.getCurrentDestination()).getId() == R.id.addPropertyFragment)
                         mNavController.navigate(R.id.action_addPropertyFragment_to_propertyListFragment);
                     break;
             }
         });
     }
 
-    private void setLocationForPropertyAddress() {
+    private void setValuesForNewProperty() {
 
         mPropertyViewModel.getAllProperties.observe(getViewLifecycleOwner(), properties -> {
-            if (!mInitialLastPropertyAddress.equals(properties.get(properties.size()-1).getAddress())){
+            if (isNewProperty(properties.get(properties.size() - 1))) {
                 mPropertyViewModel.setPropertyLocationForPropertyAddress(properties.get(properties.size() - 1));
             }
         });
 
         mPropertyViewModel.getLocationForAddress.observe(getViewLifecycleOwner(), propertyLocation -> {
-            if (propertyLocation.getPropertyId() != 0 && !mInitialLastPropertyAddress.equals(getPropertyForId(String.valueOf(propertyLocation.getPropertyId())).getAddress())) {
+            if (isPropertyLocationNotEmptyObject(propertyLocation) && isNewProperty(getPropertyForId(String.valueOf(propertyLocation.getPropertyId())))) {
                 Property property = getPropertyForId(String.valueOf(propertyLocation.getPropertyId()));
                 property.setRegion(propertyLocation.getRegion());
                 mPropertyViewModel.updateProperty(property);
@@ -104,11 +101,21 @@ public class AddPropertyFragment extends BaseFragment {
             }
         });
 
-        mPropertyViewModel.getMapsPointOfInterest.observe(getViewLifecycleOwner(),pointOfInterests -> {
-            if (!pointOfInterests.isEmpty()&& !getPropertyForId(String.valueOf(pointOfInterests.get(pointOfInterests.size()-1).getPropertyId())).getAddress().equals(mInitialLastPropertyAddress))
-            mPropertyViewModel.addPropertyPointOfInterest(pointOfInterests);
+        mPropertyViewModel.getMapsPointOfInterest.observe(getViewLifecycleOwner(), pointOfInterests -> {
+            if (!pointOfInterests.isEmpty() && isNewProperty(getPropertyForId(String.valueOf(pointOfInterests.get(pointOfInterests.size() - 1).getPropertyId()))))
+                mPropertyViewModel.addPropertyPointOfInterest(pointOfInterests);
         });
     }
+
+    private boolean isNewProperty(@NonNull Property property) {
+        return !mPreviousSavedPropertyAddress.equals(property.getAddress());
+    }
+
+    private boolean isPropertyLocationNotEmptyObject(@NonNull PropertyLocation propertyLocation) {
+        return propertyLocation.getPropertyId() != 0;
+    }
+
+
     //___________________________________VIEW_____________________________________________
 
     private void initRecyclerView() {
@@ -119,7 +126,7 @@ public class AddPropertyFragment extends BaseFragment {
     }
 
     private void initView() {
-        if (!mIsPropertyValuesAreNull)
+        if (!isNewPropertyToPersist)
             initViewValueWhenUpdate(mBinding.addPropertyInformationLayout, Objects.requireNonNull(mPropertyViewModel.getSelectedProperty.getValue()));
 
         mPropertyViewModel.getPhotosToDelete.observe(getViewLifecycleOwner(), photosToDelete ->
@@ -165,12 +172,33 @@ public class AddPropertyFragment extends BaseFragment {
 
     private void addProperty() {
         if (!isRequiredInformationAreFilled()) {
-            if (mIsPropertyValuesAreNull)
+            if (isNewPropertyToPersist)
                 mPropertyViewModel.addProperty(updatedProperty(PROPERTY_TO_ADD(Objects.requireNonNull(mAgentViewModel.getAgent.getValue()))));
-            else
-                mPropertyViewModel.updateProperty(updatedProperty(Objects.requireNonNull(mPropertyViewModel.getSelectedProperty.getValue())));
-
+            else {
+                Property property = updatedProperty(Objects.requireNonNull(mPropertyViewModel.getSelectedProperty.getValue()));
+                mPropertyViewModel.updateProperty(property);
+                mPropertyViewModel.getCompletionState.observe(getViewLifecycleOwner(), completionState -> {
+                    if (completionState.equals(UPDATE_PROPERTY_COMPLETE) && isAddressHaveChanged) {
+                        mPropertyViewModel.setPropertyLocationForPropertyAddress(property);
+                        setPropertyValuesIfAddressIsUpdate(property);
+                    }
+                });
+            }
         } else Toast.makeText(requireContext(), "fill it", Toast.LENGTH_SHORT).show();
+    }
+
+    private void setPropertyValuesIfAddressIsUpdate(Property property) {
+        mPropertyViewModel.getLocationForAddress.observe(getViewLifecycleOwner(), propertyLocation -> {
+            if (property.getId()==propertyLocation.getPropertyId()){
+                mPropertyViewModel.updatePropertyLocation(propertyLocation);
+                mPropertyViewModel.setNearBySearchForPropertyLocation(propertyLocation);
+            }
+        });
+
+        mPropertyViewModel.getMapsPointOfInterest.observe(getViewLifecycleOwner(), pointOfInterests -> {
+            if (!pointOfInterests.isEmpty()&& pointOfInterests.get(pointOfInterests.size()-1).getPropertyId()==property.getId())
+                mPropertyViewModel.addPropertyPointOfInterest(pointOfInterests);
+        });
     }
 
     private boolean isRequiredInformationAreFilled() {
@@ -204,8 +232,12 @@ public class AddPropertyFragment extends BaseFragment {
 
     //___________________________________HELPERS_____________________________________________
 
+    private boolean isAddressHaveChanged = false;
+
     @NonNull
     private Property updatedProperty(@NonNull Property property) {
+        if (property.getAddress() != null && !property.getAddress().equalsIgnoreCase(getValueForView(mBinding.addPropertyInformationLayout.addPropertyInformationAddress)))
+            isAddressHaveChanged = true;
         property.setAddress(getValueForView(mBinding.addPropertyInformationLayout.addPropertyInformationAddress));
         property.setNumberOfRooms(Integer.parseInt(getValueForView(mBinding.addPropertyInformationLayout.addPropertyInformationNumberOfRooms)));
         property.setNumberOfBathrooms(Integer.parseInt((getValueForView(mBinding.addPropertyInformationLayout.addPropertyInformationNumberOfBathrooms))));

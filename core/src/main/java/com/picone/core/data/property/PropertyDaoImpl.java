@@ -64,4 +64,8 @@ public class PropertyDaoImpl {
         return mPropertyRoomDao.updateProperty(property);
     }
 
+    public Completable updatePropertyLocation(PropertyLocation propertyLocation){
+        return mPropertyRoomDao.updatePropertyLocation(propertyLocation);
+    }
+
 }

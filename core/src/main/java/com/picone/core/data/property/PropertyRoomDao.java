@@ -49,4 +49,7 @@ public interface PropertyRoomDao {
     @Update
     Completable updateProperty(Property property);
 
+    @Update
+    Completable updatePropertyLocation(PropertyLocation propertyLocation);
+
 }

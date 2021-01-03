@@ -10,6 +10,7 @@ import com.picone.core.domain.interactors.property.GetAllPropertiesInteractor;
 import com.picone.core.domain.interactors.property.UpdatePropertyInteractor;
 import com.picone.core.domain.interactors.property.location.AddPropertyLocationInteractor;
 import com.picone.core.domain.interactors.property.location.GetPropertyLocationInteractor;
+import com.picone.core.domain.interactors.property.location.UpdatePropertyLocationInteractor;
 import com.picone.core.domain.interactors.property.maps.GetNearBySchoolForPropertyLocationInteractor;
 import com.picone.core.domain.interactors.property.maps.GetPropertyLocationForAddressInteractor;
 import com.picone.core.domain.interactors.property.maps.GetStaticMapForLatLngInteractor;
@@ -48,6 +49,7 @@ public abstract class BaseViewModel extends ViewModel {
     protected DeletePropertyPhotoInteractor deletePropertyPhotoInteractor;
     protected UpdatePropertyInteractor updatePropertyInteractor;
     protected GetPropertyLocationInteractor getPropertyLocationInteractor;
+    protected UpdatePropertyLocationInteractor updatePropertyLocationInteractor;
 
     //------------------------PLACE INTERACTORS----------------------------
 

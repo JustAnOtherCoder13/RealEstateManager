@@ -1,7 +1,5 @@
 package com.openclassrooms.realestatemanager.presentation.viewModels;
 
-import android.util.Log;
-
 import androidx.annotation.NonNull;
 import androidx.hilt.lifecycle.ViewModelInject;
 import androidx.lifecycle.LiveData;
@@ -17,6 +15,7 @@ import com.picone.core.domain.interactors.property.GetAllPropertiesInteractor;
 import com.picone.core.domain.interactors.property.UpdatePropertyInteractor;
 import com.picone.core.domain.interactors.property.location.AddPropertyLocationInteractor;
 import com.picone.core.domain.interactors.property.location.GetPropertyLocationInteractor;
+import com.picone.core.domain.interactors.property.location.UpdatePropertyLocationInteractor;
 import com.picone.core.domain.interactors.property.maps.GetNearBySchoolForPropertyLocationInteractor;
 import com.picone.core.domain.interactors.property.maps.GetPropertyLocationForAddressInteractor;
 import com.picone.core.domain.interactors.property.maps.GetStaticMapForLatLngInteractor;
@@ -68,6 +67,7 @@ public class PropertyViewModel extends BaseViewModel {
             , GetPropertyLocationForAddressInteractor getPropertyLocationForAddressInteractor
             , GetStaticMapForLatLngInteractor getStaticMapForLatLngInteractor
             , GetNearBySchoolForPropertyLocationInteractor getNearBySchoolForPropertyLocationInteractor
+            , UpdatePropertyLocationInteractor updatePropertyLocationInteractor
             , SchedulerProvider schedulerProvider) {
         this.getAllPropertiesInteractor = getAllPropertiesInteractor;
         this.getAllPointOfInterestForPropertyIdInteractor = getAllPointOfInterestForPropertyIdInteractor;
@@ -82,6 +82,7 @@ public class PropertyViewModel extends BaseViewModel {
         this.getPropertyLocationForAddressInteractor = getPropertyLocationForAddressInteractor;
         this.getStaticMapForLatLngInteractor = getStaticMapForLatLngInteractor;
         this.getNearBySchoolForPropertyLocationInteractor = getNearBySchoolForPropertyLocationInteractor;
+        this.updatePropertyLocationInteractor = updatePropertyLocationInteractor;
         this.schedulerProvider = schedulerProvider;
     }
 
@@ -108,12 +109,12 @@ public class PropertyViewModel extends BaseViewModel {
     }
 
     public void setAllPointOfInterestForProperty(@NonNull Property property) {
-        if (property.getAddress()!=null)
-        compositeDisposable.add(
-                getAllPointOfInterestForPropertyIdInteractor.getAllPointOfInterestForPropertyId(property.getId())
-                        .observeOn(schedulerProvider.getIo())
-                        .subscribeOn(schedulerProvider.getUi())
-                        .subscribe(pointOfInterests -> allPointOfInterestForPropertyMutableLD.postValue(pointOfInterests)));
+        if (property.getAddress() != null)
+            compositeDisposable.add(
+                    getAllPointOfInterestForPropertyIdInteractor.getAllPointOfInterestForPropertyId(property.getId())
+                            .observeOn(schedulerProvider.getIo())
+                            .subscribeOn(schedulerProvider.getUi())
+                            .subscribe(pointOfInterests -> allPointOfInterestForPropertyMutableLD.postValue(pointOfInterests)));
         else allPointOfInterestForPropertyMutableLD.setValue(new ArrayList<>());
     }
 
@@ -143,7 +144,8 @@ public class PropertyViewModel extends BaseViewModel {
                         .andThen(getAllPropertiesInteractor.getAllProperties())
                         .subscribe(properties -> {
                             completionStateMutableLD.postValue(CompletionState.ADD_PROPERTY_COMPLETE);
-                            allPropertiesMutableLD.postValue(properties);}, throwable -> checkException()));
+                            allPropertiesMutableLD.postValue(properties);
+                        }, throwable -> checkException()));
     }
 
     public void updateProperty(Property property) {
@@ -168,19 +170,33 @@ public class PropertyViewModel extends BaseViewModel {
                         .subscribe(() -> setSelectedProperty(new Property()), throwable -> checkException()));
     }
 
+    public void updatePropertyLocation(@NonNull PropertyLocation propertyLocation) {
+        compositeDisposable.add(
+                getPropertyLocationInteractor.getPropertyLocationForPropertyId(propertyLocation.getPropertyId())
+                        .subscribeOn(schedulerProvider.getIo())
+                        .observeOn(schedulerProvider.getUi())
+                        .flatMapCompletable(propertyLocation1 -> {
+                            propertyLocation1.setLongitude(propertyLocation.getLongitude());
+                            propertyLocation1.setLatitude(propertyLocation.getLatitude());
+                            propertyLocation1.setRegion(propertyLocation.getRegion());
+                            return updatePropertyLocationInteractor.updatePropertyLocation(propertyLocation1);
+                        })
+                        .subscribe(() -> setSelectedProperty(new Property()), throwable -> checkException()));
+    }
     //___________________________________PROPERTY POINT OF INTEREST__________________________________
 
     public void addPropertyPointOfInterest(@NonNull List<PointOfInterest> pointOfInterests) {
         if (!pointOfInterests.isEmpty())
-        for (int i = 0; i < pointOfInterests.size(); i++) {
-            if (pointOfInterests.size()-1==i)completionStateMutableLD.setValue(CompletionState.ADD_POINT_OF_INTEREST_COMPLETE);
-            compositeDisposable.add(
-                    addPropertyPointOfInterestInteractor.addRoomPropertyPointOfInterest(pointOfInterests.get(i))
-                            .subscribeOn(schedulerProvider.getIo())
-                            .observeOn(schedulerProvider.getUi())
-                            .subscribe(() -> {
-                            }, throwable -> checkException()));
-        }
+            for (int i = 0; i < pointOfInterests.size(); i++) {
+                if (pointOfInterests.size() - 1 == i)
+                    completionStateMutableLD.setValue(CompletionState.ADD_POINT_OF_INTEREST_COMPLETE);
+                compositeDisposable.add(
+                        addPropertyPointOfInterestInteractor.addRoomPropertyPointOfInterest(pointOfInterests.get(i))
+                                .subscribeOn(schedulerProvider.getIo())
+                                .observeOn(schedulerProvider.getUi())
+                                .subscribe(() -> {
+                                }, throwable -> checkException()));
+            }
     }
 
     //___________________________________PROPERTY PHOTO__________________________________

@@ -16,6 +16,7 @@ import com.picone.core.domain.interactors.property.GetAllPropertiesInteractor;
 import com.picone.core.domain.interactors.property.UpdatePropertyInteractor;
 import com.picone.core.domain.interactors.property.location.AddPropertyLocationInteractor;
 import com.picone.core.domain.interactors.property.location.GetPropertyLocationInteractor;
+import com.picone.core.domain.interactors.property.location.UpdatePropertyLocationInteractor;
 import com.picone.core.domain.interactors.property.maps.GetNearBySchoolForPropertyLocationInteractor;
 import com.picone.core.domain.interactors.property.maps.GetPropertyLocationForAddressInteractor;
 import com.picone.core.domain.interactors.property.maps.GetStaticMapForLatLngInteractor;
@@ -137,6 +138,11 @@ public final class coreModule {
     @Provides
     static AddPropertyLocationInteractor provideAddPropertyLocation(@ApplicationContext Context context){
         return new AddPropertyLocationInteractor(providePropertyDataSource(context));
+    }
+
+    @Provides
+    static UpdatePropertyLocationInteractor provideUpdatePropertyLocation(@ApplicationContext Context context){
+        return new UpdatePropertyLocationInteractor(providePropertyDataSource(context));
     }
 
     //place interactor
