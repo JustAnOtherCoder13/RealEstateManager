@@ -19,7 +19,7 @@ import com.picone.core.domain.interactors.property.GetAllPropertiesInteractor;
 import com.picone.core.domain.interactors.property.UpdatePropertyInteractor;
 import com.picone.core.domain.interactors.property.location.AddPropertyLocationInteractor;
 import com.picone.core.domain.interactors.property.location.GetPropertyLocationInteractor;
-import com.picone.core.domain.interactors.property.maps.GetNearBySchoolForPropertyLocationInteractor;
+import com.picone.core.domain.interactors.property.maps.GetNearBySearchForPropertyLocationInteractor;
 import com.picone.core.domain.interactors.property.maps.GetPropertyLocationForAddressInteractor;
 import com.picone.core.domain.interactors.property.maps.GetStaticMapForLatLngInteractor;
 import com.picone.core.domain.interactors.property.photo.AddPropertyPhotoInteractor;
@@ -91,7 +91,7 @@ public abstract class BaseUnitTest {
     @InjectMocks
     AddPropertyLocationInteractor addPropertyLocationInteractor;
     @InjectMocks
-    GetNearBySchoolForPropertyLocationInteractor getNearBySchoolForPropertyLocationInteractor;
+    GetNearBySearchForPropertyLocationInteractor getNearBySearchForPropertyLocationInteractor;
     @InjectMocks
     GetPropertyLocationForAddressInteractor getPropertyLocationForAddressInteractor;
     @InjectMocks
@@ -127,7 +127,7 @@ public abstract class BaseUnitTest {
         pointOfInterestsToAdd.add(pointOfInterestToAdd);
 
         //initViewModels
-        propertyViewModel = new PropertyViewModel(getAllPropertiesInteractor, getAllPointOfInterestForPropertyIdInteractor, getAllPropertyPhotosForPropertyIdInteractor, addPropertyInteractor, addPropertyPointOfInterestInteractor, addPropertyPhotoInteractor, deletePropertyPhotoInteractor, updatePropertyInteractor,getPropertyLocationInteractor,addPropertyLocationInteractor,getPropertyLocationForAddressInteractor,getStaticMapForLatLngInteractor,getNearBySchoolForPropertyLocationInteractor,schedulerProvider);
+        propertyViewModel = new PropertyViewModel(getAllPropertiesInteractor, getAllPointOfInterestForPropertyIdInteractor, getAllPropertyPhotosForPropertyIdInteractor, addPropertyInteractor, addPropertyPointOfInterestInteractor, addPropertyPhotoInteractor, deletePropertyPhotoInteractor, updatePropertyInteractor,getPropertyLocationInteractor,addPropertyLocationInteractor,getPropertyLocationForAddressInteractor,getStaticMapForLatLngInteractor, getNearBySearchForPropertyLocationInteractor,schedulerProvider);
         agentViewModel = new AgentViewModel(getAgentInteractor,schedulerProvider);
 
         //initObserver

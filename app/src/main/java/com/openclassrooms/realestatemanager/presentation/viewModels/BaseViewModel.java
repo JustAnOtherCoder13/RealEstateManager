@@ -11,7 +11,7 @@ import com.picone.core.domain.interactors.property.UpdatePropertyInteractor;
 import com.picone.core.domain.interactors.property.location.AddPropertyLocationInteractor;
 import com.picone.core.domain.interactors.property.location.GetPropertyLocationInteractor;
 import com.picone.core.domain.interactors.property.location.UpdatePropertyLocationInteractor;
-import com.picone.core.domain.interactors.property.maps.GetNearBySchoolForPropertyLocationInteractor;
+import com.picone.core.domain.interactors.property.maps.GetNearBySearchForPropertyLocationInteractor;
 import com.picone.core.domain.interactors.property.maps.GetPropertyLocationForAddressInteractor;
 import com.picone.core.domain.interactors.property.maps.GetStaticMapForLatLngInteractor;
 import com.picone.core.domain.interactors.property.photo.AddPropertyPhotoInteractor;
@@ -19,6 +19,7 @@ import com.picone.core.domain.interactors.property.photo.DeletePropertyPhotoInte
 import com.picone.core.domain.interactors.property.photo.GetAllPropertyPhotosForPropertyIdInteractor;
 import com.picone.core.domain.interactors.property.pointOfInterest.AddPropertyPointOfInterestInteractor;
 import com.picone.core.domain.interactors.property.pointOfInterest.GetAllPointOfInterestForPropertyIdInteractor;
+import com.picone.core.domain.interactors.property.pointOfInterest.DeletePointOfInterestInteractor;
 import com.picone.core.utils.SchedulerProvider;
 
 import javax.inject.Inject;
@@ -50,12 +51,13 @@ public abstract class BaseViewModel extends ViewModel {
     protected UpdatePropertyInteractor updatePropertyInteractor;
     protected GetPropertyLocationInteractor getPropertyLocationInteractor;
     protected UpdatePropertyLocationInteractor updatePropertyLocationInteractor;
+    protected DeletePointOfInterestInteractor deletePointOfInterestInteractor;
 
     //------------------------PLACE INTERACTORS----------------------------
 
     protected AddPropertyLocationInteractor addPropertyLocationInteractor;
     protected GetStaticMapForLatLngInteractor getStaticMapForLatLngInteractor;
-    protected GetNearBySchoolForPropertyLocationInteractor getNearBySchoolForPropertyLocationInteractor;
+    protected GetNearBySearchForPropertyLocationInteractor getNearBySearchForPropertyLocationInteractor;
 
     //------------------------PLACES INTERACTORS----------------------------
 

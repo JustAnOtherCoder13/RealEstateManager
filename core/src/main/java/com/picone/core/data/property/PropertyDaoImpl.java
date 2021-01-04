@@ -52,7 +52,7 @@ public class PropertyDaoImpl {
         return mPropertyRoomDao.addPropertyPhoto(propertyPhoto);
     }
 
-    public Completable addPropertyLocation(PropertyLocation propertyLocation){
+    public Completable addPropertyLocation(PropertyLocation propertyLocation) {
         return mPropertyRoomDao.addPropertyLocation(propertyLocation);
     }
 
@@ -64,8 +64,13 @@ public class PropertyDaoImpl {
         return mPropertyRoomDao.updateProperty(property);
     }
 
-    public Completable updatePropertyLocation(PropertyLocation propertyLocation){
+    public Completable updatePropertyLocation(PropertyLocation propertyLocation) {
         return mPropertyRoomDao.updatePropertyLocation(propertyLocation);
     }
+
+    public Completable deletePropertyPointOfInterest(PointOfInterest pointOfInterest) {
+        return mPropertyRoomDao.deletePropertyPointOfInterest(pointOfInterest);
+    }
+
 
 }

@@ -52,4 +52,7 @@ public interface PropertyRoomDao {
     @Update
     Completable updatePropertyLocation(PropertyLocation propertyLocation);
 
+    @Delete
+    Completable deletePropertyPointOfInterest(PointOfInterest pointOfInterest);
+
 }

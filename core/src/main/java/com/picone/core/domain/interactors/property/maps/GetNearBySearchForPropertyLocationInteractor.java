@@ -16,14 +16,15 @@ import io.reactivex.Observable;
 
 import static com.picone.core.utils.ConstantParameters.POINT_OF_INTEREST_TYPE;
 
-public class GetNearBySchoolForPropertyLocationInteractor extends PropertyBaseInteractor {
-    List<PointOfInterest> pointOfInterests = new ArrayList<>();
+public class GetNearBySearchForPropertyLocationInteractor extends PropertyBaseInteractor {
 
-    public GetNearBySchoolForPropertyLocationInteractor(PropertyRepository propertyDataSource) {
+    private List<PointOfInterest> pointOfInterests = new ArrayList<>();
+
+    public GetNearBySearchForPropertyLocationInteractor(PropertyRepository propertyDataSource) {
         super(propertyDataSource);
     }
 
-    public Observable<List<PointOfInterest>> getNearBySchoolForPropertyLocation(@NonNull PropertyLocation propertyLocation, String googleKey) {
+    public Observable<List<PointOfInterest>> getNearBySearchForPropertyLocation(@NonNull PropertyLocation propertyLocation, String googleKey) {
 
         return propertyDataSource.getNearBySchoolForPropertyLocation(propertyLocation, POINT_OF_INTEREST_TYPE.get(0), googleKey)
                 .flatMap(nearBySearch -> {

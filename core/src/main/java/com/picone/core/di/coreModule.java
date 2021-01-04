@@ -17,13 +17,14 @@ import com.picone.core.domain.interactors.property.UpdatePropertyInteractor;
 import com.picone.core.domain.interactors.property.location.AddPropertyLocationInteractor;
 import com.picone.core.domain.interactors.property.location.GetPropertyLocationInteractor;
 import com.picone.core.domain.interactors.property.location.UpdatePropertyLocationInteractor;
-import com.picone.core.domain.interactors.property.maps.GetNearBySchoolForPropertyLocationInteractor;
+import com.picone.core.domain.interactors.property.maps.GetNearBySearchForPropertyLocationInteractor;
 import com.picone.core.domain.interactors.property.maps.GetPropertyLocationForAddressInteractor;
 import com.picone.core.domain.interactors.property.maps.GetStaticMapForLatLngInteractor;
 import com.picone.core.domain.interactors.property.photo.AddPropertyPhotoInteractor;
 import com.picone.core.domain.interactors.property.photo.DeletePropertyPhotoInteractor;
 import com.picone.core.domain.interactors.property.photo.GetAllPropertyPhotosForPropertyIdInteractor;
 import com.picone.core.domain.interactors.property.pointOfInterest.AddPropertyPointOfInterestInteractor;
+import com.picone.core.domain.interactors.property.pointOfInterest.DeletePointOfInterestInteractor;
 import com.picone.core.domain.interactors.property.pointOfInterest.GetAllPointOfInterestForPropertyIdInteractor;
 
 import javax.inject.Singleton;
@@ -145,6 +146,11 @@ public final class coreModule {
         return new UpdatePropertyLocationInteractor(providePropertyDataSource(context));
     }
 
+    @Provides
+    static DeletePointOfInterestInteractor provideDeletePointOfInterest(@ApplicationContext Context context){
+        return new DeletePointOfInterestInteractor(providePropertyDataSource(context));
+    }
+
     //place interactor
 
     @Provides
@@ -158,7 +164,7 @@ public final class coreModule {
     }
 
     @Provides
-    static GetNearBySchoolForPropertyLocationInteractor provideGetNearBySearchForProperty(@ApplicationContext Context context){
-        return new GetNearBySchoolForPropertyLocationInteractor(providePropertyDataSource(context));
+    static GetNearBySearchForPropertyLocationInteractor provideGetNearBySearchForProperty(@ApplicationContext Context context){
+        return new GetNearBySearchForPropertyLocationInteractor(providePropertyDataSource(context));
     }
 }
