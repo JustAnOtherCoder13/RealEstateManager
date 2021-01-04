@@ -1,5 +1,7 @@
 package com.openclassrooms.realestatemanager.presentation.viewModels;
 
+import android.util.Log;
+
 import androidx.annotation.NonNull;
 import androidx.hilt.lifecycle.ViewModelInject;
 import androidx.lifecycle.LiveData;
@@ -36,7 +38,7 @@ public class PropertyViewModel extends BaseViewModel {
     private MutableLiveData<List<PointOfInterest>> mapsPointOfInterestForPropertyMutableLD = new MutableLiveData<>();
     private MutableLiveData<CompletionState> completionStateMutableLD = new MutableLiveData<>(CompletionState.START_STATE);
     private MutableLiveData<List<Property>> allPropertiesMutableLD = new MutableLiveData<>();
-    private MutableLiveData<List<PointOfInterest>> allPointOfInterestForPropertyMutableLD = new MutableLiveData<>();
+    private MutableLiveData<List<PointOfInterest>> allPointOfInterestForPropertyMutableLD = new MutableLiveData<>(new ArrayList<>());
     private MutableLiveData<List<PropertyPhoto>> allPhotosForPropertyMutableLD = new MutableLiveData<>();
     private MutableLiveData<Property> selectedPropertyMutableLD = new MutableLiveData<>(new Property());
     private MutableLiveData<List<PropertyPhoto>> photosToDeleteMutableLD = new MutableLiveData<>();
@@ -171,17 +173,13 @@ public class PropertyViewModel extends BaseViewModel {
     }
 
     public void updatePropertyLocation(@NonNull PropertyLocation propertyLocation) {
-        compositeDisposable.add(
-                getPropertyLocationInteractor.getPropertyLocationForPropertyId(propertyLocation.getPropertyId())
-                        .subscribeOn(schedulerProvider.getIo())
-                        .observeOn(schedulerProvider.getUi())
-                        .flatMapCompletable(propertyLocation1 -> {
-                            propertyLocation1.setLongitude(propertyLocation.getLongitude());
-                            propertyLocation1.setLatitude(propertyLocation.getLatitude());
-                            propertyLocation1.setRegion(propertyLocation.getRegion());
-                            return updatePropertyLocationInteractor.updatePropertyLocation(propertyLocation1);
-                        })
-                        .subscribe(() -> setSelectedProperty(new Property()), throwable -> checkException()));
+            compositeDisposable.add(
+                    updatePropertyLocationInteractor.updatePropertyLocation(propertyLocation)
+                            .subscribeOn(schedulerProvider.getIo())
+                            .observeOn(schedulerProvider.getUi())
+                            .andThen(getAllPropertiesInteractor.getAllProperties())
+                            .subscribe(properties -> {setSelectedProperty(new Property());}, throwable -> checkException()));
+
     }
     //___________________________________PROPERTY POINT OF INTEREST__________________________________
 

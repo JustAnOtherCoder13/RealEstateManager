@@ -79,6 +79,7 @@ public class MapsFragment extends BaseFragment implements GoogleMap.OnInfoWindow
         super.onViewCreated(view, savedInstanceState);
         initMapView(savedInstanceState);
         mPropertyViewModel.setAllProperties();
+        mPropertyViewModel.setAllPointOfInterestForProperty(new Property());
         placePropertyMarkers();
         placePointOfInterestMarkersForClickedProperty();
     }
@@ -161,6 +162,8 @@ public class MapsFragment extends BaseFragment implements GoogleMap.OnInfoWindow
 
     private void initMarkersValue(@NonNull List<Property> allProperties) {
         mMap.clear();
+        if (!Objects.requireNonNull(mPropertyViewModel.getAllPointOfInterestForProperty.getValue()).isEmpty())
+            removePointOfInterest();
         mPointOfInterestMarkers.clear();
 
         for (Property property : allProperties)
@@ -171,13 +174,13 @@ public class MapsFragment extends BaseFragment implements GoogleMap.OnInfoWindow
             if (isPropertyMarker(marker)) {
                 setUpMapPosition(marker.getPosition(), MAPS_CAMERA_NEAR_ZOOM);
                 mPropertyViewModel.setAllPointOfInterestForProperty(getPropertyForId(marker.getTitle()));
-                removePointOfInterestOnNewPropertyClicked();
+                removePointOfInterest();
             }
             return true;
         });
 
         mMap.setOnMyLocationButtonClickListener(() -> {
-            removePointOfInterestOnNewPropertyClicked();
+            removePointOfInterest();
             return false;
         });
     }
@@ -185,18 +188,10 @@ public class MapsFragment extends BaseFragment implements GoogleMap.OnInfoWindow
     private void placePropertyMarkers() {
         mPropertyViewModel.getPropertyLocationForProperty.observe(getViewLifecycleOwner(), propertyLocation -> {
             if (mMap != null) {
-                mMarkerOptions.position(new LatLng(propertyLocation.getLatitude(), propertyLocation.getLongitude()))
+                mMap.addMarker(mMarkerOptions.position(new LatLng(propertyLocation.getLatitude(), propertyLocation.getLongitude()))
                         .title(String.valueOf(propertyLocation.getPropertyId()))
-                        .snippet(getPropertyForId(String.valueOf(propertyLocation.getPropertyId())).getAddress());
-
-                if (propertyLocation.getRegion().equalsIgnoreCase(getResources().getString(AgentRegionUnderResponsibility.BOUCHES_DU_RHONE.label)))
-                    mMap.addMarker(mMarkerOptions.icon(BitmapDescriptorFactory.fromBitmap(getBitmapFromVectorOrDrawable(requireContext(), R.drawable.ic_fragment_detail_location_on_zone1_24))));
-                else if (propertyLocation.getRegion().equalsIgnoreCase(getResources().getString(AgentRegionUnderResponsibility.VAR.label)))
-                    mMap.addMarker(mMarkerOptions.icon(BitmapDescriptorFactory.fromBitmap(getBitmapFromVectorOrDrawable(requireContext(), R.drawable.ic_fragment_detail_location_on_zone2_24))));
-                else if (propertyLocation.getRegion().equalsIgnoreCase(getResources().getString(AgentRegionUnderResponsibility.VAUCLUSE.label)))
-                    mMap.addMarker(mMarkerOptions.icon(BitmapDescriptorFactory.fromBitmap(getBitmapFromVectorOrDrawable(requireContext(), R.drawable.ic_fragment_detail_location_on_zone3_24))));
-                else
-                    mMap.addMarker(mMarkerOptions.icon(BitmapDescriptorFactory.fromBitmap(getBitmapFromVectorOrDrawable(requireContext(), R.drawable.ic_location_on_24))));
+                        .snippet(getPropertyForId(String.valueOf(propertyLocation.getPropertyId())).getAddress())
+                        .icon(BitmapDescriptorFactory.fromBitmap(getBitmapFromVectorOrDrawable(requireContext(), R.drawable.ic_fragment_detail_location_on_zone1_24))));
             }
         });
     }
@@ -204,6 +199,7 @@ public class MapsFragment extends BaseFragment implements GoogleMap.OnInfoWindow
     private void placePointOfInterestMarkersForClickedProperty() {
         mPropertyViewModel.getAllPointOfInterestForProperty.observe(getViewLifecycleOwner(), allPointOfInterests -> {
             mPointOfInterestMarkers.clear();
+            if (!allPointOfInterests.isEmpty())
             for (PointOfInterest pointOfInterest : allPointOfInterests)
                 createPointOfInterestMarker(pointOfInterest);
         });
@@ -244,7 +240,7 @@ public class MapsFragment extends BaseFragment implements GoogleMap.OnInfoWindow
         return getPropertyForId(marker.getTitle()).getAddress() != null;
     }
 
-    private void removePointOfInterestOnNewPropertyClicked() {
+    private void removePointOfInterest() {
         List<PointOfInterest> pointOfInterests = mPropertyViewModel.getAllPointOfInterestForProperty.getValue();
         if (pointOfInterests != null) {
             for (Marker marker1 : mPointOfInterestMarkers)

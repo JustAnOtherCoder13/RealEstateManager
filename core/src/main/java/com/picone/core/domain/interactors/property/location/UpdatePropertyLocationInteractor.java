@@ -13,6 +13,6 @@ public class UpdatePropertyLocationInteractor extends PropertyBaseInteractor {
     }
 
     public Completable updatePropertyLocation(PropertyLocation propertyLocation){
-        return propertyDataSource.addPropertyLocation(propertyLocation);
+        return propertyDataSource.updatePropertyLocation(propertyLocation);
     }
 }
