@@ -176,21 +176,24 @@ public class PropertyViewModel extends BaseViewModel {
     }
 
     public void updatePropertyLocation(@NonNull PropertyLocation propertyLocation) {
-            compositeDisposable.add(
-                    updatePropertyLocationInteractor.updatePropertyLocation(propertyLocation)
-                            .subscribeOn(schedulerProvider.getIo())
-                            .observeOn(schedulerProvider.getUi())
-                            .andThen(getAllPropertiesInteractor.getAllProperties())
-                            .subscribe(properties -> setSelectedProperty(new Property()), throwable -> checkException()));
+        compositeDisposable.add(
+                updatePropertyLocationInteractor.updatePropertyLocation(propertyLocation)
+                        .subscribeOn(schedulerProvider.getIo())
+                        .observeOn(schedulerProvider.getUi())
+                        .andThen(getAllPropertiesInteractor.getAllProperties())
+                        .subscribe(properties -> selectedPropertyMutableLD.postValue(new Property()), throwable -> Log.e("TAG", "updatePropertyLocation: " + throwable)));
 
     }
     //___________________________________PROPERTY POINT OF INTEREST__________________________________
 
     public void addPropertyPointOfInterest(@NonNull List<PointOfInterest> pointOfInterests) {
-        if (!pointOfInterests.isEmpty())
+        if (!pointOfInterests.isEmpty()) {
             for (int i = 0; i < pointOfInterests.size(); i++) {
-                if (pointOfInterests.size() - 1 == i)
+                if (pointOfInterests.size() - 1 == i) {
                     completionStateMutableLD.setValue(CompletionState.ADD_POINT_OF_INTEREST_COMPLETE);
+                    pointOfInterests.clear();
+                    break;
+                }
                 compositeDisposable.add(
                         addPropertyPointOfInterestInteractor.addPropertyPointOfInterest(pointOfInterests.get(i))
                                 .subscribeOn(schedulerProvider.getIo())
@@ -198,19 +201,22 @@ public class PropertyViewModel extends BaseViewModel {
                                 .subscribe(() -> {
                                 }, throwable -> checkException()));
             }
+        }
     }
 
-    public void updatePointOfInterest(@NonNull List<PointOfInterest> pointOfInterests){
-        Log.i("TAG", "updatePointOfInterest: "+pointOfInterests);
+    public void updatePointOfInterest(@NonNull List<PointOfInterest> pointOfInterests) {
         for (int i = 0; i < allPointOfInterestForPropertyMutableLD.getValue().size(); i++) {
             compositeDisposable.add(
                     deletePointOfInterestInteractor.deletePropertyPointOfInterest(allPointOfInterestForPropertyMutableLD.getValue().get(i))
-                    .subscribeOn(schedulerProvider.getIo())
-                    .observeOn(schedulerProvider.getUi())
-                    .subscribe(()->{},throwable -> Log.i("TAG", "updatePointOfInterest: "+throwable))
+                            .subscribeOn(schedulerProvider.getIo())
+                            .observeOn(schedulerProvider.getUi())
+                            .subscribe(() -> {
+                            }, throwable -> Log.i("TAG", "updatePointOfInterest: " + throwable))
             );
-            if (i==allPointOfInterestForPropertyMutableLD.getValue().size()-1)
+            if (i == allPointOfInterestForPropertyMutableLD.getValue().size() - 1) {
+                allPointOfInterestForPropertyMutableLD.getValue().clear();
                 addPropertyPointOfInterest(pointOfInterests);
+            }
         }
     }
 
@@ -243,7 +249,7 @@ public class PropertyViewModel extends BaseViewModel {
                     getPropertyLocationForAddressInteractor.getPropertyLocationForAddress(property, MAPS_KEY)
                             .subscribeOn(schedulerProvider.getIo())
                             .observeOn(schedulerProvider.getUi())
-                            .subscribe(propertyLocation -> locationForAddressMutableLD.setValue(propertyLocation)));
+                            .subscribe(propertyLocation -> locationForAddressMutableLD.setValue(propertyLocation), throwable -> Log.e("TAG", "setPropertyLocationForPropertyAddress: " + throwable)));
     }
 
     public void setNearBySearchForPropertyLocation(PropertyLocation propertyLocation) {

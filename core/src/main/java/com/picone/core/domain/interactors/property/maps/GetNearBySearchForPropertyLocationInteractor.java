@@ -51,9 +51,8 @@ public class GetNearBySearchForPropertyLocationInteractor extends PropertyBaseIn
             pointOfInterest.setType(nearBySearchResult.getTypes().get(0));
             pointOfInterest.setIcon(nearBySearchResult.getIcon());
 
-            if (pointOfInterests.isEmpty()) pointOfInterests.add(pointOfInterest);
-            else if (!pointOfInterests.contains(pointOfInterest))
-                pointOfInterests.add(pointOfInterest);
+            pointOfInterests.add(pointOfInterest);
+
         }
         return pointOfInterests;
     }
