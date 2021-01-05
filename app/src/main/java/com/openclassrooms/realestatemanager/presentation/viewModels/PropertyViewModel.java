@@ -205,7 +205,7 @@ public class PropertyViewModel extends BaseViewModel {
     }
 
     public void updatePointOfInterest(@NonNull List<PointOfInterest> pointOfInterests) {
-        for (int i = 0; i < allPointOfInterestForPropertyMutableLD.getValue().size(); i++) {
+        for (int i = 0; i < Objects.requireNonNull(allPointOfInterestForPropertyMutableLD.getValue()).size(); i++) {
             compositeDisposable.add(
                     deletePointOfInterestInteractor.deletePropertyPointOfInterest(allPointOfInterestForPropertyMutableLD.getValue().get(i))
                             .subscribeOn(schedulerProvider.getIo())
