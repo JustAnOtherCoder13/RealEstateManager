@@ -214,13 +214,7 @@ public class AddPropertyFragment extends BaseFragment {
         mPropertyViewModel.setAllPointOfInterestForProperty(originalProperty);
         mPropertyViewModel.setPropertyLocationForProperty(originalProperty);
 
-        mPropertyViewModel.getCompletionState.observe(getViewLifecycleOwner(), completionState -> {
-            if (completionState.equals(UPDATE_PROPERTY_COMPLETE))
-                mPropertyViewModel.getMapsPointOfInterest.observe(getViewLifecycleOwner(), pointOfInterests -> {
-                    if (isPointOfInterestPropertyIdEqualUpdatedPropertyId(updatedProperty, pointOfInterests))
-                        mPropertyViewModel.updatePointOfInterest(pointOfInterests);
-                });
-        });
+
 
         mPropertyViewModel.getPropertyLocationForProperty.observe(getViewLifecycleOwner(), propertyLocation ->
                 mPropertyViewModel.setPropertyLocationForPropertyAddress(updatedProperty));
@@ -232,6 +226,11 @@ public class AddPropertyFragment extends BaseFragment {
                 mPropertyViewModel.updatePropertyLocation(propertyLocation);
                 mPropertyViewModel.setNearBySearchForPropertyLocation(propertyLocation);
             }
+        });
+
+        mPropertyViewModel.getMapsPointOfInterest.observe(getViewLifecycleOwner(), pointOfInterests -> {
+            if (isPointOfInterestPropertyIdEqualUpdatedPropertyId(updatedProperty, pointOfInterests))
+                mPropertyViewModel.updatePointOfInterest(pointOfInterests);
         });
     }
 
