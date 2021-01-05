@@ -29,11 +29,15 @@ public abstract class BaseFragment extends Fragment {
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setUpdateButton();
+        mAgentViewModel = new ViewModelProvider(requireActivity()).get(AgentViewModel.class);
+        mPropertyViewModel = new ViewModelProvider(requireActivity()).get(PropertyViewModel.class);
+    }
+
+    protected void setUpdateButton() {
         mainActivity = (MainActivity) getActivity();
         assert mainActivity != null;
         mUpdateButton = mainActivity.mUpdateButton;
-        mAgentViewModel = new ViewModelProvider(requireActivity()).get(AgentViewModel.class);
-        mPropertyViewModel = new ViewModelProvider(requireActivity()).get(PropertyViewModel.class);
     }
 
     protected void setAppBarVisibility(boolean isVisible) {

@@ -212,7 +212,7 @@ public class PropertyViewModel extends BaseViewModel {
                             .subscribeOn(schedulerProvider.getIo())
                             .observeOn(schedulerProvider.getUi())
                             .subscribe(() -> {
-                            }, throwable -> Log.i("TAG", "updatePointOfInterest: " + throwable))
+                            }, throwable -> checkException())
             );
             if (i == allPointOfInterestForPropertyMutableLD.getValue().size() - 1) {
                 allPointOfInterestForPropertyMutableLD.getValue().clear();

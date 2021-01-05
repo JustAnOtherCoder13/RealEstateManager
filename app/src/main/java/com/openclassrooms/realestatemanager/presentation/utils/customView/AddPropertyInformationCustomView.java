@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.res.TypedArray;
 import android.text.InputType;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -43,12 +44,14 @@ public class AddPropertyInformationCustomView extends ConstraintLayout {
     }
 
 
-    public static void setValueText( View view,String text) {
+    public static void setValueText(@NonNull View view, String text) {
         EditText editText = view.findViewById(R.id.add_property_information_custom_view_value);
         editText.setText(text);
     }
 
-    public static String getValueForView(View view){
+
+    @NonNull
+    public static String getValueForView(@NonNull View view){
         EditText editText = view.findViewById(R.id.add_property_information_custom_view_value);
         return editText.getText().toString();
     }
