@@ -19,6 +19,7 @@ import com.picone.core.domain.interactors.property.GetAllPropertiesInteractor;
 import com.picone.core.domain.interactors.property.UpdatePropertyInteractor;
 import com.picone.core.domain.interactors.property.location.AddPropertyLocationInteractor;
 import com.picone.core.domain.interactors.property.location.GetPropertyLocationInteractor;
+import com.picone.core.domain.interactors.property.location.UpdatePropertyLocationInteractor;
 import com.picone.core.domain.interactors.property.maps.GetNearBySearchForPropertyLocationInteractor;
 import com.picone.core.domain.interactors.property.maps.GetPropertyLocationForAddressInteractor;
 import com.picone.core.domain.interactors.property.maps.GetStaticMapForLatLngInteractor;
@@ -26,6 +27,7 @@ import com.picone.core.domain.interactors.property.photo.AddPropertyPhotoInterac
 import com.picone.core.domain.interactors.property.photo.DeletePropertyPhotoInteractor;
 import com.picone.core.domain.interactors.property.photo.GetAllPropertyPhotosForPropertyIdInteractor;
 import com.picone.core.domain.interactors.property.pointOfInterest.AddPropertyPointOfInterestInteractor;
+import com.picone.core.domain.interactors.property.pointOfInterest.DeletePointOfInterestInteractor;
 import com.picone.core.domain.interactors.property.pointOfInterest.GetAllPointOfInterestForPropertyIdInteractor;
 import com.picone.core.utils.SchedulerProvider;
 
@@ -60,10 +62,12 @@ public abstract class BaseUnitTest {
     PropertyPhoto photoToDelete = Generator.generatePhotos().get(1);
     List<PointOfInterest> pointOfInterestForPropertyId = new ArrayList<>();
     PointOfInterest pointOfInterestToAdd = new PointOfInterest(5,1,"school",0.0,0.0,"school","icon");
+    PointOfInterest newPointOfInterest = new PointOfInterest(1,1,"restaurant",0.0,0.0,"restaurant","icon");
     List<PointOfInterest> pointOfInterestsToAdd = new ArrayList<>();
+    List<PointOfInterest> updatedPointOfInterests = new ArrayList<>();
 
     PropertyLocation propertyLocationToAdd = new PropertyLocation(3,42.543732,5.036950,"region",propertyToAdd.getId());
-
+    PropertyLocation updatedPropertyLocation = propertyLocationToAdd;
     SchedulerProvider schedulerProvider = new SchedulerProvider(Schedulers.trampoline(), Schedulers.trampoline());
 
     //mock PropertyViewModel
@@ -96,6 +100,10 @@ public abstract class BaseUnitTest {
     GetPropertyLocationForAddressInteractor getPropertyLocationForAddressInteractor;
     @InjectMocks
     GetStaticMapForLatLngInteractor getStaticMapForLatLngInteractor;
+    @InjectMocks
+    UpdatePropertyLocationInteractor updatePropertyLocationInteractor;
+    @InjectMocks
+    DeletePointOfInterestInteractor deletePointOfInterestInteractor;
 
     //mock realEstateAgentViewModel
     AgentViewModel agentViewModel;
@@ -125,9 +133,12 @@ public abstract class BaseUnitTest {
 
         pointOfInterestForPropertyId.add(Generator.generatePointOfInterests().get(0));
         pointOfInterestsToAdd.add(pointOfInterestToAdd);
+        updatedPointOfInterests.add(newPointOfInterest);
+
+        updatedPropertyLocation.setRegion("new region");
 
         //initViewModels
-        propertyViewModel = new PropertyViewModel(getAllPropertiesInteractor, getAllPointOfInterestForPropertyIdInteractor, getAllPropertyPhotosForPropertyIdInteractor, addPropertyInteractor, addPropertyPointOfInterestInteractor, addPropertyPhotoInteractor, deletePropertyPhotoInteractor, updatePropertyInteractor,getPropertyLocationInteractor,addPropertyLocationInteractor,getPropertyLocationForAddressInteractor,getStaticMapForLatLngInteractor, getNearBySearchForPropertyLocationInteractor,schedulerProvider);
+        propertyViewModel = new PropertyViewModel(getAllPropertiesInteractor, getAllPointOfInterestForPropertyIdInteractor, getAllPropertyPhotosForPropertyIdInteractor, addPropertyInteractor, addPropertyPointOfInterestInteractor, addPropertyPhotoInteractor, deletePropertyPhotoInteractor, updatePropertyInteractor,getPropertyLocationInteractor,addPropertyLocationInteractor,getPropertyLocationForAddressInteractor,getStaticMapForLatLngInteractor, getNearBySearchForPropertyLocationInteractor,updatePropertyLocationInteractor,deletePointOfInterestInteractor,schedulerProvider);
         agentViewModel = new AgentViewModel(getAgentInteractor,schedulerProvider);
 
         //initObserver
@@ -158,12 +169,21 @@ public abstract class BaseUnitTest {
                 .thenReturn(Observable.create(emitter -> emitter.onNext(pointOfInterestForPropertyId)));
         when(propertyRepository.addPropertyPointOfInterest(pointOfInterestToAdd))
                 .thenReturn(Completable.create(emitter -> Objects.requireNonNull(propertyViewModel.getAllPointOfInterestForProperty.getValue()).add(pointOfInterestToAdd)));
+        when(propertyRepository.deletePropertyPointOfInterest(Generator.generatePointOfInterests().get(0)))
+                .thenReturn(Completable.create(CompletableEmitter::onComplete));
+        when(propertyRepository.deletePropertyPointOfInterest(pointOfInterestToAdd))
+                .thenReturn(Completable.create(CompletableEmitter::onComplete));
+        when(propertyRepository.addPropertyPointOfInterest(newPointOfInterest))
+                .thenReturn(Completable.create(emitter -> Objects.requireNonNull(propertyViewModel.getAllPointOfInterestForProperty.getValue()).add(newPointOfInterest)));
+
 
         when(propertyRepository.getPropertyLocationForPropertyId(propertyId))
                 .thenReturn(Observable.create(emitter -> emitter.onNext(Generator.generatePropertyLocation().get(0))));
         when(propertyRepository.getPropertyLocationForPropertyId(propertyToAdd.getId()))
                 .thenReturn(Observable.create(emitter -> emitter.onNext(propertyLocationToAdd)));
         when(propertyRepository.addPropertyLocation(propertyLocationToAdd))
+                .thenReturn(Completable.create(CompletableEmitter::onComplete));
+        when(propertyRepository.updatePropertyLocation(updatedPropertyLocation))
                 .thenReturn(Completable.create(CompletableEmitter::onComplete));
 
         when(realEstateAgentRepository.getAgent())

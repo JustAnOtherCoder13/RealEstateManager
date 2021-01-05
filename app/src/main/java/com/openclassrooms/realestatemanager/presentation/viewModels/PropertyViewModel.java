@@ -189,17 +189,18 @@ public class PropertyViewModel extends BaseViewModel {
     public void addPropertyPointOfInterest(@NonNull List<PointOfInterest> pointOfInterests) {
         if (!pointOfInterests.isEmpty()) {
             for (int i = 0; i < pointOfInterests.size(); i++) {
-                if (pointOfInterests.size() - 1 == i) {
-                    completionStateMutableLD.setValue(CompletionState.ADD_POINT_OF_INTEREST_COMPLETE);
-                    pointOfInterests.clear();
-                    break;
-                }
                 compositeDisposable.add(
                         addPropertyPointOfInterestInteractor.addPropertyPointOfInterest(pointOfInterests.get(i))
                                 .subscribeOn(schedulerProvider.getIo())
                                 .observeOn(schedulerProvider.getUi())
                                 .subscribe(() -> {
                                 }, throwable -> checkException()));
+
+                if (pointOfInterests.size() - 1 == i) {
+                    completionStateMutableLD.setValue(CompletionState.ADD_POINT_OF_INTEREST_COMPLETE);
+                    pointOfInterests.clear();
+                    break;
+                }
             }
         }
     }

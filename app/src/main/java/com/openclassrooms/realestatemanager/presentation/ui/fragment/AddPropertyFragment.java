@@ -214,8 +214,6 @@ public class AddPropertyFragment extends BaseFragment {
         mPropertyViewModel.setAllPointOfInterestForProperty(originalProperty);
         mPropertyViewModel.setPropertyLocationForProperty(originalProperty);
 
-
-
         mPropertyViewModel.getPropertyLocationForProperty.observe(getViewLifecycleOwner(), propertyLocation ->
                 mPropertyViewModel.setPropertyLocationForPropertyAddress(updatedProperty));
 
