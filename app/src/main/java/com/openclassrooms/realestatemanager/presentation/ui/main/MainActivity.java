@@ -1,7 +1,7 @@
 package com.openclassrooms.realestatemanager.presentation.ui.main;
 
 import android.content.Context;
-import android.location.LocationManager;
+import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
@@ -38,6 +38,7 @@ public class MainActivity extends AppCompatActivity {
     private AgentViewModel mAgentViewModel;
     private NavController mNavController;
     protected ImageButton mUpdateButton;
+    protected LottieAnimationView mLoader;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,6 +47,8 @@ public class MainActivity extends AppCompatActivity {
         setContentView(mBinding.getRoot());
         initValues();
         initLoader();
+        if (getPackageManager().hasSystemFeature(PackageManager.FEATURE_CAMERA_ANY))
+            Toast.makeText(this,"camera available",Toast.LENGTH_LONG).show();
     }
 
     @Override
@@ -88,13 +91,14 @@ public class MainActivity extends AppCompatActivity {
         imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
     }
 
-    protected LottieAnimationView mLoader;
 
     private void initLoader(){
         mLoader = mBinding.loader.animationView;
         mLoader.setAnimation(R.raw.loader);
         mLoader.setVisibility(View.GONE);
     }
+
+
 
     protected void playLoader(boolean isVisible){
         mLoader.setVisibility(isVisible? View.VISIBLE : View.GONE);
