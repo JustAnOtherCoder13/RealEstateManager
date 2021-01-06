@@ -25,6 +25,9 @@ public class ConstantParameters {
     public static final int MAPS_CAMERA_LARGE_ZOOM = 9;
     public static final int MAPS_CAMERA_NEAR_ZOOM = 15;
 
+    public static String STATIC_MAP_SIZE = "140";
+    public static String BASE_STATIC_MAP_URI = "https://maps.googleapis.com/maps/api/staticmap?";
+
     public static final String RADIUS = "400";
 
     @NonNull

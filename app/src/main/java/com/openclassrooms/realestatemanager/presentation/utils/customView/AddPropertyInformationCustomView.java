@@ -28,7 +28,7 @@ public class AddPropertyInformationCustomView extends ConstraintLayout {
         initView(attributes);
     }
 
-    private void initView(TypedArray attributes) {
+    private void initView(@NonNull TypedArray attributes) {
         inflate(getContext(), R.layout.custom_view_add_property_information, this);
 
         mAddPropertyInformationIcon = findViewById(R.id.add_property_information_custom_view_icon);

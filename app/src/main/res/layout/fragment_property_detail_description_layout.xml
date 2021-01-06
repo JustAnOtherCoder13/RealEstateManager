@@ -6,23 +6,23 @@
     android:layout_height="match_parent">
 
     <TextView
-        android:id="@+id/custom_view_detail_media_description_title"
+        android:id="@+id/detail_media_description_layout_title"
         style="@style/fragment_property_detail_title"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:layout_constraintBottom_toTopOf="@id/custom_view_detail_media_description_text"
+        app:layout_constraintBottom_toTopOf="@id/detail_media_description_layout_text"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
-        android:id="@+id/custom_view_detail_media_description_text"
+        android:id="@+id/detail_media_description_layout_text"
         style="@style/fragment_property_detail_description"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/custom_view_detail_media_description_title"
+        app:layout_constraintTop_toBottomOf="@id/detail_media_description_layout_title"
         tool:text="@tools:sample/lorem/random" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
