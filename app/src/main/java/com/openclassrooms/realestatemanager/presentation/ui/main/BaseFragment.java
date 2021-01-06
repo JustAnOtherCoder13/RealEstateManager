@@ -1,6 +1,7 @@
 package com.openclassrooms.realestatemanager.presentation.ui.main;
 
 import android.os.Bundle;
+import android.view.View;
 import android.widget.ImageButton;
 
 import androidx.annotation.Nullable;
@@ -46,6 +47,10 @@ public abstract class BaseFragment extends Fragment {
 
     protected void setUpdateButtonIcon(boolean isForUpdate) {
         mainActivity.initUpdateButton(isForUpdate);
+    }
+
+    protected void hideSoftKeyboard(View view){
+        mainActivity.hideSoftKeyboard(view);
     }
 
     protected Property getPropertyForId(String propertyId) {

@@ -1,8 +1,10 @@
 package com.openclassrooms.realestatemanager.presentation.ui.main;
 
+import android.content.Context;
 import android.location.LocationManager;
 import android.os.Bundle;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.ImageButton;
 import android.widget.Toast;
 
@@ -74,5 +76,10 @@ public class MainActivity extends AppCompatActivity {
         if (isForUpdate) mUpdateButton.setOnClickListener
                 (v -> mNavController.navigate
                         (R.id.action_propertyDetailFragment_to_addPropertyFragment));
+    }
+
+    protected void hideSoftKeyboard(View view){
+        InputMethodManager imm =(InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+        imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
     }
 }

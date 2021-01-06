@@ -31,6 +31,7 @@ import java.util.List;
 import java.util.Objects;
 
 import static com.openclassrooms.realestatemanager.presentation.utils.customView.AddPropertyInformationCustomView.getValueForView;
+import static com.openclassrooms.realestatemanager.presentation.utils.customView.AddPropertyInformationCustomView.isEditTextEmpty;
 import static com.openclassrooms.realestatemanager.presentation.utils.customView.AddPropertyInformationCustomView.setValueText;
 import static com.openclassrooms.realestatemanager.presentation.viewModels.BaseViewModel.CompletionState.UPDATE_PROPERTY_COMPLETE;
 import static com.picone.core.utils.ConstantParameters.ADD_PHOTO;
@@ -78,6 +79,7 @@ public class AddPropertyFragment extends BaseFragment {
                     setValuesForNewProperty();
                     break;
                 case ADD_POINT_OF_INTEREST_COMPLETE:
+                    hideSoftKeyboard(mBinding.addPropertyInformationLayout.getRoot());
                     if (Objects.requireNonNull(mNavController.getCurrentDestination()).getId() == R.id.addPropertyFragment)
                         mNavController.navigate(R.id.action_addPropertyFragment_to_propertyListFragment);
                     break;
@@ -107,12 +109,12 @@ public class AddPropertyFragment extends BaseFragment {
 
     //TODO all custom view filled with number of bedroom value when update, why?
     private void initViewValueWhenUpdate(@NonNull FragmentAddPropertyInformationLayoutBinding addPropertyInformationCustomView, @NonNull Property property) {
-        Log.i("TAG", "initViewValueWhenUpdate: "+addPropertyInformationCustomView);
+        Log.i("TAG", "initViewValueWhenUpdate: " + addPropertyInformationCustomView);
         mPropertyViewModel.setPhotosToDelete(new ArrayList<>());
         EditText descriptionEditText = mBinding.addPropertyDescriptionLayout.addPropertyDescriptionEditText;
         AutoCompleteTextView propertyTypeDropDownMenu = mBinding.addPropertyInformationLayout.addPropertyInformationTypeCustomViewAutocompleteTextView;
         setValueText(addPropertyInformationCustomView.addPropertyInformationPrice, String.valueOf(property.getPrice()));
-        Log.e("TAG", "initViewValueWhenUpdate: "+getResources().getResourceName(addPropertyInformationCustomView.addPropertyInformationPrice.getId())+property.getPrice());
+        Log.e("TAG", "initViewValueWhenUpdate: " + getResources().getResourceName(addPropertyInformationCustomView.addPropertyInformationPrice.getId()) + property.getPrice());
         setValueText(addPropertyInformationCustomView.addPropertyInformationArea, String.valueOf(property.getPropertyArea()));
         setValueText(addPropertyInformationCustomView.addPropertyInformationNumberOfBathrooms, String.valueOf(property.getNumberOfBathrooms()));
         setValueText(addPropertyInformationCustomView.addPropertyInformationNumberOfBedrooms, String.valueOf(property.getNumberOfBedrooms()));
@@ -171,7 +173,7 @@ public class AddPropertyFragment extends BaseFragment {
     //___________________________________SETTER WHEN ADD CLICK_____________________________________________
 
     private void addProperty() {
-        if (!isRequiredInformationAreFilled()) {
+        if (isRequiredInformationAreFilled()) {
             if (isNewPropertyToPersist)
                 mPropertyViewModel.addProperty(updateProperty(PROPERTY_TO_ADD(Objects.requireNonNull(mAgentViewModel.getAgent.getValue()))));
             else {
@@ -186,7 +188,8 @@ public class AddPropertyFragment extends BaseFragment {
                     });
                 }
             }
-        } else Toast.makeText(requireContext(), "fill it", Toast.LENGTH_SHORT).show();
+        } else
+            Toast.makeText(requireContext(), R.string.information_not_filled, Toast.LENGTH_SHORT).show();
     }
 
     private void setValuesForNewProperty() {
@@ -282,8 +285,16 @@ public class AddPropertyFragment extends BaseFragment {
         return !pointOfInterests.isEmpty() && pointOfInterests.get(pointOfInterests.size() - 1).getPropertyId() == updatedProperty.getId();
     }
 
+
     private boolean isRequiredInformationAreFilled() {
-        return getValueForView(mBinding.addPropertyInformationLayout.addPropertyInformationAddress).trim().isEmpty();
+        FragmentAddPropertyInformationLayoutBinding binding = mBinding.addPropertyInformationLayout;
+        return !isEditTextEmpty(binding.addPropertyInformationAddress)
+                && !binding.addPropertyInformationTypeCustomViewAutocompleteTextView.getText().toString().trim().isEmpty()
+                && !isEditTextEmpty(binding.addPropertyInformationArea)
+                && !isEditTextEmpty(binding.addPropertyInformationNumberOfBathrooms)
+                && !isEditTextEmpty(binding.addPropertyInformationNumberOfBedrooms)
+                && !isEditTextEmpty(binding.addPropertyInformationNumberOfRooms)
+                && !isEditTextEmpty(binding.addPropertyInformationPrice);
     }
 
     private boolean isNewPropertyAddressNotEqualPreviousSavedPropertyAddress(@NonNull Property property) {
@@ -293,4 +304,5 @@ public class AddPropertyFragment extends BaseFragment {
     private boolean isPropertyLocationNotEmptyObject(@NonNull PropertyLocation propertyLocation) {
         return propertyLocation.getPropertyId() != 0;
     }
+
 }

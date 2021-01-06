@@ -51,8 +51,14 @@ public class AddPropertyInformationCustomView extends ConstraintLayout {
 
 
     @NonNull
-    public static String getValueForView(@NonNull View view){
+    public static String getValueForView(@NonNull View view) {
         EditText editText = view.findViewById(R.id.add_property_information_custom_view_value);
         return editText.getText().toString();
+    }
+
+    @NonNull
+    public static Boolean isEditTextEmpty(@NonNull View view) {
+        EditText editText = view.findViewById(R.id.add_property_information_custom_view_value);
+        return editText.getText().toString().trim().isEmpty();
     }
 }
