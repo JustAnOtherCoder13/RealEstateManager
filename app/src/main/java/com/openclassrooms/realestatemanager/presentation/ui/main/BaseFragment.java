@@ -27,7 +27,6 @@ public abstract class BaseFragment extends Fragment {
 
     private MainActivity mainActivity;
     protected ImageButton mUpdateButton;
-    protected LottieAnimationView mLoader;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -55,7 +54,6 @@ public abstract class BaseFragment extends Fragment {
     }
 
     protected void playLoader(boolean isVisible) {
-        mLoader = mainActivity.mLoader;
         mainActivity.playLoader(isVisible);
     }
 
