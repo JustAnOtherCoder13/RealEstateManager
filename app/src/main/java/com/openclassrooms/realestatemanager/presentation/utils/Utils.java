@@ -3,16 +3,6 @@ package com.openclassrooms.realestatemanager.presentation.utils;
 import android.content.Context;
 import android.location.LocationManager;
 import android.net.wifi.WifiManager;
-import android.widget.Toast;
-
-import androidx.annotation.NonNull;
-
-import com.openclassrooms.realestatemanager.R;
-
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.Locale;
 
 import static android.content.Context.LOCATION_SERVICE;
 

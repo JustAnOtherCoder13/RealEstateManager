@@ -9,7 +9,6 @@ import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.NavController;
 
-import com.airbnb.lottie.LottieAnimationView;
 import com.openclassrooms.realestatemanager.presentation.viewModels.AgentViewModel;
 import com.openclassrooms.realestatemanager.presentation.viewModels.PropertyViewModel;
 import com.picone.core.domain.entity.Property;
@@ -27,7 +26,6 @@ public abstract class BaseFragment extends Fragment {
 
     private MainActivity mainActivity;
     protected ImageButton mUpdateButton;
-    protected LottieAnimationView mLoader;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -55,7 +53,6 @@ public abstract class BaseFragment extends Fragment {
     }
 
     protected void playLoader(boolean isVisible) {
-        mLoader = mainActivity.mLoader;
         mainActivity.playLoader(isVisible);
     }
 

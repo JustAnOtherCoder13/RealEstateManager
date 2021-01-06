@@ -2,7 +2,6 @@ package com.openclassrooms.realestatemanager.presentation.ui.fragment;
 
 import android.app.AlertDialog;
 import android.content.ActivityNotFoundException;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.net.Uri;
@@ -38,9 +37,6 @@ import java.util.List;
 import java.util.Objects;
 
 import static android.app.Activity.RESULT_OK;
-import static com.openclassrooms.realestatemanager.presentation.utils.customView.AddPropertyInformationCustomView.getValueForView;
-import static com.openclassrooms.realestatemanager.presentation.utils.customView.AddPropertyInformationCustomView.isEditTextEmpty;
-import static com.openclassrooms.realestatemanager.presentation.utils.customView.AddPropertyInformationCustomView.setValueText;
 import static com.openclassrooms.realestatemanager.presentation.viewModels.BaseViewModel.CompletionState.UPDATE_PROPERTY_COMPLETE;
 import static com.picone.core.utils.ConstantParameters.ADD_PHOTO;
 import static com.picone.core.utils.ConstantParameters.PROPERTY_TO_ADD;
@@ -134,13 +130,13 @@ public class AddPropertyFragment extends BaseFragment {
         mPropertyViewModel.setPhotosToDelete(new ArrayList<>());
         EditText descriptionEditText = mBinding.addPropertyDescriptionLayout.addPropertyDescriptionEditText;
         AutoCompleteTextView propertyTypeDropDownMenu = mBinding.addPropertyInformationLayout.addPropertyInformationTypeCustomViewAutocompleteTextView;
-        setValueText(addPropertyInformationCustomView.addPropertyInformationPrice, String.valueOf(property.getPrice()));
+        addPropertyInformationCustomView.addPropertyInformationPrice.setValueText(String.valueOf(property.getPrice()));
         Log.e("TAG", "initViewValueWhenUpdate: " + getResources().getResourceName(addPropertyInformationCustomView.addPropertyInformationPrice.getId()) + property.getPrice());
-        setValueText(addPropertyInformationCustomView.addPropertyInformationArea, String.valueOf(property.getPropertyArea()));
-        setValueText(addPropertyInformationCustomView.addPropertyInformationNumberOfBathrooms, String.valueOf(property.getNumberOfBathrooms()));
-        setValueText(addPropertyInformationCustomView.addPropertyInformationNumberOfBedrooms, String.valueOf(property.getNumberOfBedrooms()));
-        setValueText(addPropertyInformationCustomView.addPropertyInformationNumberOfRooms, String.valueOf(property.getNumberOfRooms()));
-        setValueText(addPropertyInformationCustomView.addPropertyInformationAddress, property.getAddress());
+        addPropertyInformationCustomView.addPropertyInformationArea.setValueText(String.valueOf(property.getPropertyArea()));
+        addPropertyInformationCustomView.addPropertyInformationNumberOfBathrooms.setValueText(String.valueOf(property.getNumberOfBathrooms()));
+        addPropertyInformationCustomView.addPropertyInformationNumberOfBedrooms.setValueText(String.valueOf(property.getNumberOfBedrooms()));
+        addPropertyInformationCustomView.addPropertyInformationNumberOfRooms.setValueText(String.valueOf(property.getNumberOfRooms()));
+        addPropertyInformationCustomView.addPropertyInformationAddress.setValueText(property.getAddress());
         mPropertyPhotos.addAll(Objects.requireNonNull(mPropertyViewModel.getAllPropertyPhotosForProperty.getValue()));
         descriptionEditText.setText(property.getDescription());
         propertyTypeDropDownMenu.setText(property.getPropertyType());
@@ -292,12 +288,12 @@ public class AddPropertyFragment extends BaseFragment {
         Property property = new Property();
         property.setId(originalProperty.getId());
         property.setRealEstateAgentId(Objects.requireNonNull(mAgentViewModel.getAgent.getValue()).getId());
-        property.setAddress(getValueForView(mBinding.addPropertyInformationLayout.addPropertyInformationAddress));
-        property.setNumberOfRooms(Integer.parseInt(getValueForView(mBinding.addPropertyInformationLayout.addPropertyInformationNumberOfRooms)));
-        property.setNumberOfBathrooms(Integer.parseInt((getValueForView(mBinding.addPropertyInformationLayout.addPropertyInformationNumberOfBathrooms))));
-        property.setNumberOfBedrooms(Integer.parseInt(getValueForView(mBinding.addPropertyInformationLayout.addPropertyInformationNumberOfBedrooms)));
-        property.setPropertyArea(Integer.parseInt(getValueForView(mBinding.addPropertyInformationLayout.addPropertyInformationArea)));
-        property.setPrice(Integer.parseInt(getValueForView(mBinding.addPropertyInformationLayout.addPropertyInformationPrice)));
+        property.setAddress(mBinding.addPropertyInformationLayout.addPropertyInformationAddress.getValueForView());
+        property.setNumberOfRooms(Integer.parseInt(mBinding.addPropertyInformationLayout.addPropertyInformationNumberOfRooms.getValueForView()));
+        property.setNumberOfBathrooms(Integer.parseInt((mBinding.addPropertyInformationLayout.addPropertyInformationNumberOfBathrooms.getValueForView())));
+        property.setNumberOfBedrooms(Integer.parseInt(mBinding.addPropertyInformationLayout.addPropertyInformationNumberOfBedrooms.getValueForView()));
+        property.setPropertyArea(Integer.parseInt(mBinding.addPropertyInformationLayout.addPropertyInformationArea.getValueForView()));
+        property.setPrice(Integer.parseInt(mBinding.addPropertyInformationLayout.addPropertyInformationPrice.getValueForView()));
         property.setPropertyType(mBinding.addPropertyInformationLayout.addPropertyInformationTypeCustomViewAutocompleteTextView.getText().toString());
         property.setDescription(mBinding.addPropertyDescriptionLayout.addPropertyDescriptionEditText.getText().toString());
         property.setSold(mBinding.addPropertySoldLayout.addPropertySoldCheckbox.isChecked());
@@ -320,7 +316,7 @@ public class AddPropertyFragment extends BaseFragment {
 
 
     private boolean isOriginalPropertyAddressNotEqualEditTextAddress(@NonNull Property originalProperty) {
-        return originalProperty.getAddress() != null && !originalProperty.getAddress().equalsIgnoreCase(getValueForView(mBinding.addPropertyInformationLayout.addPropertyInformationAddress));
+        return originalProperty.getAddress() != null && !originalProperty.getAddress().equalsIgnoreCase(mBinding.addPropertyInformationLayout.addPropertyInformationAddress.getValueForView());
     }
 
     private boolean isNewPropertyLocationLatitudeNotEqualPropertyLocationLatitudeToReplace(@NonNull PropertyLocation propertyLocation) {
@@ -334,13 +330,13 @@ public class AddPropertyFragment extends BaseFragment {
 
     private boolean isRequiredInformationAreFilled() {
         FragmentAddPropertyInformationLayoutBinding binding = mBinding.addPropertyInformationLayout;
-        return !isEditTextEmpty(binding.addPropertyInformationAddress)
+        return !binding.addPropertyInformationAddress.isEditTextEmpty()
                 && !binding.addPropertyInformationTypeCustomViewAutocompleteTextView.getText().toString().trim().isEmpty()
-                && !isEditTextEmpty(binding.addPropertyInformationArea)
-                && !isEditTextEmpty(binding.addPropertyInformationNumberOfBathrooms)
-                && !isEditTextEmpty(binding.addPropertyInformationNumberOfBedrooms)
-                && !isEditTextEmpty(binding.addPropertyInformationNumberOfRooms)
-                && !isEditTextEmpty(binding.addPropertyInformationPrice);
+                && !binding.addPropertyInformationArea.isEditTextEmpty()
+                && !binding.addPropertyInformationNumberOfBathrooms.isEditTextEmpty()
+                && !binding.addPropertyInformationNumberOfBedrooms.isEditTextEmpty()
+                && !binding.addPropertyInformationNumberOfRooms.isEditTextEmpty()
+                && !binding.addPropertyInformationPrice.isEditTextEmpty();
     }
 
     private boolean isNewPropertyAddressNotEqualPreviousSavedPropertyAddress(@NonNull Property property) {
