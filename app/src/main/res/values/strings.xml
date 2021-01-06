@@ -59,5 +59,6 @@
     <string name="VAR">Var</string>
     <string name="VAUCLUSE">Vaucluse</string>
     <string name="gps_warning_message">GPS is Disabled in your device, enable it to be located</string>
+    <string name="information_not_filled">Please, fill all "Information" values and at least one photo before register</string>
 
 </resources>

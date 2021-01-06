@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.res.TypedArray;
 import android.text.InputType;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -17,8 +18,6 @@ import com.openclassrooms.realestatemanager.R;
 
 public class AddPropertyInformationCustomView extends ConstraintLayout {
 
-    private ImageView mAddPropertyInformationIcon;
-    private TextView mAddPropertyInformationTitle;
     private EditText mAddPropertyInformationEditText;
 
     public AddPropertyInformationCustomView(@NonNull Context context, @Nullable AttributeSet attrs) {
@@ -27,15 +26,15 @@ public class AddPropertyInformationCustomView extends ConstraintLayout {
         initView(attributes);
     }
 
-    private void initView(TypedArray attributes) {
+    private void initView(@NonNull TypedArray attributes) {
         inflate(getContext(), R.layout.custom_view_add_property_information, this);
 
-        mAddPropertyInformationIcon = findViewById(R.id.add_property_information_custom_view_icon);
-        mAddPropertyInformationTitle = findViewById(R.id.add_property_information_custom_view_title);
+        ImageView addPropertyInformationIcon = findViewById(R.id.add_property_information_custom_view_icon);
+        TextView addPropertyInformationTitle = findViewById(R.id.add_property_information_custom_view_title);
         mAddPropertyInformationEditText = findViewById(R.id.add_property_information_custom_view_value);
 
-        mAddPropertyInformationIcon.setImageDrawable(attributes.getDrawable(R.styleable.AddPropertyInformationCustomView_icon));
-        mAddPropertyInformationTitle.setText(attributes.getText(R.styleable.AddPropertyInformationCustomView_title));
+        addPropertyInformationIcon.setImageDrawable(attributes.getDrawable(R.styleable.AddPropertyInformationCustomView_icon));
+        addPropertyInformationTitle.setText(attributes.getText(R.styleable.AddPropertyInformationCustomView_title));
         mAddPropertyInformationEditText.setInputType(attributes.getInt(R.styleable.AddPropertyInformationCustomView_android_inputType, InputType.TYPE_CLASS_NUMBER));
         mAddPropertyInformationEditText.setSingleLine(attributes.getBoolean(R.styleable.AddPropertyInformationCustomView_android_singleLine, true));
         mAddPropertyInformationEditText.setLines(attributes.getInt(R.styleable.AddPropertyInformationCustomView_android_lines, 1));
@@ -43,13 +42,18 @@ public class AddPropertyInformationCustomView extends ConstraintLayout {
     }
 
 
-    public static void setValueText( View view,String text) {
-        EditText editText = view.findViewById(R.id.add_property_information_custom_view_value);
-        editText.setText(text);
+    public void setValueText( String text) {
+        mAddPropertyInformationEditText.setText(text);
+        Log.i("TAG", "setValueText: "+mAddPropertyInformationEditText.getText()+" "+getContext().getResources().getResourceName(mAddPropertyInformationEditText.getId()));
     }
 
-    public static String getValueForView(View view){
-        EditText editText = view.findViewById(R.id.add_property_information_custom_view_value);
-        return editText.getText().toString();
+    @NonNull
+    public String getValueForView() {
+        return mAddPropertyInformationEditText.getText().toString();
+    }
+
+    @NonNull
+    public  Boolean isEditTextEmpty() {
+        return mAddPropertyInformationEditText.getText().toString().trim().isEmpty();
     }
 }

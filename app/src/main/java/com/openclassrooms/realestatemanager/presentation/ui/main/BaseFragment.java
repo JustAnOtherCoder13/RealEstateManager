@@ -1,6 +1,7 @@
 package com.openclassrooms.realestatemanager.presentation.ui.main;
 
 import android.os.Bundle;
+import android.view.View;
 import android.widget.ImageButton;
 
 import androidx.annotation.Nullable;
@@ -8,6 +9,7 @@ import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.NavController;
 
+import com.airbnb.lottie.LottieAnimationView;
 import com.openclassrooms.realestatemanager.presentation.viewModels.AgentViewModel;
 import com.openclassrooms.realestatemanager.presentation.viewModels.PropertyViewModel;
 import com.picone.core.domain.entity.Property;
@@ -23,7 +25,7 @@ public abstract class BaseFragment extends Fragment {
     protected PropertyViewModel mPropertyViewModel;
     protected NavController mNavController;
 
-    protected MainActivity mainActivity;
+    private MainActivity mainActivity;
     protected ImageButton mUpdateButton;
 
     @Override
@@ -31,9 +33,12 @@ public abstract class BaseFragment extends Fragment {
         super.onCreate(savedInstanceState);
         mainActivity = (MainActivity) getActivity();
         assert mainActivity != null;
-        mUpdateButton = mainActivity.mUpdateButton;
         mAgentViewModel = new ViewModelProvider(requireActivity()).get(AgentViewModel.class);
         mPropertyViewModel = new ViewModelProvider(requireActivity()).get(PropertyViewModel.class);
+    }
+
+    protected void setUpdateButton() {
+        mUpdateButton = mainActivity.mUpdateButton;
     }
 
     protected void setAppBarVisibility(boolean isVisible) {
@@ -42,6 +47,14 @@ public abstract class BaseFragment extends Fragment {
 
     protected void setUpdateButtonIcon(boolean isForUpdate) {
         mainActivity.initUpdateButton(isForUpdate);
+    }
+
+    protected void hideSoftKeyboard(View view) {
+        mainActivity.hideSoftKeyboard(view);
+    }
+
+    protected void playLoader(boolean isVisible) {
+        mainActivity.playLoader(isVisible);
     }
 
     protected Property getPropertyForId(String propertyId) {

@@ -70,6 +70,13 @@ public class PropertyRepository {
         return propertyDao.updateProperty(property);
     }
 
+    public Completable updatePropertyLocation(PropertyLocation propertyLocation){
+        return propertyDao.updatePropertyLocation(propertyLocation);
+    }
+
+    public Completable deletePropertyPointOfInterest(PointOfInterest pointOfInterest) {
+        return propertyDao.deletePropertyPointOfInterest(pointOfInterest);
+    }
     //----------------------place
 
     public Observable<PropertyLocationPojo> getPropertyLocationForAddress(String address, String googleKey){
@@ -83,5 +90,7 @@ public class PropertyRepository {
     public Observable<NearBySearch> getNearBySchoolForPropertyLocation(@NonNull PropertyLocation propertyLocation,String type, String googleKey) {
         return placeServiceDao.getNearBySchoolForPropertyLocation(propertyLocation,type, googleKey);
     }
+
+
 
     }

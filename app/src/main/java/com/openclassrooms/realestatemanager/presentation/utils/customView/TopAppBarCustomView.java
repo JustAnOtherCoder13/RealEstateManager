@@ -20,7 +20,7 @@ import java.util.Objects;
 
 public class TopAppBarCustomView extends ConstraintLayout {
 
-    PropertyViewModel propertyViewModel;
+    private PropertyViewModel propertyViewModel;
 
     public TopAppBarCustomView(@NonNull Context context, @Nullable AttributeSet attrs) {
         super(context, attrs);

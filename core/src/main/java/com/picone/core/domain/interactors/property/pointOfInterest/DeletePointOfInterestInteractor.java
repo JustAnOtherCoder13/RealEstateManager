@@ -6,14 +6,13 @@ import com.picone.core.domain.interactors.property.PropertyBaseInteractor;
 
 import io.reactivex.Completable;
 
-public class AddPropertyPointOfInterestInteractor extends PropertyBaseInteractor {
+public class DeletePointOfInterestInteractor extends PropertyBaseInteractor {
 
-    public AddPropertyPointOfInterestInteractor(PropertyRepository propertyDataSource) {
+    public DeletePointOfInterestInteractor(PropertyRepository propertyDataSource) {
         super(propertyDataSource);
     }
 
-    public Completable addPropertyPointOfInterest(PointOfInterest pointOfInterest) {
-        return propertyDataSource.addPropertyPointOfInterest(pointOfInterest);
+    public Completable deletePropertyPointOfInterest(PointOfInterest pointOfInterest) {
+        return propertyDataSource.deletePropertyPointOfInterest(pointOfInterest);
     }
-
 }

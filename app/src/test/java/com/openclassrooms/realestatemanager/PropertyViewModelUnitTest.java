@@ -92,4 +92,19 @@ public class PropertyViewModelUnitTest extends BaseUnitTest {
         assertEquals(Objects.requireNonNull(propertyViewModel.getPropertyLocationForProperty.getValue()).getLatitude(), propertyLocationToAdd.getLatitude(), 0.0);
     }
 
+    @Test
+    public void UpdatePropertyLocationShouldUpdateOriginalPropertyLocationValue(){
+        propertyViewModel.addPropertyLocationForProperty(propertyLocationToAdd);
+        propertyViewModel.updatePropertyLocation(updatedPropertyLocation);
+        propertyViewModel.setPropertyLocationForProperty(propertyToAdd);
+        assertTrue(Objects.requireNonNull(propertyViewModel.getPropertyLocationForProperty.getValue()).getRegion().equalsIgnoreCase(updatedPropertyLocation.getRegion()));
+    }
+
+    @Test
+    public void UpdatePointOfInterestsShouldUpdateOriginalPointOfInterests(){
+        propertyViewModel.updatePointOfInterest(updatedPointOfInterests);
+        assertEquals(1, Objects.requireNonNull(propertyViewModel.getAllPointOfInterestForProperty.getValue()).size());
+        assertTrue(propertyViewModel.getAllPointOfInterestForProperty.getValue().contains(newPointOfInterest));
+    }
+
 }

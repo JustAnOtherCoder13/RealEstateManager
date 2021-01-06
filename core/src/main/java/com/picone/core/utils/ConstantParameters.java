@@ -5,8 +5,12 @@ import androidx.annotation.NonNull;
 import com.picone.core.domain.entity.Property;
 import com.picone.core.domain.entity.RealEstateAgent;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.Arrays;
+import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 
 public class ConstantParameters {
 
@@ -23,11 +27,17 @@ public class ConstantParameters {
 
     public static final String RADIUS = "400";
 
+    @NonNull
+    private static String getTodayDate(){
+        DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy", Locale.FRANCE);
+        return dateFormat.format(new Date());
+    }
 
     @NonNull
     public static Property PROPERTY_TO_ADD(@NonNull RealEstateAgent agent) {
       Property property = new Property();
       property.setRealEstateAgentId(agent.getId());
+      property.setEnterOnMarket(getTodayDate());
       return property;
     }
 
