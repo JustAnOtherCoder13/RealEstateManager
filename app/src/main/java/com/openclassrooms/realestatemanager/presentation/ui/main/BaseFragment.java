@@ -9,6 +9,7 @@ import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.NavController;
 
+import com.airbnb.lottie.LottieAnimationView;
 import com.openclassrooms.realestatemanager.presentation.viewModels.AgentViewModel;
 import com.openclassrooms.realestatemanager.presentation.viewModels.PropertyViewModel;
 import com.picone.core.domain.entity.Property;
@@ -24,20 +25,20 @@ public abstract class BaseFragment extends Fragment {
     protected PropertyViewModel mPropertyViewModel;
     protected NavController mNavController;
 
-    protected MainActivity mainActivity;
+    private MainActivity mainActivity;
     protected ImageButton mUpdateButton;
+    protected LottieAnimationView mLoader;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setUpdateButton();
+        mainActivity = (MainActivity) getActivity();
+        assert mainActivity != null;
         mAgentViewModel = new ViewModelProvider(requireActivity()).get(AgentViewModel.class);
         mPropertyViewModel = new ViewModelProvider(requireActivity()).get(PropertyViewModel.class);
     }
 
     protected void setUpdateButton() {
-        mainActivity = (MainActivity) getActivity();
-        assert mainActivity != null;
         mUpdateButton = mainActivity.mUpdateButton;
     }
 
@@ -49,8 +50,13 @@ public abstract class BaseFragment extends Fragment {
         mainActivity.initUpdateButton(isForUpdate);
     }
 
-    protected void hideSoftKeyboard(View view){
+    protected void hideSoftKeyboard(View view) {
         mainActivity.hideSoftKeyboard(view);
+    }
+
+    protected void playLoader(boolean isVisible) {
+        mLoader = mainActivity.mLoader;
+        mainActivity.playLoader(isVisible);
     }
 
     protected Property getPropertyForId(String propertyId) {

@@ -61,6 +61,7 @@ public class AddPropertyFragment extends BaseFragment {
         super.onViewCreated(view, savedInstanceState);
         isNewPropertyToPersist = Objects.requireNonNull(mPropertyViewModel.getSelectedProperty.getValue()).getAddress() == null;
         mPreviousSavedPropertyAddress = Objects.requireNonNull(mPropertyViewModel.getAllProperties.getValue()).get(mPropertyViewModel.getAllProperties.getValue().size() - 1).getAddress();
+        mPropertyViewModel.isDataLoading.observe(getViewLifecycleOwner(), this::playLoader);
         setUpdateButton();
         initClickListener();
         initView();
@@ -79,7 +80,6 @@ public class AddPropertyFragment extends BaseFragment {
                     setValuesForNewProperty();
                     break;
                 case ADD_POINT_OF_INTEREST_COMPLETE:
-                    hideSoftKeyboard(mBinding.addPropertyInformationLayout.getRoot());
                     if (Objects.requireNonNull(mNavController.getCurrentDestination()).getId() == R.id.addPropertyFragment)
                         mNavController.navigate(R.id.action_addPropertyFragment_to_propertyListFragment);
                     break;
@@ -174,6 +174,8 @@ public class AddPropertyFragment extends BaseFragment {
 
     private void addProperty() {
         if (isRequiredInformationAreFilled()) {
+            hideSoftKeyboard(mBinding.addPropertyInformationLayout.getRoot());
+            playLoader(true);
             if (isNewPropertyToPersist)
                 mPropertyViewModel.addProperty(updateProperty(PROPERTY_TO_ADD(Objects.requireNonNull(mAgentViewModel.getAgent.getValue()))));
             else {

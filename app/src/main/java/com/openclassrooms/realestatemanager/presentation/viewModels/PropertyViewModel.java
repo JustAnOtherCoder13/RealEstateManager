@@ -45,6 +45,7 @@ public class PropertyViewModel extends BaseViewModel {
     private MutableLiveData<List<PropertyPhoto>> photosToDeleteMutableLD = new MutableLiveData<>();
     private MutableLiveData<PropertyLocation> propertyLocationForPropertyMutableLd = new MutableLiveData<>();
     private MutableLiveData<PropertyLocation> locationForAddressMutableLD = new MutableLiveData<>();
+    private MutableLiveData<Boolean> isDataLoadingMutableLD = new MutableLiveData<>();
 
     public LiveData<List<PointOfInterest>> getMapsPointOfInterest = mapsPointOfInterestForPropertyMutableLD;
     public LiveData<CompletionState> getCompletionState = completionStateMutableLD;
@@ -55,6 +56,8 @@ public class PropertyViewModel extends BaseViewModel {
     public LiveData<List<PropertyPhoto>> getPhotosToDelete = photosToDeleteMutableLD;
     public LiveData<PropertyLocation> getPropertyLocationForProperty = propertyLocationForPropertyMutableLd;
     public LiveData<PropertyLocation> getLocationForAddress = locationForAddressMutableLD;
+    public LiveData<Boolean> isDataLoading = isDataLoadingMutableLD;
+
 
     @ViewModelInject
     public PropertyViewModel(GetAllPropertiesInteractor getAllPropertiesInteractor
@@ -197,6 +200,7 @@ public class PropertyViewModel extends BaseViewModel {
                                 }, throwable -> checkException()));
 
                 if (pointOfInterests.size() - 1 == i) {
+                    isDataLoadingMutableLD.setValue(false);
                     completionStateMutableLD.setValue(CompletionState.ADD_POINT_OF_INTEREST_COMPLETE);
                     pointOfInterests.clear();
                     break;
