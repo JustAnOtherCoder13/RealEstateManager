@@ -24,11 +24,12 @@ public class ConstantParameters {
     public static final int LOCATION_PERMISSION_CODE = 13700;
     public static final int MAPS_CAMERA_LARGE_ZOOM = 9;
     public static final int MAPS_CAMERA_NEAR_ZOOM = 15;
-    public static final int REQUEST_IMAGE_CAPTURE = 1;
     public static final int CAMERA_PERMISSION_CODE = 101;
     public static final int CAMERA_INTENT_REQUEST_CODE = 102;
     public static final int READ_PERMISSION_CODE = 103;
     public static final int WRITE_PERMISSION_CODE = 104;
+    public static final String FILE_PROVIDER_AUTH = "com.openclassrooms.android.fileprovider";
+
 
 
 

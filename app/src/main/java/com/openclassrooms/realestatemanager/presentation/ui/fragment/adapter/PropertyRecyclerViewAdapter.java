@@ -51,6 +51,7 @@ public class PropertyRecyclerViewAdapter extends RecyclerView.Adapter<PropertyRe
     }
 
     public void updateProperties(List<Property> updatedProperties){
-        mProperties = updatedProperties;
+        this.mProperties = updatedProperties;
+        notifyDataSetChanged();
     }
 }

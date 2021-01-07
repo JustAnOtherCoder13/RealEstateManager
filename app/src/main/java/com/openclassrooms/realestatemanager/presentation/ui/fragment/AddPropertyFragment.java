@@ -3,7 +3,6 @@ package com.openclassrooms.realestatemanager.presentation.ui.fragment;
 import android.Manifest;
 import android.app.AlertDialog;
 import android.content.Intent;
-import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
@@ -21,7 +20,6 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.core.app.ActivityCompat;
-import androidx.core.content.ContextCompat;
 import androidx.core.content.FileProvider;
 import androidx.navigation.Navigation;
 
@@ -30,6 +28,7 @@ import com.openclassrooms.realestatemanager.databinding.FragmentAddPropertyBindi
 import com.openclassrooms.realestatemanager.databinding.FragmentAddPropertyInformationLayoutBinding;
 import com.openclassrooms.realestatemanager.presentation.ui.fragment.adapter.PhotoRecyclerViewAdapter;
 import com.openclassrooms.realestatemanager.presentation.ui.main.BaseFragment;
+import com.openclassrooms.realestatemanager.presentation.utils.ManageImageHelper;
 import com.openclassrooms.realestatemanager.presentation.utils.RecyclerViewItemClickListener;
 import com.picone.core.domain.entity.PointOfInterest;
 import com.picone.core.domain.entity.Property;
@@ -50,9 +49,8 @@ import static com.openclassrooms.realestatemanager.presentation.viewModels.BaseV
 import static com.picone.core.utils.ConstantParameters.ADD_PHOTO;
 import static com.picone.core.utils.ConstantParameters.CAMERA_INTENT_REQUEST_CODE;
 import static com.picone.core.utils.ConstantParameters.CAMERA_PERMISSION_CODE;
+import static com.picone.core.utils.ConstantParameters.FILE_PROVIDER_AUTH;
 import static com.picone.core.utils.ConstantParameters.PROPERTY_TO_ADD;
-import static com.picone.core.utils.ConstantParameters.READ_PERMISSION_CODE;
-import static com.picone.core.utils.ConstantParameters.REQUEST_IMAGE_CAPTURE;
 import static com.picone.core.utils.ConstantParameters.WRITE_PERMISSION_CODE;
 
 public class AddPropertyFragment extends BaseFragment {
@@ -62,12 +60,16 @@ public class AddPropertyFragment extends BaseFragment {
     private List<PropertyPhoto> mPhotosToDelete = new ArrayList<>();
     private boolean isNewPropertyToPersist;
     private String mPreviousSavedPropertyAddress;
+    private PhotoRecyclerViewAdapter mAdapter;
+    private ManageImageHelper mImageHelper;
+
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         mBinding = FragmentAddPropertyBinding.inflate(getLayoutInflater());
         mNavController = Navigation.findNavController(requireActivity(), R.id.nav_host_fragment);
+        mImageHelper = new ManageImageHelper(this);
         setAppBarVisibility(false);
         initRecyclerView();
         setUpdateButtonIcon(false);
@@ -86,12 +88,25 @@ public class AddPropertyFragment extends BaseFragment {
         initViewModel();
     }
 
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == CAMERA_INTENT_REQUEST_CODE) {
+            if (resultCode == RESULT_OK) {
+                mImageHelper.saveImageInGallery();
+                createPropertyPhoto();
+            }
+            playLoader(false);
+        }
+    }
+
 
     //___________________________________VIEW_____________________________________________
 
     private void initViewModel() {
         if (!isNewPropertyToPersist)
             mPropertyViewModel.setPropertyLocationForProperty(Objects.requireNonNull(mPropertyViewModel.getSelectedProperty.getValue()));
+        else mPropertyViewModel.setAllPhotosForProperty(new Property());
 
         mPropertyViewModel.getCompletionState.observe(getViewLifecycleOwner(), completionState -> {
             switch (completionState) {
@@ -104,13 +119,13 @@ public class AddPropertyFragment extends BaseFragment {
                     break;
             }
         });
+        mPropertyViewModel.getAllPropertyPhotosForProperty.observe(getViewLifecycleOwner(), propertyPhotos ->
+                mAdapter.updatePhotos(mImageHelper.propertyPhotosWithAddButton(propertyPhotos)));
     }
 
     private void initRecyclerView() {
-        PropertyPhoto propertyPhoto = new PropertyPhoto(0, ADD_PHOTO, "", 0);
-        mPropertyPhotos.add(propertyPhoto);
-        PhotoRecyclerViewAdapter adapter = new PhotoRecyclerViewAdapter(mPropertyPhotos);
-        mBinding.addPropertyMediaLayout.detailCustomViewRecyclerView.setAdapter(adapter);
+        mAdapter = new PhotoRecyclerViewAdapter(mImageHelper.propertyPhotosWithAddButton(new ArrayList<>()));
+        mBinding.addPropertyMediaLayout.detailCustomViewRecyclerView.setAdapter(mAdapter);
     }
 
     private void initView() {
@@ -185,7 +200,6 @@ public class AddPropertyFragment extends BaseFragment {
         RecyclerViewItemClickListener.addTo(mBinding.addPropertyMediaLayout.detailCustomViewRecyclerView, R.layout.fragment_add_property)
                 .setOnItemClickListener((recyclerView, position, v) -> {
                     if (position == 0) initAlertDialog();
-
                 });
     }
 
@@ -194,11 +208,12 @@ public class AddPropertyFragment extends BaseFragment {
         builder.setTitle("add photo")
                 .setMessage("get photo from folder or your phone camera ")
                 .setNegativeButton("camera", (dialog, which) -> {
-                    Log.e("TAG", "initAlertDialog: " + isPermissionGrantedForRequestCode(CAMERA_PERMISSION_CODE));
                     if (isPermissionGrantedForRequestCode(CAMERA_PERMISSION_CODE)
-                            && isPermissionGrantedForRequestCode(WRITE_PERMISSION_CODE))
-                        dispatchTakePictureIntent();
-                    else requestCameraPermission();
+                            && isPermissionGrantedForRequestCode(WRITE_PERMISSION_CODE)){
+                        mImageHelper.dispatchTakePictureIntent();
+                        playLoader(true);}
+                    else ActivityCompat.requestPermissions(requireActivity(), new String[]{Manifest.permission.CAMERA}, CAMERA_PERMISSION_CODE);
+
                 })
                 .setPositiveButton("folder", (dialog, which) -> {
                     Log.i("TAG", "initAlertDialog: folder");
@@ -207,76 +222,10 @@ public class AddPropertyFragment extends BaseFragment {
                 .show();
     }
 
-    private void requestCameraPermission() {
-        ActivityCompat.requestPermissions(requireActivity(), new String[]{Manifest.permission.CAMERA}, CAMERA_PERMISSION_CODE);
-    }
 
 
-    @Override
-    public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == CAMERA_INTENT_REQUEST_CODE) {
-            if (resultCode == RESULT_OK) {
-                playLoader(false);
-                File f = new File(currentPhotoPath);
-                Intent mediaScanIntent = new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE);
-                Uri contentUri = Uri.fromFile(f);
-                mediaScanIntent.setData(contentUri);
-                requireActivity().sendBroadcast(mediaScanIntent);
 
-                PropertyPhoto propertyPhoto = new PropertyPhoto();
-                propertyPhoto.setPhoto(currentPhotoPath);
-                propertyPhoto.setDescription("test");
-                propertyPhoto.setPropertyId(1);
-                mPropertyViewModel.addPropertyPhoto(propertyPhoto);
-                Log.i("TAG", "onActivityResult: " + currentPhotoPath);
-            }
-        }
-    }
-
-    String currentPhotoPath;
-
-    private File createImageFile() throws IOException {
-        // Create an image file name
-        String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss", Locale.FRANCE).format(new Date());
-        String imageFileName = "JPEG_" + timeStamp + "_";
-        File storageDir = Environment.getExternalStorageDirectory();
-        File image = File.createTempFile(
-                imageFileName,  /* prefix */
-                ".jpg",         /* suffix */
-                storageDir      /* directory */
-        );
-
-        // Save a file: path for use with ACTION_VIEW intents
-        currentPhotoPath = image.getAbsolutePath();
-        return image;
-    }
-
-
-    private void dispatchTakePictureIntent() {
-        playLoader(true);
-        Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-        // Ensure that there's a camera activity to handle the intent
-        // Create the File where the photo should go
-        File photoFile = null;
-        try {
-            photoFile = createImageFile();
-        } catch (IOException ex) {
-            Log.e("TAG", "dispatchTakePictureIntent: ",ex );
-            // Error occurred while creating the File
-
-        }
-        // Continue only if the File was successfully created
-        if (photoFile != null) {
-            Uri photoURI = FileProvider.getUriForFile(requireContext(),
-                    "com.openclassrooms.android.fileprovider",
-                    photoFile);
-            takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, photoURI);
-            startActivityForResult(takePictureIntent, CAMERA_INTENT_REQUEST_CODE);
-        }
-
-    }
-    //___________________________________SETTER WHEN ADD CLICK_____________________________________________
+    //___________________________________SETTER WHEN ADD BUTTON CLICK_____________________________________________
 
     private void addProperty() {
         if (isRequiredInformationAreFilled()) {
@@ -286,14 +235,16 @@ public class AddPropertyFragment extends BaseFragment {
                 mPropertyViewModel.addProperty(updateProperty(PROPERTY_TO_ADD(Objects.requireNonNull(mAgentViewModel.getAgent.getValue()))));
             else {
                 Property originalProperty = Objects.requireNonNull(mPropertyViewModel.getSelectedProperty.getValue());
+                if (!mPropertyPhotos.isEmpty()) persistAllNewPhotos();
                 if (isOriginalPropertyAddressNotEqualEditTextAddress(originalProperty))
                     setValuesForUpdatedPropertyIfAddressIsUpdate(updateProperty(originalProperty), originalProperty);
                 else {
                     mPropertyViewModel.updateProperty(updateProperty(originalProperty));
                     mPropertyViewModel.getCompletionState.observe(getViewLifecycleOwner(), completionState -> {
-                        if (completionState.equals(UPDATE_PROPERTY_COMPLETE))
+                        if (completionState.equals(UPDATE_PROPERTY_COMPLETE)){
+                            playLoader(false);
                             mNavController.navigate(R.id.action_addPropertyFragment_to_propertyListFragment);
-                    });
+                    }});
                 }
             }
         } else
@@ -305,8 +256,12 @@ public class AddPropertyFragment extends BaseFragment {
         mPropertyViewModel.getAllProperties.observe(getViewLifecycleOwner(), properties -> {
             if (isNewPropertyAddressNotEqualPreviousSavedPropertyAddress(properties.get(properties.size() - 1))) {
                 mPropertyViewModel.setPropertyLocationForPropertyAddress(properties.get(properties.size() - 1));
+                Log.i("TAG", "setValuesForNewProperty: "+mPropertyPhotos);
             }
         });
+
+        persistAllNewPhotos();
+
 
         mPropertyViewModel.getLocationForAddress.observe(getViewLifecycleOwner(), propertyLocation -> {
             if (isPropertyLocationNotEmptyObject(propertyLocation) && isNewPropertyAddressNotEqualPreviousSavedPropertyAddress(getPropertyForId(String.valueOf(propertyLocation.getPropertyId())))) {
@@ -323,6 +278,8 @@ public class AddPropertyFragment extends BaseFragment {
                 mPropertyViewModel.addPropertyPointOfInterest(pointOfInterests);
         });
     }
+
+
 
     private void setValuesForUpdatedPropertyIfAddressIsUpdate(Property updatedProperty, Property originalProperty) {
 
@@ -348,6 +305,16 @@ public class AddPropertyFragment extends BaseFragment {
     }
 
     //___________________________________HELPERS_____________________________________________
+
+    private void createPropertyPhoto() {
+        PropertyPhoto propertyPhoto = new PropertyPhoto();
+        propertyPhoto.setPhoto(mImageHelper.getCurrentPhotoPath());
+        propertyPhoto.setDescription("test");
+        propertyPhoto.setPropertyId(isNewPropertyToPersist ? mPropertyViewModel.getAllProperties.getValue().size()+1
+                : mPropertyViewModel.getSelectedProperty.getValue().getId());
+        mPropertyPhotos.add(propertyPhoto);
+        mAdapter.updatePhotos(mImageHelper.propertyPhotosWithAddButton(mPropertyPhotos));
+    }
 
     @NonNull
     private Property updateProperty(@NonNull Property originalProperty) {
@@ -378,6 +345,11 @@ public class AddPropertyFragment extends BaseFragment {
         mPropertyViewModel.setPhotosToDelete(mPhotosToDelete);
     }
 
+    private void persistAllNewPhotos() {
+        for (PropertyPhoto propertyPhoto : mPropertyPhotos)
+            mPropertyViewModel.addPropertyPhoto(propertyPhoto);
+    }
+
     //___________________________________BOOLEAN_____________________________________________
 
 
@@ -402,7 +374,8 @@ public class AddPropertyFragment extends BaseFragment {
                 && !binding.addPropertyInformationNumberOfBathrooms.isEditTextEmpty()
                 && !binding.addPropertyInformationNumberOfBedrooms.isEditTextEmpty()
                 && !binding.addPropertyInformationNumberOfRooms.isEditTextEmpty()
-                && !binding.addPropertyInformationPrice.isEditTextEmpty();
+                && !binding.addPropertyInformationPrice.isEditTextEmpty()
+                && !mPropertyPhotos.isEmpty();
     }
 
     private boolean isNewPropertyAddressNotEqualPreviousSavedPropertyAddress(@NonNull Property property) {

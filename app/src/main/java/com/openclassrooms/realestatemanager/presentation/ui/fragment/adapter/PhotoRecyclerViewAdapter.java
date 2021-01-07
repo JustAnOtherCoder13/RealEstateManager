@@ -44,6 +44,7 @@ public class PhotoRecyclerViewAdapter extends RecyclerView.Adapter<PhotoRecycler
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
+        Log.i("TAG", "onBindViewHolder: "+position);
         PropertyPhoto photo = mPhotos.get(position);
         if (photo.getPhoto().equals(ADD_PHOTO)){
             holder.binding.propertyDetailItemPhoto.setImageResource(R.drawable.img_add_photo);
@@ -56,6 +57,7 @@ public class PhotoRecyclerViewAdapter extends RecyclerView.Adapter<PhotoRecycler
 
     @Override
     public int getItemCount() {
+        Log.i("TAG", "getItemCount: "+mPhotos.size());
         return mPhotos.size();
     }
 
@@ -70,31 +72,19 @@ public class PhotoRecyclerViewAdapter extends RecyclerView.Adapter<PhotoRecycler
     }
 
     public void updatePhotos(List<PropertyPhoto> updatedPhotos){
-        mPhotos = updatedPhotos;
+        Log.i("TAG", "updatePhotos: "+updatedPhotos.size());
+        this.mPhotos = updatedPhotos;
+        notifyDataSetChanged();
     }
 
     private void setPropertyPhoto(@NonNull ViewHolder holder, @NonNull PropertyPhoto photo) {
-        Log.i("TAG", "setPropertyPhoto: "+photo.getPhoto());
-        File uri = new File(photo.getPhoto());
+        File f = new File(photo.getPhoto());
         Glide.with(holder.binding.propertyDetailItemPhoto.getContext())
-                .load(uri)
+                .load(f)
                 .centerCrop()
-                .addListener(new RequestListener<Drawable>() {
-                    @Override
-                    public boolean onLoadFailed(@Nullable GlideException e, Object model, Target<Drawable> target, boolean isFirstResource) {
-                        Log.e("TAG", "onLoadFailed: ",e );
-                        return false;
-                    }
-
-                    @Override
-                    public boolean onResourceReady(Drawable resource, Object model, Target<Drawable> target, DataSource dataSource, boolean isFirstResource) {
-                        return false;
-                    }
-                })
                 .into(new CustomTarget<Drawable>() {
                     @Override
                     public void onResourceReady(@NonNull Drawable resource, @Nullable Transition<? super Drawable> transition) {
-                        Log.i("TAG", "onResourceReady: "+resource);
                         holder.binding.propertyDetailItemPhoto.setImageDrawable(resource);
                     }
 
