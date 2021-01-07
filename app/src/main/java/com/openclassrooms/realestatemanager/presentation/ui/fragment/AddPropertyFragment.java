@@ -1,10 +1,9 @@
 package com.openclassrooms.realestatemanager.presentation.ui.fragment;
 
+import android.Manifest;
 import android.app.AlertDialog;
-import android.content.ActivityNotFoundException;
 import android.content.Intent;
-import android.graphics.Bitmap;
-import android.net.Uri;
+import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.util.Log;
@@ -19,6 +18,8 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 import androidx.navigation.Navigation;
 
 import com.openclassrooms.realestatemanager.R;
@@ -36,11 +37,11 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
-import static android.app.Activity.RESULT_OK;
 import static com.openclassrooms.realestatemanager.presentation.viewModels.BaseViewModel.CompletionState.UPDATE_PROPERTY_COMPLETE;
 import static com.picone.core.utils.ConstantParameters.ADD_PHOTO;
+import static com.picone.core.utils.ConstantParameters.CAMERA_INTENT_REQUEST_CODE;
+import static com.picone.core.utils.ConstantParameters.CAMERA_PERMISSION_CODE;
 import static com.picone.core.utils.ConstantParameters.PROPERTY_TO_ADD;
-import static com.picone.core.utils.ConstantParameters.REQUEST_IMAGE_CAPTURE;
 
 public class AddPropertyFragment extends BaseFragment {
 
@@ -73,17 +74,7 @@ public class AddPropertyFragment extends BaseFragment {
         initViewModel();
     }
 
-    @Override
-    public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
-        if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == RESULT_OK) {
-            assert data != null;
-            Bundle extras = data.getExtras();
-            assert extras != null;
-            Bitmap imageBitmap = (Bitmap) extras.get("data");
-            Log.i("TAG", "onActivityResult: "+data.getData());
-            Uri image = data.getData();
-        }
-    }
+
 
     //___________________________________VIEW_____________________________________________
 
@@ -182,17 +173,17 @@ public class AddPropertyFragment extends BaseFragment {
     private void initAddMediaClickListener() {
         RecyclerViewItemClickListener.addTo(mBinding.addPropertyMediaLayout.detailCustomViewRecyclerView, R.layout.fragment_add_property)
                 .setOnItemClickListener((recyclerView, position, v) -> {
-                    if (position == 0)initAlertDialog();
+                    if (position == 0) initAlertDialog();
 
                 });
     }
 
-    private void initAlertDialog(){
+    private void initAlertDialog() {
         AlertDialog.Builder builder = new AlertDialog.Builder(requireContext());
         builder.setTitle("add photo")
                 .setMessage("get photo from folder or your phone camera ")
                 .setNegativeButton("camera", (dialog, which) -> {
-                    dispatchCameraIntent();
+                    openCamera();
                 })
                 .setPositiveButton("folder", (dialog, which) -> {
                     Log.i("TAG", "initAlertDialog: folder");
@@ -201,15 +192,22 @@ public class AddPropertyFragment extends BaseFragment {
                 .show();
     }
 
-    private void dispatchCameraIntent(){
-        Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-        try {
-            startActivityForResult(takePictureIntent,REQUEST_IMAGE_CAPTURE);
-        } catch (ActivityNotFoundException e){
-            Log.e("TAG", "dispatchCameraIntent: ",e );
-        }
-
+    private void requestCameraPermission() {
+        ActivityCompat.requestPermissions(requireActivity(), new String[]{Manifest.permission.CAMERA}, CAMERA_PERMISSION_CODE);
     }
+
+
+    private void openCamera() {
+        //TODO init camera permissioncode
+        if (isPermissionGrantedForRequestCode(CAMERA_PERMISSION_CODE)){
+            Intent cameraIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+        Toast.makeText(requireContext(), "open camera", Toast.LENGTH_LONG).show();
+        startActivityForResult(cameraIntent, CAMERA_INTENT_REQUEST_CODE);
+        }else{
+            Toast.makeText(requireContext(), "camera is needed", Toast.LENGTH_LONG).show();
+            requestCameraPermission();
+    }}
+
     //___________________________________SETTER WHEN ADD CLICK_____________________________________________
 
     private void addProperty() {

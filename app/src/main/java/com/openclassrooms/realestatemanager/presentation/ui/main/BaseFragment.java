@@ -17,6 +17,9 @@ import java.util.Objects;
 
 import dagger.hilt.android.AndroidEntryPoint;
 
+import static com.picone.core.utils.ConstantParameters.CAMERA_PERMISSION_CODE;
+import static com.picone.core.utils.ConstantParameters.LOCATION_PERMISSION_CODE;
+
 @AndroidEntryPoint
 public abstract class BaseFragment extends Fragment {
 
@@ -26,6 +29,7 @@ public abstract class BaseFragment extends Fragment {
 
     private MainActivity mainActivity;
     protected ImageButton mUpdateButton;
+
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -63,5 +67,16 @@ public abstract class BaseFragment extends Fragment {
                 propertyToReturn = property;
         }
         return propertyToReturn;
+    }
+
+    protected boolean isPermissionGrantedForRequestCode(int requestCode){
+        switch (requestCode){
+            case LOCATION_PERMISSION_CODE:
+                return mainActivity.isLocationPermissionGranted;
+            case CAMERA_PERMISSION_CODE:
+                return mainActivity.isCameraPermissionGranted;
+            default:
+                return false;
+                        }
     }
 }

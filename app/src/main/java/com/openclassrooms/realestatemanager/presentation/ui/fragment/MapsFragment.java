@@ -44,13 +44,12 @@ import static com.openclassrooms.realestatemanager.presentation.utils.BitmapConv
 import static com.picone.core.utils.ConstantParameters.MAPS_CAMERA_LARGE_ZOOM;
 import static com.picone.core.utils.ConstantParameters.MAPS_CAMERA_NEAR_ZOOM;
 import static com.picone.core.utils.ConstantParameters.MAPS_KEY;
-import static com.picone.core.utils.ConstantParameters.REQUEST_CODE;
+import static com.picone.core.utils.ConstantParameters.LOCATION_PERMISSION_CODE;
 
 public class MapsFragment extends BaseFragment implements GoogleMap.OnInfoWindowClickListener, OnMapReadyCallback {
 
     private FragmentMapsBinding mBinding;
     private GoogleMap mMap;
-    private boolean mLocationPermissionGranted;
     private FusedLocationProviderClient mFusedLocationProviderClient;
     private MarkerOptions mMarkerOptions = new MarkerOptions();
     private List<Marker> mPointOfInterestMarkers = new ArrayList<>();
@@ -86,7 +85,7 @@ public class MapsFragment extends BaseFragment implements GoogleMap.OnInfoWindow
     @Override
     public void onMapReady(@NonNull GoogleMap googleMap) {
         mMap = googleMap;
-        enableMyLocation();
+        updateLocationUI();
         mMap.setOnInfoWindowClickListener(this);
         mPropertyViewModel.getAllProperties.observe(getViewLifecycleOwner(), this::initMarkersValue);
     }
@@ -112,25 +111,17 @@ public class MapsFragment extends BaseFragment implements GoogleMap.OnInfoWindow
         }
     }
 
-    private void enableMyLocation() {
-        if (ContextCompat.checkSelfPermission(requireContext(),
-                Manifest.permission.ACCESS_FINE_LOCATION)
-                == PackageManager.PERMISSION_GRANTED) {
-            mLocationPermissionGranted = true;
-            updateLocationUI();
-
-        } else {
-            ActivityCompat.requestPermissions(this.requireActivity(),
-                    new String[]{ACCESS_FINE_LOCATION},
-                    REQUEST_CODE);
-        }
+    private void requestLocationPermission() {
+        ActivityCompat.requestPermissions(this.requireActivity(),
+                new String[]{ACCESS_FINE_LOCATION},
+                LOCATION_PERMISSION_CODE);
     }
 
     private void updateLocationUI() {
         try {
             mMap.setMyLocationEnabled(true);
-            if (mLocationPermissionGranted) fetchLastLocation();
-            else enableMyLocation();
+            if (isPermissionGrantedForRequestCode(LOCATION_PERMISSION_CODE)) fetchLastLocation();
+            else requestLocationPermission();
 
         } catch (SecurityException e) {
             Log.e(getString(R.string.exception), Objects.requireNonNull(e.getMessage()));
@@ -139,8 +130,7 @@ public class MapsFragment extends BaseFragment implements GoogleMap.OnInfoWindow
 
     private void fetchLastLocation() {
         if (ActivityCompat.checkSelfPermission(this.requireContext(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this.requireContext(), Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-            ActivityCompat.requestPermissions(requireActivity(), new String[]
-                    {ACCESS_FINE_LOCATION}, REQUEST_CODE);
+            requestLocationPermission();
             return;
         }
         mFusedLocationProviderClient.getLastLocation().addOnSuccessListener(location -> {
@@ -199,8 +189,8 @@ public class MapsFragment extends BaseFragment implements GoogleMap.OnInfoWindow
         mPropertyViewModel.getAllPointOfInterestForProperty.observe(getViewLifecycleOwner(), allPointOfInterests -> {
             mPointOfInterestMarkers.clear();
             if (!allPointOfInterests.isEmpty())
-            for (PointOfInterest pointOfInterest : allPointOfInterests)
-                createPointOfInterestMarker(pointOfInterest);
+                for (PointOfInterest pointOfInterest : allPointOfInterests)
+                    createPointOfInterestMarker(pointOfInterest);
         });
     }
 

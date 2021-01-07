@@ -21,10 +21,14 @@ public class ConstantParameters {
     public static final String pointOfInterestTable = "property_point_of_interest_table";
 
     public static String MAPS_KEY;
-    public static final int REQUEST_CODE = 13700;
+    public static final int LOCATION_PERMISSION_CODE = 13700;
     public static final int MAPS_CAMERA_LARGE_ZOOM = 9;
     public static final int MAPS_CAMERA_NEAR_ZOOM = 15;
     public static final int REQUEST_IMAGE_CAPTURE = 1;
+    public static final int CAMERA_PERMISSION_CODE = 101;
+    public static final int CAMERA_INTENT_REQUEST_CODE = 102;
+
+
 
 
     public static String STATIC_MAP_SIZE = "140";

@@ -1,5 +1,6 @@
 package com.openclassrooms.realestatemanager.presentation.ui.main;
 
+import android.Manifest;
 import android.content.Context;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
@@ -10,6 +11,8 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
@@ -28,6 +31,8 @@ import dagger.hilt.android.AndroidEntryPoint;
 import dagger.hilt.android.scopes.ActivityScoped;
 
 import static com.openclassrooms.realestatemanager.presentation.utils.Utils.isGpsAvailable;
+import static com.picone.core.utils.ConstantParameters.CAMERA_PERMISSION_CODE;
+import static com.picone.core.utils.ConstantParameters.LOCATION_PERMISSION_CODE;
 
 @ActivityScoped
 @AndroidEntryPoint
@@ -47,8 +52,9 @@ public class MainActivity extends AppCompatActivity {
         setContentView(mBinding.getRoot());
         initValues();
         initLoader();
-        if (getPackageManager().hasSystemFeature(PackageManager.FEATURE_CAMERA_ANY))
-            Toast.makeText(this,"camera available",Toast.LENGTH_LONG).show();
+        askLocationPermission();
+        if (!getPackageManager().hasSystemFeature(PackageManager.FEATURE_CAMERA_ANY))
+            Toast.makeText(this, R.string.no_camera_warning, Toast.LENGTH_LONG).show();
     }
 
     @Override
@@ -58,6 +64,43 @@ public class MainActivity extends AppCompatActivity {
             mPropertyViewModel.setSelectedProperty(new Property());
     }
 
+    protected boolean isCameraPermissionGranted;
+    protected boolean isLocationPermissionGranted;
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        if (requestCode == CAMERA_PERMISSION_CODE)
+            isCameraPermissionGranted = grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED;
+
+        if (requestCode == LOCATION_PERMISSION_CODE){
+            isLocationPermissionGranted = grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED;
+            if (isLocationPermissionGranted)askCameraPermission();
+        }}
+
+    private void askCameraPermission() {
+        if (ContextCompat.checkSelfPermission(this,
+                Manifest.permission.CAMERA)
+                != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.CAMERA}, CAMERA_PERMISSION_CODE);
+        }
+        else {
+            isCameraPermissionGranted=true;
+        }
+    }
+
+    private void askLocationPermission() {
+        if (ContextCompat.checkSelfPermission(this,
+                Manifest.permission.ACCESS_FINE_LOCATION)
+                != PackageManager.PERMISSION_GRANTED)
+            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, LOCATION_PERMISSION_CODE);
+
+        else {
+            isLocationPermissionGranted=true;
+            askCameraPermission();
+        }
+
+    }
+
     private void initValues() {
         mUpdateButton = mBinding.updateButtonCustomView.findViewById(R.id.custom_view_update_image_button);
         mPropertyViewModel = new ViewModelProvider(this).get(PropertyViewModel.class);
@@ -65,7 +108,8 @@ public class MainActivity extends AppCompatActivity {
         mNavController = Navigation.findNavController(this, R.id.nav_host_fragment);
         NavigationUI.setupWithNavController(mBinding.bottomNavBar, mNavController);
         mAgentViewModel.setAgent();
-        if (!isGpsAvailable(this))Toast.makeText(this,R.string.gps_warning_message,Toast.LENGTH_LONG).show();
+        if (!isGpsAvailable(this))
+            Toast.makeText(this, R.string.gps_warning_message, Toast.LENGTH_LONG).show();
 
     }
 
@@ -85,24 +129,23 @@ public class MainActivity extends AppCompatActivity {
                         (R.id.action_propertyDetailFragment_to_addPropertyFragment));
     }
 
-    protected void hideSoftKeyboard(@NonNull View view){
-        InputMethodManager imm =(InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+    protected void hideSoftKeyboard(@NonNull View view) {
+        InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
         assert imm != null;
         imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
     }
 
 
-    private void initLoader(){
+    private void initLoader() {
         mLoader = mBinding.loader.animationView;
         mLoader.setAnimation(R.raw.loader);
         mLoader.setVisibility(View.GONE);
     }
 
 
-
-    protected void playLoader(boolean isVisible){
-        mLoader.setVisibility(isVisible? View.VISIBLE : View.GONE);
-        if (isVisible)mLoader.playAnimation();
+    protected void playLoader(boolean isVisible) {
+        mLoader.setVisibility(isVisible ? View.VISIBLE : View.GONE);
+        if (isVisible) mLoader.playAnimation();
         else mLoader.pauseAnimation();
     }
 }
