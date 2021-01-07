@@ -142,7 +142,7 @@ public class MainActivity extends AppCompatActivity {
             ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, WRITE_PERMISSION_CODE);
 
         else {
-            isReadPermissionGranted = true;
+            isWritePermissionGranted = true;
         }
     }
 

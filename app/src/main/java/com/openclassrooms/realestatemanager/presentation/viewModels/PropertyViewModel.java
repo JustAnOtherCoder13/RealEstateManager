@@ -233,7 +233,9 @@ public class PropertyViewModel extends BaseViewModel {
                         .subscribeOn(schedulerProvider.getIo())
                         .observeOn(schedulerProvider.getUi())
                         .andThen(getAllPropertyPhotosForPropertyIdInteractor.getAllPhotosForPropertyId(propertyPhoto.getPropertyId()))
-                        .subscribe(propertyPhotos -> allPhotosForPropertyMutableLD.postValue(propertyPhotos), throwable -> checkException()));
+                        .subscribe(propertyPhotos -> {allPhotosForPropertyMutableLD.postValue(propertyPhotos);
+                            Log.e("TAG", "addPropertyPhoto: "+propertyPhotos.size());
+                        }, throwable -> Log.e("TAG", "addPropertyPhoto: ",throwable )));
     }
 
     public void deletePropertyPhoto(@NonNull PropertyPhoto propertyPhoto) {

@@ -3,6 +3,7 @@ package com.picone.core.domain.entity;
 import androidx.room.ColumnInfo;
 import androidx.room.Entity;
 import androidx.room.ForeignKey;
+import androidx.room.Ignore;
 import androidx.room.PrimaryKey;
 
 import static com.picone.core.utils.ConstantParameters.propertyPhotoTable;
@@ -24,6 +25,10 @@ public class PropertyPhoto {
         this.photo = photo;
         this.description = description;
         this.propertyId = propertyId;
+    }
+
+    @Ignore
+    public PropertyPhoto() {
     }
 
     public int getId() {
