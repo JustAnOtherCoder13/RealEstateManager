@@ -42,6 +42,7 @@ import static com.picone.core.utils.ConstantParameters.ADD_PHOTO;
 import static com.picone.core.utils.ConstantParameters.CAMERA_INTENT_REQUEST_CODE;
 import static com.picone.core.utils.ConstantParameters.CAMERA_PERMISSION_CODE;
 import static com.picone.core.utils.ConstantParameters.PROPERTY_TO_ADD;
+import static com.picone.core.utils.ConstantParameters.WRITE_PERMISSION_CODE;
 
 public class AddPropertyFragment extends BaseFragment {
 
@@ -73,7 +74,6 @@ public class AddPropertyFragment extends BaseFragment {
         initView();
         initViewModel();
     }
-
 
 
     //___________________________________VIEW_____________________________________________
@@ -198,16 +198,25 @@ public class AddPropertyFragment extends BaseFragment {
 
 
     private void openCamera() {
-        //TODO init camera permissioncode
-        if (isPermissionGrantedForRequestCode(CAMERA_PERMISSION_CODE)){
-            Intent cameraIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-        Toast.makeText(requireContext(), "open camera", Toast.LENGTH_LONG).show();
-        startActivityForResult(cameraIntent, CAMERA_INTENT_REQUEST_CODE);
-        }else{
-            Toast.makeText(requireContext(), "camera is needed", Toast.LENGTH_LONG).show();
+        if (isPermissionGrantedForRequestCode(CAMERA_PERMISSION_CODE) && isPermissionGrantedForRequestCode(WRITE_PERMISSION_CODE)) {
+            Intent cameraIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);{
+                playLoader(true);
+                startActivityForResult(cameraIntent, CAMERA_INTENT_REQUEST_CODE);
+            }
+        } else {
             requestCameraPermission();
-    }}
+        }
+    }
 
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == CAMERA_INTENT_REQUEST_CODE) {
+            playLoader(false);
+            if (data!=null)
+            Log.i("TAG", "onActivityResult: " + data.getExtras());
+        }
+    }
     //___________________________________SETTER WHEN ADD CLICK_____________________________________________
 
     private void addProperty() {

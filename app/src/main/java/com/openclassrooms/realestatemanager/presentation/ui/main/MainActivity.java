@@ -33,10 +33,13 @@ import dagger.hilt.android.scopes.ActivityScoped;
 import static com.openclassrooms.realestatemanager.presentation.utils.Utils.isGpsAvailable;
 import static com.picone.core.utils.ConstantParameters.CAMERA_PERMISSION_CODE;
 import static com.picone.core.utils.ConstantParameters.LOCATION_PERMISSION_CODE;
+import static com.picone.core.utils.ConstantParameters.READ_PERMISSION_CODE;
+import static com.picone.core.utils.ConstantParameters.WRITE_PERMISSION_CODE;
 
 @ActivityScoped
 @AndroidEntryPoint
 public class MainActivity extends AppCompatActivity {
+
 
     private ActivityMainBinding mBinding;
     private PropertyViewModel mPropertyViewModel;
@@ -66,26 +69,33 @@ public class MainActivity extends AppCompatActivity {
 
     protected boolean isCameraPermissionGranted;
     protected boolean isLocationPermissionGranted;
+    protected boolean isReadPermissionGranted;
+    protected boolean isWritePermissionGranted;
 
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
-        if (requestCode == CAMERA_PERMISSION_CODE)
-            isCameraPermissionGranted = grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED;
-
-        if (requestCode == LOCATION_PERMISSION_CODE){
-            isLocationPermissionGranted = grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED;
-            if (isLocationPermissionGranted)askCameraPermission();
-        }}
-
-    private void askCameraPermission() {
-        if (ContextCompat.checkSelfPermission(this,
-                Manifest.permission.CAMERA)
-                != PackageManager.PERMISSION_GRANTED) {
-            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.CAMERA}, CAMERA_PERMISSION_CODE);
+        switch (requestCode) {
+            case LOCATION_PERMISSION_CODE:
+                isLocationPermissionGranted = checkResult(grantResults);
+                if (isLocationPermissionGranted) askCameraPermission();
+                break;
+            case CAMERA_PERMISSION_CODE:
+                isCameraPermissionGranted = checkResult(grantResults);
+                if (isCameraPermissionGranted) askReadPermission();
+                break;
+            case READ_PERMISSION_CODE:
+                isReadPermissionGranted = checkResult(grantResults);
+                if (isReadPermissionGranted) askWritePermission();
+                break;
+            case WRITE_PERMISSION_CODE:
+                isWritePermissionGranted = checkResult(grantResults);
+                break;
         }
-        else {
-            isCameraPermissionGranted=true;
-        }
+    }
+
+
+    private boolean checkResult(@NonNull int[] grantResults) {
+        return grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED;
     }
 
     private void askLocationPermission() {
@@ -95,10 +105,45 @@ public class MainActivity extends AppCompatActivity {
             ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, LOCATION_PERMISSION_CODE);
 
         else {
-            isLocationPermissionGranted=true;
+            isLocationPermissionGranted = true;
             askCameraPermission();
         }
+    }
 
+    private void askCameraPermission() {
+        if (ContextCompat.checkSelfPermission(this,
+                Manifest.permission.CAMERA)
+                != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.CAMERA}, CAMERA_PERMISSION_CODE);
+        } else {
+            isCameraPermissionGranted = true;
+            askReadPermission();
+        }
+    }
+
+
+    private void askReadPermission() {
+        if (ContextCompat.checkSelfPermission(this,
+                Manifest.permission.READ_EXTERNAL_STORAGE)
+                != PackageManager.PERMISSION_GRANTED)
+            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.READ_EXTERNAL_STORAGE}, READ_PERMISSION_CODE);
+
+        else {
+            isReadPermissionGranted = true;
+            askWritePermission();
+        }
+    }
+
+    private void askWritePermission() {
+
+        if (ContextCompat.checkSelfPermission(this,
+                Manifest.permission.WRITE_EXTERNAL_STORAGE)
+                != PackageManager.PERMISSION_GRANTED)
+            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, WRITE_PERMISSION_CODE);
+
+        else {
+            isReadPermissionGranted = true;
+        }
     }
 
     private void initValues() {

@@ -19,6 +19,8 @@ import dagger.hilt.android.AndroidEntryPoint;
 
 import static com.picone.core.utils.ConstantParameters.CAMERA_PERMISSION_CODE;
 import static com.picone.core.utils.ConstantParameters.LOCATION_PERMISSION_CODE;
+import static com.picone.core.utils.ConstantParameters.READ_PERMISSION_CODE;
+import static com.picone.core.utils.ConstantParameters.WRITE_PERMISSION_CODE;
 
 @AndroidEntryPoint
 public abstract class BaseFragment extends Fragment {
@@ -75,6 +77,10 @@ public abstract class BaseFragment extends Fragment {
                 return mainActivity.isLocationPermissionGranted;
             case CAMERA_PERMISSION_CODE:
                 return mainActivity.isCameraPermissionGranted;
+            case READ_PERMISSION_CODE:
+                return mainActivity.isReadPermissionGranted;
+            case WRITE_PERMISSION_CODE :
+                return mainActivity.isWritePermissionGranted;
             default:
                 return false;
                         }
