@@ -32,7 +32,6 @@ public abstract class BaseFragment extends Fragment {
     private MainActivity mainActivity;
     protected ImageButton mUpdateButton;
 
-
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

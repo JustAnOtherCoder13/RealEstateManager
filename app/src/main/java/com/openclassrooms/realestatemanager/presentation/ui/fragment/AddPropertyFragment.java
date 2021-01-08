@@ -35,6 +35,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
+
 import static android.app.Activity.RESULT_OK;
 import static com.openclassrooms.realestatemanager.presentation.viewModels.BaseViewModel.CompletionState.UPDATE_PROPERTY_COMPLETE;
 import static com.picone.core.utils.ConstantParameters.CAMERA_INTENT_REQUEST_CODE;
@@ -337,6 +338,7 @@ public class AddPropertyFragment extends BaseFragment {
     //___________________________________BOOLEAN_____________________________________________
 
 
+
     private boolean isAddressHaveChanged(@NonNull Property originalProperty) {
         return originalProperty.getAddress() != null && !originalProperty.getAddress().equalsIgnoreCase(mBinding.addPropertyInformationLayout.addPropertyInformationAddress.getValueForView());
     }
@@ -358,6 +360,7 @@ public class AddPropertyFragment extends BaseFragment {
                 && !binding.addPropertyInformationNumberOfBathrooms.isEditTextEmpty()
                 && !binding.addPropertyInformationNumberOfBedrooms.isEditTextEmpty()
                 && !binding.addPropertyInformationNumberOfRooms.isEditTextEmpty()
+
                 && !binding.addPropertyInformationPrice.isEditTextEmpty()
                 && !mPropertyPhotos.isEmpty();
     }
