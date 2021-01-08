@@ -3,7 +3,6 @@ package com.openclassrooms.realestatemanager.presentation.ui.fragment;
 import android.Manifest;
 import android.app.AlertDialog;
 import android.content.Intent;
-import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.util.Log;
@@ -19,7 +18,6 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.core.app.ActivityCompat;
-import androidx.core.graphics.PathUtils;
 import androidx.navigation.Navigation;
 
 import com.openclassrooms.realestatemanager.R;
@@ -318,7 +316,7 @@ public class AddPropertyFragment extends BaseFragment {
 
     private void createPropertyPhoto() {
         PropertyPhoto propertyPhoto = new PropertyPhoto();
-        propertyPhoto.setPhoto(mImageHelper.getCurrentPhotoPath());
+        propertyPhoto.setPhotoPath(mImageHelper.getCurrentPhotoPath());
         propertyPhoto.setDescription("test");
         propertyPhoto.setPropertyId(isNewPropertyToPersist ? Objects.requireNonNull(mPropertyViewModel.getAllProperties.getValue()).size() + 1
                 : Objects.requireNonNull(mPropertyViewModel.getSelectedProperty.getValue()).getId());

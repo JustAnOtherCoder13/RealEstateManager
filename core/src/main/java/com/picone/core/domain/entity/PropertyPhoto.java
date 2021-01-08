@@ -15,14 +15,14 @@ public class PropertyPhoto {
 
     @PrimaryKey(autoGenerate = true)
     private int id;
-    private String photo;
+    private String photoPath;
     private String description;
     @ColumnInfo(index = true)
     private int propertyId;
 
-    public PropertyPhoto(int id, String photo, String description, int propertyId) {
+    public PropertyPhoto(int id, String photoPath, String description, int propertyId) {
         this.id = id;
-        this.photo = photo;
+        this.photoPath = photoPath;
         this.description = description;
         this.propertyId = propertyId;
     }
@@ -39,12 +39,12 @@ public class PropertyPhoto {
         this.id = id;
     }
 
-    public String getPhoto() {
-        return photo;
+    public String getPhotoPath() {
+        return photoPath;
     }
 
-    public void setPhoto(String photo) {
-        this.photo = photo;
+    public void setPhotoPath(String photoPath) {
+        this.photoPath = photoPath;
     }
 
     public String getDescription() {
