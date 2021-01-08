@@ -44,7 +44,6 @@ public class PhotoRecyclerViewAdapter extends RecyclerView.Adapter<PhotoRecycler
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-        Log.i("TAG", "onBindViewHolder: "+position);
         PropertyPhoto photo = mPhotos.get(position);
         if (photo.getPhoto().equals(ADD_PHOTO)){
             holder.binding.propertyDetailItemPhoto.setImageResource(R.drawable.img_add_photo);
@@ -57,7 +56,6 @@ public class PhotoRecyclerViewAdapter extends RecyclerView.Adapter<PhotoRecycler
 
     @Override
     public int getItemCount() {
-        Log.i("TAG", "getItemCount: "+mPhotos.size());
         return mPhotos.size();
     }
 
@@ -72,7 +70,6 @@ public class PhotoRecyclerViewAdapter extends RecyclerView.Adapter<PhotoRecycler
     }
 
     public void updatePhotos(List<PropertyPhoto> updatedPhotos){
-        Log.i("TAG", "updatePhotos: "+updatedPhotos.size());
         this.mPhotos = updatedPhotos;
         notifyDataSetChanged();
     }

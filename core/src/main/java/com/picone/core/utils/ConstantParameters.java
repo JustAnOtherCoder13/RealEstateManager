@@ -28,6 +28,7 @@ public class ConstantParameters {
     public static final int CAMERA_INTENT_REQUEST_CODE = 102;
     public static final int READ_PERMISSION_CODE = 103;
     public static final int WRITE_PERMISSION_CODE = 104;
+    public static final int GALLERY_REQUEST_CODE = 105;
     public static final String FILE_PROVIDER_AUTH = "com.openclassrooms.android.fileprovider";
 
 

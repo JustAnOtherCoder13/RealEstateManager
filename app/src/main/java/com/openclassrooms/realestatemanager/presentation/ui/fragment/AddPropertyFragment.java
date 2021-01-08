@@ -3,7 +3,9 @@ package com.openclassrooms.realestatemanager.presentation.ui.fragment;
 import android.Manifest;
 import android.app.AlertDialog;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -17,6 +19,7 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.core.app.ActivityCompat;
+import androidx.core.graphics.PathUtils;
 import androidx.navigation.Navigation;
 
 import com.openclassrooms.realestatemanager.R;
@@ -25,6 +28,7 @@ import com.openclassrooms.realestatemanager.databinding.FragmentAddPropertyInfor
 import com.openclassrooms.realestatemanager.presentation.ui.fragment.adapter.PhotoRecyclerViewAdapter;
 import com.openclassrooms.realestatemanager.presentation.ui.main.BaseFragment;
 import com.openclassrooms.realestatemanager.presentation.utils.ManageImageHelper;
+import com.openclassrooms.realestatemanager.presentation.utils.PathUtil;
 import com.openclassrooms.realestatemanager.presentation.utils.RecyclerViewItemClickListener;
 import com.picone.core.domain.entity.PointOfInterest;
 import com.picone.core.domain.entity.Property;
@@ -39,7 +43,9 @@ import static android.app.Activity.RESULT_OK;
 import static com.openclassrooms.realestatemanager.presentation.viewModels.BaseViewModel.CompletionState.UPDATE_PROPERTY_COMPLETE;
 import static com.picone.core.utils.ConstantParameters.CAMERA_INTENT_REQUEST_CODE;
 import static com.picone.core.utils.ConstantParameters.CAMERA_PERMISSION_CODE;
+import static com.picone.core.utils.ConstantParameters.GALLERY_REQUEST_CODE;
 import static com.picone.core.utils.ConstantParameters.PROPERTY_TO_ADD;
+import static com.picone.core.utils.ConstantParameters.READ_PERMISSION_CODE;
 import static com.picone.core.utils.ConstantParameters.WRITE_PERMISSION_CODE;
 
 public class AddPropertyFragment extends BaseFragment {
@@ -80,12 +86,22 @@ public class AddPropertyFragment extends BaseFragment {
     @Override
     public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == CAMERA_INTENT_REQUEST_CODE) {
-            if (resultCode == RESULT_OK) {
-                mImageHelper.saveImageInGallery();
-                createPropertyPhoto();
-            }
-            playLoader(false);
+        switch (requestCode) {
+
+            case CAMERA_INTENT_REQUEST_CODE:
+                if (resultCode == RESULT_OK) {
+                    mImageHelper.saveImageInGallery();
+                    createPropertyPhoto();
+                }
+                playLoader(false);
+                break;
+
+            case GALLERY_REQUEST_CODE:
+                if (resultCode == RESULT_OK && data != null && data.getData() != null) {
+                    Log.i("TAG", "onActivityResult: " + data.getData().getPath());
+                    mImageHelper.setCurrentPhotoPath(PathUtil.getPath(requireContext(), data.getData()));
+                    createPropertyPhoto();
+                }
         }
     }
 
@@ -109,7 +125,8 @@ public class AddPropertyFragment extends BaseFragment {
                     if (Objects.requireNonNull(mNavController.getCurrentDestination()).getId() == R.id.addPropertyFragment)
                         mNavController.navigate(R.id.action_addPropertyFragment_to_propertyListFragment);
                     break;
-            } });
+            }
+        });
 
         mPropertyViewModel.getAllPropertyPhotosForProperty.observe(getViewLifecycleOwner(), propertyPhotos ->
                 mAdapter.updatePhotos(mImageHelper.propertyPhotosWithAddButton(propertyPhotos)));
@@ -200,17 +217,24 @@ public class AddPropertyFragment extends BaseFragment {
                 .setMessage("get photo from folder or your phone camera ")
                 .setNegativeButton("camera", (dialog, which) -> {
                     if (isPermissionGrantedForRequestCode(CAMERA_PERMISSION_CODE)
-                            && isPermissionGrantedForRequestCode(WRITE_PERMISSION_CODE)){
+                            && isPermissionGrantedForRequestCode(WRITE_PERMISSION_CODE)) {
                         mImageHelper.dispatchTakePictureIntent();
-                        playLoader(true);}
-                    else ActivityCompat.requestPermissions(requireActivity(), new String[]{Manifest.permission.CAMERA}, CAMERA_PERMISSION_CODE);
+                        playLoader(true);
+                    } else
+                        ActivityCompat.requestPermissions(requireActivity(), new String[]{Manifest.permission.CAMERA}, CAMERA_PERMISSION_CODE);
                 })
-                .setPositiveButton("folder", (dialog, which) -> Log.i("TAG", "initAlertDialog: folder"))
+                .setPositiveButton("folder", (dialog, which) -> {
+                    if (isPermissionGrantedForRequestCode(READ_PERMISSION_CODE)) {
+                        Intent galleryIntent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+                        startActivityForResult(galleryIntent, GALLERY_REQUEST_CODE);
+                    } else
+                        ActivityCompat.requestPermissions(requireActivity(), new String[]{Manifest.permission.READ_EXTERNAL_STORAGE}, READ_PERMISSION_CODE);
+                })
                 .create()
                 .show();
     }
 
-    //___________________________________SETTER WHEN ADD BUTTON CLICK_____________________________________________
+    //___________________________________ADD AND UPDATE LOGIC_____________________________________________
 
     private void initAddButtonClick() {
         if (isRequiredInformationAreFilled()) {
@@ -230,10 +254,11 @@ public class AddPropertyFragment extends BaseFragment {
                 else {
                     mPropertyViewModel.updateProperty(updateProperty(originalProperty));
                     mPropertyViewModel.getCompletionState.observe(getViewLifecycleOwner(), completionState -> {
-                        if (completionState.equals(UPDATE_PROPERTY_COMPLETE)){
+                        if (completionState.equals(UPDATE_PROPERTY_COMPLETE)) {
                             playLoader(false);
                             mNavController.navigate(R.id.action_addPropertyFragment_to_propertyListFragment);
-                    }});
+                        }
+                    });
                 }
             }
         } else
@@ -288,13 +313,14 @@ public class AddPropertyFragment extends BaseFragment {
         });
     }
 
+
     //___________________________________HELPERS_____________________________________________
 
     private void createPropertyPhoto() {
         PropertyPhoto propertyPhoto = new PropertyPhoto();
         propertyPhoto.setPhoto(mImageHelper.getCurrentPhotoPath());
         propertyPhoto.setDescription("test");
-        propertyPhoto.setPropertyId(isNewPropertyToPersist ? Objects.requireNonNull(mPropertyViewModel.getAllProperties.getValue()).size()+1
+        propertyPhoto.setPropertyId(isNewPropertyToPersist ? Objects.requireNonNull(mPropertyViewModel.getAllProperties.getValue()).size() + 1
                 : Objects.requireNonNull(mPropertyViewModel.getSelectedProperty.getValue()).getId());
         mPropertyPhotos.add(propertyPhoto);
         mAdapter.updatePhotos(mImageHelper.propertyPhotosWithAddButton(mPropertyPhotos));

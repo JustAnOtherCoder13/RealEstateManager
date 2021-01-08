@@ -1,14 +1,17 @@
 package com.openclassrooms.realestatemanager.presentation.utils;
 
 import android.app.Activity;
+import android.content.ContentResolver;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Environment;
 import android.provider.MediaStore;
 import android.util.Log;
+import android.webkit.MimeTypeMap;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.core.content.FileProvider;
 import androidx.fragment.app.FragmentActivity;
 
@@ -38,6 +41,10 @@ public class ManageImageHelper {
 
     public String getCurrentPhotoPath() {
         return mCurrentPhotoPath;
+    }
+
+    public void setCurrentPhotoPath(String photoPath){
+        this.mCurrentPhotoPath = photoPath;
     }
 
     public void saveImageInGallery() {
