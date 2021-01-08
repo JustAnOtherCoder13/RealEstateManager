@@ -23,7 +23,6 @@ public class ResizePictureForView {
         if (targetH>0 && targetW>0)
         scaleFactor = Math.max(1, Math.min(photoW/targetW, photoH/targetH));
 
-        // Decode the image file into a Bitmap sized to fill the View
         bmOptions.inJustDecodeBounds = false;
         bmOptions.inSampleSize = scaleFactor;
         bmOptions.inPurgeable = true;

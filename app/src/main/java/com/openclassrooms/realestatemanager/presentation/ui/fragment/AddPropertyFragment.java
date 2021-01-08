@@ -26,6 +26,7 @@ import com.openclassrooms.realestatemanager.databinding.FragmentAddPropertyInfor
 import com.openclassrooms.realestatemanager.presentation.ui.fragment.adapter.PhotoRecyclerViewAdapter;
 import com.openclassrooms.realestatemanager.presentation.ui.main.BaseFragment;
 import com.openclassrooms.realestatemanager.presentation.utils.ManageImageHelper;
+import com.openclassrooms.realestatemanager.presentation.utils.ManageVideoHelper;
 import com.openclassrooms.realestatemanager.presentation.utils.PathUtil;
 import com.openclassrooms.realestatemanager.presentation.utils.RecyclerViewItemClickListener;
 import com.picone.core.domain.entity.PointOfInterest;
@@ -40,7 +41,7 @@ import java.util.Objects;
 
 import static android.app.Activity.RESULT_OK;
 import static com.openclassrooms.realestatemanager.presentation.viewModels.BaseViewModel.CompletionState.UPDATE_PROPERTY_COMPLETE;
-import static com.picone.core.utils.ConstantParameters.CAMERA_INTENT_REQUEST_CODE;
+import static com.picone.core.utils.ConstantParameters.CAMERA_PHOTO_INTENT_REQUEST_CODE;
 import static com.picone.core.utils.ConstantParameters.CAMERA_PERMISSION_CODE;
 import static com.picone.core.utils.ConstantParameters.GALLERY_REQUEST_CODE;
 import static com.picone.core.utils.ConstantParameters.PROPERTY_TO_ADD;
@@ -56,6 +57,7 @@ public class AddPropertyFragment extends BaseFragment {
     private String mPreviousSavedPropertyAddress;
     private PhotoRecyclerViewAdapter mAdapter;
     private ManageImageHelper mImageHelper;
+    private ManageVideoHelper mVideoHelper;
 
 
     @Nullable
@@ -64,6 +66,7 @@ public class AddPropertyFragment extends BaseFragment {
         mBinding = FragmentAddPropertyBinding.inflate(getLayoutInflater());
         mNavController = Navigation.findNavController(requireActivity(), R.id.nav_host_fragment);
         mImageHelper = new ManageImageHelper(this);
+        mVideoHelper = new ManageVideoHelper(this);
         setAppBarVisibility(false);
         initRecyclerView();
         setUpdateButtonIcon(false);
@@ -87,7 +90,7 @@ public class AddPropertyFragment extends BaseFragment {
         super.onActivityResult(requestCode, resultCode, data);
         switch (requestCode) {
 
-            case CAMERA_INTENT_REQUEST_CODE:
+            case CAMERA_PHOTO_INTENT_REQUEST_CODE:
                 if (resultCode == RESULT_OK) {
                     mImageHelper.saveImageInGallery();
                     createPropertyPhoto();
@@ -97,13 +100,18 @@ public class AddPropertyFragment extends BaseFragment {
 
             case GALLERY_REQUEST_CODE:
                 if (resultCode == RESULT_OK && data != null && data.getData() != null) {
-                    Log.i("TAG", "onActivityResult: " + data.getData().getPath());
                     mImageHelper.setCurrentPhotoPath(PathUtil.getPath(requireContext(), data.getData()));
                     createPropertyPhoto();
                 }
         }
     }
 
+    @Override
+    public void onResume() {
+        super.onResume();
+        if (!isNewPropertyToPersist)
+            initViewValueWhenUpdate(mBinding.addPropertyInformationLayout, Objects.requireNonNull(mPropertyViewModel.getSelectedProperty.getValue()));
+    }
 
     //___________________________________VIEW_____________________________________________
 
@@ -143,11 +151,8 @@ public class AddPropertyFragment extends BaseFragment {
 
     private void initView() {
         initPropertyTypeDropDownMenu();
-
-        if (!isNewPropertyToPersist)
-            initViewValueWhenUpdate(mBinding.addPropertyInformationLayout, Objects.requireNonNull(mPropertyViewModel.getSelectedProperty.getValue()));
-
-        else mBinding.addPropertySoldLayout.getRoot().setVisibility(View.GONE);
+        if (isNewPropertyToPersist)
+           mBinding.addPropertySoldLayout.getRoot().setVisibility(View.GONE);
     }
 
     //TODO all custom view filled with number of bedroom value when update, why?
@@ -156,13 +161,15 @@ public class AddPropertyFragment extends BaseFragment {
         mPropertyViewModel.setPhotosToDelete(new ArrayList<>());
         EditText descriptionEditText = mBinding.addPropertyDescriptionLayout.addPropertyDescriptionEditText;
         AutoCompleteTextView propertyTypeDropDownMenu = mBinding.addPropertyInformationLayout.addPropertyInformationTypeCustomViewAutocompleteTextView;
-        addPropertyInformationCustomView.addPropertyInformationPrice.setValueText(String.valueOf(property.getPrice()));
+        addPropertyInformationCustomView.addPropertyInformationPrice.setText(String.valueOf(property.getPrice()));
+
         Log.e("TAG", "initViewValueWhenUpdate: " + getResources().getResourceName(addPropertyInformationCustomView.addPropertyInformationPrice.getId()) + property.getPrice());
-        addPropertyInformationCustomView.addPropertyInformationArea.setValueText(String.valueOf(property.getPropertyArea()));
-        addPropertyInformationCustomView.addPropertyInformationNumberOfBathrooms.setValueText(String.valueOf(property.getNumberOfBathrooms()));
-        addPropertyInformationCustomView.addPropertyInformationNumberOfBedrooms.setValueText(String.valueOf(property.getNumberOfBedrooms()));
-        addPropertyInformationCustomView.addPropertyInformationNumberOfRooms.setValueText(String.valueOf(property.getNumberOfRooms()));
-        addPropertyInformationCustomView.addPropertyInformationAddress.setValueText(property.getAddress());
+        addPropertyInformationCustomView.addPropertyInformationArea.setText(String.valueOf(property.getPropertyArea()));
+        addPropertyInformationCustomView.addPropertyInformationNumberOfBathrooms.setText(String.valueOf(property.getNumberOfBathrooms()));
+        addPropertyInformationCustomView.addPropertyInformationNumberOfBedrooms.setText(String.valueOf(property.getNumberOfBedrooms()));
+        addPropertyInformationCustomView.addPropertyInformationNumberOfRooms.setText(String.valueOf(property.getNumberOfRooms()));
+        addPropertyInformationCustomView.addPropertyInformationAddress.setText(property.getAddress());
+
         mPropertyPhotos.addAll(Objects.requireNonNull(mPropertyViewModel.getAllPropertyPhotosForProperty.getValue()));
         descriptionEditText.setText(property.getDescription());
         propertyTypeDropDownMenu.setText(property.getPropertyType());
@@ -255,9 +262,10 @@ public class AddPropertyFragment extends BaseFragment {
 
             else {
                 Property originalProperty = Objects.requireNonNull(mPropertyViewModel.getSelectedProperty.getValue());
-                if (!mPropertyPhotos.isEmpty()) persistAllNewPhotos();
 
                 if (!mPhotosToDelete.isEmpty()) deleteSelectedPhotos();
+
+                if (!mPropertyPhotos.isEmpty()) persistAllNewPhotos();
 
                 if (isAddressHaveChanged(originalProperty))
                     UpdatePropertyWhenAddressChange(updateProperty(originalProperty), originalProperty);

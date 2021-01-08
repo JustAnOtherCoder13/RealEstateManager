@@ -1,19 +1,13 @@
 package com.openclassrooms.realestatemanager.presentation.utils;
 
-import android.app.Activity;
-import android.content.ContentResolver;
-import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Environment;
 import android.provider.MediaStore;
 import android.util.Log;
-import android.webkit.MimeTypeMap;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.core.content.FileProvider;
-import androidx.fragment.app.FragmentActivity;
 
 import com.openclassrooms.realestatemanager.presentation.ui.fragment.AddPropertyFragment;
 import com.picone.core.domain.entity.PropertyPhoto;
@@ -27,8 +21,7 @@ import java.util.List;
 import java.util.Locale;
 
 import static com.picone.core.utils.ConstantParameters.ADD_PHOTO;
-import static com.picone.core.utils.ConstantParameters.CAMERA_INTENT_REQUEST_CODE;
-import static com.picone.core.utils.ConstantParameters.FILE_PROVIDER_AUTH;
+import static com.picone.core.utils.ConstantParameters.CAMERA_PHOTO_INTENT_REQUEST_CODE;
 
 public class ManageImageHelper {
 
@@ -83,7 +76,7 @@ public class ManageImageHelper {
                     "com.openclassrooms.android.fileprovider",
                     photoFile);
             takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, photoURI);
-            requireContext.startActivityForResult(takePictureIntent, CAMERA_INTENT_REQUEST_CODE);
+            requireContext.startActivityForResult(takePictureIntent, CAMERA_PHOTO_INTENT_REQUEST_CODE);
         }
     }
 
