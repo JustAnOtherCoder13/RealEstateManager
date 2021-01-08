@@ -53,6 +53,7 @@ public class PropertyDetailFragment extends BaseFragment {
         super.onViewCreated(view, savedInstanceState);
         mPropertyViewModel.getSelectedProperty.observe(getViewLifecycleOwner(), property -> {
             mPropertyViewModel.setPropertyLocationForProperty(property);
+            mPropertyViewModel.setAllPhotosForProperty(property);
             initValue(mBinding.fragmentDetailInformationLayout,
                     Objects.requireNonNull(property),
                     mBinding.fragmentDetailDescriptionLayout.detailMediaDescriptionLayoutText);
@@ -61,6 +62,7 @@ public class PropertyDetailFragment extends BaseFragment {
 
     private void initRecyclerView() {
         PhotoRecyclerViewAdapter adapter = new PhotoRecyclerViewAdapter(new ArrayList<>());
+        adapter.isPhotoHaveBeenDeleted(false);
         mBinding.fragmentDetailMediaLayout.detailCustomViewRecyclerView.setAdapter(adapter);
         mPropertyViewModel.getAllPropertyPhotosForProperty.observe(getViewLifecycleOwner(), adapter::updatePhotos);
     }

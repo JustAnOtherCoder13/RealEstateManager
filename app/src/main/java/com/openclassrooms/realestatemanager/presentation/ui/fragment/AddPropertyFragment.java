@@ -120,8 +120,10 @@ public class AddPropertyFragment extends BaseFragment {
                     addNewPropertyAdditionalInformation();
                     break;
                 case ADD_POINT_OF_INTEREST_COMPLETE:
-                    if (Objects.requireNonNull(mNavController.getCurrentDestination()).getId() == R.id.addPropertyFragment)
+                    if (Objects.requireNonNull(mNavController.getCurrentDestination()).getId() == R.id.addPropertyFragment){
+                        playLoader(false);
                         mNavController.navigate(R.id.action_addPropertyFragment_to_propertyListFragment);
+                    }
                     break;
             }
         });
@@ -179,8 +181,16 @@ public class AddPropertyFragment extends BaseFragment {
         initAddMediaClickListener();
         initSelectPhotoToDeleteOnLongClickListener();
 
-        mBinding.addPropertyMediaLayout.detailCustomViewDeleteButton.setOnClickListener(v ->
-                Toast.makeText(requireContext(), "delete", Toast.LENGTH_SHORT).show());
+        mBinding.addPropertyMediaLayout.detailCustomViewDeleteButton.setOnClickListener(v -> {
+            mAdapter.isPhotoHaveBeenDeleted(true);
+            if (mPropertyViewModel.getAllPropertyPhotosForProperty.getValue() != null) {
+                for (PropertyPhoto propertyPhoto : mPhotosToDelete)
+                    mPropertyPhotos.remove(propertyPhoto);
+
+                mAdapter.updatePhotos(mImageHelper.propertyPhotosWithAddButton(mPropertyPhotos));
+                mBinding.addPropertyMediaLayout.detailCustomViewDeleteButton.setVisibility(View.GONE);
+            }
+        });
 
         mBinding.addPropertySoldLayout.addPropertySoldCheckbox.setOnClickListener(v ->
                 mBinding.addPropertySoldLayout.addPropertySoldEditText.setVisibility(
@@ -238,7 +248,6 @@ public class AddPropertyFragment extends BaseFragment {
         if (isRequiredInformationAreFilled()) {
 
             hideSoftKeyboard(mBinding.addPropertyInformationLayout.getRoot());
-            playLoader(true);
 
             if (isNewPropertyToPersist)
                 mPropertyViewModel.addProperty(updateProperty(PROPERTY_TO_ADD(Objects.requireNonNull(mAgentViewModel.getAgent.getValue()))));
@@ -246,6 +255,8 @@ public class AddPropertyFragment extends BaseFragment {
             else {
                 Property originalProperty = Objects.requireNonNull(mPropertyViewModel.getSelectedProperty.getValue());
                 if (!mPropertyPhotos.isEmpty()) persistAllNewPhotos();
+
+                if (!mPhotosToDelete.isEmpty()) deleteSelectedPhotos();
 
                 if (isAddressHaveChanged(originalProperty))
                     UpdatePropertyWhenAddressChange(updateProperty(originalProperty), originalProperty);
@@ -262,6 +273,8 @@ public class AddPropertyFragment extends BaseFragment {
         } else
             Toast.makeText(requireContext(), R.string.information_not_filled, Toast.LENGTH_SHORT).show();
     }
+
+
 
     private void addNewPropertyAdditionalInformation() {
 
@@ -356,6 +369,10 @@ public class AddPropertyFragment extends BaseFragment {
     private void persistAllNewPhotos() {
         for (PropertyPhoto propertyPhoto : mPropertyPhotos)
             mPropertyViewModel.addPropertyPhoto(propertyPhoto);
+    }
+
+    private void deleteSelectedPhotos() {
+        for (PropertyPhoto propertyPhoto:mPhotosToDelete)mPropertyViewModel.deletePropertyPhoto(propertyPhoto);
     }
 
     //___________________________________BOOLEAN_____________________________________________

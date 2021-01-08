@@ -24,6 +24,7 @@ import static com.picone.core.utils.ConstantParameters.ADD_PHOTO;
 public class PhotoRecyclerViewAdapter extends RecyclerView.Adapter<PhotoRecyclerViewAdapter.ViewHolder> {
 
     private List<PropertyPhoto> mPhotos;
+    private boolean isPhotoHaveBeenDeleted;
 
     public PhotoRecyclerViewAdapter(List<PropertyPhoto> mPhotos) {
         this.mPhotos = mPhotos;
@@ -39,6 +40,10 @@ public class PhotoRecyclerViewAdapter extends RecyclerView.Adapter<PhotoRecycler
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         PropertyPhoto photo = mPhotos.get(position);
+        if (isPhotoHaveBeenDeleted){
+            holder.binding.propertyDetailItemCheckBox.setChecked(false);
+            holder.binding.propertyDetailItemCheckBox.setVisibility(View.GONE);
+        }
         if (photo.getPhotoPath().equals(ADD_PHOTO)){
             holder.binding.propertyDetailItemPhoto.setImageResource(R.drawable.img_add_photo);
             holder.binding.propertyDetailItemPhotoDescription.setVisibility(View.GONE);
@@ -66,6 +71,10 @@ public class PhotoRecyclerViewAdapter extends RecyclerView.Adapter<PhotoRecycler
     public void updatePhotos(List<PropertyPhoto> updatedPhotos){
         this.mPhotos = updatedPhotos;
         notifyDataSetChanged();
+    }
+
+    public void isPhotoHaveBeenDeleted(boolean isPhotoHaveBeenDeleted) {
+        this.isPhotoHaveBeenDeleted= isPhotoHaveBeenDeleted;
     }
 
     private void setPropertyPhoto(@NonNull ViewHolder holder, @NonNull PropertyPhoto photo) {

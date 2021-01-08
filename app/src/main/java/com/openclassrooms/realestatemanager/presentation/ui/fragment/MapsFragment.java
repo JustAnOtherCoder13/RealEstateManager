@@ -94,7 +94,6 @@ public class MapsFragment extends BaseFragment implements GoogleMap.OnInfoWindow
     public void onInfoWindowClick(@NonNull Marker marker) {
         if (isPropertyMarker(marker)) {
             mPropertyViewModel.setSelectedProperty(getPropertyForId(marker.getTitle()));
-            mPropertyViewModel.setAllPhotosForProperty(getPropertyForId(marker.getTitle()));
             mNavController.navigate(R.id.action_mapsFragment_to_propertyDetailFragment);
         }
     }
