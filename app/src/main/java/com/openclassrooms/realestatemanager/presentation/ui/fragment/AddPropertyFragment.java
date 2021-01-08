@@ -3,10 +3,7 @@ package com.openclassrooms.realestatemanager.presentation.ui.fragment;
 import android.Manifest;
 import android.app.AlertDialog;
 import android.content.Intent;
-import android.net.Uri;
 import android.os.Bundle;
-import android.os.Environment;
-import android.provider.MediaStore;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -20,7 +17,6 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.core.app.ActivityCompat;
-import androidx.core.content.FileProvider;
 import androidx.navigation.Navigation;
 
 import com.openclassrooms.realestatemanager.R;
@@ -35,21 +31,14 @@ import com.picone.core.domain.entity.Property;
 import com.picone.core.domain.entity.PropertyLocation;
 import com.picone.core.domain.entity.PropertyPhoto;
 
-import java.io.File;
-import java.io.IOException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
-import java.util.Locale;
 import java.util.Objects;
 
 import static android.app.Activity.RESULT_OK;
 import static com.openclassrooms.realestatemanager.presentation.viewModels.BaseViewModel.CompletionState.UPDATE_PROPERTY_COMPLETE;
-import static com.picone.core.utils.ConstantParameters.ADD_PHOTO;
 import static com.picone.core.utils.ConstantParameters.CAMERA_INTENT_REQUEST_CODE;
 import static com.picone.core.utils.ConstantParameters.CAMERA_PERMISSION_CODE;
-import static com.picone.core.utils.ConstantParameters.FILE_PROVIDER_AUTH;
 import static com.picone.core.utils.ConstantParameters.PROPERTY_TO_ADD;
 import static com.picone.core.utils.ConstantParameters.WRITE_PERMISSION_CODE;
 
@@ -104,23 +93,29 @@ public class AddPropertyFragment extends BaseFragment {
     //___________________________________VIEW_____________________________________________
 
     private void initViewModel() {
+        mPropertyViewModel.resetCompletionState();
+
         if (!isNewPropertyToPersist)
             mPropertyViewModel.setPropertyLocationForProperty(Objects.requireNonNull(mPropertyViewModel.getSelectedProperty.getValue()));
+
         else mPropertyViewModel.setAllPhotosForProperty(new Property());
 
         mPropertyViewModel.getCompletionState.observe(getViewLifecycleOwner(), completionState -> {
             switch (completionState) {
                 case ADD_PROPERTY_COMPLETE:
-                    setValuesForNewProperty();
+                    addNewPropertyAdditionalInformation();
                     break;
                 case ADD_POINT_OF_INTEREST_COMPLETE:
                     if (Objects.requireNonNull(mNavController.getCurrentDestination()).getId() == R.id.addPropertyFragment)
                         mNavController.navigate(R.id.action_addPropertyFragment_to_propertyListFragment);
                     break;
-            }
-        });
+            } });
+
         mPropertyViewModel.getAllPropertyPhotosForProperty.observe(getViewLifecycleOwner(), propertyPhotos ->
                 mAdapter.updatePhotos(mImageHelper.propertyPhotosWithAddButton(propertyPhotos)));
+
+        mPropertyViewModel.getPhotosToDelete.observe(getViewLifecycleOwner(), photosToDelete ->
+                mBinding.addPropertyMediaLayout.detailCustomViewDeleteButton.setVisibility(photosToDelete.isEmpty() ? View.GONE : View.VISIBLE));
     }
 
     private void initRecyclerView() {
@@ -130,15 +125,11 @@ public class AddPropertyFragment extends BaseFragment {
 
     private void initView() {
         initPropertyTypeDropDownMenu();
-        mPropertyViewModel.resetCompletionState();
 
         if (!isNewPropertyToPersist)
             initViewValueWhenUpdate(mBinding.addPropertyInformationLayout, Objects.requireNonNull(mPropertyViewModel.getSelectedProperty.getValue()));
 
         else mBinding.addPropertySoldLayout.getRoot().setVisibility(View.GONE);
-
-        mPropertyViewModel.getPhotosToDelete.observe(getViewLifecycleOwner(), photosToDelete ->
-                mBinding.addPropertyMediaLayout.detailCustomViewDeleteButton.setVisibility(photosToDelete.isEmpty() ? View.GONE : View.VISIBLE));
     }
 
     //TODO all custom view filled with number of bedroom value when update, why?
@@ -181,7 +172,7 @@ public class AddPropertyFragment extends BaseFragment {
                         mBinding.addPropertySoldLayout.addPropertySoldCheckbox.isChecked() ?
                                 View.VISIBLE : View.GONE));
 
-        mUpdateButton.setOnClickListener(v -> addProperty());
+        mUpdateButton.setOnClickListener(v -> initAddButtonClick());
     }
 
     private void initSelectPhotoToDeleteOnLongClickListener() {
@@ -213,31 +204,29 @@ public class AddPropertyFragment extends BaseFragment {
                         mImageHelper.dispatchTakePictureIntent();
                         playLoader(true);}
                     else ActivityCompat.requestPermissions(requireActivity(), new String[]{Manifest.permission.CAMERA}, CAMERA_PERMISSION_CODE);
-
                 })
-                .setPositiveButton("folder", (dialog, which) -> {
-                    Log.i("TAG", "initAlertDialog: folder");
-                })
+                .setPositiveButton("folder", (dialog, which) -> Log.i("TAG", "initAlertDialog: folder"))
                 .create()
                 .show();
     }
 
-
-
-
     //___________________________________SETTER WHEN ADD BUTTON CLICK_____________________________________________
 
-    private void addProperty() {
+    private void initAddButtonClick() {
         if (isRequiredInformationAreFilled()) {
+
             hideSoftKeyboard(mBinding.addPropertyInformationLayout.getRoot());
             playLoader(true);
+
             if (isNewPropertyToPersist)
                 mPropertyViewModel.addProperty(updateProperty(PROPERTY_TO_ADD(Objects.requireNonNull(mAgentViewModel.getAgent.getValue()))));
+
             else {
                 Property originalProperty = Objects.requireNonNull(mPropertyViewModel.getSelectedProperty.getValue());
                 if (!mPropertyPhotos.isEmpty()) persistAllNewPhotos();
-                if (isOriginalPropertyAddressNotEqualEditTextAddress(originalProperty))
-                    setValuesForUpdatedPropertyIfAddressIsUpdate(updateProperty(originalProperty), originalProperty);
+
+                if (isAddressHaveChanged(originalProperty))
+                    UpdatePropertyWhenAddressChange(updateProperty(originalProperty), originalProperty);
                 else {
                     mPropertyViewModel.updateProperty(updateProperty(originalProperty));
                     mPropertyViewModel.getCompletionState.observe(getViewLifecycleOwner(), completionState -> {
@@ -251,17 +240,14 @@ public class AddPropertyFragment extends BaseFragment {
             Toast.makeText(requireContext(), R.string.information_not_filled, Toast.LENGTH_SHORT).show();
     }
 
-    private void setValuesForNewProperty() {
+    private void addNewPropertyAdditionalInformation() {
 
         mPropertyViewModel.getAllProperties.observe(getViewLifecycleOwner(), properties -> {
-            if (isNewPropertyAddressNotEqualPreviousSavedPropertyAddress(properties.get(properties.size() - 1))) {
+            if (isNewPropertyAddressNotEqualPreviousSavedPropertyAddress(properties.get(properties.size() - 1)))
                 mPropertyViewModel.setPropertyLocationForPropertyAddress(properties.get(properties.size() - 1));
-                Log.i("TAG", "setValuesForNewProperty: "+mPropertyPhotos);
-            }
         });
 
         persistAllNewPhotos();
-
 
         mPropertyViewModel.getLocationForAddress.observe(getViewLifecycleOwner(), propertyLocation -> {
             if (isPropertyLocationNotEmptyObject(propertyLocation) && isNewPropertyAddressNotEqualPreviousSavedPropertyAddress(getPropertyForId(String.valueOf(propertyLocation.getPropertyId())))) {
@@ -279,9 +265,7 @@ public class AddPropertyFragment extends BaseFragment {
         });
     }
 
-
-
-    private void setValuesForUpdatedPropertyIfAddressIsUpdate(Property updatedProperty, Property originalProperty) {
+    private void UpdatePropertyWhenAddressChange(Property updatedProperty, Property originalProperty) {
 
         mPropertyViewModel.setAllPointOfInterestForProperty(originalProperty);
         mPropertyViewModel.setPropertyLocationForProperty(originalProperty);
@@ -310,8 +294,8 @@ public class AddPropertyFragment extends BaseFragment {
         PropertyPhoto propertyPhoto = new PropertyPhoto();
         propertyPhoto.setPhoto(mImageHelper.getCurrentPhotoPath());
         propertyPhoto.setDescription("test");
-        propertyPhoto.setPropertyId(isNewPropertyToPersist ? mPropertyViewModel.getAllProperties.getValue().size()+1
-                : mPropertyViewModel.getSelectedProperty.getValue().getId());
+        propertyPhoto.setPropertyId(isNewPropertyToPersist ? Objects.requireNonNull(mPropertyViewModel.getAllProperties.getValue()).size()+1
+                : Objects.requireNonNull(mPropertyViewModel.getSelectedProperty.getValue()).getId());
         mPropertyPhotos.add(propertyPhoto);
         mAdapter.updatePhotos(mImageHelper.propertyPhotosWithAddButton(mPropertyPhotos));
     }
@@ -353,7 +337,7 @@ public class AddPropertyFragment extends BaseFragment {
     //___________________________________BOOLEAN_____________________________________________
 
 
-    private boolean isOriginalPropertyAddressNotEqualEditTextAddress(@NonNull Property originalProperty) {
+    private boolean isAddressHaveChanged(@NonNull Property originalProperty) {
         return originalProperty.getAddress() != null && !originalProperty.getAddress().equalsIgnoreCase(mBinding.addPropertyInformationLayout.addPropertyInformationAddress.getValueForView());
     }
 
