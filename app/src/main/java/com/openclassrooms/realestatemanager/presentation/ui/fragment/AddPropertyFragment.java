@@ -1,8 +1,9 @@
 package com.openclassrooms.realestatemanager.presentation.ui.fragment;
 
 import android.Manifest;
-import android.app.AlertDialog;
 import android.content.Intent;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.util.Log;
@@ -28,6 +29,7 @@ import com.openclassrooms.realestatemanager.presentation.ui.main.BaseFragment;
 import com.openclassrooms.realestatemanager.presentation.utils.ManageImageHelper;
 import com.openclassrooms.realestatemanager.presentation.utils.PathUtil;
 import com.openclassrooms.realestatemanager.presentation.utils.RecyclerViewItemClickListener;
+import com.openclassrooms.realestatemanager.presentation.utils.customView.CustomMediaDialog;
 import com.picone.core.domain.entity.PointOfInterest;
 import com.picone.core.domain.entity.Property;
 import com.picone.core.domain.entity.PropertyLocation;
@@ -37,11 +39,10 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
-
 import static android.app.Activity.RESULT_OK;
 import static com.openclassrooms.realestatemanager.presentation.viewModels.BaseViewModel.CompletionState.UPDATE_PROPERTY_COMPLETE;
-import static com.picone.core.utils.ConstantParameters.CAMERA_PHOTO_INTENT_REQUEST_CODE;
 import static com.picone.core.utils.ConstantParameters.CAMERA_PERMISSION_CODE;
+import static com.picone.core.utils.ConstantParameters.CAMERA_PHOTO_INTENT_REQUEST_CODE;
 import static com.picone.core.utils.ConstantParameters.CAMERA_VIDEO_INTENT_REQUEST_CODE;
 import static com.picone.core.utils.ConstantParameters.GALLERY_REQUEST_CODE;
 import static com.picone.core.utils.ConstantParameters.PROPERTY_TO_ADD;
@@ -97,9 +98,11 @@ public class AddPropertyFragment extends BaseFragment {
                 break;
 
             case CAMERA_VIDEO_INTENT_REQUEST_CODE:
-                if (resultCode==RESULT_OK&& data != null && data.getData() != null){
-                    Log.i("TAG", "onActivityResult: "+data.getData());
+                if (resultCode == RESULT_OK && data != null && data.getData() != null) {
+                    Log.i("TAG", "onActivityResult: " + data.getData());
                 }
+                break;
+
             case GALLERY_REQUEST_CODE:
                 if (resultCode == RESULT_OK && data != null && data.getData() != null) {
                     mImageHelper.setCurrentPhotoPath(PathUtil.getPath(requireContext(), data.getData()));
@@ -132,7 +135,7 @@ public class AddPropertyFragment extends BaseFragment {
                     addNewPropertyAdditionalInformation();
                     break;
                 case ADD_POINT_OF_INTEREST_COMPLETE:
-                    if (Objects.requireNonNull(mNavController.getCurrentDestination()).getId() == R.id.addPropertyFragment){
+                    if (Objects.requireNonNull(mNavController.getCurrentDestination()).getId() == R.id.addPropertyFragment) {
                         playLoader(false);
                         mNavController.navigate(R.id.action_addPropertyFragment_to_propertyListFragment);
                     }
@@ -155,7 +158,7 @@ public class AddPropertyFragment extends BaseFragment {
     private void initView() {
         initPropertyTypeDropDownMenu();
         if (isNewPropertyToPersist)
-           mBinding.addPropertySoldLayout.getRoot().setVisibility(View.GONE);
+            mBinding.addPropertySoldLayout.getRoot().setVisibility(View.GONE);
     }
 
     private void initViewValueWhenUpdate(@NonNull FragmentAddPropertyInformationLayoutBinding addPropertyInformationCustomView, @NonNull Property property) {
@@ -226,7 +229,46 @@ public class AddPropertyFragment extends BaseFragment {
     }
 
     private void initAlertDialog() {
-        AlertDialog.Builder builder = new AlertDialog.Builder(requireContext());
+        CustomMediaDialog mediaDialog = new CustomMediaDialog(requireContext());
+        mediaDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        mediaDialog.show();
+        mediaDialog.goButtonSetOnClickListener(v -> {
+            switch (mediaDialog.getIntentRequestCode()) {
+
+                case GALLERY_REQUEST_CODE:
+                    if (isPermissionGrantedForRequestCode(READ_PERMISSION_CODE)) {
+                        Intent galleryIntent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+                        startActivityForResult(galleryIntent, GALLERY_REQUEST_CODE);
+                    } else
+                        ActivityCompat.requestPermissions(requireActivity(), new String[]{Manifest.permission.READ_EXTERNAL_STORAGE}, READ_PERMISSION_CODE);
+                    mediaDialog.dismiss();
+                    break;
+
+                case CAMERA_PHOTO_INTENT_REQUEST_CODE:
+                    if (isPermissionGrantedForRequestCode(CAMERA_PERMISSION_CODE)
+                            && isPermissionGrantedForRequestCode(WRITE_PERMISSION_CODE)) {
+                        startActivityForResult(mImageHelper.getTakePictureIntent(), CAMERA_PHOTO_INTENT_REQUEST_CODE);
+                        playLoader(true);
+                    } else
+                        ActivityCompat.requestPermissions(requireActivity(), new String[]{Manifest.permission.CAMERA}, CAMERA_PERMISSION_CODE);
+                    mediaDialog.dismiss();
+                    break;
+
+                case CAMERA_VIDEO_INTENT_REQUEST_CODE:
+                    if (isPermissionGrantedForRequestCode(CAMERA_PERMISSION_CODE)
+                            && isPermissionGrantedForRequestCode(WRITE_PERMISSION_CODE)) {
+                        Intent takeVideoIntent = new Intent(MediaStore.ACTION_VIDEO_CAPTURE);
+                        startActivityForResult(takeVideoIntent, CAMERA_VIDEO_INTENT_REQUEST_CODE);
+                        playLoader(true);
+                    } else
+                        ActivityCompat.requestPermissions(requireActivity(), new String[]{Manifest.permission.CAMERA}, CAMERA_PERMISSION_CODE);
+
+                    mediaDialog.dismiss();
+                    break;
+            }
+        });
+
+       /* AlertDialog.Builder builder = new AlertDialog.Builder(requireContext());
         builder.setTitle("add photo")
                 .setMessage("get photo from folder or your phone camera ")
                 .setNegativeButton("camera", (dialog, which) -> {
@@ -245,7 +287,7 @@ public class AddPropertyFragment extends BaseFragment {
                         ActivityCompat.requestPermissions(requireActivity(), new String[]{Manifest.permission.READ_EXTERNAL_STORAGE}, READ_PERMISSION_CODE);
                 })
                 .create()
-                .show();
+                .show();*/
     }
 
     //___________________________________ADD AND UPDATE LOGIC_____________________________________________
@@ -280,7 +322,6 @@ public class AddPropertyFragment extends BaseFragment {
         } else
             Toast.makeText(requireContext(), R.string.information_not_filled, Toast.LENGTH_SHORT).show();
     }
-
 
 
     private void addNewPropertyAdditionalInformation() {
@@ -379,11 +420,11 @@ public class AddPropertyFragment extends BaseFragment {
     }
 
     private void deleteSelectedPhotos() {
-        for (PropertyPhoto propertyPhoto:mPhotosToDelete)mPropertyViewModel.deletePropertyPhoto(propertyPhoto);
+        for (PropertyPhoto propertyPhoto : mPhotosToDelete)
+            mPropertyViewModel.deletePropertyPhoto(propertyPhoto);
     }
 
     //___________________________________BOOLEAN_____________________________________________
-
 
 
     private boolean isAddressHaveChanged(@NonNull Property originalProperty) {
