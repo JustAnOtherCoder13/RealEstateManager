@@ -60,6 +60,7 @@ public class AddPropertyFragment extends BaseFragment {
     private String mPreviousSavedPropertyAddress;
     private PhotoRecyclerViewAdapter mAdapter;
     private ManageImageHelper mImageHelper;
+    private CustomSetTitleDialog setTitleDialog;
 
 
     @Nullable
@@ -68,6 +69,7 @@ public class AddPropertyFragment extends BaseFragment {
         mBinding = FragmentAddPropertyBinding.inflate(getLayoutInflater());
         mNavController = Navigation.findNavController(requireActivity(), R.id.nav_host_fragment);
         mImageHelper = new ManageImageHelper(requireContext());
+        setTitleDialog = new CustomSetTitleDialog(requireContext());
         setAppBarVisibility(false);
         initRecyclerView();
         setUpdateButtonIcon(false);
@@ -117,7 +119,6 @@ public class AddPropertyFragment extends BaseFragment {
 
 
     private void initSetTitleCustomDialog(boolean isPhoto,Intent data) {
-        CustomSetTitleDialog setTitleDialog = new CustomSetTitleDialog(requireContext());
         setTitleDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         setTitleDialog.show();
         if (isPhoto)
@@ -126,16 +127,14 @@ public class AddPropertyFragment extends BaseFragment {
         setTitleDialog.setVideo(data.getData());
         }
 
-
         setTitleDialog.setAcceptOnClickListener(v -> {
             hideSoftKeyboard(mBinding.addPropertyInformationLayout.getRoot());
             if (!setTitleDialog.getText().trim().isEmpty()) {
-                createPropertyPhoto(setTitleDialog.getText());
+                createPropertyPhoto(setTitleDialog.getText(),isPhoto);
                 setTitleDialog.dismiss();
             } else
                 Toast.makeText(requireContext(), "You have to enter a description before accept.", Toast.LENGTH_LONG).show();
         });
-
     }
 
     @Override
@@ -380,9 +379,11 @@ public class AddPropertyFragment extends BaseFragment {
 
     //___________________________________HELPERS_____________________________________________
 
-    private void createPropertyPhoto(String title) {
+    private void createPropertyPhoto(String title, boolean isPhoto) {
         PropertyPhoto propertyPhoto = new PropertyPhoto();
+        if (isPhoto)
         propertyPhoto.setPhotoPath(mImageHelper.getCurrentPhotoPath());
+        else propertyPhoto.setPhotoPath(setTitleDialog.getVideoPath());
         propertyPhoto.setDescription(title);
         propertyPhoto.setPropertyId(isNewPropertyToPersist ? Objects.requireNonNull(mPropertyViewModel.getAllProperties.getValue()).size() + 1
                 : Objects.requireNonNull(mPropertyViewModel.getSelectedProperty.getValue()).getId());

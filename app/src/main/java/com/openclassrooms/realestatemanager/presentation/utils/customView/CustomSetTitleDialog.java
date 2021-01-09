@@ -3,10 +3,8 @@ package com.openclassrooms.realestatemanager.presentation.utils.customView;
 import android.app.Dialog;
 import android.content.Context;
 import android.graphics.drawable.Drawable;
-import android.media.MediaPlayer;
 import android.net.Uri;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -21,6 +19,7 @@ import com.bumptech.glide.request.target.CustomTarget;
 import com.bumptech.glide.request.transition.Transition;
 import com.openclassrooms.realestatemanager.R;
 import com.openclassrooms.realestatemanager.databinding.CustomDialogSetPhotoTitleBinding;
+import com.openclassrooms.realestatemanager.presentation.utils.PathUtil;
 
 import static com.openclassrooms.realestatemanager.presentation.utils.ResizePictureForView.setPic;
 
@@ -33,6 +32,7 @@ public class CustomSetTitleDialog extends Dialog implements android.view.View.On
     private EditText description;
     private Button accept;
     private Button cancel;
+    private String mVideoPath;
 
 
     public CustomSetTitleDialog(@NonNull Context context) {
@@ -51,19 +51,6 @@ public class CustomSetTitleDialog extends Dialog implements android.view.View.On
         accept = mBinding.setPhotoAcceptButton;
         cancel = mBinding.setPhotoCancelButton;
         cancel.setOnClickListener(this);
-        video.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
-            @Override
-            public void onCompletion(MediaPlayer mp) {
-                Log.i("TAG", "onCompletion: work well"+mp);
-            }
-        });
-        video.setOnErrorListener(new MediaPlayer.OnErrorListener() {
-            @Override
-            public boolean onError(MediaPlayer mp, int what, int extra) {
-                Log.i("TAG", "onError: "+extra);
-                return false;
-            }
-        });
     }
 
     public void setAcceptOnClickListener(View.OnClickListener onClickListener) {
@@ -87,16 +74,22 @@ public class CustomSetTitleDialog extends Dialog implements android.view.View.On
                 });
     }
 
-    public void setVideo(Uri videoPath){
+    public void setVideo(Uri videoPath) {
         isPhoto(false);
         video.setVideoURI(videoPath);
+        mVideoPath = PathUtil.getPath(context,videoPath);
+        //TODO change
+        description.setText(R.string.app_name);
         video.start();
-
     }
 
-    public void isPhoto(boolean isPhoto){
-        photo.setVisibility(isPhoto?View.VISIBLE:View.GONE);
-        video.setVisibility(isPhoto?View.GONE:View.VISIBLE);
+    public String getVideoPath(){
+        return mVideoPath;
+    }
+
+    public void isPhoto(boolean isPhoto) {
+        photo.setVisibility(isPhoto ? View.VISIBLE : View.GONE);
+        video.setVisibility(isPhoto ? View.GONE : View.VISIBLE);
     }
 
     public String getText() {
