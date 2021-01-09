@@ -36,6 +36,7 @@ import com.picone.core.domain.entity.Property;
 import com.picone.core.domain.entity.PropertyLocation;
 import com.picone.core.domain.entity.PropertyPhoto;
 
+import java.net.URLConnection;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -93,31 +94,39 @@ public class AddPropertyFragment extends BaseFragment {
             case CAMERA_PHOTO_INTENT_REQUEST_CODE:
                 if (resultCode == RESULT_OK) {
                     mImageHelper.saveImageInGallery();
-                    initSetTitleCustomDialog();
+                    initSetTitleCustomDialog(true,data);
                 }
                 playLoader(false);
                 break;
 
             case CAMERA_VIDEO_INTENT_REQUEST_CODE:
                 if (resultCode == RESULT_OK && data != null && data.getData() != null) {
-                    Log.i("TAG", "onActivityResult: " + data.getData());
+                    initSetTitleCustomDialog(false,data);
                 }
                 break;
 
             case GALLERY_REQUEST_CODE:
                 if (resultCode == RESULT_OK && data != null && data.getData() != null) {
                     mImageHelper.setCurrentPhotoPath(PathUtil.getPath(requireContext(), data.getData()));
-                    initSetTitleCustomDialog();
+                    initSetTitleCustomDialog(true,data);
                 }
                 break;
         }
     }
 
-    private void initSetTitleCustomDialog() {
+
+
+    private void initSetTitleCustomDialog(boolean isPhoto,Intent data) {
         CustomSetTitleDialog setTitleDialog = new CustomSetTitleDialog(requireContext());
         setTitleDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         setTitleDialog.show();
+        if (isPhoto)
         setTitleDialog.setPhoto(mImageHelper.getCurrentPhotoPath());
+        else{
+        setTitleDialog.setVideo(data.getData());
+        }
+
+
         setTitleDialog.setAcceptOnClickListener(v -> {
             hideSoftKeyboard(mBinding.addPropertyInformationLayout.getRoot());
             if (!setTitleDialog.getText().trim().isEmpty()) {
@@ -275,6 +284,7 @@ public class AddPropertyFragment extends BaseFragment {
                     if (isPermissionGrantedForRequestCode(CAMERA_PERMISSION_CODE)
                             && isPermissionGrantedForRequestCode(WRITE_PERMISSION_CODE)) {
                         Intent takeVideoIntent = new Intent(MediaStore.ACTION_VIDEO_CAPTURE);
+                        takeVideoIntent.putExtra(MediaStore.EXTRA_DURATION_LIMIT,10);
                         startActivityForResult(takeVideoIntent, CAMERA_VIDEO_INTENT_REQUEST_CODE);
                         playLoader(true);
                     } else

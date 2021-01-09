@@ -2,7 +2,10 @@ package com.openclassrooms.realestatemanager.presentation.utils.customView;
 
 import android.app.Dialog;
 import android.content.Context;
+import android.graphics.Bitmap;
+import android.net.Uri;
 import android.os.Bundle;
+import android.util.Size;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CheckedTextView;
@@ -31,7 +34,7 @@ public class CustomMediaDialog extends Dialog implements android.view.View.OnCli
 
     public CustomMediaDialog(@NonNull Context context) {
         super(context);
-        this.context= context;
+        this.context = context;
     }
 
     @Override
@@ -76,16 +79,14 @@ public class CustomMediaDialog extends Dialog implements android.view.View.OnCli
         }
     }
 
-    public int getIntentRequestCode() {
-        return intentRequestCode;
-    }
+    public int getIntentRequestCode() { return intentRequestCode; }
 
-    private void setIconStyle(CheckedTextView icon) {
+    private void setIconStyle(@NonNull CheckedTextView icon) {
 
-        icon.setBackground(icon.isChecked()?
-                ResourcesCompat.getDrawable(context.getResources(),R.drawable.custom_round_primary,null)
-                :ResourcesCompat.getDrawable(context.getResources(),android.R.drawable.screen_background_light_transparent,null));
-        icon.setTextColor(icon.isChecked()?
+        icon.setBackground(icon.isChecked() ?
+                ResourcesCompat.getDrawable(context.getResources(), R.drawable.custom_round_primary, null)
+                : ResourcesCompat.getDrawable(context.getResources(), android.R.drawable.screen_background_light_transparent, null));
+        icon.setTextColor(icon.isChecked() ?
                 context.getResources().getColor(R.color.white)
                 : context.getResources().getColor(R.color.black));
     }
