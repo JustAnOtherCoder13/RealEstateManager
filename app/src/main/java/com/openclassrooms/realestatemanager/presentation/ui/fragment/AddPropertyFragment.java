@@ -30,6 +30,7 @@ import com.openclassrooms.realestatemanager.presentation.utils.ManageImageHelper
 import com.openclassrooms.realestatemanager.presentation.utils.PathUtil;
 import com.openclassrooms.realestatemanager.presentation.utils.RecyclerViewItemClickListener;
 import com.openclassrooms.realestatemanager.presentation.utils.customView.CustomMediaDialog;
+import com.openclassrooms.realestatemanager.presentation.utils.customView.CustomSetTitleDialog;
 import com.picone.core.domain.entity.PointOfInterest;
 import com.picone.core.domain.entity.Property;
 import com.picone.core.domain.entity.PropertyLocation;
@@ -92,7 +93,7 @@ public class AddPropertyFragment extends BaseFragment {
             case CAMERA_PHOTO_INTENT_REQUEST_CODE:
                 if (resultCode == RESULT_OK) {
                     mImageHelper.saveImageInGallery();
-                    createPropertyPhoto();
+                    initSetTitleCustomDialog();
                 }
                 playLoader(false);
                 break;
@@ -106,10 +107,26 @@ public class AddPropertyFragment extends BaseFragment {
             case GALLERY_REQUEST_CODE:
                 if (resultCode == RESULT_OK && data != null && data.getData() != null) {
                     mImageHelper.setCurrentPhotoPath(PathUtil.getPath(requireContext(), data.getData()));
-                    createPropertyPhoto();
+                    initSetTitleCustomDialog();
                 }
                 break;
         }
+    }
+
+    private void initSetTitleCustomDialog() {
+        CustomSetTitleDialog setTitleDialog = new CustomSetTitleDialog(requireContext());
+        setTitleDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        setTitleDialog.show();
+        setTitleDialog.setPhoto(mImageHelper.getCurrentPhotoPath());
+        setTitleDialog.setAcceptOnClickListener(v -> {
+            hideSoftKeyboard(mBinding.addPropertyInformationLayout.getRoot());
+            if (!setTitleDialog.getText().trim().isEmpty()) {
+                createPropertyPhoto(setTitleDialog.getText());
+                setTitleDialog.dismiss();
+            } else
+                Toast.makeText(requireContext(), "You have to enter a description before accept.", Toast.LENGTH_LONG).show();
+        });
+
     }
 
     @Override
@@ -267,34 +284,12 @@ public class AddPropertyFragment extends BaseFragment {
                     break;
             }
         });
-
-       /* AlertDialog.Builder builder = new AlertDialog.Builder(requireContext());
-        builder.setTitle("add photo")
-                .setMessage("get photo from folder or your phone camera ")
-                .setNegativeButton("camera", (dialog, which) -> {
-                    if (isPermissionGrantedForRequestCode(CAMERA_PERMISSION_CODE)
-                            && isPermissionGrantedForRequestCode(WRITE_PERMISSION_CODE)) {
-                        startActivityForResult(mImageHelper.getTakePictureIntent(),CAMERA_PHOTO_INTENT_REQUEST_CODE);
-                        playLoader(true);
-                    } else
-                        ActivityCompat.requestPermissions(requireActivity(), new String[]{Manifest.permission.CAMERA}, CAMERA_PERMISSION_CODE);
-                })
-                .setPositiveButton("folder", (dialog, which) -> {
-                    if (isPermissionGrantedForRequestCode(READ_PERMISSION_CODE)) {
-                        Intent galleryIntent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
-                        startActivityForResult(galleryIntent, GALLERY_REQUEST_CODE);
-                    } else
-                        ActivityCompat.requestPermissions(requireActivity(), new String[]{Manifest.permission.READ_EXTERNAL_STORAGE}, READ_PERMISSION_CODE);
-                })
-                .create()
-                .show();*/
     }
 
     //___________________________________ADD AND UPDATE LOGIC_____________________________________________
 
     private void initAddButtonClick() {
         if (isRequiredInformationAreFilled()) {
-
             hideSoftKeyboard(mBinding.addPropertyInformationLayout.getRoot());
 
             if (isNewPropertyToPersist)
@@ -375,10 +370,10 @@ public class AddPropertyFragment extends BaseFragment {
 
     //___________________________________HELPERS_____________________________________________
 
-    private void createPropertyPhoto() {
+    private void createPropertyPhoto(String title) {
         PropertyPhoto propertyPhoto = new PropertyPhoto();
         propertyPhoto.setPhotoPath(mImageHelper.getCurrentPhotoPath());
-        propertyPhoto.setDescription("test");
+        propertyPhoto.setDescription(title);
         propertyPhoto.setPropertyId(isNewPropertyToPersist ? Objects.requireNonNull(mPropertyViewModel.getAllProperties.getValue()).size() + 1
                 : Objects.requireNonNull(mPropertyViewModel.getSelectedProperty.getValue()).getId());
         mPropertyPhotos.add(propertyPhoto);
