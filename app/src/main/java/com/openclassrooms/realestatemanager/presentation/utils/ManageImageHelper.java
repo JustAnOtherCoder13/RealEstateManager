@@ -1,15 +1,15 @@
 package com.openclassrooms.realestatemanager.presentation.utils;
 
+import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Environment;
 import android.provider.MediaStore;
-import android.util.Log;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.core.content.FileProvider;
 
-import com.openclassrooms.realestatemanager.presentation.ui.fragment.AddPropertyFragment;
 import com.picone.core.domain.entity.PropertyPhoto;
 
 import java.io.File;
@@ -21,14 +21,13 @@ import java.util.List;
 import java.util.Locale;
 
 import static com.picone.core.utils.ConstantParameters.ADD_PHOTO;
-import static com.picone.core.utils.ConstantParameters.CAMERA_PHOTO_INTENT_REQUEST_CODE;
 
 public class ManageImageHelper {
 
-    private  String mCurrentPhotoPath;
-    private AddPropertyFragment requireContext;
+    private String mCurrentPhotoPath;
+    private Context requireContext;
 
-    public ManageImageHelper(AddPropertyFragment requireContext) {
+    public ManageImageHelper(Context requireContext) {
         this.requireContext = requireContext;
     }
 
@@ -36,7 +35,7 @@ public class ManageImageHelper {
         return mCurrentPhotoPath;
     }
 
-    public void setCurrentPhotoPath(String photoPath){
+    public void setCurrentPhotoPath(String photoPath) {
         this.mCurrentPhotoPath = photoPath;
     }
 
@@ -45,39 +44,39 @@ public class ManageImageHelper {
         Intent mediaScanIntent = new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE);
         Uri contentUri = Uri.fromFile(f);
         mediaScanIntent.setData(contentUri);
-        requireContext.requireActivity().sendBroadcast(mediaScanIntent);
+        requireContext.getApplicationContext().sendBroadcast(mediaScanIntent);
     }
 
 
     public File createImageFile() throws IOException {
         String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss", Locale.FRANCE).format(new Date());
         String imageFileName = "JPEG_" + timeStamp + "_";
-        File storageDir = requireContext.requireActivity().getExternalFilesDir(Environment.DIRECTORY_PICTURES);
+        File storageDir = requireContext.getApplicationContext().getExternalFilesDir(Environment.DIRECTORY_PICTURES);
         File image = File.createTempFile(
                 imageFileName,
-                ".jpg",
+                ".png",
                 storageDir
         );
         mCurrentPhotoPath = image.getAbsolutePath();
         return image;
     }
 
-    public void dispatchTakePictureIntent() {
+    public Intent getTakePictureIntent() {
 
         Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
         File photoFile = null;
         try {
             photoFile = createImageFile();
         } catch (IOException ex) {
-            Log.e("TAG", "dispatchTakePictureIntent: ", ex);
+            Toast.makeText(requireContext, ex.toString(), Toast.LENGTH_SHORT).show();
         }
         if (photoFile != null) {
-            Uri photoURI = FileProvider.getUriForFile(requireContext.requireActivity(),
+            Uri photoURI = FileProvider.getUriForFile(requireContext.getApplicationContext(),
                     "com.openclassrooms.android.fileprovider",
                     photoFile);
             takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, photoURI);
-            requireContext.startActivityForResult(takePictureIntent, CAMERA_PHOTO_INTENT_REQUEST_CODE);
         }
+        return takePictureIntent;
     }
 
     @NonNull

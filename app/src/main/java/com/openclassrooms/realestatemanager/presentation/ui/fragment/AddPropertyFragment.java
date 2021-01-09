@@ -26,7 +26,6 @@ import com.openclassrooms.realestatemanager.databinding.FragmentAddPropertyInfor
 import com.openclassrooms.realestatemanager.presentation.ui.fragment.adapter.PhotoRecyclerViewAdapter;
 import com.openclassrooms.realestatemanager.presentation.ui.main.BaseFragment;
 import com.openclassrooms.realestatemanager.presentation.utils.ManageImageHelper;
-import com.openclassrooms.realestatemanager.presentation.utils.ManageVideoHelper;
 import com.openclassrooms.realestatemanager.presentation.utils.PathUtil;
 import com.openclassrooms.realestatemanager.presentation.utils.RecyclerViewItemClickListener;
 import com.picone.core.domain.entity.PointOfInterest;
@@ -43,6 +42,7 @@ import static android.app.Activity.RESULT_OK;
 import static com.openclassrooms.realestatemanager.presentation.viewModels.BaseViewModel.CompletionState.UPDATE_PROPERTY_COMPLETE;
 import static com.picone.core.utils.ConstantParameters.CAMERA_PHOTO_INTENT_REQUEST_CODE;
 import static com.picone.core.utils.ConstantParameters.CAMERA_PERMISSION_CODE;
+import static com.picone.core.utils.ConstantParameters.CAMERA_VIDEO_INTENT_REQUEST_CODE;
 import static com.picone.core.utils.ConstantParameters.GALLERY_REQUEST_CODE;
 import static com.picone.core.utils.ConstantParameters.PROPERTY_TO_ADD;
 import static com.picone.core.utils.ConstantParameters.READ_PERMISSION_CODE;
@@ -57,7 +57,6 @@ public class AddPropertyFragment extends BaseFragment {
     private String mPreviousSavedPropertyAddress;
     private PhotoRecyclerViewAdapter mAdapter;
     private ManageImageHelper mImageHelper;
-    private ManageVideoHelper mVideoHelper;
 
 
     @Nullable
@@ -65,8 +64,7 @@ public class AddPropertyFragment extends BaseFragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         mBinding = FragmentAddPropertyBinding.inflate(getLayoutInflater());
         mNavController = Navigation.findNavController(requireActivity(), R.id.nav_host_fragment);
-        mImageHelper = new ManageImageHelper(this);
-        mVideoHelper = new ManageVideoHelper(this);
+        mImageHelper = new ManageImageHelper(requireContext());
         setAppBarVisibility(false);
         initRecyclerView();
         setUpdateButtonIcon(false);
@@ -98,11 +96,16 @@ public class AddPropertyFragment extends BaseFragment {
                 playLoader(false);
                 break;
 
+            case CAMERA_VIDEO_INTENT_REQUEST_CODE:
+                if (resultCode==RESULT_OK&& data != null && data.getData() != null){
+                    Log.i("TAG", "onActivityResult: "+data.getData());
+                }
             case GALLERY_REQUEST_CODE:
                 if (resultCode == RESULT_OK && data != null && data.getData() != null) {
                     mImageHelper.setCurrentPhotoPath(PathUtil.getPath(requireContext(), data.getData()));
                     createPropertyPhoto();
                 }
+                break;
         }
     }
 
@@ -155,21 +158,16 @@ public class AddPropertyFragment extends BaseFragment {
            mBinding.addPropertySoldLayout.getRoot().setVisibility(View.GONE);
     }
 
-    //TODO all custom view filled with number of bedroom value when update, why?
     private void initViewValueWhenUpdate(@NonNull FragmentAddPropertyInformationLayoutBinding addPropertyInformationCustomView, @NonNull Property property) {
-        Log.i("TAG", "initViewValueWhenUpdate: " + addPropertyInformationCustomView);
         mPropertyViewModel.setPhotosToDelete(new ArrayList<>());
         EditText descriptionEditText = mBinding.addPropertyDescriptionLayout.addPropertyDescriptionEditText;
         AutoCompleteTextView propertyTypeDropDownMenu = mBinding.addPropertyInformationLayout.addPropertyInformationTypeCustomViewAutocompleteTextView;
         addPropertyInformationCustomView.addPropertyInformationPrice.setText(String.valueOf(property.getPrice()));
-
-        Log.e("TAG", "initViewValueWhenUpdate: " + getResources().getResourceName(addPropertyInformationCustomView.addPropertyInformationPrice.getId()) + property.getPrice());
         addPropertyInformationCustomView.addPropertyInformationArea.setText(String.valueOf(property.getPropertyArea()));
         addPropertyInformationCustomView.addPropertyInformationNumberOfBathrooms.setText(String.valueOf(property.getNumberOfBathrooms()));
         addPropertyInformationCustomView.addPropertyInformationNumberOfBedrooms.setText(String.valueOf(property.getNumberOfBedrooms()));
         addPropertyInformationCustomView.addPropertyInformationNumberOfRooms.setText(String.valueOf(property.getNumberOfRooms()));
         addPropertyInformationCustomView.addPropertyInformationAddress.setText(property.getAddress());
-
         mPropertyPhotos.addAll(Objects.requireNonNull(mPropertyViewModel.getAllPropertyPhotosForProperty.getValue()));
         descriptionEditText.setText(property.getDescription());
         propertyTypeDropDownMenu.setText(property.getPropertyType());
@@ -234,7 +232,7 @@ public class AddPropertyFragment extends BaseFragment {
                 .setNegativeButton("camera", (dialog, which) -> {
                     if (isPermissionGrantedForRequestCode(CAMERA_PERMISSION_CODE)
                             && isPermissionGrantedForRequestCode(WRITE_PERMISSION_CODE)) {
-                        mImageHelper.dispatchTakePictureIntent();
+                        startActivityForResult(mImageHelper.getTakePictureIntent(),CAMERA_PHOTO_INTENT_REQUEST_CODE);
                         playLoader(true);
                     } else
                         ActivityCompat.requestPermissions(requireActivity(), new String[]{Manifest.permission.CAMERA}, CAMERA_PERMISSION_CODE);
