@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Environment;
 import android.provider.MediaStore;
+import android.util.Log;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -81,6 +82,7 @@ public class ManageImageHelper {
 
     @NonNull
     public List<PropertyPhoto> propertyPhotosWithAddButton(List<PropertyPhoto> propertyPhotos) {
+        Log.e("TAG", "propertyPhotosWithAddButton: "+propertyPhotos.size() );
         List<PropertyPhoto> photos = new ArrayList<>();
         PropertyPhoto propertyPhoto = new PropertyPhoto(0, ADD_PHOTO, "", 0);
         photos.add(propertyPhoto);

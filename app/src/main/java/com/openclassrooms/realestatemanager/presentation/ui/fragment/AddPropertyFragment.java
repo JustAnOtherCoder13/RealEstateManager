@@ -96,41 +96,40 @@ public class AddPropertyFragment extends BaseFragment {
             case CAMERA_PHOTO_INTENT_REQUEST_CODE:
                 if (resultCode == RESULT_OK) {
                     mImageHelper.saveImageInGallery();
-                    initSetTitleCustomDialog(true,data);
+                    initSetTitleCustomDialog(true, data);
                 }
                 playLoader(false);
                 break;
 
             case CAMERA_VIDEO_INTENT_REQUEST_CODE:
                 if (resultCode == RESULT_OK && data != null && data.getData() != null) {
-                    initSetTitleCustomDialog(false,data);
+                    initSetTitleCustomDialog(false, data);
                 }
                 break;
 
             case GALLERY_REQUEST_CODE:
                 if (resultCode == RESULT_OK && data != null && data.getData() != null) {
                     mImageHelper.setCurrentPhotoPath(PathUtil.getPath(requireContext(), data.getData()));
-                    initSetTitleCustomDialog(true,data);
+                    initSetTitleCustomDialog(true, data);
                 }
                 break;
         }
     }
 
 
-
-    private void initSetTitleCustomDialog(boolean isPhoto,Intent data) {
+    private void initSetTitleCustomDialog(boolean isPhoto, Intent data) {
         setTitleDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         setTitleDialog.show();
         if (isPhoto)
-        setTitleDialog.setPhoto(mImageHelper.getCurrentPhotoPath());
-        else{
-        setTitleDialog.setVideo(data.getData());
+            setTitleDialog.setPhoto(mImageHelper.getCurrentPhotoPath());
+        else {
+            setTitleDialog.setVideo(data.getData());
         }
 
         setTitleDialog.setAcceptOnClickListener(v -> {
             hideSoftKeyboard(mBinding.addPropertyInformationLayout.getRoot());
             if (!setTitleDialog.getText().trim().isEmpty()) {
-                createPropertyPhoto(setTitleDialog.getText(),isPhoto);
+                createPropertyPhoto(setTitleDialog.getText(), isPhoto);
                 setTitleDialog.dismiss();
             } else
                 Toast.makeText(requireContext(), "You have to enter a description before accept.", Toast.LENGTH_LONG).show();
@@ -149,10 +148,10 @@ public class AddPropertyFragment extends BaseFragment {
     private void initViewModel() {
         mPropertyViewModel.resetCompletionState();
 
-        if (!isNewPropertyToPersist)
+        if (!isNewPropertyToPersist) {
+            mPropertyViewModel.setAllPhotosForProperty(Objects.requireNonNull(mPropertyViewModel.getSelectedProperty.getValue()));
             mPropertyViewModel.setPropertyLocationForProperty(Objects.requireNonNull(mPropertyViewModel.getSelectedProperty.getValue()));
-
-        else mPropertyViewModel.setAllPhotosForProperty(new Property());
+        } else mPropertyViewModel.setAllPhotosForProperty(new Property());
 
         mPropertyViewModel.getCompletionState.observe(getViewLifecycleOwner(), completionState -> {
             switch (completionState) {
@@ -168,8 +167,10 @@ public class AddPropertyFragment extends BaseFragment {
             }
         });
 
-        mPropertyViewModel.getAllPropertyPhotosForProperty.observe(getViewLifecycleOwner(), propertyPhotos ->
-                mAdapter.updatePhotos(mImageHelper.propertyPhotosWithAddButton(propertyPhotos)));
+        mPropertyViewModel.getAllPropertyPhotosForProperty.observe(getViewLifecycleOwner(), propertyPhotos -> {
+            mPropertyPhotos = propertyPhotos;
+            mAdapter.updatePhotos(mImageHelper.propertyPhotosWithAddButton(propertyPhotos));
+        });
 
         mPropertyViewModel.getPhotosToDelete.observe(getViewLifecycleOwner(), photosToDelete ->
                 mBinding.addPropertyMediaLayout.detailCustomViewDeleteButton.setVisibility(photosToDelete.isEmpty() ? View.GONE : View.VISIBLE));
@@ -196,7 +197,6 @@ public class AddPropertyFragment extends BaseFragment {
         addPropertyInformationCustomView.addPropertyInformationNumberOfBedrooms.setText(String.valueOf(property.getNumberOfBedrooms()));
         addPropertyInformationCustomView.addPropertyInformationNumberOfRooms.setText(String.valueOf(property.getNumberOfRooms()));
         addPropertyInformationCustomView.addPropertyInformationAddress.setText(property.getAddress());
-        mPropertyPhotos.addAll(Objects.requireNonNull(mPropertyViewModel.getAllPropertyPhotosForProperty.getValue()));
         descriptionEditText.setText(property.getDescription());
         propertyTypeDropDownMenu.setText(property.getPropertyType());
     }
@@ -250,6 +250,7 @@ public class AddPropertyFragment extends BaseFragment {
         RecyclerViewItemClickListener.addTo(mBinding.addPropertyMediaLayout.detailCustomViewRecyclerView, R.layout.fragment_add_property)
                 .setOnItemClickListener((recyclerView, position, v) -> {
                     if (position == 0) initAlertDialog();
+
                 });
     }
 
@@ -283,7 +284,7 @@ public class AddPropertyFragment extends BaseFragment {
                     if (isPermissionGrantedForRequestCode(CAMERA_PERMISSION_CODE)
                             && isPermissionGrantedForRequestCode(WRITE_PERMISSION_CODE)) {
                         Intent takeVideoIntent = new Intent(MediaStore.ACTION_VIDEO_CAPTURE);
-                        takeVideoIntent.putExtra(MediaStore.EXTRA_DURATION_LIMIT,10);
+                        takeVideoIntent.putExtra(MediaStore.EXTRA_DURATION_LIMIT, 10);
                         startActivityForResult(takeVideoIntent, CAMERA_VIDEO_INTENT_REQUEST_CODE);
                         playLoader(true);
                     } else
@@ -382,11 +383,13 @@ public class AddPropertyFragment extends BaseFragment {
     private void createPropertyPhoto(String title, boolean isPhoto) {
         PropertyPhoto propertyPhoto = new PropertyPhoto();
         if (isPhoto)
-        propertyPhoto.setPhotoPath(mImageHelper.getCurrentPhotoPath());
+            propertyPhoto.setPhotoPath(mImageHelper.getCurrentPhotoPath());
         else propertyPhoto.setPhotoPath(setTitleDialog.getVideoPath());
+
         propertyPhoto.setDescription(title);
         propertyPhoto.setPropertyId(isNewPropertyToPersist ? Objects.requireNonNull(mPropertyViewModel.getAllProperties.getValue()).size() + 1
                 : Objects.requireNonNull(mPropertyViewModel.getSelectedProperty.getValue()).getId());
+        Log.d("TAG", "createPropertyPhoto: " + mPropertyPhotos.size());
         mPropertyPhotos.add(propertyPhoto);
         mAdapter.updatePhotos(mImageHelper.propertyPhotosWithAddButton(mPropertyPhotos));
     }
