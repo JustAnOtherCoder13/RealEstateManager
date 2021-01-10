@@ -1,10 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    style="@style/custom_alert_dialog_base_style"
     android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    android:background="@drawable/custom_dialog_shape"
-    android:padding="@dimen/basic_marge">
+    android:layout_height="wrap_content">
 
     <VideoView
         android:id="@+id/full_screen_video"
@@ -18,8 +17,8 @@
     <ImageView
         android:id="@+id/full_screen_image"
         android:layout_width="wrap_content"
-        android:layout_height="600dp"
-        android:background="@android:color/transparent"
+        android:layout_height="wrap_content"
+        android:contentDescription="@string/full_screen_image"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -33,6 +32,5 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
-
 
 </androidx.constraintlayout.widget.ConstraintLayout>

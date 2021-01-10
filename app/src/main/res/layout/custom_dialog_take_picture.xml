@@ -2,80 +2,47 @@
 
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    style="@style/custom_alert_dialog_base_style"
     android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    android:padding="@dimen/big_marge"
-    android:background="@drawable/custom_dialog_shape">
-
+    android:layout_height="wrap_content">
 
     <CheckedTextView
         android:id="@+id/custom_dialog_gallery_button"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="@dimen/basic_marge"
-        android:drawableTop="@drawable/ic_custom_dialog_gallery"
-        android:text="Gallery"
-        android:textAlignment="center"
-        android:paddingBottom="@dimen/little_marge"
-        android:paddingTop="@dimen/little_marge"
-        android:textAppearance="@style/TextAppearance.RealEstateManagerStyles.Body1"
+        style="@style/custom_alert_dialog_base_checked_text_view_gallery"
         app:layout_constraintEnd_toStartOf="@id/custom_dialog_photo_button"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
     <CheckedTextView
         android:id="@+id/custom_dialog_photo_button"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:drawableTop="@drawable/ic_custom_dialog_photo_camera"
-        android:text="Photo"
-        android:textAlignment="center"
-        android:paddingBottom="@dimen/little_marge"
-        android:paddingTop="@dimen/little_marge"
-        android:textAppearance="@style/TextAppearance.RealEstateManagerStyles.Body1"
+        style="@style/custom_alert_dialog_base_checked_text_view_photo_camera"
         app:layout_constraintEnd_toStartOf="@id/custom_dialog_video_button"
         app:layout_constraintStart_toEndOf="@id/custom_dialog_gallery_button"
         app:layout_constraintTop_toTopOf="parent" />
 
     <CheckedTextView
         android:id="@+id/custom_dialog_video_button"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="@dimen/basic_marge"
-        android:paddingBottom="@dimen/little_marge"
-        android:paddingTop="@dimen/little_marge"
-        android:drawableTop="@drawable/ic_custom_dialog_video_camera"
-        android:text="Video"
-        android:textAlignment="center"
-        android:textAppearance="@style/TextAppearance.RealEstateManagerStyles.Body1"
+        style="@style/custom_alert_dialog_base_checked_text_view_video_camera"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@id/custom_dialog_photo_button"
         app:layout_constraintTop_toTopOf="parent" />
 
     <com.google.android.material.button.MaterialButton
         android:id="@+id/custom_dialog_back_button"
+        style="@style/custom_alert_dialog_back_button_take_picture"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="@dimen/XL_marge"
-        android:layout_marginTop="@dimen/big_marge"
-        android:layout_marginEnd="@dimen/big_marge"
-        android:text="Back"
-        android:textAppearance="@style/TextAppearance.RealEstateManagerStyles.Subtitle1"
-        app:cornerRadius="10dp"
-        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toStartOf="@id/custom_dialog_go_button"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/custom_dialog_gallery_button" />
 
     <com.google.android.material.button.MaterialButton
         android:id="@+id/custom_dialog_go_button"
+        style="@style/custom_alert_dialog_ok_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="@dimen/XL_marge"
-        android:text="Go"
-        android:textAppearance="@style/TextAppearance.RealEstateManagerStyles.Subtitle1"
-        app:cornerRadius="10dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@id/custom_dialog_back_button"
-        app:layout_constraintTop_toTopOf="@id/custom_dialog_back_button"/>
+        app:layout_constraintTop_toTopOf="@id/custom_dialog_back_button" />
 </androidx.constraintlayout.widget.ConstraintLayout>
 

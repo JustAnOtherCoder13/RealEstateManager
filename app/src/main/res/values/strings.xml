@@ -20,6 +20,8 @@
     <string name="icon">Icon</string>
     <string name="update_property_button">update property button</string>
     <string name="delete_button">delete button</string>
+    <string name="full_screen_image">full screen image</string>
+    <string name="photo_set_on_set_title_dialog">photo set on set title dialog</string>
 
 
     <!-- ______________________TEXT VIEW__________________ -->
@@ -65,7 +67,17 @@
     <string name="gps_warning_message">GPS is Disabled in your device, enable it to be located</string>
     <string name="information_not_filled">Please, fill all \"Information\" values and at least one photo before register</string>
     <string name="no_camera_warning">You have no camera on your phone, so you can\'t use camera button to add pictures. You could always add pictures from your image folder.</string>
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
+
+
+    <!--_______________________CUSTOM ALERT DIALOG___________________ -->
+
+    <string name="back">Back</string>
+    <string name="ok">OK</string>
+    <string name="gallery">Gallery</string>
+    <string name="photo">Photo</string>
+    <string name="video">Video</string>
+    <string name="pause">Pause</string>
+    <string name="play">Play</string>
+
 
 </resources>

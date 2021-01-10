@@ -46,8 +46,8 @@ public class CustomSetTitleDialog extends Dialog implements android.view.View.On
         photo = mBinding.setPhotoTitleImageView;
         video = mBinding.setPhotoTitleVideoView;
         description = mBinding.setPhotoDescriptionEditText;
-        accept = mBinding.setPhotoAcceptButton;
-        cancel = mBinding.setPhotoCancelButton;
+        accept = mBinding.setPhotoOkButton;
+        cancel = mBinding.setPhotoBackButton;
         cancel.setOnClickListener(this);
     }
 
@@ -98,6 +98,6 @@ public class CustomSetTitleDialog extends Dialog implements android.view.View.On
 
     @Override
     public void onClick(View v) {
-        if (v.getId() == R.id.set_photo_cancel_button) dismiss();
+        if (v.getId() == R.id.set_photo_back_button) dismiss();
     }
 }
