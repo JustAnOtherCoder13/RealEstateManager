@@ -6,6 +6,7 @@ import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.CheckedTextView;
 import android.widget.ImageView;
@@ -13,6 +14,7 @@ import android.widget.VideoView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.core.content.res.ResourcesCompat;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.target.CustomTarget;
@@ -79,14 +81,16 @@ public class CustomFullScreenMediaDialog extends Dialog implements android.view.
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.custom_media_controller_play_button:
-                if (stopPosition > 0){
+                managePlayButton();
+                if (stopPosition > 0) {
                     video.setVideoPath(mediaPath);
                     video.seekTo(stopPosition);
-                    stopPosition=0;
+                    stopPosition = 0;
                 }
                 video.start();
                 break;
             case R.id.custom_media_controller_pause_button:
+                managePlayButton();
                 stopPosition = video.getCurrentPosition();
                 video.suspend();
                 break;
@@ -98,7 +102,24 @@ public class CustomFullScreenMediaDialog extends Dialog implements android.view.
 
     private void switchPhotoOrVideoVisibility(boolean isPhoto) {
         photo.setVisibility(isPhoto ? View.VISIBLE : View.GONE);
+        play.setVisibility(isPhoto ? View.GONE : View.VISIBLE);
+        pause.setVisibility(isPhoto ? View.GONE : View.VISIBLE);
         video.setVisibility(isPhoto ? View.GONE : View.VISIBLE);
     }
 
+    private void managePlayButton() {
+        play.setChecked(!video.isPlaying());
+        pause.setChecked(video.isPlaying());
+        setIconStyle(play);
+        setIconStyle(pause);
+    }
+
+    private void setIconStyle(@NonNull CheckedTextView icon) {
+        icon.setBackground(icon.isChecked() ?
+                ResourcesCompat.getDrawable(context.getResources(), R.drawable.custom_round_white, null)
+                : null
+        );
+        icon.setTextColor(icon.isChecked() ? context.getResources().getColor(R.color.black)
+                : context.getResources().getColor(R.color.white));
+    }
 }

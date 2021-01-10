@@ -84,7 +84,7 @@ public class CustomMediaDialog extends Dialog implements android.view.View.OnCli
 
         icon.setBackground(icon.isChecked() ?
                 ResourcesCompat.getDrawable(context.getResources(), R.drawable.custom_round_primary, null)
-                : ResourcesCompat.getDrawable(context.getResources(), android.R.drawable.screen_background_light_transparent, null));
+                : null );
         icon.setTextColor(icon.isChecked() ?
                 context.getResources().getColor(R.color.white)
                 : context.getResources().getColor(R.color.black));
