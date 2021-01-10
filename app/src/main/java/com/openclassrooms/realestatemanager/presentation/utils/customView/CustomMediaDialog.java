@@ -2,17 +2,15 @@ package com.openclassrooms.realestatemanager.presentation.utils.customView;
 
 import android.app.Dialog;
 import android.content.Context;
-import android.graphics.Bitmap;
-import android.net.Uri;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
-import android.util.Size;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CheckedTextView;
 
 import androidx.annotation.NonNull;
 import androidx.core.content.res.ResourcesCompat;
-import androidx.fragment.app.Fragment;
 
 import com.openclassrooms.realestatemanager.R;
 import com.openclassrooms.realestatemanager.databinding.CustomDialogTakePictureBinding;
@@ -52,6 +50,7 @@ public class CustomMediaDialog extends Dialog implements android.view.View.OnCli
         video.setOnClickListener(this);
         backButton.setOnClickListener(this);
         goButton.setEnabled(false);
+        this.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
     }
 
     public void goButtonSetOnClickListener(View.OnClickListener onClickListener) {

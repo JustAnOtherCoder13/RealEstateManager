@@ -20,6 +20,8 @@ import com.openclassrooms.realestatemanager.databinding.FragmentPropertyDetailBi
 import com.openclassrooms.realestatemanager.databinding.FragmentPropertyDetailInformationBinding;
 import com.openclassrooms.realestatemanager.presentation.ui.fragment.adapter.PhotoRecyclerViewAdapter;
 import com.openclassrooms.realestatemanager.presentation.ui.main.BaseFragment;
+import com.openclassrooms.realestatemanager.presentation.utils.RecyclerViewItemClickListener;
+import com.openclassrooms.realestatemanager.presentation.utils.customView.CustomFullScreenMediaDialog;
 import com.openclassrooms.realestatemanager.presentation.utils.customView.DetailInformationCustomView;
 import com.picone.core.domain.entity.Property;
 import com.picone.core.domain.entity.PropertyLocation;
@@ -45,6 +47,7 @@ public class PropertyDetailFragment extends BaseFragment {
         setAppBarVisibility(false);
         initRecyclerView();
         setUpdateButtonIcon(true);
+        initClickOnMedia();
         return mBinding.getRoot();
     }
 
@@ -75,6 +78,14 @@ public class PropertyDetailFragment extends BaseFragment {
         setTextForCustomView(detailInformationLayout.fragmentDetailNumbersOfBathroomsCustomView, String.valueOf(property.getNumberOfBathrooms()));
         descriptionTextView.setText(property.getPropertyType());
         mPropertyViewModel.getPropertyLocationForProperty.observe(getViewLifecycleOwner(), this::setStaticMap);
+    }
+
+    private void initClickOnMedia(){
+        RecyclerViewItemClickListener.addTo(mBinding.fragmentDetailMediaLayout.detailCustomViewRecyclerView,R.layout.fragment_property_detail)
+                .setOnItemClickListener((recyclerView, position, v) -> {
+                    CustomFullScreenMediaDialog fullScreenMediaDialog = new CustomFullScreenMediaDialog(requireContext(),Objects.requireNonNull(mPropertyViewModel.getAllPropertyPhotosForProperty.getValue()).get(position).getPhotoPath());
+                    fullScreenMediaDialog.show();
+                });
     }
 
 

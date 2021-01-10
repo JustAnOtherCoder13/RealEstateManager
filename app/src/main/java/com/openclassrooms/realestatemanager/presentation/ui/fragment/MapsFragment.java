@@ -12,7 +12,6 @@ import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.core.app.ActivityCompat;
-import androidx.core.content.ContextCompat;
 import androidx.navigation.Navigation;
 
 import com.bumptech.glide.Glide;
@@ -41,10 +40,10 @@ import java.util.Objects;
 
 import static android.Manifest.permission.ACCESS_FINE_LOCATION;
 import static com.openclassrooms.realestatemanager.presentation.utils.BitmapConverterUtil.getBitmapFromVectorOrDrawable;
+import static com.picone.core.utils.ConstantParameters.LOCATION_PERMISSION_CODE;
 import static com.picone.core.utils.ConstantParameters.MAPS_CAMERA_LARGE_ZOOM;
 import static com.picone.core.utils.ConstantParameters.MAPS_CAMERA_NEAR_ZOOM;
 import static com.picone.core.utils.ConstantParameters.MAPS_KEY;
-import static com.picone.core.utils.ConstantParameters.LOCATION_PERMISSION_CODE;
 
 public class MapsFragment extends BaseFragment implements GoogleMap.OnInfoWindowClickListener, OnMapReadyCallback {
 

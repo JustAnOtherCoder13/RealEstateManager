@@ -36,7 +36,6 @@ import com.picone.core.domain.entity.Property;
 import com.picone.core.domain.entity.PropertyLocation;
 import com.picone.core.domain.entity.PropertyPhoto;
 
-import java.net.URLConnection;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -249,14 +248,13 @@ public class AddPropertyFragment extends BaseFragment {
     private void initAddMediaClickListener() {
         RecyclerViewItemClickListener.addTo(mBinding.addPropertyMediaLayout.detailCustomViewRecyclerView, R.layout.fragment_add_property)
                 .setOnItemClickListener((recyclerView, position, v) -> {
-                    if (position == 0) initAlertDialog();
+                    if (position == 0) initMediaDialog();
 
                 });
     }
 
-    private void initAlertDialog() {
+    private void initMediaDialog() {
         CustomMediaDialog mediaDialog = new CustomMediaDialog(requireContext());
-        mediaDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         mediaDialog.show();
         mediaDialog.goButtonSetOnClickListener(v -> {
             switch (mediaDialog.getIntentRequestCode()) {

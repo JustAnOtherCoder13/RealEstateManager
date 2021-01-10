@@ -81,6 +81,11 @@ public class PathUtil {
         return mimeType != null && mimeType.startsWith("image");
     }
 
+    public static boolean isVideoFileFromPath(String path) {
+        String mimeType = URLConnection.guessContentTypeFromName(path);
+        return mimeType != null && mimeType.startsWith("video");
+    }
+
     /**
      * @param uri The Uri to check.
      * @return Whether the Uri authority is ExternalStorageProvider.

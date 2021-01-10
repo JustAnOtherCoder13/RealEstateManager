@@ -21,8 +21,6 @@ import com.openclassrooms.realestatemanager.R;
 import com.openclassrooms.realestatemanager.databinding.CustomDialogSetPhotoTitleBinding;
 import com.openclassrooms.realestatemanager.presentation.utils.PathUtil;
 
-import static com.openclassrooms.realestatemanager.presentation.utils.ResizePictureForView.setPic;
-
 public class CustomSetTitleDialog extends Dialog implements android.view.View.OnClickListener {
 
     private Context context;
@@ -60,7 +58,7 @@ public class CustomSetTitleDialog extends Dialog implements android.view.View.On
     public void setPhoto(String photoPath) {
         isPhoto(true);
         Glide.with(context)
-                .load(setPic(photo, photoPath))
+                .load(photoPath)
                 .centerCrop()
                 .into(new CustomTarget<Drawable>() {
                     @Override
