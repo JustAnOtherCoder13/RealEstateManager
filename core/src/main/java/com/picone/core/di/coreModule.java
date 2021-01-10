@@ -19,7 +19,6 @@ import com.picone.core.domain.interactors.property.location.GetPropertyLocationI
 import com.picone.core.domain.interactors.property.location.UpdatePropertyLocationInteractor;
 import com.picone.core.domain.interactors.property.maps.GetNearBySearchForPropertyLocationInteractor;
 import com.picone.core.domain.interactors.property.maps.GetPropertyLocationForAddressInteractor;
-import com.picone.core.domain.interactors.property.maps.GetStaticMapForLatLngInteractor;
 import com.picone.core.domain.interactors.property.photo.AddPropertyPhotoInteractor;
 import com.picone.core.domain.interactors.property.photo.DeletePropertyPhotoInteractor;
 import com.picone.core.domain.interactors.property.photo.GetAllPropertyPhotosForPropertyIdInteractor;
@@ -43,28 +42,30 @@ public final class coreModule {
 
     @Singleton
     @Provides
-    static RealEstateManagerRoomDatabase provideRealEstateManagerRoomDatabase(@ApplicationContext Context context){
+    static RealEstateManagerRoomDatabase provideRealEstateManagerRoomDatabase(@ApplicationContext Context context) {
         return RealEstateManagerRoomDatabase.getInstance(context);
     }
 
     @Singleton
     @Provides
-    static RetrofitClient provideRetrofitClient(){return new RetrofitClient();}
+    static RetrofitClient provideRetrofitClient() {
+        return new RetrofitClient();
+    }
 
     //--------------------------------------DAO-----------------------------------------------------
 
     @Provides
-    static RealEstateAgentDaoImpl provideRealEstateManagerDao(@ApplicationContext Context context){
+    static RealEstateAgentDaoImpl provideRealEstateManagerDao(@ApplicationContext Context context) {
         return new RealEstateAgentDaoImpl(provideRealEstateManagerRoomDatabase(context));
     }
 
     @Provides
-    static PropertyDaoImpl providePropertyDao(@ApplicationContext Context context){
+    static PropertyDaoImpl providePropertyDao(@ApplicationContext Context context) {
         return new PropertyDaoImpl(provideRealEstateManagerRoomDatabase(context));
     }
 
     @Provides
-    static PlaceServiceDaoImpl providePlaceService(){
+    static PlaceServiceDaoImpl providePlaceService() {
         return new PlaceServiceDaoImpl(provideRetrofitClient());
     }
 
@@ -72,99 +73,94 @@ public final class coreModule {
 
     @Singleton
     @Provides
-    static RealEstateAgentRepository provideRealEstateAgentDataSource(@ApplicationContext Context context){
+    static RealEstateAgentRepository provideRealEstateAgentDataSource(@ApplicationContext Context context) {
         return new RealEstateAgentRepository(provideRealEstateManagerDao(context));
     }
 
     @Singleton
     @Provides
-    static PropertyRepository providePropertyDataSource(@ApplicationContext Context context){
-        return new PropertyRepository(providePropertyDao(context),providePlaceService());
+    static PropertyRepository providePropertyDataSource(@ApplicationContext Context context) {
+        return new PropertyRepository(providePropertyDao(context), providePlaceService());
     }
 
     //--------------------------------------REAL ESTATE AGENT INTERACTORS-----------------------------------------------------
 
     @Provides
-    static GetAgentInteractor provideGetAllRoomAgents(@ApplicationContext Context context){
+    static GetAgentInteractor provideGetAllRoomAgents(@ApplicationContext Context context) {
         return new GetAgentInteractor(provideRealEstateAgentDataSource(context));
     }
 
     //--------------------------------------PROPERTY INTERACTORS-----------------------------------------------------
 
     @Provides
-    static GetAllPropertiesInteractor provideGetAllRoomProperties(@ApplicationContext Context context){
+    static GetAllPropertiesInteractor provideGetAllRoomProperties(@ApplicationContext Context context) {
         return new GetAllPropertiesInteractor(providePropertyDataSource(context));
     }
 
     @Provides
-    static GetAllPointOfInterestForPropertyIdInteractor provideGetAllRoomPointOfInterestForPropertyId(@ApplicationContext Context context){
+    static GetAllPointOfInterestForPropertyIdInteractor provideGetAllRoomPointOfInterestForPropertyId(@ApplicationContext Context context) {
         return new GetAllPointOfInterestForPropertyIdInteractor(providePropertyDataSource(context));
     }
 
     @Provides
-    static GetAllPropertyPhotosForPropertyIdInteractor provideGetAllPropertyPhotosForPropertyId(@ApplicationContext Context context){
+    static GetAllPropertyPhotosForPropertyIdInteractor provideGetAllPropertyPhotosForPropertyId(@ApplicationContext Context context) {
         return new GetAllPropertyPhotosForPropertyIdInteractor(providePropertyDataSource(context));
     }
 
     @Provides
-    static AddPropertyInteractor provideAddRoomProperty(@ApplicationContext Context context){
+    static AddPropertyInteractor provideAddRoomProperty(@ApplicationContext Context context) {
         return new AddPropertyInteractor(providePropertyDataSource(context));
     }
 
     @Provides
-    static AddPropertyPointOfInterestInteractor provideAddRoomPropertyPointOfInterest(@ApplicationContext Context context){
+    static AddPropertyPointOfInterestInteractor provideAddRoomPropertyPointOfInterest(@ApplicationContext Context context) {
         return new AddPropertyPointOfInterestInteractor(providePropertyDataSource(context));
     }
 
     @Provides
-    static AddPropertyPhotoInteractor provideAddRoomPropertyPhoto(@ApplicationContext Context context){
-        return  new AddPropertyPhotoInteractor(providePropertyDataSource(context));
+    static AddPropertyPhotoInteractor provideAddRoomPropertyPhoto(@ApplicationContext Context context) {
+        return new AddPropertyPhotoInteractor(providePropertyDataSource(context));
     }
 
     @Provides
-    static DeletePropertyPhotoInteractor provideDeleteRoomPropertyPhoto(@ApplicationContext Context context){
+    static DeletePropertyPhotoInteractor provideDeleteRoomPropertyPhoto(@ApplicationContext Context context) {
         return new DeletePropertyPhotoInteractor(providePropertyDataSource(context));
     }
 
     @Provides
-    static UpdatePropertyInteractor provideUpdateRoomProperty(@ApplicationContext Context context){
+    static UpdatePropertyInteractor provideUpdateRoomProperty(@ApplicationContext Context context) {
         return new UpdatePropertyInteractor(providePropertyDataSource(context));
     }
 
     @Provides
-    static GetPropertyLocationInteractor provideGetPropertyLocation(@ApplicationContext Context context){
+    static GetPropertyLocationInteractor provideGetPropertyLocation(@ApplicationContext Context context) {
         return new GetPropertyLocationInteractor(providePropertyDataSource(context));
     }
 
     @Provides
-    static AddPropertyLocationInteractor provideAddPropertyLocation(@ApplicationContext Context context){
+    static AddPropertyLocationInteractor provideAddPropertyLocation(@ApplicationContext Context context) {
         return new AddPropertyLocationInteractor(providePropertyDataSource(context));
     }
 
     @Provides
-    static UpdatePropertyLocationInteractor provideUpdatePropertyLocation(@ApplicationContext Context context){
+    static UpdatePropertyLocationInteractor provideUpdatePropertyLocation(@ApplicationContext Context context) {
         return new UpdatePropertyLocationInteractor(providePropertyDataSource(context));
     }
 
     @Provides
-    static DeletePointOfInterestInteractor provideDeletePointOfInterest(@ApplicationContext Context context){
+    static DeletePointOfInterestInteractor provideDeletePointOfInterest(@ApplicationContext Context context) {
         return new DeletePointOfInterestInteractor(providePropertyDataSource(context));
     }
 
-    //place interactor
+    //--------------------------------------PLACE INTERACTORS-----------------------------------------------------
 
     @Provides
-    static GetPropertyLocationForAddressInteractor provideGetPropertyLocationForAddress(@ApplicationContext Context context){
+    static GetPropertyLocationForAddressInteractor provideGetPropertyLocationForAddress(@ApplicationContext Context context) {
         return new GetPropertyLocationForAddressInteractor(providePropertyDataSource(context));
     }
 
     @Provides
-    static GetStaticMapForLatLngInteractor provideGetStaticMapForLatLng(@ApplicationContext Context context){
-        return new GetStaticMapForLatLngInteractor(providePropertyDataSource(context));
-    }
-
-    @Provides
-    static GetNearBySearchForPropertyLocationInteractor provideGetNearBySearchForProperty(@ApplicationContext Context context){
+    static GetNearBySearchForPropertyLocationInteractor provideGetNearBySearchForProperty(@ApplicationContext Context context) {
         return new GetNearBySearchForPropertyLocationInteractor(providePropertyDataSource(context));
     }
 }

@@ -31,23 +31,19 @@ public class PathUtil {
                 final String docId = DocumentsContract.getDocumentId(uri);
                 final String[] split = docId.split(":");
                 return Environment.getExternalStorageDirectory() + "/" + split[1];
-            }
-            else if (isDownloadsDocument(uri)) {
+            } else if (isDownloadsDocument(uri)) {
                 final String id = DocumentsContract.getDocumentId(uri);
                 uri = ContentUris.withAppendedId(
                         Uri.parse("content://downloads/public_downloads"), Long.parseLong(id));
-            }
-            else if (isMediaDocument(uri)) {
+            } else if (isMediaDocument(uri)) {
                 final String docId = DocumentsContract.getDocumentId(uri);
                 final String[] split = docId.split(":");
                 final String type = split[0];
                 if ("image".equals(type)) {
                     uri = MediaStore.Images.Media.EXTERNAL_CONTENT_URI;
-                }
-                else if ("video".equals(type)) {
+                } else if ("video".equals(type)) {
                     uri = MediaStore.Video.Media.EXTERNAL_CONTENT_URI;
-                }
-                else if ("audio".equals(type)) {
+                } else if ("audio".equals(type)) {
                     uri = MediaStore.Audio.Media.EXTERNAL_CONTENT_URI;
                 }
                 selection = "_id=?";
@@ -74,7 +70,6 @@ public class PathUtil {
         }
         return null;
     }
-
 
     public static boolean isImageFileFromPath(String path) {
         String mimeType = URLConnection.guessContentTypeFromName(path);

@@ -115,26 +115,6 @@ public class AddPropertyFragment extends BaseFragment {
         }
     }
 
-
-    private void initSetTitleCustomDialog(boolean isPhoto, Intent data) {
-        setTitleDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
-        setTitleDialog.show();
-        if (isPhoto)
-            setTitleDialog.setPhoto(mImageHelper.getCurrentPhotoPath());
-        else {
-            setTitleDialog.setVideo(data.getData());
-        }
-
-        setTitleDialog.setAcceptOnClickListener(v -> {
-            hideSoftKeyboard(mBinding.addPropertyInformationLayout.getRoot());
-            if (!setTitleDialog.getText().trim().isEmpty()) {
-                createPropertyPhoto(setTitleDialog.getText(), isPhoto);
-                setTitleDialog.dismiss();
-            } else
-                Toast.makeText(requireContext(), "You have to enter a description before accept.", Toast.LENGTH_LONG).show();
-        });
-    }
-
     @Override
     public void onResume() {
         super.onResume();
@@ -208,6 +188,64 @@ public class AddPropertyFragment extends BaseFragment {
         propertyTypeTextView.setAdapter(adapter);
     }
 
+    private void initSetTitleCustomDialog(boolean isPhoto, Intent data) {
+        Objects.requireNonNull(setTitleDialog.getWindow()).setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        setTitleDialog.show();
+
+        if (isPhoto) setTitleDialog.setPhoto(mImageHelper.getCurrentPhotoPath());
+        else setTitleDialog.setVideo(data.getData());
+
+        setTitleDialog.setAcceptOnClickListener(v -> {
+            hideSoftKeyboard(mBinding.addPropertyInformationLayout.getRoot());
+            if (!setTitleDialog.getText().trim().isEmpty()) {
+                createPropertyPhoto(setTitleDialog.getText(), isPhoto);
+                setTitleDialog.dismiss();
+            } else
+                Toast.makeText(requireContext(), "You have to enter a description before accept.", Toast.LENGTH_LONG).show();
+        });
+    }
+
+    private void initMediaDialog() {
+        CustomMediaDialog mediaDialog = new CustomMediaDialog(requireContext());
+        mediaDialog.show();
+        mediaDialog.okButtonSetOnClickListener(v -> {
+            switch (mediaDialog.getIntentRequestCode()) {
+
+                case GALLERY_REQUEST_CODE:
+                    if (isPermissionGrantedForRequestCode(READ_PERMISSION_CODE)) {
+                        Intent galleryIntent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+                        startActivityForResult(galleryIntent, GALLERY_REQUEST_CODE);
+                    } else
+                        ActivityCompat.requestPermissions(requireActivity(), new String[]{Manifest.permission.READ_EXTERNAL_STORAGE}, READ_PERMISSION_CODE);
+                    mediaDialog.dismiss();
+                    break;
+
+                case CAMERA_PHOTO_INTENT_REQUEST_CODE:
+                    if (isPermissionGrantedForRequestCode(CAMERA_PERMISSION_CODE)
+                            && isPermissionGrantedForRequestCode(WRITE_PERMISSION_CODE)) {
+                        startActivityForResult(mImageHelper.getTakePictureIntent(), CAMERA_PHOTO_INTENT_REQUEST_CODE);
+                        playLoader(true);
+                    } else
+                        ActivityCompat.requestPermissions(requireActivity(), new String[]{Manifest.permission.CAMERA}, CAMERA_PERMISSION_CODE);
+                    mediaDialog.dismiss();
+                    break;
+
+                case CAMERA_VIDEO_INTENT_REQUEST_CODE:
+                    if (isPermissionGrantedForRequestCode(CAMERA_PERMISSION_CODE)
+                            && isPermissionGrantedForRequestCode(WRITE_PERMISSION_CODE)) {
+                        Intent takeVideoIntent = new Intent(MediaStore.ACTION_VIDEO_CAPTURE);
+                        takeVideoIntent.putExtra(MediaStore.EXTRA_DURATION_LIMIT, 10);
+                        startActivityForResult(takeVideoIntent, CAMERA_VIDEO_INTENT_REQUEST_CODE);
+                        playLoader(true);
+                    } else
+                        ActivityCompat.requestPermissions(requireActivity(), new String[]{Manifest.permission.CAMERA}, CAMERA_PERMISSION_CODE);
+
+                    mediaDialog.dismiss();
+                    break;
+            }
+        });
+    }
+
     //___________________________________CLICK LISTENER_____________________________________________
 
     private void initClickListener() {
@@ -249,49 +287,7 @@ public class AddPropertyFragment extends BaseFragment {
         RecyclerViewItemClickListener.addTo(mBinding.addPropertyMediaLayout.detailCustomViewRecyclerView, R.layout.fragment_add_property)
                 .setOnItemClickListener((recyclerView, position, v) -> {
                     if (position == 0) initMediaDialog();
-
                 });
-    }
-
-    private void initMediaDialog() {
-        CustomMediaDialog mediaDialog = new CustomMediaDialog(requireContext());
-        mediaDialog.show();
-        mediaDialog.goButtonSetOnClickListener(v -> {
-            switch (mediaDialog.getIntentRequestCode()) {
-
-                case GALLERY_REQUEST_CODE:
-                    if (isPermissionGrantedForRequestCode(READ_PERMISSION_CODE)) {
-                        Intent galleryIntent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
-                        startActivityForResult(galleryIntent, GALLERY_REQUEST_CODE);
-                    } else
-                        ActivityCompat.requestPermissions(requireActivity(), new String[]{Manifest.permission.READ_EXTERNAL_STORAGE}, READ_PERMISSION_CODE);
-                    mediaDialog.dismiss();
-                    break;
-
-                case CAMERA_PHOTO_INTENT_REQUEST_CODE:
-                    if (isPermissionGrantedForRequestCode(CAMERA_PERMISSION_CODE)
-                            && isPermissionGrantedForRequestCode(WRITE_PERMISSION_CODE)) {
-                        startActivityForResult(mImageHelper.getTakePictureIntent(), CAMERA_PHOTO_INTENT_REQUEST_CODE);
-                        playLoader(true);
-                    } else
-                        ActivityCompat.requestPermissions(requireActivity(), new String[]{Manifest.permission.CAMERA}, CAMERA_PERMISSION_CODE);
-                    mediaDialog.dismiss();
-                    break;
-
-                case CAMERA_VIDEO_INTENT_REQUEST_CODE:
-                    if (isPermissionGrantedForRequestCode(CAMERA_PERMISSION_CODE)
-                            && isPermissionGrantedForRequestCode(WRITE_PERMISSION_CODE)) {
-                        Intent takeVideoIntent = new Intent(MediaStore.ACTION_VIDEO_CAPTURE);
-                        takeVideoIntent.putExtra(MediaStore.EXTRA_DURATION_LIMIT, 10);
-                        startActivityForResult(takeVideoIntent, CAMERA_VIDEO_INTENT_REQUEST_CODE);
-                        playLoader(true);
-                    } else
-                        ActivityCompat.requestPermissions(requireActivity(), new String[]{Manifest.permission.CAMERA}, CAMERA_PERMISSION_CODE);
-
-                    mediaDialog.dismiss();
-                    break;
-            }
-        });
     }
 
     //___________________________________ADD AND UPDATE LOGIC_____________________________________________
@@ -328,7 +324,6 @@ public class AddPropertyFragment extends BaseFragment {
 
 
     private void addNewPropertyAdditionalInformation() {
-
         mPropertyViewModel.getAllProperties.observe(getViewLifecycleOwner(), properties -> {
             if (isNewPropertyAddressNotEqualPreviousSavedPropertyAddress(properties.get(properties.size() - 1)))
                 mPropertyViewModel.setPropertyLocationForPropertyAddress(properties.get(properties.size() - 1));
@@ -353,7 +348,6 @@ public class AddPropertyFragment extends BaseFragment {
     }
 
     private void UpdatePropertyWhenAddressChange(Property updatedProperty, Property originalProperty) {
-
         mPropertyViewModel.setAllPointOfInterestForProperty(originalProperty);
         mPropertyViewModel.setPropertyLocationForProperty(originalProperty);
 
@@ -374,7 +368,6 @@ public class AddPropertyFragment extends BaseFragment {
                 mPropertyViewModel.updatePointOfInterest(pointOfInterests);
         });
     }
-
 
     //___________________________________HELPERS_____________________________________________
 
@@ -433,7 +426,6 @@ public class AddPropertyFragment extends BaseFragment {
 
     //___________________________________BOOLEAN_____________________________________________
 
-
     private boolean isAddressHaveChanged(@NonNull Property originalProperty) {
         return originalProperty.getAddress() != null && !originalProperty.getAddress().equalsIgnoreCase(mBinding.addPropertyInformationLayout.addPropertyInformationAddress.getValueForView());
     }
@@ -446,7 +438,6 @@ public class AddPropertyFragment extends BaseFragment {
         return !pointOfInterests.isEmpty() && pointOfInterests.get(pointOfInterests.size() - 1).getPropertyId() == updatedProperty.getId();
     }
 
-
     private boolean isRequiredInformationAreFilled() {
         FragmentAddPropertyInformationLayoutBinding binding = mBinding.addPropertyInformationLayout;
         return !binding.addPropertyInformationAddress.isEditTextEmpty()
@@ -455,7 +446,6 @@ public class AddPropertyFragment extends BaseFragment {
                 && !binding.addPropertyInformationNumberOfBathrooms.isEditTextEmpty()
                 && !binding.addPropertyInformationNumberOfBedrooms.isEditTextEmpty()
                 && !binding.addPropertyInformationNumberOfRooms.isEditTextEmpty()
-
                 && !binding.addPropertyInformationPrice.isEditTextEmpty()
                 && !mPropertyPhotos.isEmpty();
     }
@@ -467,5 +457,4 @@ public class AddPropertyFragment extends BaseFragment {
     private boolean isPropertyLocationNotEmptyObject(@NonNull PropertyLocation propertyLocation) {
         return propertyLocation.getPropertyId() != 0;
     }
-
 }

@@ -5,7 +5,6 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Environment;
 import android.provider.MediaStore;
-import android.util.Log;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -48,7 +47,6 @@ public class ManageImageHelper {
         requireContext.getApplicationContext().sendBroadcast(mediaScanIntent);
     }
 
-
     public File createImageFile() throws IOException {
         String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss", Locale.FRANCE).format(new Date());
         String imageFileName = "JPEG_" + timeStamp + "_";
@@ -63,7 +61,6 @@ public class ManageImageHelper {
     }
 
     public Intent getTakePictureIntent() {
-
         Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
         File photoFile = null;
         try {
@@ -82,7 +79,6 @@ public class ManageImageHelper {
 
     @NonNull
     public List<PropertyPhoto> propertyPhotosWithAddButton(List<PropertyPhoto> propertyPhotos) {
-        Log.e("TAG", "propertyPhotosWithAddButton: "+propertyPhotos.size() );
         List<PropertyPhoto> photos = new ArrayList<>();
         PropertyPhoto propertyPhoto = new PropertyPhoto(0, ADD_PHOTO, "", 0);
         photos.add(propertyPhoto);

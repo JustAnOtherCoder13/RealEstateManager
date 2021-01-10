@@ -6,7 +6,6 @@ import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.CheckedTextView;
 import android.widget.ImageView;
@@ -23,14 +22,14 @@ import com.openclassrooms.realestatemanager.R;
 import com.openclassrooms.realestatemanager.databinding.CustomDialogFullScreenMediaBinding;
 import com.openclassrooms.realestatemanager.presentation.utils.PathUtil;
 
+import java.util.Objects;
+
 public class CustomFullScreenMediaDialog extends Dialog implements android.view.View.OnClickListener {
 
     private Context context;
-    private CustomDialogFullScreenMediaBinding mBinding;
     private ImageView photo;
     private VideoView video;
     private String mediaPath;
-    private CheckedTextView back;
     private CheckedTextView play;
     private CheckedTextView pause;
     private int stopPosition = 0;
@@ -44,18 +43,19 @@ public class CustomFullScreenMediaDialog extends Dialog implements android.view.
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        mBinding = CustomDialogFullScreenMediaBinding.inflate(getLayoutInflater());
+        CustomDialogFullScreenMediaBinding mBinding = CustomDialogFullScreenMediaBinding.inflate(getLayoutInflater());
         setContentView(mBinding.getRoot());
+        Objects.requireNonNull(this.getWindow()).setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+
         photo = mBinding.fullScreenImage;
         video = mBinding.fullScreenVideo;
-        back = mBinding.customMediaControler.customMediaControllerBackButton;
         play = mBinding.customMediaControler.customMediaControllerPlayButton;
         pause = mBinding.customMediaControler.customMediaControllerPauseButton;
-        back.setOnClickListener(this);
+        mBinding.customMediaControler.customMediaControllerBackButton.setOnClickListener(this);
         play.setOnClickListener(this);
         pause.setOnClickListener(this);
+
         switchPhotoOrVideoVisibility(PathUtil.isImageFileFromPath(mediaPath));
-        this.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         if (PathUtil.isImageFileFromPath(mediaPath))
             Glide.with(photo)
                     .load(mediaPath)
@@ -71,15 +71,13 @@ public class CustomFullScreenMediaDialog extends Dialog implements android.view.
                         }
                     });
 
-        else {
-            video.setVideoPath(mediaPath);
-        }
+        else video.setVideoPath(mediaPath);
     }
-
 
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
+
             case R.id.custom_media_controller_play_button:
                 managePlayButton();
                 if (stopPosition > 0) {
@@ -89,16 +87,20 @@ public class CustomFullScreenMediaDialog extends Dialog implements android.view.
                 }
                 video.start();
                 break;
+
             case R.id.custom_media_controller_pause_button:
                 managePlayButton();
                 stopPosition = video.getCurrentPosition();
                 video.suspend();
                 break;
+
             case R.id.custom_media_controller_back_button:
                 dismiss();
                 break;
         }
     }
+
+    //------------------------ HELPER -----------------------------
 
     private void switchPhotoOrVideoVisibility(boolean isPhoto) {
         photo.setVisibility(isPhoto ? View.VISIBLE : View.GONE);
@@ -119,7 +121,8 @@ public class CustomFullScreenMediaDialog extends Dialog implements android.view.
                 ResourcesCompat.getDrawable(context.getResources(), R.drawable.custom_round_white, null)
                 : null
         );
-        icon.setTextColor(icon.isChecked() ? context.getResources().getColor(R.color.black)
+        icon.setTextColor(icon.isChecked() ?
+                context.getResources().getColor(R.color.black)
                 : context.getResources().getColor(R.color.white));
     }
 }

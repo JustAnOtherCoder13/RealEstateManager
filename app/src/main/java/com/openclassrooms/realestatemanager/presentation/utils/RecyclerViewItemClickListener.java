@@ -10,7 +10,6 @@ public class RecyclerViewItemClickListener {
     private final RecyclerView mRecyclerView;
     private OnItemClickListener mOnItemClickListener;
     private OnItemLongClickListener mOnItemLongClickListener;
-    private int mItemID;
 
     private View.OnClickListener mOnClickListener = new View.OnClickListener() {
         @Override
@@ -31,42 +30,33 @@ public class RecyclerViewItemClickListener {
             return false;
         }
     };
-    private RecyclerView.OnChildAttachStateChangeListener mAttachListener
-            = new RecyclerView.OnChildAttachStateChangeListener() {
-        @Override
-        public void onChildViewAttachedToWindow(@NonNull View view) {
-            if (mOnItemClickListener != null) {
-                view.setOnClickListener(mOnClickListener);
-            }
-            if (mOnItemLongClickListener != null) {
-                view.setOnLongClickListener(mOnLongClickListener);
-            }
-        }
-
-        @Override
-        public void onChildViewDetachedFromWindow(@NonNull View view) {
-        }
-    };
 
     private RecyclerViewItemClickListener(RecyclerView recyclerView, int itemID) {
         mRecyclerView = recyclerView;
-        mItemID = itemID;
         mRecyclerView.setTag(itemID, this);
+        RecyclerView.OnChildAttachStateChangeListener mAttachListener = new RecyclerView.OnChildAttachStateChangeListener() {
+            @Override
+            public void onChildViewAttachedToWindow(@NonNull View view) {
+                if (mOnItemClickListener != null) {
+                    view.setOnClickListener(mOnClickListener);
+                }
+                if (mOnItemLongClickListener != null) {
+                    view.setOnLongClickListener(mOnLongClickListener);
+                }
+            }
+
+            @Override
+            public void onChildViewDetachedFromWindow(@NonNull View view) {
+            }
+        };
         mRecyclerView.addOnChildAttachStateChangeListener(mAttachListener);
     }
 
-    public static RecyclerViewItemClickListener addTo(RecyclerView view, int itemID) {
+    @NonNull
+    public static RecyclerViewItemClickListener addTo(@NonNull RecyclerView view, int itemID) {
         RecyclerViewItemClickListener support = (RecyclerViewItemClickListener) view.getTag(itemID);
         if (support == null) {
             support = new RecyclerViewItemClickListener(view, itemID);
-        }
-        return support;
-    }
-
-    public static RecyclerViewItemClickListener removeFrom(RecyclerView view, int itemID) {
-        RecyclerViewItemClickListener support = (RecyclerViewItemClickListener) view.getTag(itemID);
-        if (support != null) {
-            support.detach(view);
         }
         return support;
     }
@@ -77,11 +67,6 @@ public class RecyclerViewItemClickListener {
 
     public void setOnItemLongClickListener(OnItemLongClickListener listener) {
         mOnItemLongClickListener = listener;
-    }
-
-    private void detach(RecyclerView view) {
-        view.removeOnChildAttachStateChangeListener(mAttachListener);
-        view.setTag(mItemID, null);
     }
 
     public interface OnItemClickListener {

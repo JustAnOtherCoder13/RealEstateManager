@@ -24,12 +24,10 @@ import com.openclassrooms.realestatemanager.presentation.utils.PathUtil;
 public class CustomSetTitleDialog extends Dialog implements android.view.View.OnClickListener {
 
     private Context context;
-    private CustomDialogSetPhotoTitleBinding mBinding;
     private ImageView photo;
     private VideoView video;
     private EditText description;
     private Button accept;
-    private Button cancel;
     private String mVideoPath;
 
 
@@ -41,14 +39,18 @@ public class CustomSetTitleDialog extends Dialog implements android.view.View.On
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        mBinding = CustomDialogSetPhotoTitleBinding.inflate(getLayoutInflater());
+        CustomDialogSetPhotoTitleBinding mBinding = CustomDialogSetPhotoTitleBinding.inflate(getLayoutInflater());
         setContentView(mBinding.getRoot());
         photo = mBinding.setPhotoTitleImageView;
         video = mBinding.setPhotoTitleVideoView;
         description = mBinding.setPhotoDescriptionEditText;
         accept = mBinding.setPhotoOkButton;
-        cancel = mBinding.setPhotoBackButton;
-        cancel.setOnClickListener(this);
+        mBinding.setPhotoBackButton.setOnClickListener(this);
+    }
+
+    @Override
+    public void onClick(View v) {
+        if (v.getId() == R.id.set_photo_back_button) dismiss();
     }
 
     public void setAcceptOnClickListener(View.OnClickListener onClickListener) {
@@ -75,29 +77,24 @@ public class CustomSetTitleDialog extends Dialog implements android.view.View.On
     public void setVideo(Uri videoPath) {
         isPhoto(false);
         video.setVideoURI(videoPath);
-        mVideoPath = PathUtil.getPath(context,videoPath);
+        mVideoPath = PathUtil.getPath(context, videoPath);
         //TODO change
         description.setText(R.string.app_name);
         video.start();
     }
 
-    public String getVideoPath(){
+    public String getVideoPath() {
         return mVideoPath;
     }
 
-    public void isPhoto(boolean isPhoto) {
-        photo.setVisibility(isPhoto ? View.VISIBLE : View.GONE);
-        video.setVisibility(isPhoto ? View.GONE : View.VISIBLE);
-    }
 
     public String getText() {
-        if (description.getText() != null)
-            return description.getText().toString();
+        if (description.getText() != null) return description.getText().toString();
         else return " ";
     }
 
-    @Override
-    public void onClick(View v) {
-        if (v.getId() == R.id.set_photo_back_button) dismiss();
+    private void isPhoto(boolean isPhoto) {
+        photo.setVisibility(isPhoto ? View.VISIBLE : View.GONE);
+        video.setVisibility(isPhoto ? View.GONE : View.VISIBLE);
     }
 }

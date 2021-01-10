@@ -55,22 +55,12 @@ public class PhotoRecyclerViewAdapter extends RecyclerView.Adapter<PhotoRecycler
                 setPropertyPhoto(holder, photo);
             else if (isVideoFileFromPath(photo.getPhotoPath()))
                 setPropertyVideo(holder, photo);
-            //TODO just for mock, remove before "soutenance"
-            else switchPhotoOrVideoVisibility(true,holder);
+                //TODO just for mock, remove before "soutenance"
+            else switchPhotoOrVideoVisibility(true, holder);
             holder.binding.propertyDetailItemPhotoDescription.setVisibility(View.VISIBLE);
             holder.binding.propertyDetailItemPhotoDescription.setText(photo.getDescription());
         }
     }
-
-    private void setPropertyVideo(@NonNull ViewHolder holder, @NonNull PropertyPhoto photo) {
-        holder.binding.propertyDetailItemVideo.setVideoPath(photo.getPhotoPath());
-    }
-
-    private void switchPhotoOrVideoVisibility(boolean isPhoto, @NonNull ViewHolder holder) {
-        holder.binding.propertyDetailItemPhoto.setVisibility(isPhoto ? View.VISIBLE : View.GONE);
-        holder.binding.propertyDetailItemVideo.setVisibility(isPhoto ? View.GONE : View.VISIBLE);
-    }
-
 
     @Override
     public int getItemCount() {
@@ -96,6 +86,8 @@ public class PhotoRecyclerViewAdapter extends RecyclerView.Adapter<PhotoRecycler
         this.isPhotoHaveBeenDeleted = isPhotoHaveBeenDeleted;
     }
 
+    //---------------------- HELPER -----------------------------------
+
     private void setPropertyPhoto(@NonNull ViewHolder holder, @NonNull PropertyPhoto photo) {
         Glide.with(holder.binding.propertyDetailItemPhoto.getContext())
                 .load(photo.getPhotoPath())
@@ -111,4 +103,14 @@ public class PhotoRecyclerViewAdapter extends RecyclerView.Adapter<PhotoRecycler
                     }
                 });
     }
+
+    private void setPropertyVideo(@NonNull ViewHolder holder, @NonNull PropertyPhoto photo) {
+        holder.binding.propertyDetailItemVideo.setVideoPath(photo.getPhotoPath());
+    }
+
+    private void switchPhotoOrVideoVisibility(boolean isPhoto, @NonNull ViewHolder holder) {
+        holder.binding.propertyDetailItemPhoto.setVisibility(isPhoto ? View.VISIBLE : View.GONE);
+        holder.binding.propertyDetailItemVideo.setVisibility(isPhoto ? View.GONE : View.VISIBLE);
+    }
+
 }

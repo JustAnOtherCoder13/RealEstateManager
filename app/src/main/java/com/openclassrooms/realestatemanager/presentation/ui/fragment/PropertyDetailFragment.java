@@ -80,14 +80,13 @@ public class PropertyDetailFragment extends BaseFragment {
         mPropertyViewModel.getPropertyLocationForProperty.observe(getViewLifecycleOwner(), this::setStaticMap);
     }
 
-    private void initClickOnMedia(){
-        RecyclerViewItemClickListener.addTo(mBinding.fragmentDetailMediaLayout.detailCustomViewRecyclerView,R.layout.fragment_property_detail)
+    private void initClickOnMedia() {
+        RecyclerViewItemClickListener.addTo(mBinding.fragmentDetailMediaLayout.detailCustomViewRecyclerView, R.layout.fragment_property_detail)
                 .setOnItemClickListener((recyclerView, position, v) -> {
-                    CustomFullScreenMediaDialog fullScreenMediaDialog = new CustomFullScreenMediaDialog(requireContext(),Objects.requireNonNull(mPropertyViewModel.getAllPropertyPhotosForProperty.getValue()).get(position).getPhotoPath());
+                    CustomFullScreenMediaDialog fullScreenMediaDialog = new CustomFullScreenMediaDialog(requireContext(), Objects.requireNonNull(mPropertyViewModel.getAllPropertyPhotosForProperty.getValue()).get(position).getPhotoPath());
                     fullScreenMediaDialog.show();
                 });
     }
-
 
     private void setTextForCustomView(@NonNull DetailInformationCustomView customView, String text) {
         TextView textView = customView.findViewById(R.id.detail_information_custom_view_value);
@@ -122,7 +121,8 @@ public class PropertyDetailFragment extends BaseFragment {
                     }
 
                     @Override
-                    public void onLoadCleared(@Nullable Drawable placeholder) { }
+                    public void onLoadCleared(@Nullable Drawable placeholder) {
+                    }
                 });
     }
 }
