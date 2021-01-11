@@ -4,13 +4,16 @@ import android.Manifest;
 import android.content.Context;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
+import android.util.AttributeSet;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.ImageButton;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.lifecycle.ViewModelProvider;
@@ -19,6 +22,7 @@ import androidx.navigation.Navigation;
 import androidx.navigation.ui.NavigationUI;
 
 import com.airbnb.lottie.LottieAnimationView;
+import com.google.android.material.bottomsheet.BottomSheetBehavior;
 import com.openclassrooms.realestatemanager.R;
 import com.openclassrooms.realestatemanager.databinding.ActivityMainBinding;
 import com.openclassrooms.realestatemanager.presentation.viewModels.AgentViewModel;
@@ -47,6 +51,12 @@ public class MainActivity extends AppCompatActivity {
     private NavController mNavController;
     protected ImageButton mUpdateButton;
     protected LottieAnimationView mLoader;
+    protected boolean isCameraPermissionGranted;
+    protected boolean isLocationPermissionGranted;
+    protected boolean isReadPermissionGranted;
+    protected boolean isWritePermissionGranted;
+
+    private BottomSheetBehavior<ConstraintLayout> mBottomSheetBehavior;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -67,10 +77,13 @@ public class MainActivity extends AppCompatActivity {
             mPropertyViewModel.setSelectedProperty(new Property());
     }
 
-    protected boolean isCameraPermissionGranted;
-    protected boolean isLocationPermissionGranted;
-    protected boolean isReadPermissionGranted;
-    protected boolean isWritePermissionGranted;
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        mBottomSheetBehavior=BottomSheetBehavior.from(mBinding.bottomSheetLayout.bottomSheet);
+        mBinding.topAppBar.setBottomSheetBehavior(mBottomSheetBehavior);
+    }
 
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
@@ -92,7 +105,6 @@ public class MainActivity extends AppCompatActivity {
                 break;
         }
     }
-
 
     private boolean checkResult(@NonNull int[] grantResults) {
         return grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED;
@@ -121,7 +133,6 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-
     private void askReadPermission() {
         if (ContextCompat.checkSelfPermission(this,
                 Manifest.permission.READ_EXTERNAL_STORAGE)
@@ -135,7 +146,6 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void askWritePermission() {
-
         if (ContextCompat.checkSelfPermission(this,
                 Manifest.permission.WRITE_EXTERNAL_STORAGE)
                 != PackageManager.PERMISSION_GRANTED)

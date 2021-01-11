@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/bottom_sheet"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/custom_blue_light"
+    app:behavior_peekHeight="80dp"
+    app:layout_behavior="com.google.android.material.bottomsheet.BottomSheetBehavior">
+
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/filter_property_location"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/basic_marge"
+        app:layout_constraintBottom_toTopOf="@id/filter_property_location_price_ranger_slider"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <AutoCompleteTextView
+            android:id="@+id/filter_property_location_text_view"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:enabled="false"
+            tools:ignore="LabelFor" />
+
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <com.openclassrooms.realestatemanager.presentation.utils.customView.CustomRangeSlider
+        android:id="@+id/filter_property_location_price_ranger_slider"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:title="Price"
+        android:stepSize="0"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/filter_property_location" />
+
+    <com.openclassrooms.realestatemanager.presentation.utils.customView.CustomRangeSlider
+        android:id="@+id/filter_property_location_surface_ranger_slider"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:title="Surface"
+        android:stepSize="0"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/filter_property_location_price_ranger_slider" />
+
+    <com.openclassrooms.realestatemanager.presentation.utils.customView.CustomRangeSlider
+        android:id="@+id/filter_property_location_room_ranger_slider"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:title="Room"
+        android:stepSize="0"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/filter_property_location_surface_ranger_slider" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

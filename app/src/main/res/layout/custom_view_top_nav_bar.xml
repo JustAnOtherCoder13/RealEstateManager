@@ -6,8 +6,8 @@
     android:background="@color/custom_blue">
 
     <ImageButton
-        android:id="@+id/top_bar_menu_icon"
-        style="@style/Widget.TopBarMenuIconImageButton"
+        android:id="@+id/top_bar_filter_icon"
+        style="@style/Widget.TopBarFilterIconImageButton"
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
         android:contentDescription="@string/menu_icon"
@@ -20,7 +20,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toEndOf="@id/top_bar_menu_icon"
+        app:layout_constraintStart_toEndOf="@id/top_bar_filter_icon"
         app:layout_constraintTop_toTopOf="parent" />
 
 

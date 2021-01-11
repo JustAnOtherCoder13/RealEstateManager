@@ -11,6 +11,7 @@ import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 
+import com.google.android.material.bottomsheet.BottomSheetBehavior;
 import com.openclassrooms.realestatemanager.R;
 import com.openclassrooms.realestatemanager.presentation.ui.main.MainActivity;
 import com.openclassrooms.realestatemanager.presentation.viewModels.PropertyViewModel;
@@ -21,6 +22,7 @@ import java.util.Objects;
 public class TopAppBarCustomView extends ConstraintLayout {
 
     private PropertyViewModel propertyViewModel;
+    private BottomSheetBehavior<ConstraintLayout> bottomSheetBehavior;
 
     public TopAppBarCustomView(@NonNull Context context, @Nullable AttributeSet attrs) {
         super(context, attrs);
@@ -31,6 +33,8 @@ public class TopAppBarCustomView extends ConstraintLayout {
     private void initView(Context context) {
         inflate(getContext(), R.layout.custom_view_top_nav_bar, this);
         ImageButton addPropertyButton = findViewById(R.id.top_bar_add_property);
+        ImageButton filterButton = findViewById(R.id.top_bar_filter_icon);
+
         addPropertyButton.setOnClickListener(v -> {
             resetPropertyValues();
             NavController navController = Navigation.findNavController((MainActivity) context, R.id.nav_host_fragment);
@@ -50,6 +54,13 @@ public class TopAppBarCustomView extends ConstraintLayout {
                             (R.id.addPropertyFragment);
             }
         });
+
+        filterButton.setOnClickListener(v -> bottomSheetBehavior.setState(bottomSheetBehavior.getState() == BottomSheetBehavior.STATE_COLLAPSED ?
+                BottomSheetBehavior.STATE_EXPANDED : BottomSheetBehavior.STATE_COLLAPSED));
+    }
+
+    public void setBottomSheetBehavior(BottomSheetBehavior<ConstraintLayout> bottomSheetBehavior) {
+        this.bottomSheetBehavior = bottomSheetBehavior;
     }
 
     private void resetPropertyValues() {

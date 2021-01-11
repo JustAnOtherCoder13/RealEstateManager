@@ -43,7 +43,6 @@ public class AddPropertyInformationCustomView extends ConstraintLayout {
 
     public void setText(String text) {
         mAddPropertyInformationEditText.setText(text);
-        Log.i("TAG", "setValueText: "+mAddPropertyInformationEditText.getText()+" "+getContext().getResources().getResourceName(mAddPropertyInformationEditText.getId()));
     }
 
     @NonNull

@@ -18,5 +18,10 @@
         <attr name="android:singleLine"/>
         <attr name="android:lines"/>
     </declare-styleable>
+
+    <declare-styleable name="CustomRangeSlider">
+        <attr name="title"/>
+        <attr name="android:stepSize"/>
+    </declare-styleable>
     
 </resources>

@@ -92,8 +92,8 @@
         <item name="android:paddingEnd">@dimen/basic_marge</item>
     </style>
 
-    <style name="Widget.TopBarMenuIconImageButton" parent="Widget.TopAppBarIconImageButton">
-        <item name="srcCompat">@drawable/ic_top_bar_menu_24</item>
+    <style name="Widget.TopBarFilterIconImageButton" parent="Widget.TopAppBarIconImageButton">
+        <item name="srcCompat">@drawable/ic_top_bar_filter_list_24</item>
     </style>
 
     <style name="Widget.TopBarAddIconImageButton" parent="Widget.TopAppBarIconImageButton">
