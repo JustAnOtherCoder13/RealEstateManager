@@ -42,7 +42,6 @@ public class PropertyListFragment extends BaseFragment {
         configureOnClickRecyclerView();
         mPropertyViewModel.getSelectedProperty.observe(getViewLifecycleOwner(), property -> {
             if (property.getAddress() != null) {
-                mPropertyViewModel.setAllPhotosForProperty(property);
                 mPropertyViewModel.setAllPointOfInterestForProperty(property);
                 mNavController.navigate(R.id.action_propertyListFragment_to_propertyDetailFragment);
             }

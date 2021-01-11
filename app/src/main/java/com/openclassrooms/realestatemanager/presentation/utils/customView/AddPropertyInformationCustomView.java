@@ -5,7 +5,6 @@ import android.content.res.TypedArray;
 import android.text.InputType;
 import android.util.AttributeSet;
 import android.util.Log;
-import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -42,7 +41,7 @@ public class AddPropertyInformationCustomView extends ConstraintLayout {
     }
 
 
-    public void setValueText( String text) {
+    public void setText(String text) {
         mAddPropertyInformationEditText.setText(text);
         Log.i("TAG", "setValueText: "+mAddPropertyInformationEditText.getText()+" "+getContext().getResources().getResourceName(mAddPropertyInformationEditText.getId()));
     }

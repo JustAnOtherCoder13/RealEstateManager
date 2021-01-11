@@ -5,16 +5,21 @@
     <dimen name="basic_marge">15dp</dimen>
     <dimen name="big_marge">30dp</dimen>
     <dimen name="XL_marge">50dp</dimen>
+    <dimen name="XXL_marge">100dp</dimen>
+    <dimen name="XXXL_marge">150dp</dimen>
 
     <dimen name="separator_height">2dp</dimen>
 
     <dimen name="thumbnail_size">150dp</dimen>
-
+    <dimen name="accept_media_view_size">300dp</dimen>
     <dimen name="static_map_size">140dp</dimen>
+
+   <dimen name="loader_size">130dp</dimen>
+
+    <dimen name="button_corner">10dp</dimen>
 
     <!-- FRAGMENT DETAIL-->
     <dimen name="fragment_detail_additional_information_bottom_margin">15dp</dimen>
-
 
     <dimen name="custom_view_add_property_information_edit_text_size">90dp</dimen>
 

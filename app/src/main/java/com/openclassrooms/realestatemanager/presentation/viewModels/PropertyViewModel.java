@@ -19,13 +19,12 @@ import com.picone.core.domain.interactors.property.location.GetPropertyLocationI
 import com.picone.core.domain.interactors.property.location.UpdatePropertyLocationInteractor;
 import com.picone.core.domain.interactors.property.maps.GetNearBySearchForPropertyLocationInteractor;
 import com.picone.core.domain.interactors.property.maps.GetPropertyLocationForAddressInteractor;
-import com.picone.core.domain.interactors.property.maps.GetStaticMapForLatLngInteractor;
 import com.picone.core.domain.interactors.property.photo.AddPropertyPhotoInteractor;
 import com.picone.core.domain.interactors.property.photo.DeletePropertyPhotoInteractor;
 import com.picone.core.domain.interactors.property.photo.GetAllPropertyPhotosForPropertyIdInteractor;
 import com.picone.core.domain.interactors.property.pointOfInterest.AddPropertyPointOfInterestInteractor;
-import com.picone.core.domain.interactors.property.pointOfInterest.GetAllPointOfInterestForPropertyIdInteractor;
 import com.picone.core.domain.interactors.property.pointOfInterest.DeletePointOfInterestInteractor;
+import com.picone.core.domain.interactors.property.pointOfInterest.GetAllPointOfInterestForPropertyIdInteractor;
 import com.picone.core.utils.SchedulerProvider;
 
 import java.util.ArrayList;
@@ -71,7 +70,6 @@ public class PropertyViewModel extends BaseViewModel {
             , GetPropertyLocationInteractor getPropertyLocationInteractor
             , AddPropertyLocationInteractor addPropertyLocationInteractor
             , GetPropertyLocationForAddressInteractor getPropertyLocationForAddressInteractor
-            , GetStaticMapForLatLngInteractor getStaticMapForLatLngInteractor
             , GetNearBySearchForPropertyLocationInteractor getNearBySearchForPropertyLocationInteractor
             , UpdatePropertyLocationInteractor updatePropertyLocationInteractor
             , DeletePointOfInterestInteractor deletePointOfInterestInteractor
@@ -87,7 +85,6 @@ public class PropertyViewModel extends BaseViewModel {
         this.getPropertyLocationInteractor = getPropertyLocationInteractor;
         this.addPropertyLocationInteractor = addPropertyLocationInteractor;
         this.getPropertyLocationForAddressInteractor = getPropertyLocationForAddressInteractor;
-        this.getStaticMapForLatLngInteractor = getStaticMapForLatLngInteractor;
         this.getNearBySearchForPropertyLocationInteractor = getNearBySearchForPropertyLocationInteractor;
         this.updatePropertyLocationInteractor = updatePropertyLocationInteractor;
         this.deletePointOfInterestInteractor = deletePointOfInterestInteractor;

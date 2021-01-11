@@ -21,9 +21,22 @@ public class ConstantParameters {
     public static final String pointOfInterestTable = "property_point_of_interest_table";
 
     public static String MAPS_KEY;
-    public static final int REQUEST_CODE = 13700;
+    public static final int LOCATION_PERMISSION_CODE = 13700;
     public static final int MAPS_CAMERA_LARGE_ZOOM = 9;
     public static final int MAPS_CAMERA_NEAR_ZOOM = 15;
+    public static final int CAMERA_PERMISSION_CODE = 101;
+    public static final int CAMERA_PHOTO_INTENT_REQUEST_CODE = 102;
+    public static final int CAMERA_VIDEO_INTENT_REQUEST_CODE = 106;
+    public static final int READ_PERMISSION_CODE = 103;
+    public static final int WRITE_PERMISSION_CODE = 104;
+    public static final int GALLERY_REQUEST_CODE = 105;
+    public static final String FILE_PROVIDER_AUTH = "com.openclassrooms.android.fileprovider";
+
+
+
+
+    public static String STATIC_MAP_SIZE = "140";
+    public static String BASE_STATIC_MAP_URI = "https://maps.googleapis.com/maps/api/staticmap?";
 
     public static final String RADIUS = "400";
 

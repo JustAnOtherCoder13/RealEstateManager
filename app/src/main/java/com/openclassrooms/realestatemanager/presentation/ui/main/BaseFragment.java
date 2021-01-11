@@ -9,7 +9,6 @@ import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.NavController;
 
-import com.airbnb.lottie.LottieAnimationView;
 import com.openclassrooms.realestatemanager.presentation.viewModels.AgentViewModel;
 import com.openclassrooms.realestatemanager.presentation.viewModels.PropertyViewModel;
 import com.picone.core.domain.entity.Property;
@@ -17,6 +16,11 @@ import com.picone.core.domain.entity.Property;
 import java.util.Objects;
 
 import dagger.hilt.android.AndroidEntryPoint;
+
+import static com.picone.core.utils.ConstantParameters.CAMERA_PERMISSION_CODE;
+import static com.picone.core.utils.ConstantParameters.LOCATION_PERMISSION_CODE;
+import static com.picone.core.utils.ConstantParameters.READ_PERMISSION_CODE;
+import static com.picone.core.utils.ConstantParameters.WRITE_PERMISSION_CODE;
 
 @AndroidEntryPoint
 public abstract class BaseFragment extends Fragment {
@@ -64,5 +68,20 @@ public abstract class BaseFragment extends Fragment {
                 propertyToReturn = property;
         }
         return propertyToReturn;
+    }
+
+    protected boolean isPermissionGrantedForRequestCode(int requestCode){
+        switch (requestCode){
+            case LOCATION_PERMISSION_CODE:
+                return mainActivity.isLocationPermissionGranted;
+            case CAMERA_PERMISSION_CODE:
+                return mainActivity.isCameraPermissionGranted;
+            case READ_PERMISSION_CODE:
+                return mainActivity.isReadPermissionGranted;
+            case WRITE_PERMISSION_CODE :
+                return mainActivity.isWritePermissionGranted;
+            default:
+                return false;
+                        }
     }
 }

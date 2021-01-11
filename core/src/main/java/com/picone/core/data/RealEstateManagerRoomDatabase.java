@@ -96,7 +96,7 @@ public abstract class RealEstateManagerRoomDatabase extends RoomDatabase {
         for (int i = 0; i < 4; i++) {
             ContentValues contentValues = new ContentValues();
             contentValues.put("id", generatePhotos().get(i).getId());
-            contentValues.put("photo", generatePhotos().get(i).getPhoto());
+            contentValues.put("photoPath", generatePhotos().get(i).getPhotoPath());
             contentValues.put("description", generatePhotos().get(i).getDescription());
             contentValues.put("propertyId", generatePhotos().get(i).getPropertyId());
 

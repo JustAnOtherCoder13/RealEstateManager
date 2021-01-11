@@ -3,16 +3,8 @@ package com.openclassrooms.realestatemanager.presentation.utils;
 import android.content.Context;
 import android.location.LocationManager;
 import android.net.wifi.WifiManager;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
-
-import com.openclassrooms.realestatemanager.R;
-
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.Locale;
 
 import static android.content.Context.LOCATION_SERVICE;
 
@@ -28,14 +20,15 @@ public class Utils {
     }
 
 
-    public static boolean isGpsAvailable(Context context){
+    public static boolean isGpsAvailable(@NonNull Context context){
         LocationManager locationManager = (LocationManager) context.getSystemService(LOCATION_SERVICE);
         assert locationManager != null;
         return locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER);
     }
 
 
-    public static Boolean isInternetAvailable(Context context){
+    @NonNull
+    public static Boolean isInternetAvailable(@NonNull Context context){
         WifiManager wifi = (WifiManager)context.getApplicationContext().getSystemService(Context.WIFI_SERVICE);
         assert wifi != null;
         return wifi.isWifiEnabled();

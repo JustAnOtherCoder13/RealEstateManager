@@ -2,14 +2,12 @@ package com.picone.core.data.property;
 
 import androidx.annotation.NonNull;
 
-import com.google.android.gms.maps.model.LatLng;
 import com.picone.core.domain.entity.PointOfInterest;
 import com.picone.core.domain.entity.Property;
 import com.picone.core.domain.entity.PropertyLocation;
 import com.picone.core.domain.entity.PropertyPhoto;
 import com.picone.core.domain.entity.pojo.nearBySearch.NearBySearch;
 import com.picone.core.domain.entity.pojo.propertyLocation.PropertyLocationPojo;
-import com.picone.core.domain.entity.pojo.staticMap.StaticMapPojo;
 
 import java.util.List;
 
@@ -25,7 +23,7 @@ public class PropertyRepository {
     @Inject
     protected PlaceServiceDaoImpl placeServiceDao;
 
-    public PropertyRepository(PropertyDaoImpl propertyDao,PlaceServiceDaoImpl placeServiceDao) {
+    public PropertyRepository(PropertyDaoImpl propertyDao, PlaceServiceDaoImpl placeServiceDao) {
         this.propertyDao = propertyDao;
         this.placeServiceDao = placeServiceDao;
     }
@@ -38,11 +36,11 @@ public class PropertyRepository {
         return propertyDao.getAllPointOfInterestForPropertyId(propertyId);
     }
 
-    public Observable<List<PropertyPhoto>> getAllPhotosForPropertyId(int propertyId){
+    public Observable<List<PropertyPhoto>> getAllPhotosForPropertyId(int propertyId) {
         return propertyDao.getAllPhotosForPropertyId(propertyId);
     }
 
-    public Observable<PropertyLocation> getPropertyLocationForPropertyId(int propertyId){
+    public Observable<PropertyLocation> getPropertyLocationForPropertyId(int propertyId) {
         return propertyDao.getPropertyLocationForPropertyId(propertyId);
     }
 
@@ -50,7 +48,7 @@ public class PropertyRepository {
         return propertyDao.addPropertyLocation(propertyLocation);
     }
 
-        public Completable addProperty(Property property){
+    public Completable addProperty(Property property) {
         return propertyDao.addProperty(property);
     }
 
@@ -58,7 +56,7 @@ public class PropertyRepository {
         return propertyDao.addPropertyPointOfInterest(pointOfInterest);
     }
 
-    public Completable addPropertyPhoto(PropertyPhoto propertyPhoto){
+    public Completable addPropertyPhoto(PropertyPhoto propertyPhoto) {
         return propertyDao.addPropertyPhoto(propertyPhoto);
     }
 
@@ -70,27 +68,19 @@ public class PropertyRepository {
         return propertyDao.updateProperty(property);
     }
 
-    public Completable updatePropertyLocation(PropertyLocation propertyLocation){
+    public Completable updatePropertyLocation(PropertyLocation propertyLocation) {
         return propertyDao.updatePropertyLocation(propertyLocation);
     }
 
     public Completable deletePropertyPointOfInterest(PointOfInterest pointOfInterest) {
         return propertyDao.deletePropertyPointOfInterest(pointOfInterest);
     }
-    //----------------------place
 
-    public Observable<PropertyLocationPojo> getPropertyLocationForAddress(String address, String googleKey){
+    public Observable<PropertyLocationPojo> getPropertyLocationForAddress(String address, String googleKey) {
         return placeServiceDao.getPropertyLocationForAddress(address, googleKey);
     }
 
-    public Observable<StaticMapPojo> getStaticMapForLatLng(LatLng latLng, String googleKey){
-        return placeServiceDao.getStaticMapForLatLng(latLng, googleKey);
+    public Observable<NearBySearch> getNearBySchoolForPropertyLocation(@NonNull PropertyLocation propertyLocation, String type, String googleKey) {
+        return placeServiceDao.getNearBySchoolForPropertyLocation(propertyLocation, type, googleKey);
     }
-
-    public Observable<NearBySearch> getNearBySchoolForPropertyLocation(@NonNull PropertyLocation propertyLocation,String type, String googleKey) {
-        return placeServiceDao.getNearBySchoolForPropertyLocation(propertyLocation,type, googleKey);
-    }
-
-
-
-    }
+}

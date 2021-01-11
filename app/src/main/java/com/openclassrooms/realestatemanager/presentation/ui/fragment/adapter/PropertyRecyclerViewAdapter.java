@@ -23,7 +23,7 @@ public class PropertyRecyclerViewAdapter extends RecyclerView.Adapter<PropertyRe
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         RecyclerviewPropertyListItemBinding binding = RecyclerviewPropertyListItemBinding.inflate(LayoutInflater.from(parent.getContext())
-        ,parent,false);
+                , parent, false);
         return new ViewHolder(binding);
     }
 
@@ -50,7 +50,8 @@ public class PropertyRecyclerViewAdapter extends RecyclerView.Adapter<PropertyRe
         }
     }
 
-    public void updateProperties(List<Property> updatedProperties){
-        mProperties = updatedProperties;
+    public void updateProperties(List<Property> updatedProperties) {
+        this.mProperties = updatedProperties;
+        notifyDataSetChanged();
     }
 }

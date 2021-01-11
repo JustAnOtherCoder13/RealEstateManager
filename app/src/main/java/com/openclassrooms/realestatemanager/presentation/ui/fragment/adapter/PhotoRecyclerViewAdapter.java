@@ -18,11 +18,14 @@ import com.picone.core.domain.entity.PropertyPhoto;
 
 import java.util.List;
 
+import static com.openclassrooms.realestatemanager.presentation.utils.PathUtil.isImageFileFromPath;
+import static com.openclassrooms.realestatemanager.presentation.utils.PathUtil.isVideoFileFromPath;
 import static com.picone.core.utils.ConstantParameters.ADD_PHOTO;
 
 public class PhotoRecyclerViewAdapter extends RecyclerView.Adapter<PhotoRecyclerViewAdapter.ViewHolder> {
 
     private List<PropertyPhoto> mPhotos;
+    private boolean isPhotoHaveBeenDeleted;
 
     public PhotoRecyclerViewAdapter(List<PropertyPhoto> mPhotos) {
         this.mPhotos = mPhotos;
@@ -31,20 +34,32 @@ public class PhotoRecyclerViewAdapter extends RecyclerView.Adapter<PhotoRecycler
     @NonNull
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        RecyclerviewPropertyDetailItemBinding binding = RecyclerviewPropertyDetailItemBinding.inflate(LayoutInflater.from(parent.getContext()),parent,false);
+        RecyclerviewPropertyDetailItemBinding binding = RecyclerviewPropertyDetailItemBinding.inflate(LayoutInflater.from(parent.getContext()), parent, false);
         return new ViewHolder(binding);
     }
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         PropertyPhoto photo = mPhotos.get(position);
-        if (photo.getPhoto().equals(ADD_PHOTO)){
+        if (isPhotoHaveBeenDeleted) {
+            holder.binding.propertyDetailItemCheckBox.setChecked(false);
+            holder.binding.propertyDetailItemCheckBox.setVisibility(View.GONE);
+        }
+        if (photo.getPhotoPath().equals(ADD_PHOTO)) {
             holder.binding.propertyDetailItemPhoto.setImageResource(R.drawable.img_add_photo);
             holder.binding.propertyDetailItemPhotoDescription.setVisibility(View.GONE);
-        }else{
-            setPropertyPhoto(holder, photo);
+            holder.binding.propertyDetailItemVideo.setVisibility(View.GONE);
+        } else {
+            switchPhotoOrVideoVisibility(isImageFileFromPath(photo.getPhotoPath()), holder);
+            if (isImageFileFromPath(photo.getPhotoPath()))
+                setPropertyPhoto(holder, photo);
+            else if (isVideoFileFromPath(photo.getPhotoPath()))
+                setPropertyVideo(holder, photo);
+                //TODO just for mock, remove before "soutenance"
+            else switchPhotoOrVideoVisibility(true, holder);
             holder.binding.propertyDetailItemPhotoDescription.setVisibility(View.VISIBLE);
-            holder.binding.propertyDetailItemPhotoDescription.setText(photo.getDescription());}
+            holder.binding.propertyDetailItemPhotoDescription.setText(photo.getDescription());
+        }
     }
 
     @Override
@@ -62,13 +77,20 @@ public class PhotoRecyclerViewAdapter extends RecyclerView.Adapter<PhotoRecycler
         }
     }
 
-    public void updatePhotos(List<PropertyPhoto> updatedPhotos){
-        mPhotos = updatedPhotos;
+    public void updatePhotos(List<PropertyPhoto> updatedPhotos) {
+        this.mPhotos = updatedPhotos;
+        notifyDataSetChanged();
     }
+
+    public void isPhotoHaveBeenDeleted(boolean isPhotoHaveBeenDeleted) {
+        this.isPhotoHaveBeenDeleted = isPhotoHaveBeenDeleted;
+    }
+
+    //---------------------- HELPER -----------------------------------
 
     private void setPropertyPhoto(@NonNull ViewHolder holder, @NonNull PropertyPhoto photo) {
         Glide.with(holder.binding.propertyDetailItemPhoto.getContext())
-                .load(photo.getPhoto())
+                .load(photo.getPhotoPath())
                 .centerCrop()
                 .into(new CustomTarget<Drawable>() {
                     @Override
@@ -81,4 +103,14 @@ public class PhotoRecyclerViewAdapter extends RecyclerView.Adapter<PhotoRecycler
                     }
                 });
     }
+
+    private void setPropertyVideo(@NonNull ViewHolder holder, @NonNull PropertyPhoto photo) {
+        holder.binding.propertyDetailItemVideo.setVideoPath(photo.getPhotoPath());
+    }
+
+    private void switchPhotoOrVideoVisibility(boolean isPhoto, @NonNull ViewHolder holder) {
+        holder.binding.propertyDetailItemPhoto.setVisibility(isPhoto ? View.VISIBLE : View.GONE);
+        holder.binding.propertyDetailItemVideo.setVisibility(isPhoto ? View.GONE : View.VISIBLE);
+    }
+
 }

@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    style="@style/custom_alert_dialog_base_style"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content">
+
+    <VideoView
+        android:id="@+id/set_photo_title_video_view"
+        style="@style/custom_alert_dialog_set_title_media_container"
+        app:layout_constraintBottom_toBottomOf="@id/guideline"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <ImageView
+        android:id="@+id/set_photo_title_image_view"
+        style="@style/custom_alert_dialog_set_title_media_container"
+        android:contentDescription="@string/photo_set_on_set_title_dialog"
+        app:layout_constraintBottom_toBottomOf="@id/guideline"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_begin="@dimen/accept_media_view_size" />
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/set_photo_back_button"
+        style="@style/custom_alert_dialog_back_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@id/set_photo_ok_button"
+        app:layout_constraintStart_toStartOf="@id/set_photo_title_image_view" />
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/set_photo_ok_button"
+        style="@style/custom_alert_dialog_ok_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintEnd_toEndOf="@id/set_photo_title_image_view"
+        app:layout_constraintStart_toEndOf="@id/set_photo_back_button"
+        app:layout_constraintTop_toTopOf="@id/set_photo_back_button" />
+
+    <EditText
+        android:id="@+id/set_photo_description_edit_text"
+        style="@style/custom_alert_dialog_set_title_edit_text"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:autofillHints=""
+        android:hint="@string/description"
+        android:inputType="text"
+        app:layout_constraintBottom_toTopOf="@id/set_photo_back_button"
+        app:layout_constraintEnd_toEndOf="@id/set_photo_title_image_view"
+        app:layout_constraintStart_toStartOf="@id/set_photo_title_image_view"
+        app:layout_constraintTop_toTopOf="@id/guideline" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>
