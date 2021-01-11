@@ -1,6 +1,8 @@
 package com.openclassrooms.realestatemanager.presentation.utils.customView;
 
 import android.content.Context;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.util.AttributeSet;
 import android.widget.ImageButton;
 
@@ -34,14 +36,19 @@ public class TopAppBarCustomView extends ConstraintLayout {
         inflate(getContext(), R.layout.custom_view_top_nav_bar, this);
         ImageButton addPropertyButton = findViewById(R.id.top_bar_add_property);
         ImageButton filterButton = findViewById(R.id.top_bar_filter_icon);
+        MainActivity mainActivity = (MainActivity)context;
+        Objects.requireNonNull(mainActivity.getWindow()).setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+
 
         addPropertyButton.setOnClickListener(v -> {
             resetPropertyValues();
+            bottomSheetBehavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
             NavController navController = Navigation.findNavController((MainActivity) context, R.id.nav_host_fragment);
             switch (Objects.requireNonNull(navController.getCurrentDestination()).getId()) {
                 case R.id.propertyListFragment:
                     navController.navigate
                             (R.id.action_propertyListFragment_to_addPropertyFragment);
+
                     break;
 
                 case R.id.mapsFragment:

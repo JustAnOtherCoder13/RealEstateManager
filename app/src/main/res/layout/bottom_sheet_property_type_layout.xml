@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:id="@+id/bottom_sheet_property_type_layout"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <TextView
+        android:id="@+id/checkbox_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/property_type"
+        android:textAppearance="@style/TextAppearance.RealEstateManagerStyles.Subtitle1"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toEndOf="@id/houseCheckBox"
+        android:layout_marginStart="@dimen/basic_marge"
+        android:layout_marginTop="@dimen/basic_marge"
+        />
+
+    <com.openclassrooms.realestatemanager.presentation.utils.customView.CustomBottomSheetPropertyTypeCheckBox
+        android:id="@+id/houseCheckBox"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:title="HOUSE"
+        app:layout_constraintTop_toBottomOf="@id/checkbox_title"
+        app:layout_constraintStart_toStartOf="@id/checkbox_title"
+        />
+
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

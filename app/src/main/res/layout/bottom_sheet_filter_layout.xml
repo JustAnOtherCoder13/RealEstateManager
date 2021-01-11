@@ -5,8 +5,7 @@
     android:id="@+id/bottom_sheet"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="@color/custom_blue_light"
-    app:behavior_peekHeight="80dp"
+    android:background="@drawable/custom_dialog_shape"
     app:layout_behavior="com.google.android.material.bottomsheet.BottomSheetBehavior">
 
 
@@ -14,13 +13,16 @@
         android:id="@+id/filter_property_location"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="@dimen/basic_marge"
+        android:layout_marginStart="@dimen/XL_marge"
+        android:layout_marginEnd="@dimen/XL_marge"
         app:layout_constraintBottom_toTopOf="@id/filter_property_location_price_ranger_slider"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
         <AutoCompleteTextView
+            android:layout_marginTop="@dimen/big_marge"
+            android:layout_marginBottom="@dimen/big_marge"
             android:id="@+id/filter_property_location_text_view"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -58,5 +60,13 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/filter_property_location_surface_ranger_slider" />
+
+    <include
+        layout="@layout/bottom_sheet_property_type_layout"
+        app:layout_constraintTop_toBottomOf="@id/filter_property_location_room_ranger_slider"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -23,5 +23,9 @@
         <attr name="title"/>
         <attr name="android:stepSize"/>
     </declare-styleable>
+
+    <declare-styleable name="CustomBottomSheetPropertyTypeCheckBox">
+        <attr name="title"/>
+    </declare-styleable>
     
 </resources>
