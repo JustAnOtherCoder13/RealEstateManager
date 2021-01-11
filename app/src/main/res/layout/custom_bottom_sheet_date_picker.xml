@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <TextView
+        android:id="@+id/bottom_sheet_date_picker_title"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/basic_marge"
+        android:text="On market from"
+        android:textAppearance="@style/TextAppearance.RealEstateManagerStyles.Subtitle1"
+        app:layout_constraintStart_toStartOf="@id/bottom_sheet_on_market_from_edit_text"
+        app:layout_constraintEnd_toEndOf="@id/bottom_sheet_date_picker_icon"
+        app:layout_constraintBottom_toTopOf="@id/bottom_sheet_date_picker_icon"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/bottom_sheet_on_market_from_edit_text"
+        app:layout_constraintTop_toTopOf="@id/bottom_sheet_date_picker_icon"
+        app:layout_constraintBottom_toBottomOf="@id/bottom_sheet_date_picker_icon"
+        app:layout_constraintStart_toStartOf="parent"
+        android:textAppearance="@style/TextAppearance.RealEstateManagerStyles.Body1"
+        android:layout_marginStart="@dimen/basic_marge"
+        android:textColor="@color/custom_grey"
+        android:text="@string/dd_mm_yyyy"
+        />
+
+    <ImageButton
+        android:id="@+id/bottom_sheet_date_picker_icon"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:padding="@dimen/basic_marge"
+        android:layout_marginStart="@dimen/basic_marge"
+        android:background="@drawable/custom_round_primary"
+        app:layout_constraintStart_toEndOf="@id/bottom_sheet_on_market_from_edit_text"
+        app:layout_constraintTop_toBottomOf="@id/bottom_sheet_date_picker_title"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:srcCompat="@drawable/ic_bottom_sheet_date_picker"
+        android:contentDescription="date picker button" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

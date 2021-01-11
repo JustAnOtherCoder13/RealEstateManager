@@ -26,14 +26,14 @@ public class GetNearBySearchForPropertyLocationInteractor extends PropertyBaseIn
 
     public Observable<List<PointOfInterest>> getNearBySearchForPropertyLocation(@NonNull PropertyLocation propertyLocation, String googleKey) {
 
-        return propertyDataSource.getNearBySchoolForPropertyLocation(propertyLocation, POINT_OF_INTEREST_TYPE.get(0), googleKey)
+        return propertyDataSource.getNearBySearchForPropertyLocation(propertyLocation, POINT_OF_INTEREST_TYPE.get(0), googleKey)
                 .flatMap(nearBySearch -> {
                     nearBySearchToPointOfInterest(nearBySearch, propertyLocation.getPropertyId());
-                    return propertyDataSource.getNearBySchoolForPropertyLocation(propertyLocation, POINT_OF_INTEREST_TYPE.get(1), googleKey);
+                    return propertyDataSource.getNearBySearchForPropertyLocation(propertyLocation, POINT_OF_INTEREST_TYPE.get(1), googleKey);
                 })
                 .flatMap(nearBySearch -> {
                     nearBySearchToPointOfInterest(nearBySearch, propertyLocation.getPropertyId());
-                    return propertyDataSource.getNearBySchoolForPropertyLocation(propertyLocation, POINT_OF_INTEREST_TYPE.get(2), googleKey);
+                    return propertyDataSource.getNearBySearchForPropertyLocation(propertyLocation, POINT_OF_INTEREST_TYPE.get(2), googleKey);
                 })
                 .map(nearBySearch -> nearBySearchToPointOfInterest(nearBySearch, propertyLocation.getPropertyId()));
     }

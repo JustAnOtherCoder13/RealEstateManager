@@ -27,5 +27,9 @@
     <declare-styleable name="CustomBottomSheetPropertyTypeCheckBox">
         <attr name="title"/>
     </declare-styleable>
+
+    <declare-styleable name="CustomBottomSheetDatePicker">
+        <attr name="title"/>
+    </declare-styleable>
     
 </resources>

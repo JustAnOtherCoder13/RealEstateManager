@@ -36,9 +36,6 @@ public class TopAppBarCustomView extends ConstraintLayout {
         inflate(getContext(), R.layout.custom_view_top_nav_bar, this);
         ImageButton addPropertyButton = findViewById(R.id.top_bar_add_property);
         ImageButton filterButton = findViewById(R.id.top_bar_filter_icon);
-        MainActivity mainActivity = (MainActivity)context;
-        Objects.requireNonNull(mainActivity.getWindow()).setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
-
 
         addPropertyButton.setOnClickListener(v -> {
             resetPropertyValues();
@@ -48,7 +45,6 @@ public class TopAppBarCustomView extends ConstraintLayout {
                 case R.id.propertyListFragment:
                     navController.navigate
                             (R.id.action_propertyListFragment_to_addPropertyFragment);
-
                     break;
 
                 case R.id.mapsFragment:
@@ -62,8 +58,10 @@ public class TopAppBarCustomView extends ConstraintLayout {
             }
         });
 
-        filterButton.setOnClickListener(v -> bottomSheetBehavior.setState(bottomSheetBehavior.getState() == BottomSheetBehavior.STATE_COLLAPSED ?
-                BottomSheetBehavior.STATE_EXPANDED : BottomSheetBehavior.STATE_COLLAPSED));
+        filterButton.setOnClickListener(v ->{
+            bottomSheetBehavior.setState(bottomSheetBehavior.getState() == BottomSheetBehavior.STATE_COLLAPSED ?
+                BottomSheetBehavior.STATE_EXPANDED : BottomSheetBehavior.STATE_COLLAPSED);
+        });
     }
 
     public void setBottomSheetBehavior(BottomSheetBehavior<ConstraintLayout> bottomSheetBehavior) {
