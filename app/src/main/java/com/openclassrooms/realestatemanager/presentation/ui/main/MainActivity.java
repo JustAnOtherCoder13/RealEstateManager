@@ -175,20 +175,24 @@ public class MainActivity extends AppCompatActivity {
     private void initBottomSheetFilter() {
         FilterHelper filterHelper = new FilterHelper(mBinding);
         mBinding.bottomSheetLayout.bottomSheetOkButton.setOnClickListener(v -> {
-            mPropertyViewModel.getAllProperties.observe(this,properties -> {
-                for (Property property:properties)
-                    mPropertyViewModel.setPropertyLocationForProperty(property);
-            });
-            mPropertyViewModel.getPropertyLocationForProperty.observe(this,propertyLocation -> {
-                mPropertyViewModel.setKnownRegion(propertyLocation.getRegion());
-            });
-            mPropertyViewModel.getKnownRegions.observe(this,strings -> {
-                String[] regions = new String[strings.size()];
-                strings.toArray(regions);
-                filterHelper.initLocationAutocomplete(strings.toArray(regions));
-            });
+            initBottomSheetLocationFilter(filterHelper);
             Log.i("TAG", "onStart: POI "+filterHelper.requestPointOfInterest().size()
                     +" TYPE "+filterHelper.requestPropertyType().size());
+        });
+    }
+
+    private void initBottomSheetLocationFilter(FilterHelper filterHelper) {
+        mPropertyViewModel.getAllProperties.observe(this,properties -> {
+            for (Property property:properties)
+                mPropertyViewModel.setPropertyLocationForProperty(property);
+        });
+        mPropertyViewModel.getPropertyLocationForProperty.observe(this,propertyLocation -> {
+            mPropertyViewModel.setKnownRegion(propertyLocation.getRegion());
+        });
+        mPropertyViewModel.getKnownRegions.observe(this,strings -> {
+            String[] regions = new String[strings.size()];
+            strings.toArray(regions);
+            filterHelper.initLocationAutocomplete(strings.toArray(regions));
         });
     }
 
