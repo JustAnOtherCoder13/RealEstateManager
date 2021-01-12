@@ -45,7 +45,9 @@ public class PropertyViewModel extends BaseViewModel {
     private MutableLiveData<PropertyLocation> propertyLocationForPropertyMutableLd = new MutableLiveData<>();
     private MutableLiveData<PropertyLocation> locationForAddressMutableLD = new MutableLiveData<>();
     private MutableLiveData<Boolean> isDataLoadingMutableLD = new MutableLiveData<>();
+    private MutableLiveData<List<String>> knownRegionsMutableLD = new MutableLiveData<>(new ArrayList<>());
 
+    public LiveData<List<String>>getKnownRegions = knownRegionsMutableLD;
     public LiveData<List<PointOfInterest>> getMapsPointOfInterest = mapsPointOfInterestForPropertyMutableLD;
     public LiveData<CompletionState> getCompletionState = completionStateMutableLD;
     public LiveData<List<Property>> getAllProperties = allPropertiesMutableLD;
@@ -260,5 +262,17 @@ public class PropertyViewModel extends BaseViewModel {
                         .subscribeOn(schedulerProvider.getIo())
                         .observeOn(schedulerProvider.getUi())
                         .subscribe(pointOfInterests -> mapsPointOfInterestForPropertyMutableLD.setValue(pointOfInterests)));
+    }
+
+    //___________________________________HELPER__________________________________
+
+    public void setKnownRegion(String region) {
+        List<String> knownRegions = Objects.requireNonNull(knownRegionsMutableLD.getValue());
+        if (!knownRegions.isEmpty()) {
+            for (String knownRegion : knownRegions)
+                if (knownRegion.equalsIgnoreCase(region)) return;
+        }
+        knownRegions.add(region);
+        knownRegionsMutableLD.setValue(knownRegions);
     }
 }

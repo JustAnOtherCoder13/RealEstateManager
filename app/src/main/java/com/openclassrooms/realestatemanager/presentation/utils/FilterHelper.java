@@ -1,6 +1,9 @@
 package com.openclassrooms.realestatemanager.presentation.utils;
 
 import android.content.Context;
+import android.util.Log;
+import android.widget.ArrayAdapter;
+import android.widget.AutoCompleteTextView;
 
 import com.openclassrooms.realestatemanager.R;
 import com.openclassrooms.realestatemanager.databinding.ActivityMainBinding;
@@ -16,6 +19,7 @@ public class FilterHelper {
 
     private List<String> requestPointOfInterest;
     private List<String> requestPropertyType;
+    private List<String> knownRegions = new ArrayList<>();
 
     public FilterHelper(ActivityMainBinding mainBinding) {
         this.mainBinding = mainBinding;
@@ -73,5 +77,13 @@ public class FilterHelper {
             requestPropertyType.remove(penthouseStr);
 
         return requestPropertyType;
+    }
+
+    public void initLocationAutocomplete(String [] regions){
+        AutoCompleteTextView region = mainBinding.bottomSheetLayout.filterPropertyLocationTextView;
+        ArrayAdapter<String> regionAdapter = new ArrayAdapter<>(mainBinding.getRoot().getContext(),
+                android.R.layout.simple_dropdown_item_1line, regions);
+        region.setAdapter(regionAdapter);
+
     }
 }

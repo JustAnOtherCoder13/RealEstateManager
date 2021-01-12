@@ -159,20 +159,37 @@ public class MainActivity extends AppCompatActivity {
 
 
     private void initValues() {
-        FilterHelper filterHelper = new FilterHelper(mBinding);
-        mBinding.bottomSheetLayout.bottomSheetOkButton.setOnClickListener(v -> {
-            Log.i("TAG", "onStart: POI "+filterHelper.requestPointOfInterest().size()
-            +" TYPE "+filterHelper.requestPropertyType().size());
-        });
         mUpdateButton = mBinding.updateButtonCustomView.findViewById(R.id.custom_view_update_image_button);
         mPropertyViewModel = new ViewModelProvider(this).get(PropertyViewModel.class);
         mAgentViewModel = new ViewModelProvider(this).get(AgentViewModel.class);
         mNavController = Navigation.findNavController(this, R.id.nav_host_fragment);
         NavigationUI.setupWithNavController(mBinding.bottomNavBar, mNavController);
         mAgentViewModel.setAgent();
+        mPropertyViewModel.setAllProperties();
+        initBottomSheetFilter();
         if (!isGpsAvailable(this))
             Toast.makeText(this, R.string.gps_warning_message, Toast.LENGTH_LONG).show();
 
+    }
+
+    private void initBottomSheetFilter() {
+        FilterHelper filterHelper = new FilterHelper(mBinding);
+        mBinding.bottomSheetLayout.bottomSheetOkButton.setOnClickListener(v -> {
+            mPropertyViewModel.getAllProperties.observe(this,properties -> {
+                for (Property property:properties)
+                    mPropertyViewModel.setPropertyLocationForProperty(property);
+            });
+            mPropertyViewModel.getPropertyLocationForProperty.observe(this,propertyLocation -> {
+                mPropertyViewModel.setKnownRegion(propertyLocation.getRegion());
+            });
+            mPropertyViewModel.getKnownRegions.observe(this,strings -> {
+                String[] regions = new String[strings.size()];
+                strings.toArray(regions);
+                filterHelper.initLocationAutocomplete(strings.toArray(regions));
+            });
+            Log.i("TAG", "onStart: POI "+filterHelper.requestPointOfInterest().size()
+                    +" TYPE "+filterHelper.requestPropertyType().size());
+        });
     }
 
     protected void setMenuVisibility(@NonNull Boolean isVisible) {
