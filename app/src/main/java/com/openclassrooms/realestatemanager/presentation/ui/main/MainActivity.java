@@ -4,6 +4,7 @@ import android.Manifest;
 import android.content.Context;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.ImageButton;
@@ -23,10 +24,12 @@ import com.airbnb.lottie.LottieAnimationView;
 import com.google.android.material.bottomsheet.BottomSheetBehavior;
 import com.openclassrooms.realestatemanager.R;
 import com.openclassrooms.realestatemanager.databinding.ActivityMainBinding;
+import com.openclassrooms.realestatemanager.presentation.utils.FilterHelper;
 import com.openclassrooms.realestatemanager.presentation.viewModels.AgentViewModel;
 import com.openclassrooms.realestatemanager.presentation.viewModels.PropertyViewModel;
 import com.picone.core.domain.entity.Property;
 
+import java.util.Arrays;
 import java.util.Objects;
 
 import dagger.hilt.android.AndroidEntryPoint;
@@ -154,7 +157,13 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+
     private void initValues() {
+        FilterHelper filterHelper = new FilterHelper(mBinding);
+        mBinding.bottomSheetLayout.bottomSheetOkButton.setOnClickListener(v -> {
+            Log.i("TAG", "onStart: POI "+filterHelper.requestPointOfInterest().size()
+            +" TYPE "+filterHelper.requestPropertyType().size());
+        });
         mUpdateButton = mBinding.updateButtonCustomView.findViewById(R.id.custom_view_update_image_button);
         mPropertyViewModel = new ViewModelProvider(this).get(PropertyViewModel.class);
         mAgentViewModel = new ViewModelProvider(this).get(AgentViewModel.class);

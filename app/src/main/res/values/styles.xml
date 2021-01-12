@@ -10,7 +10,7 @@
 
     <!--__________________________________TEXT VIEW STYLE__________________________________-->
 
-    <style name="subtitle_style" parent="TextAppearance.RealEstateManagerStyles.Subtitle1"/>
+    <style name="subtitle_style" parent="TextAppearance.RealEstateManagerStyles.Subtitle1" />
     <!-- Detail fragment-->
     <style name="fragment_property_detail_title" parent="TextAppearance.RealEstateManagerStyles.Headline1">
         <item name="android:text">@string/description</item>
@@ -219,10 +219,10 @@
         <item name="android:padding">@dimen/basic_marge</item>
     </style>
 
-   <style name="custom_alert_dialog_set_title_media_container">
-       <item name="android:layout_width">@dimen/accept_media_view_size</item>
-       <item name="android:layout_height">@dimen/accept_media_view_size</item>
-   </style>
+    <style name="custom_alert_dialog_set_title_media_container">
+        <item name="android:layout_width">@dimen/accept_media_view_size</item>
+        <item name="android:layout_height">@dimen/accept_media_view_size</item>
+    </style>
 
     <style name="custom_alert_dialog_button_base_style" parent="subtitle_style">
         <item name="cornerRadius">@dimen/button_corner</item>
@@ -252,7 +252,8 @@
 
     <style name="custom_alert_dialog_base_checked_text_view">
         <item name="android:textAlignment">center</item>
-        <item name="android:textAppearance">@style/TextAppearance.RealEstateManagerStyles.Body1</item>
+        <item name="android:textAppearance">@style/TextAppearance.RealEstateManagerStyles.Body1
+        </item>
         <item name="android:layout_width">?attr/actionBarSize</item>
         <item name="android:layout_height">?attr/actionBarSize</item>
     </style>
@@ -306,14 +307,17 @@
         <item name="android:paddingBottom">?attr/actionBarSize</item>
         <item name="behavior_hideable">true</item>
         <item name="behavior_peekHeight">0dp</item>
-        <item name="layout_behavior">com.google.android.material.bottomsheet.BottomSheetBehavior</item>
+        <item name="layout_behavior">com.google.android.material.bottomsheet.BottomSheetBehavior
+        </item>
     </style>
 
     <style name="bottom_sheet_location_title">
         <item name="android:layout_marginStart">@dimen/basic_marge</item>
         <item name="android:paddingTop">@dimen/basic_marge</item>
         <item name="android:text">@string/propertyLocation</item>
-        <item name="android:textAppearance">@style/TextAppearance.RealEstateManagerStyles.Subtitle1</item>
+        <item name="android:textAppearance">
+            @style/TextAppearance.RealEstateManagerStyles.Subtitle1
+        </item>
     </style>
 
     <style name="bottom_sheet_location">
@@ -359,6 +363,12 @@
         <item name="android:layout_marginStart">@dimen/basic_marge</item>
         <item name="android:layout_marginBottom">@dimen/basic_marge</item>
         <item name="android:text">@string/point_of_interest</item>
+    </style>
+
+    <style name="Widget.range_slider_tooltip" parent="Widget.MaterialComponents.Tooltip">
+        <item name="android:background">@color/custom_blue</item>
+        <item name="android:textColor">@color/white</item>
+        <item name="android:textAppearance">@style/TextAppearance.RealEstateManagerStyles.Body1</item>
     </style>
 
 </resources>
