@@ -19,7 +19,7 @@
         <attr name="android:lines"/>
     </declare-styleable>
 
-    <declare-styleable name="CustomRangeSlider">
+    <declare-styleable name="CustomBottomSheetRangeSlider">
         <attr name="title"/>
         <attr name="android:stepSize"/>
     </declare-styleable>

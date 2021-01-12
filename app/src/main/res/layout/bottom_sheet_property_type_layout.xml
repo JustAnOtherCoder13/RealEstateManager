@@ -6,55 +6,52 @@
     android:layout_height="wrap_content">
 
     <TextView
-        android:id="@+id/checkbox_title"
+        android:id="@+id/property_type_title"
+        style="@style/property_type_title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="@dimen/basic_marge"
-        android:layout_marginBottom="@dimen/basic_marge"
-        android:text="@string/property_type"
-        android:textAppearance="@style/TextAppearance.RealEstateManagerStyles.Subtitle1"
-        app:layout_constraintBottom_toTopOf="@id/houseCheckBox"
+        app:layout_constraintBottom_toTopOf="@id/house_check_box"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
     <com.openclassrooms.realestatemanager.presentation.utils.customView.CustomBottomSheetPropertyTypeCheckBox
-        android:id="@+id/houseCheckBox"
+        android:id="@+id/house_check_box"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        app:layout_constraintBottom_toTopOf="@id/flatCheckBox"
+        app:layout_constraintBottom_toTopOf="@id/flat_check_box"
+        app:layout_constraintEnd_toStartOf="@id/duplex_check_box"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toStartOf="@id/duplexCheckBox"
-        app:layout_constraintTop_toBottomOf="@id/checkbox_title"
-        app:title="HOUSE" />
+        app:layout_constraintTop_toBottomOf="@id/property_type_title"
+        app:title="@string/house" />
 
     <com.openclassrooms.realestatemanager.presentation.utils.customView.CustomBottomSheetPropertyTypeCheckBox
-        android:id="@+id/flatCheckBox"
+        android:id="@+id/flat_check_box"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        app:layout_constraintBottom_toTopOf="@id/duplexCheckBox"
+        app:layout_constraintBottom_toTopOf="@id/duplex_check_box"
+        app:layout_constraintEnd_toStartOf="@id/duplex_check_box"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toStartOf="@id/duplexCheckBox"
-        app:layout_constraintTop_toBottomOf="@id/houseCheckBox"
-        app:title="FLAT" />
+        app:layout_constraintTop_toBottomOf="@id/house_check_box"
+        app:title="@string/flat" />
 
     <com.openclassrooms.realestatemanager.presentation.utils.customView.CustomBottomSheetPropertyTypeCheckBox
-        android:id="@+id/duplexCheckBox"
+        android:id="@+id/duplex_check_box"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
+        app:layout_constraintBottom_toBottomOf="@id/house_check_box"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="@id/houseCheckBox"
-        app:layout_constraintStart_toEndOf="@id/houseCheckBox"
-        app:layout_constraintBottom_toBottomOf="@id/houseCheckBox"
-        app:title="DUPLEX" />
+        app:layout_constraintStart_toEndOf="@id/house_check_box"
+        app:layout_constraintTop_toTopOf="@id/house_check_box"
+        app:title="@string/duplex" />
 
     <com.openclassrooms.realestatemanager.presentation.utils.customView.CustomBottomSheetPropertyTypeCheckBox
-        android:id="@+id/penthouseCheckBox"
+        android:id="@+id/penthouse_check_box"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@id/flatCheckBox"
-        app:layout_constraintTop_toBottomOf="@id/duplexCheckBox"
-        app:title="PENTHOUSE" />
+        app:layout_constraintStart_toEndOf="@id/flat_check_box"
+        app:layout_constraintTop_toBottomOf="@id/duplex_check_box"
+        app:title="@string/penthouse" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -30,7 +30,7 @@ import com.openclassrooms.realestatemanager.presentation.utils.ManageImageHelper
 import com.openclassrooms.realestatemanager.presentation.utils.PathUtil;
 import com.openclassrooms.realestatemanager.presentation.utils.RecyclerViewItemClickListener;
 import com.openclassrooms.realestatemanager.presentation.utils.customView.CustomMediaDialog;
-import com.openclassrooms.realestatemanager.presentation.utils.customView.CustomSetTitleDialog;
+import com.openclassrooms.realestatemanager.presentation.utils.customView.CustomMediaSetTitleDialog;
 import com.picone.core.domain.entity.PointOfInterest;
 import com.picone.core.domain.entity.Property;
 import com.picone.core.domain.entity.PropertyLocation;
@@ -59,7 +59,7 @@ public class AddPropertyFragment extends BaseFragment {
     private String mPreviousSavedPropertyAddress;
     private PhotoRecyclerViewAdapter mAdapter;
     private ManageImageHelper mImageHelper;
-    private CustomSetTitleDialog setTitleDialog;
+    private CustomMediaSetTitleDialog setTitleDialog;
 
 
     @Nullable
@@ -68,7 +68,7 @@ public class AddPropertyFragment extends BaseFragment {
         mBinding = FragmentAddPropertyBinding.inflate(getLayoutInflater());
         mNavController = Navigation.findNavController(requireActivity(), R.id.nav_host_fragment);
         mImageHelper = new ManageImageHelper(requireContext());
-        setTitleDialog = new CustomSetTitleDialog(requireContext());
+        setTitleDialog = new CustomMediaSetTitleDialog(requireContext());
         setAppBarVisibility(false);
         initRecyclerView();
         setUpdateButtonIcon(false);

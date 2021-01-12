@@ -6,11 +6,9 @@
 
     <TextView
         android:id="@+id/custom_range_slider_title"
+        style="@style/subtitle_style"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="@dimen/basic_marge"
-        android:text="Title"
-        android:textAppearance="@style/TextAppearance.RealEstateManagerStyles.Subtitle1"
         app:layout_constraintBottom_toTopOf="@id/custom_range_slider"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
@@ -19,7 +17,6 @@
         android:id="@+id/custom_range_slider"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="@dimen/basic_marge"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"

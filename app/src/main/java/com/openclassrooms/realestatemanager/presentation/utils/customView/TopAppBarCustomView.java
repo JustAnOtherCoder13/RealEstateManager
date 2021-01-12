@@ -1,8 +1,6 @@
 package com.openclassrooms.realestatemanager.presentation.utils.customView;
 
 import android.content.Context;
-import android.graphics.Color;
-import android.graphics.drawable.ColorDrawable;
 import android.util.AttributeSet;
 import android.widget.ImageButton;
 
@@ -58,10 +56,8 @@ public class TopAppBarCustomView extends ConstraintLayout {
             }
         });
 
-        filterButton.setOnClickListener(v ->{
-            bottomSheetBehavior.setState(bottomSheetBehavior.getState() == BottomSheetBehavior.STATE_COLLAPSED ?
-                BottomSheetBehavior.STATE_EXPANDED : BottomSheetBehavior.STATE_COLLAPSED);
-        });
+        filterButton.setOnClickListener(v -> bottomSheetBehavior.setState(bottomSheetBehavior.getState() == BottomSheetBehavior.STATE_COLLAPSED ?
+            BottomSheetBehavior.STATE_EXPANDED : BottomSheetBehavior.STATE_COLLAPSED));
     }
 
     public void setBottomSheetBehavior(BottomSheetBehavior<ConstraintLayout> bottomSheetBehavior) {

@@ -8,21 +8,21 @@
 
     <CheckedTextView
         android:id="@+id/custom_dialog_gallery_button"
-        style="@style/custom_alert_dialog_base_checked_text_view_gallery"
+        style="@style/custom_alert_dialog_checked_text_view_gallery"
         app:layout_constraintEnd_toStartOf="@id/custom_dialog_photo_button"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
     <CheckedTextView
         android:id="@+id/custom_dialog_photo_button"
-        style="@style/custom_alert_dialog_base_checked_text_view_photo_camera"
+        style="@style/custom_alert_dialog_checked_text_view_photo_camera"
         app:layout_constraintEnd_toStartOf="@id/custom_dialog_video_button"
         app:layout_constraintStart_toEndOf="@id/custom_dialog_gallery_button"
         app:layout_constraintTop_toTopOf="parent" />
 
     <CheckedTextView
         android:id="@+id/custom_dialog_video_button"
-        style="@style/custom_alert_dialog_base_checked_text_view_video_camera"
+        style="@style/custom_alert_dialog_checked_text_view_video_camera"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@id/custom_dialog_photo_button"
         app:layout_constraintTop_toTopOf="parent" />

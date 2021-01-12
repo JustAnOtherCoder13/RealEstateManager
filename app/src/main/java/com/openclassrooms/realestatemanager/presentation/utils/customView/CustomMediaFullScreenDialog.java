@@ -24,7 +24,7 @@ import com.openclassrooms.realestatemanager.presentation.utils.PathUtil;
 
 import java.util.Objects;
 
-public class CustomFullScreenMediaDialog extends Dialog implements android.view.View.OnClickListener {
+public class CustomMediaFullScreenDialog extends Dialog implements android.view.View.OnClickListener {
 
     private Context context;
     private ImageView photo;
@@ -34,7 +34,7 @@ public class CustomFullScreenMediaDialog extends Dialog implements android.view.
     private CheckedTextView pause;
     private int stopPosition = 0;
 
-    public CustomFullScreenMediaDialog(@NonNull Context context, String mediaPath) {
+    public CustomMediaFullScreenDialog(@NonNull Context context, String mediaPath) {
         super(context);
         this.context = context;
         this.mediaPath = mediaPath;

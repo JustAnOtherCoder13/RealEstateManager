@@ -178,7 +178,7 @@ public class MapsFragment extends BaseFragment implements GoogleMap.OnInfoWindow
                 mMap.addMarker(mMarkerOptions.position(new LatLng(propertyLocation.getLatitude(), propertyLocation.getLongitude()))
                         .title(String.valueOf(propertyLocation.getPropertyId()))
                         .snippet(getPropertyForId(String.valueOf(propertyLocation.getPropertyId())).getAddress())
-                        .icon(BitmapDescriptorFactory.fromBitmap(getBitmapFromVectorOrDrawable(requireContext(), R.drawable.ic_fragment_detail_location_on_zone1_24))));
+                        .icon(BitmapDescriptorFactory.fromBitmap(getBitmapFromVectorOrDrawable(requireContext(), R.drawable.ic_fragment_detail_location_24))));
             }
         });
     }

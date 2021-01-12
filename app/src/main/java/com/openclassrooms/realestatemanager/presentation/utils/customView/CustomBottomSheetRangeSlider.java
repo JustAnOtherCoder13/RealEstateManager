@@ -12,16 +12,16 @@ import androidx.constraintlayout.widget.ConstraintLayout;
 import com.google.android.material.slider.RangeSlider;
 import com.openclassrooms.realestatemanager.R;
 
-public class CustomRangeSlider extends ConstraintLayout {
+public class CustomBottomSheetRangeSlider extends ConstraintLayout {
 
     private Context context;
     private TextView title;
     private RangeSlider rangeSlider;
 
-    public CustomRangeSlider(@NonNull Context context, @Nullable AttributeSet attrs) {
+    public CustomBottomSheetRangeSlider(@NonNull Context context, @Nullable AttributeSet attrs) {
         super(context, attrs);
         this.context = context;
-        TypedArray attributes = context.obtainStyledAttributes(attrs, R.styleable.CustomRangeSlider);
+        TypedArray attributes = context.obtainStyledAttributes(attrs, R.styleable.CustomBottomSheetRangeSlider);
         initView(attributes);
     }
 
@@ -37,8 +37,9 @@ public class CustomRangeSlider extends ConstraintLayout {
         rangeSlider.setValueTo(10000);
 
 
-        title.setText(attributes.getText(R.styleable.CustomRangeSlider_title));
-        rangeSlider.setStepSize(attributes.getFloat(R.styleable.CustomRangeSlider_android_stepSize,10.0f));
+        assert attributes != null;
+        title.setText(attributes.getText(R.styleable.CustomBottomSheetRangeSlider_title));
+        rangeSlider.setStepSize(attributes.getFloat(R.styleable.CustomBottomSheetRangeSlider_android_stepSize,10.0f));
         attributes.recycle();
     }
 
