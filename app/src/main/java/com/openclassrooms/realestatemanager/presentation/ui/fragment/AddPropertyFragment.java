@@ -307,7 +307,7 @@ public class AddPropertyFragment extends BaseFragment {
                 if (!mPropertyPhotos.isEmpty()) persistAllNewPhotos();
 
                 if (isAddressHaveChanged(originalProperty))
-                    UpdatePropertyWhenAddressChange(updateProperty(originalProperty), originalProperty);
+                    UpdatePropertyWhenAddressChange(originalProperty);
                 else {
                     mPropertyViewModel.updateProperty(updateProperty(originalProperty));
                     mPropertyViewModel.getCompletionState.observe(getViewLifecycleOwner(), completionState -> {
@@ -347,9 +347,10 @@ public class AddPropertyFragment extends BaseFragment {
         });
     }
 
-    private void UpdatePropertyWhenAddressChange(Property updatedProperty, Property originalProperty) {
+    private void UpdatePropertyWhenAddressChange(Property originalProperty) {
         mPropertyViewModel.setAllPointOfInterestForProperty(originalProperty);
         mPropertyViewModel.setPropertyLocationForProperty(originalProperty);
+        Property updatedProperty = updateKnownProperty(originalProperty);
 
         mPropertyViewModel.getPropertyLocationForProperty.observe(getViewLifecycleOwner(), propertyLocation ->
                 mPropertyViewModel.setPropertyLocationForPropertyAddress(updatedProperty));
@@ -390,6 +391,10 @@ public class AddPropertyFragment extends BaseFragment {
         Property property = new Property();
         property.setId(originalProperty.getId());
         property.setRealEstateAgentId(Objects.requireNonNull(mAgentViewModel.getAgent.getValue()).getId());
+        return updateKnownProperty(property);
+    }
+
+    private Property updateKnownProperty(Property property) {
         property.setAddress(mBinding.addPropertyInformationLayout.addPropertyInformationAddress.getValueForView());
         property.setNumberOfRooms(Integer.parseInt(mBinding.addPropertyInformationLayout.addPropertyInformationNumberOfRooms.getValueForView()));
         property.setNumberOfBathrooms(Integer.parseInt((mBinding.addPropertyInformationLayout.addPropertyInformationNumberOfBathrooms.getValueForView())));

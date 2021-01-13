@@ -26,5 +26,8 @@
     <dimen name="add_property_information_layout_location_max_width">130dp</dimen>
 
 
+    <dimen name="range_slider_value_margin_bottom">40dp</dimen>
+    <dimen name="bottom_sheet_outline_size">3dp</dimen>
+    <dimen name="bottom_sheet_close_button_frame_size">30dp</dimen>
 
 </resources>

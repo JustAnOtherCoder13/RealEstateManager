@@ -56,6 +56,8 @@ public class MainActivity extends AppCompatActivity {
     protected boolean isLocationPermissionGranted;
     protected boolean isReadPermissionGranted;
     protected boolean isWritePermissionGranted;
+    private FilterHelper filterHelper;
+
 
     private BottomSheetBehavior<ConstraintLayout> mBottomSheetBehavior;
 
@@ -82,7 +84,8 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onStart() {
         super.onStart();
-        mBottomSheetBehavior=BottomSheetBehavior.from(mBinding.bottomSheetLayout.bottomSheet);
+        mBottomSheetBehavior = BottomSheetBehavior.from(mBinding.bottomSheetLayout.bottomSheet);
+        mBottomSheetBehavior.setDraggable(false);
         mBinding.topAppBar.setBottomSheetBehavior(mBottomSheetBehavior);
     }
 
@@ -166,34 +169,41 @@ public class MainActivity extends AppCompatActivity {
         NavigationUI.setupWithNavController(mBinding.bottomNavBar, mNavController);
         mAgentViewModel.setAgent();
         mPropertyViewModel.setAllProperties();
+        filterHelper = new FilterHelper(mBinding);
         initBottomSheetFilter();
+        initBottomSheetLocationFilter(filterHelper);
+
         if (!isGpsAvailable(this))
             Toast.makeText(this, R.string.gps_warning_message, Toast.LENGTH_LONG).show();
 
     }
 
+
     private void initBottomSheetFilter() {
-        FilterHelper filterHelper = new FilterHelper(mBinding);
+        mBinding.bottomSheetLayout.bottomSheetCloseButton.setOnClickListener(v -> {
+            mBottomSheetBehavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
+        });
         mBinding.bottomSheetLayout.bottomSheetOkButton.setOnClickListener(v -> {
-            initBottomSheetLocationFilter(filterHelper);
-            Log.i("TAG", "onStart: POI "+filterHelper.requestPointOfInterest().size()
-                    +" TYPE "+filterHelper.requestPropertyType().size());
+            filterHelper.filterProperties(mPropertyViewModel.getAllProperties.getValue());
         });
     }
 
     private void initBottomSheetLocationFilter(FilterHelper filterHelper) {
-        mPropertyViewModel.getAllProperties.observe(this,properties -> {
-            for (Property property:properties)
+        mPropertyViewModel.getAllProperties.observe(this, properties -> {
+            for (Property property : properties) {
                 mPropertyViewModel.setPropertyLocationForProperty(property);
+                mPropertyViewModel.setAllPhotosForProperty(property);
+            }
+            filterHelper.initRangeSliderValues(properties);
         });
-        mPropertyViewModel.getPropertyLocationForProperty.observe(this,propertyLocation -> {
-            mPropertyViewModel.setKnownRegion(propertyLocation.getRegion());
-        });
-        mPropertyViewModel.getKnownRegions.observe(this,strings -> {
-            String[] regions = new String[strings.size()];
-            strings.toArray(regions);
-            filterHelper.initLocationAutocomplete(strings.toArray(regions));
-        });
+        mPropertyViewModel.getPropertyLocationForProperty.observe(this, propertyLocation ->
+                mPropertyViewModel.setKnownRegion(propertyLocation.getRegion()));
+
+        mPropertyViewModel.getAllPropertyPhotosForProperty.observe(this,
+                filterHelper::updateAllPropertyPhotos);
+
+        mPropertyViewModel.getKnownRegions.observe(this, regions ->
+                mBinding.bottomSheetLayout.filterPropertyLocationSpinner.setSpinnerAdapter(regions));
     }
 
     protected void setMenuVisibility(@NonNull Boolean isVisible) {

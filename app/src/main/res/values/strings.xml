@@ -90,6 +90,7 @@
     <string name="school">School</string>
     <string name="restaurant">Restaurant</string>
     <string name="supermarket">Supermarket</string>
+    <string name="close_filter_button">close filter button</string>
 
 
 </resources>

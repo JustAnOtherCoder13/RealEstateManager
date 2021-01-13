@@ -2,23 +2,40 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content">
+    android:layout_height="wrap_content"
+    android:paddingStart="@dimen/basic_marge"
+    android:paddingEnd="@dimen/basic_marge">
 
     <TextView
         android:id="@+id/custom_range_slider_title"
         style="@style/subtitle_style"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        app:layout_constraintBottom_toTopOf="@id/custom_range_slider"
+        app:layout_constraintBottom_toTopOf="@id/custom_range_slider_start_value"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/custom_range_slider_start_value"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="@dimen/range_slider_value_margin_bottom"
+        app:layout_constraintBottom_toBottomOf="@id/custom_range_slider"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/custom_range_slider_title" />
+
+    <TextView
+        android:id="@+id/custom_range_slider_end_value"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toBottomOf="@id/custom_range_slider_start_value"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@id/custom_range_slider_start_value" />
 
     <com.google.android.material.slider.RangeSlider
         android:id="@+id/custom_range_slider"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:labelStyle="@style/Widget.range_slider_tooltip"
-        app:values="@array/initial_range_slider_values"
         app:labelBehavior="withinBounds"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"

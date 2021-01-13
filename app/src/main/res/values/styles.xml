@@ -239,6 +239,7 @@
 
     <style name="custom_alert_dialog_ok_button" parent="custom_alert_dialog_button_base_style">
         <item name="android:text">@string/ok</item>
+        <item name="android:layout_margin">@dimen/big_marge</item>
     </style>
 
     <style name="custom_alert_dialog_set_title_edit_text" parent="subtitle_style">
@@ -303,7 +304,6 @@
 
     <style name="bottom_sheet">
         <item name="android:background">@drawable/custom_dialog_shape</item>
-        <item name="android:paddingTop">@dimen/basic_marge</item>
         <item name="android:paddingBottom">?attr/actionBarSize</item>
         <item name="behavior_hideable">true</item>
         <item name="behavior_peekHeight">0dp</item>
@@ -311,18 +311,17 @@
         </item>
     </style>
 
-    <style name="bottom_sheet_location_title">
+    <style name="bottom_sheet_location_title" parent="@style/TextAppearance.RealEstateManagerStyles.Subtitle1">
         <item name="android:layout_marginStart">@dimen/basic_marge</item>
         <item name="android:paddingTop">@dimen/basic_marge</item>
         <item name="android:text">@string/propertyLocation</item>
-        <item name="android:textAppearance">
-            @style/TextAppearance.RealEstateManagerStyles.Subtitle1
-        </item>
     </style>
 
-    <style name="bottom_sheet_location">
+    <style name="bottom_sheet_location" parent="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu">
         <item name="android:layout_marginStart">@dimen/basic_marge</item>
         <item name="android:layout_marginEnd">@dimen/XL_marge</item>
+        <item name="boxStrokeColor">@color/custom_blue</item>
+        <item name="boxStrokeWidth">2dp</item>
     </style>
 
     <style name="bottom_sheet_location_text_view">
@@ -369,6 +368,19 @@
         <item name="android:background">@color/custom_blue</item>
         <item name="android:textColor">@color/white</item>
         <item name="android:textAppearance">@style/TextAppearance.RealEstateManagerStyles.Body1</item>
+    </style>
+
+    <style name="bottom_sheet_close_button_frame_layout">
+        <item name="android:layout_marginStart">@dimen/bottom_sheet_outline_size</item>
+        <item name="android:layout_marginTop">@dimen/bottom_sheet_outline_size</item>
+        <item name="android:layout_marginEnd">@dimen/bottom_sheet_outline_size</item>
+        <item name="android:background">@drawable/custom_bottom_sheet_top_bar</item>
+    </style>
+
+    <style name="bottom_sheet_close_button">
+        <item name="android:layout_marginTop">@dimen/bottom_sheet_outline_size</item>
+        <item name="srcCompat">@drawable/ic_bottom_sheet_close</item>
+        <item name="android:background">@drawable/custom_round_primary</item>
     </style>
 
 </resources>

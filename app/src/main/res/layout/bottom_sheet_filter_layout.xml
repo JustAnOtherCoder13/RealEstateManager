@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/bottom_sheet"
     style="@style/bottom_sheet"
     android:layout_width="match_parent"
@@ -10,69 +9,34 @@
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+        app:layout_constraintTop_toBottomOf="@id/bottom_sheet_close_button">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
-            <com.google.android.material.button.MaterialButton
-                android:id="@+id/bottom_sheet_ok_button"
-                style="@style/custom_alert_dialog_ok_button"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                app:layout_constraintBottom_toTopOf="@id/filter_property_location_title"
-                app:layout_constraintEnd_toStartOf="@id/bottom_sheet_point_of_interest_include"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
-
-            <FrameLayout
+            <com.openclassrooms.realestatemanager.presentation.utils.customView.CustomBottomSheetSpinner
+                android:id="@+id/filter_property_location_spinner"
                 android:layout_width="0dp"
-                android:layout_height="2dp"
-                android:background="@color/custom_blue"
-                app:layout_constraintBottom_toTopOf="@id/filter_property_location_title"
-                app:layout_constraintEnd_toStartOf="@id/bottom_sheet_point_of_interest_include"
-                app:layout_constraintStart_toStartOf="@id/filter_property_location_title"
-                app:layout_constraintTop_toBottomOf="@id/bottom_sheet_ok_button" />
-
-            <FrameLayout
-                android:layout_width="2dp"
-                android:layout_height="0dp"
-                android:background="@color/custom_blue"
-                app:layout_constraintBottom_toTopOf="@id/filter_property_location_title"
-                app:layout_constraintEnd_toStartOf="@id/bottom_sheet_point_of_interest_include"
-                app:layout_constraintStart_toStartOf="@id/bottom_sheet_point_of_interest_include"
-                app:layout_constraintTop_toTopOf="parent" />
-
-            <TextView
-                android:id="@+id/filter_property_location_title"
-                style="@style/bottom_sheet_location_title"
-                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                app:layout_constraintBottom_toTopOf="@id/filter_property_location"
+                app:layout_constraintBottom_toTopOf="@id/filter_property_number_of_photo_spinner"
+                app:layout_constraintEnd_toStartOf="@id/bottom_sheet_point_of_interest_include"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/bottom_sheet_ok_button" />
+                app:layout_constraintTop_toTopOf="parent"
+                app:title="@string/propertyLocation" />
 
-            <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/filter_property_location"
-                style="@style/bottom_sheet_location"
+            <com.openclassrooms.realestatemanager.presentation.utils.customView.CustomBottomSheetSpinner
+                android:id="@+id/filter_property_number_of_photo_spinner"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 app:layout_constraintBottom_toTopOf="@id/filter_property_location_price_ranger_slider"
                 app:layout_constraintEnd_toStartOf="@id/bottom_sheet_point_of_interest_include"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/filter_property_location_title">
-
-                <AutoCompleteTextView
-                    android:id="@+id/filter_property_location_text_view"
-                    style="@style/bottom_sheet_location_text_view"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    tools:ignore="LabelFor" />
-
-            </com.google.android.material.textfield.TextInputLayout>
+                app:layout_constraintTop_toBottomOf="@id/filter_property_location_spinner"
+                app:title="@string/photo" />
 
             <include
                 android:id="@+id/bottom_sheet_point_of_interest_include"
@@ -80,26 +44,25 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="@dimen/basic_marge"
+                app:layout_constraintBottom_toTopOf="@id/filter_property_location_price_ranger_slider"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toEndOf="@id/filter_property_location"
+                app:layout_constraintStart_toEndOf="@id/filter_property_location_spinner"
                 app:layout_constraintTop_toTopOf="parent" />
 
             <com.openclassrooms.realestatemanager.presentation.utils.customView.CustomBottomSheetRangeSlider
                 android:id="@+id/filter_property_location_price_ranger_slider"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:stepSize="0"
                 app:layout_constraintBottom_toTopOf="@id/filter_property_location_surface_ranger_slider"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/bottom_sheet_point_of_interest_include"
+                app:layout_constraintTop_toBottomOf="@id/filter_property_number_of_photo_spinner"
                 app:title="@string/price" />
 
             <com.openclassrooms.realestatemanager.presentation.utils.customView.CustomBottomSheetRangeSlider
                 android:id="@+id/filter_property_location_surface_ranger_slider"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:stepSize="0"
                 app:layout_constraintBottom_toTopOf="@id/filter_property_location_room_ranger_slider"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
@@ -110,7 +73,6 @@
                 android:id="@+id/filter_property_location_room_ranger_slider"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:stepSize="0"
                 app:layout_constraintBottom_toTopOf="@id/bottom_sheet_property_type_layout_include"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
@@ -123,28 +85,50 @@
                 layout="@layout/bottom_sheet_property_type_layout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                app:layout_constraintBottom_toTopOf="@id/bottom_sheet_on_market_from"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/filter_property_location_room_ranger_slider" />
 
             <com.openclassrooms.realestatemanager.presentation.utils.customView.CustomBottomSheetDatePicker
-                android:id="@+id/bottom_sheet_market_from"
+                android:id="@+id/bottom_sheet_on_market_from"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                app:layout_constraintEnd_toStartOf="@id/bottom_sheet_on_sold_from"
+                android:layout_height="0dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toStartOf="@id/bottom_sheet_ok_button"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/bottom_sheet_property_type_layout_include"
                 app:title="@string/on_market_from" />
 
-            <com.openclassrooms.realestatemanager.presentation.utils.customView.CustomBottomSheetDatePicker
-                android:id="@+id/bottom_sheet_on_sold_from"
-                android:layout_width="wrap_content"
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/bottom_sheet_ok_button"
+                style="@style/custom_alert_dialog_ok_button"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
+                app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toEndOf="@id/bottom_sheet_market_from"
-                app:layout_constraintTop_toBottomOf="@id/bottom_sheet_property_type_layout_include"
-                app:title="@string/sold_from" />
+                app:layout_constraintStart_toEndOf="@id/bottom_sheet_on_market_from"
+                app:layout_constraintTop_toBottomOf="@id/bottom_sheet_property_type_layout_include" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
     </ScrollView>
+
+    <FrameLayout
+        style="@style/bottom_sheet_close_button_frame_layout"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/bottom_sheet_close_button_frame_size"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <ImageButton
+        android:id="@+id/bottom_sheet_close_button"
+        style="@style/bottom_sheet_close_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:contentDescription="@string/close_filter_button"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>

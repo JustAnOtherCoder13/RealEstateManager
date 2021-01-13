@@ -21,7 +21,6 @@
 
     <declare-styleable name="CustomBottomSheetRangeSlider">
         <attr name="title"/>
-        <attr name="android:stepSize"/>
     </declare-styleable>
 
     <declare-styleable name="CustomBottomSheetPropertyTypeCheckBox">
@@ -29,6 +28,10 @@
     </declare-styleable>
 
     <declare-styleable name="CustomBottomSheetDatePicker">
+        <attr name="title"/>
+    </declare-styleable>
+
+    <declare-styleable name="CustomBottomSheetSpinner">
         <attr name="title"/>
     </declare-styleable>
     
