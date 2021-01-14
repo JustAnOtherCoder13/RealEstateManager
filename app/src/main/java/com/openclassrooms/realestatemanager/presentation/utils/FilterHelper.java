@@ -1,6 +1,7 @@
 package com.openclassrooms.realestatemanager.presentation.utils;
 
 import android.util.Log;
+import android.widget.CheckBox;
 
 import androidx.annotation.NonNull;
 
@@ -26,6 +27,7 @@ public class FilterHelper {
     private List<PointOfInterest> allPointsOfInterest = new ArrayList<>();
     private List<Property> filteredValues;
     private int iterator = 0;
+    private List<Property> filteredProperty;
 
 
     public FilterHelper(ActivityMainBinding mainBinding) {
@@ -139,16 +141,14 @@ public class FilterHelper {
         filterForLocation(allProperties);
         filteredValues = new ArrayList<>();
         iterator = 0;
-
-        if (requestPropertyType != null && !requestPropertyType.isEmpty())
-            Log.i("TAG", "filterProperties: know type" + requestPropertyType);
         if (!mainBinding.bottomSheetLayout.bottomSheetOnMarketFrom.getDate().equalsIgnoreCase(mainBinding.getRoot().getResources().getString(R.string.dd_mm_yyyy)))
             Log.i("TAG", "filterProperties: know on market from" + mainBinding.bottomSheetLayout.bottomSheetOnMarketFrom.getDate());
 
     }
 
+
     private void filterForLocation(List<Property> allProperties) {
-        List<Property> filteredProperty = new ArrayList<>();
+        filteredProperty = new ArrayList<>();
         if (!mainBinding.bottomSheetLayout.filterPropertyLocationSpinner.getText().trim().isEmpty()) {
             for (Property property : allProperties) {
                 if (property.getRegion().equalsIgnoreCase(mainBinding.bottomSheetLayout.filterPropertyLocationSpinner.getText()))
@@ -156,11 +156,11 @@ public class FilterHelper {
             }
         }
         if (filteredProperty.isEmpty()) filteredProperty.addAll(allProperties);
-        filterForNumberOfPhoto(filteredProperty);
+        filterForNumberOfPhoto();
     }
 
 
-    private void filterForNumberOfPhoto(List<Property> filteredProperty) {
+    private void filterForNumberOfPhoto() {
         filteredValues = new ArrayList<>();
         if (!mainBinding.bottomSheetLayout.filterPropertyNumberOfPhotoSpinner.getText().trim().isEmpty())
             for (Property property : filteredProperty) {
@@ -174,14 +174,60 @@ public class FilterHelper {
                     filteredValues.add(property);
             }
         if (!filteredValues.isEmpty()) filteredProperty.removeAll(filteredValues);
-        filterForPointOfInterest(filteredProperty);
+        filterForPointOfInterest();
+    }
+
+
+    private void filterForPointOfInterest() {
+        filteredValues = new ArrayList<>();
+        if (mainBinding.bottomSheetLayout.bottomSheetPointOfInterestInclude.schoolCheckBox.checkBox.isChecked()) {
+            filterForPointOfInterestType(mainBinding.getRoot().getResources().getString(R.string.school));
+        }
+        if (mainBinding.bottomSheetLayout.bottomSheetPointOfInterestInclude.restaurantCheckBox.checkBox.isChecked()) {
+            filterForPointOfInterestType(mainBinding.getRoot().getResources().getString(R.string.restaurant));
+        }
+        if (mainBinding.bottomSheetLayout.bottomSheetPointOfInterestInclude.supermarketCheckBox.checkBox.isChecked()) {
+            filterForPointOfInterestType(mainBinding.getRoot().getResources().getString(R.string.supermarket));
+        }
+        filterForPropertyType();
+        iterator = 0;
+    }
+
+    private void filterForType() {
+        requestPointOfInterest();
+        for (String requestPointOfInterest : requestPropertyType) {
+            for (Property property : filteredProperty)
+                if (property.getPropertyType().equalsIgnoreCase(requestPointOfInterest) && !filteredValues.contains(property))
+                    filteredValues.add(property);
+        }
+        if (!filteredValues.isEmpty()) {
+            List<Property> propertiesToDelete=new ArrayList<>();
+            for (Property property : filteredValues) {
+                if (!filteredProperty.contains(property))
+                    propertiesToDelete.add(property);
+            }
+            filteredProperty.removeAll(propertiesToDelete);
+            Log.i("TAG", "filterForType: " + filteredValues);
+        }
+
 
     }
 
-    private void filterForPointOfInterestType(List<Property> filteredProperty, CharSequence pointOfInterestType) {
-        Log.i("TAG", "filterForPointOfInterestType: "+ iterator +" "+pointOfInterestType);
+    private void filterForPropertyType() {
+        filteredValues = new ArrayList<>();
+        if (mainBinding.bottomSheetLayout.bottomSheetPropertyTypeLayoutInclude.houseCheckBox.checkBox.isChecked()
+                || mainBinding.bottomSheetLayout.bottomSheetPropertyTypeLayoutInclude.penthouseCheckBox.checkBox.isChecked()
+                || mainBinding.bottomSheetLayout.bottomSheetPropertyTypeLayoutInclude.flatCheckBox.checkBox.isChecked()
+                || mainBinding.bottomSheetLayout.bottomSheetPropertyTypeLayoutInclude.duplexCheckBox.checkBox.isChecked())
+            filterForType();
+
+
+        Log.e("TAG", "filterForPropertyType: " + filteredProperty);
+    }
+
+    private void filterForPointOfInterestType(CharSequence pointOfInterestType) {
         iterator++;
-        if (filteredValues.isEmpty()&& iterator ==1) {
+        if (filteredValues.isEmpty() && iterator == 1) {
             for (PointOfInterest pointOfInterest : allPointsOfInterest) {
                 if (pointOfInterest.getType().contains(pointOfInterestType))
                     for (Property property : filteredProperty)
@@ -195,37 +241,17 @@ public class FilterHelper {
                 for (PointOfInterest pointOfInterest : allPointsOfInterest) {
                     if (pointOfInterest.getType().contains(pointOfInterestType)
                             && property.getId() == pointOfInterest.getPropertyId()) {
-                        if (filteredValues.contains(property)) isFilteredPropertyHasRequestPointOfInterest = true;
+                        if (filteredValues.contains(property))
+                            isFilteredPropertyHasRequestPointOfInterest = true;
                         break;
                     }
                 }
                 if (!isFilteredPropertyHasRequestPointOfInterest) filteredValues.remove(property);
             }
         }
+
         filteredProperty = new ArrayList<>();
         filteredProperty.addAll(filteredValues);
-        filterForPropertyType(filteredProperty);
-    }
-
-
-    private void filterForPointOfInterest(List<Property> filteredProperty) {
-        filteredValues = new ArrayList<>();
-
-        if (mainBinding.bottomSheetLayout.bottomSheetPointOfInterestInclude.schoolCheckBox.checkBox.isChecked()) {
-            filterForPointOfInterestType(filteredProperty, mainBinding.getRoot().getResources().getString(R.string.school));
-        }
-        if (mainBinding.bottomSheetLayout.bottomSheetPointOfInterestInclude.restaurantCheckBox.checkBox.isChecked()) {
-            filterForPointOfInterestType(filteredProperty, mainBinding.getRoot().getResources().getString(R.string.restaurant));
-        }
-        if (mainBinding.bottomSheetLayout.bottomSheetPointOfInterestInclude.supermarketCheckBox.checkBox.isChecked()) {
-            filterForPointOfInterestType(filteredProperty, mainBinding.getRoot().getResources().getString(R.string.supermarket));
-        }
-    }
-
-    private void filterForPropertyType(List<Property> filteredProperty) {
-        if (mainBinding.bottomSheetLayout.bottomSheetPropertyTypeLayoutInclude.houseCheckBox.checkBox.isChecked()) {
-
-        }
     }
 
 
