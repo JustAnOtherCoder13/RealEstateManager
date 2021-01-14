@@ -6,11 +6,13 @@ import com.openclassrooms.realestatemanager.R;
 import com.openclassrooms.realestatemanager.databinding.ActivityMainBinding;
 import com.openclassrooms.realestatemanager.databinding.BottomSheetPropertyTypeLayoutBinding;
 import com.openclassrooms.realestatemanager.databinding.CustomBottomSheetPointOfInterestLayoutBinding;
+import com.picone.core.domain.entity.PointOfInterest;
 import com.picone.core.domain.entity.Property;
 import com.picone.core.domain.entity.PropertyPhoto;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Iterator;
 import java.util.List;
 
 public class FilterHelper {
@@ -20,6 +22,8 @@ public class FilterHelper {
     private List<String> requestPointOfInterest;
     private List<String> requestPropertyType;
     private List<PropertyPhoto> allPropertiesPhotos = new ArrayList<>();
+    private List<PointOfInterest> allPointsOfInterest = new ArrayList<>();
+
 
     public FilterHelper(ActivityMainBinding mainBinding) {
         this.mainBinding = mainBinding;
@@ -31,9 +35,17 @@ public class FilterHelper {
 
     }
 
-    public void updateAllPropertyPhotos(List<PropertyPhoto> photosForProperty){
-        if (allPropertiesPhotos.isEmpty())allPropertiesPhotos.addAll(photosForProperty);
-        else if (!allPropertiesPhotos.containsAll(photosForProperty))allPropertiesPhotos.addAll(photosForProperty);
+    public void updateAllPropertyPhotos(List<PropertyPhoto> photosForProperty) {
+        if (allPropertiesPhotos.isEmpty()) allPropertiesPhotos.addAll(photosForProperty);
+        else if (!allPropertiesPhotos.containsAll(photosForProperty))
+            allPropertiesPhotos.addAll(photosForProperty);
+    }
+
+    public void updateAllPropertyPointOfInterest(List<PointOfInterest> pointOfInterests) {
+        if (!pointOfInterests.isEmpty())
+            if (allPointsOfInterest.isEmpty()) allPointsOfInterest.addAll(pointOfInterests);
+            else if (!allPointsOfInterest.containsAll(pointOfInterests))
+                allPointsOfInterest.addAll(pointOfInterests);
     }
 
     public void requestPointOfInterest() {
@@ -125,8 +137,6 @@ public class FilterHelper {
         requestPropertyType();
         filterForLocation(allProperties);
 
-        if (requestPointOfInterest != null && !requestPointOfInterest.isEmpty())
-            Log.i("TAG", "filterProperties: know point of interest" + requestPointOfInterest);
         if (requestPropertyType != null && !requestPropertyType.isEmpty())
             Log.i("TAG", "filterProperties: know type" + requestPropertyType);
         if (!mainBinding.bottomSheetLayout.bottomSheetOnMarketFrom.getDate().equalsIgnoreCase(mainBinding.getRoot().getResources().getString(R.string.dd_mm_yyyy)))
@@ -136,40 +146,87 @@ public class FilterHelper {
 
     private void filterForLocation(List<Property> allProperties) {
         List<Property> filteredProperty = new ArrayList<>();
-        if (!mainBinding.bottomSheetLayout.filterPropertyLocationSpinner.getText().trim().isEmpty()){
-            for (Property property:allProperties){
-               if (property.getRegion().equalsIgnoreCase(mainBinding.bottomSheetLayout.filterPropertyLocationSpinner.getText()))
+        if (!mainBinding.bottomSheetLayout.filterPropertyLocationSpinner.getText().trim().isEmpty()) {
+            for (Property property : allProperties) {
+                if (property.getRegion().equalsIgnoreCase(mainBinding.bottomSheetLayout.filterPropertyLocationSpinner.getText()))
                     filteredProperty.add(property);
             }
         }
-        if (filteredProperty.isEmpty())filteredProperty.addAll(allProperties);
+        if (filteredProperty.isEmpty()) filteredProperty.addAll(allProperties);
         filterForNumberOfPhoto(filteredProperty);
     }
 
     private List<Property> filteredValues;
+
     private void filterForNumberOfPhoto(List<Property> filteredProperty) {
         filteredValues = new ArrayList<>();
         if (!mainBinding.bottomSheetLayout.filterPropertyNumberOfPhotoSpinner.getText().trim().isEmpty())
-            for (Property property: filteredProperty) {
+            for (Property property : filteredProperty) {
                 int i = 0;
-                for (PropertyPhoto propertyPhoto:allPropertiesPhotos){
-                    if (property.getId()==propertyPhoto.getPropertyId()) {
+                for (PropertyPhoto propertyPhoto : allPropertiesPhotos) {
+                    if (property.getId() == propertyPhoto.getPropertyId()) {
                         i++;
                     }
                 }
-                if (i<Integer.parseInt(mainBinding.bottomSheetLayout.filterPropertyNumberOfPhotoSpinner.getText()))
+                if (i < Integer.parseInt(mainBinding.bottomSheetLayout.filterPropertyNumberOfPhotoSpinner.getText()))
                     filteredValues.add(property);
             }
-        if (!filteredValues.isEmpty())filteredProperty.removeAll(filteredValues);
+        if (!filteredValues.isEmpty()) filteredProperty.removeAll(filteredValues);
         filterForPointOfInterest(filteredProperty);
 
-            Log.i("TAG", "filterProperties: know number of photo " + filteredProperty.size());
+        Log.i("TAG", "filterProperties: know number of photo " + filteredProperty.size());
 
     }
 
+    private void filterForSchool(List<Property> filteredProperty){
+        for (String requestPointOfInterest: requestPointOfInterest){
+            if (requestPointOfInterest.equalsIgnoreCase(mainBinding.getRoot().getResources().getString(R.string.school)))
+                Log.d("TAG", "filterForSchool: ");
+        }
+    }
+
+    //TODO filter for each categorie one to one
     private void filterForPointOfInterest(List<Property> filteredProperty) {
+        filteredValues = new ArrayList<>();
         if (requestPointOfInterest != null && !requestPointOfInterest.isEmpty())
-            Log.i("TAG", "filterProperties: know point of interest" + requestPointOfInterest);
+            for (Property property : filteredProperty) {
+                List<PointOfInterest> pointOfInterestsForProperty = new ArrayList<>();
+                for (PointOfInterest pointOfInterest : allPointsOfInterest) {
+                    if (property.getId() == pointOfInterest.getPropertyId()) {
+                        boolean isAlreadyKnown = false;
+                        for (PointOfInterest pointOfInterest1 : pointOfInterestsForProperty) {
+                            if (pointOfInterest1.getName().equalsIgnoreCase(pointOfInterest.getName())) {
+                                isAlreadyKnown = true;
+                            }
+                        }
+                        if (!isAlreadyKnown)
+                            pointOfInterestsForProperty.add(pointOfInterest);
+
+                    }
+                }
+                //poi ok
+                int i = 0;
+                List<String> knowRequestPointOfInterestForProperty = new ArrayList<>();
+                for (String requestPointOfInterest : requestPointOfInterest) {
+                    for (PointOfInterest pointOfInterestForProperty : pointOfInterestsForProperty) {
+                        if (pointOfInterestForProperty.getType().equalsIgnoreCase(requestPointOfInterest)) {
+                            boolean isPointOfInterestTypeAlreadyKnown = false;
+                            if (knowRequestPointOfInterestForProperty.isEmpty())
+                                knowRequestPointOfInterestForProperty.add(pointOfInterestForProperty.getType());
+                            else for (String kPOI : knowRequestPointOfInterestForProperty) {
+                                Log.i("TAG", "filterForPointOfInterest: "+kPOI+" "+pointOfInterestForProperty.getType());
+                                if (pointOfInterestForProperty.getType().equalsIgnoreCase(kPOI))
+                                    isPointOfInterestTypeAlreadyKnown = true;
+                            }
+                            if (!isPointOfInterestTypeAlreadyKnown)
+                                knowRequestPointOfInterestForProperty.add(pointOfInterestForProperty.getType());
+
+                        }
+                    }
+                    Log.e("TAG", "filterForPointOfInterest: " + knowRequestPointOfInterestForProperty.size()+" "+property.getId());
+                }
+            }
+
 
     }
 

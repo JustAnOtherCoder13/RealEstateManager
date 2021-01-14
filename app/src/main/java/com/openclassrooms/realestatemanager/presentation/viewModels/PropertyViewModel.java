@@ -112,16 +112,16 @@ public class PropertyViewModel extends BaseViewModel {
                 getAllPropertiesInteractor.getAllProperties()
                         .subscribeOn(schedulerProvider.getIo())
                         .observeOn(schedulerProvider.getUi())
-                        .subscribe(properties -> allPropertiesMutableLD.postValue(properties)));
+                        .subscribe(properties -> allPropertiesMutableLD.setValue(properties)));
     }
 
     public void setAllPointOfInterestForProperty(@NonNull Property property) {
         if (property.getAddress() != null)
             compositeDisposable.add(
                     getAllPointOfInterestForPropertyIdInteractor.getAllPointOfInterestForPropertyId(property.getId())
-                            .observeOn(schedulerProvider.getIo())
-                            .subscribeOn(schedulerProvider.getUi())
-                            .subscribe(pointOfInterests -> allPointOfInterestForPropertyMutableLD.postValue(pointOfInterests)));
+                            .subscribeOn(schedulerProvider.getIo())
+                            .observeOn(schedulerProvider.getUi())
+                            .subscribe(pointOfInterests -> allPointOfInterestForPropertyMutableLD.setValue(pointOfInterests)));
         else allPointOfInterestForPropertyMutableLD.setValue(new ArrayList<>());
     }
 

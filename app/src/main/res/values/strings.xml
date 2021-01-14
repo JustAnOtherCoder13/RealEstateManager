@@ -87,9 +87,9 @@
     <string name="penthouse">PENTHOUSE</string>
     <string name="date_picker_button">date picker button</string>
     <string name="point_of_interest">Point of interest</string>
-    <string name="school">School</string>
-    <string name="restaurant">Restaurant</string>
-    <string name="supermarket">Supermarket</string>
+    <string name="school">school</string>
+    <string name="restaurant">restaurant</string>
+    <string name="supermarket">supermarket</string>
     <string name="close_filter_button">close filter button</string>
 
 

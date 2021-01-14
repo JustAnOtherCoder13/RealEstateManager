@@ -1,5 +1,7 @@
 package com.picone.core.domain.interactors.property.maps;
 
+import android.util.Log;
+
 import androidx.annotation.NonNull;
 
 import com.picone.core.data.property.PropertyRepository;
@@ -26,6 +28,7 @@ public class GetNearBySearchForPropertyLocationInteractor extends PropertyBaseIn
 
     public Observable<List<PointOfInterest>> getNearBySearchForPropertyLocation(@NonNull PropertyLocation propertyLocation, String googleKey) {
 
+        pointOfInterests = new ArrayList<>();
         return propertyDataSource.getNearBySearchForPropertyLocation(propertyLocation, POINT_OF_INTEREST_TYPE.get(0), googleKey)
                 .flatMap(nearBySearch -> {
                     nearBySearchToPointOfInterest(nearBySearch, propertyLocation.getPropertyId());
@@ -43,19 +46,40 @@ public class GetNearBySearchForPropertyLocationInteractor extends PropertyBaseIn
         PointOfInterest pointOfInterest;
 
         for (NearBySearchResult nearBySearchResult : nearBySearch.getNearBySearchResults()) {
-            pointOfInterest = new PointOfInterest();
-            pointOfInterest.setPropertyId(propertyId);
-            pointOfInterest.setName(nearBySearchResult.getName());
-            pointOfInterest.setLatitude(nearBySearchResult.getNearBySearchGeometry().getNearBySearchLocation().getLat());
-            pointOfInterest.setLongitude(nearBySearchResult.getNearBySearchGeometry().getNearBySearchLocation().getLng());
-            pointOfInterest.setType(nearBySearchResult.getTypes().get(0));
-            pointOfInterest.setIcon(nearBySearchResult.getIcon());
-
-            pointOfInterests.add(pointOfInterest);
-
+            pointOfInterest = getPointOfInterest(propertyId, nearBySearchResult);
+            if (pointOfInterests.isEmpty()) pointOfInterests.add(pointOfInterest);
+            else {
+                boolean isAlreadyKnown = true;
+                for (PointOfInterest pointOfInterestForProperty : pointOfInterests) {
+                    isAlreadyKnown = true;
+                    if (pointOfInterestForProperty.getLatitude() == pointOfInterest.getLatitude()
+                            && pointOfInterest.getLongitude() == pointOfInterestForProperty.getLongitude()
+                            && pointOfInterest.getType().equalsIgnoreCase(pointOfInterestForProperty.getType()))
+                        break;
+                    else isAlreadyKnown = false;
+                }
+                if (!isAlreadyKnown)pointOfInterests.add(pointOfInterest);
+            }
         }
+        for (PointOfInterest pointOfInterest1 : pointOfInterests)
+            Log.d("TAG", "nearBySearchToPointOfInterest: " + pointOfInterest1.getName());
+
+        Log.e("TAG", "nearBySearchToPointOfInterest: " + pointOfInterests);
         return pointOfInterests;
     }
 
+
+    @NonNull
+    private PointOfInterest getPointOfInterest(int propertyId, @NonNull NearBySearchResult nearBySearchResult) {
+        PointOfInterest pointOfInterest;
+        pointOfInterest = new PointOfInterest();
+        pointOfInterest.setPropertyId(propertyId);
+        pointOfInterest.setName(nearBySearchResult.getName());
+        pointOfInterest.setLatitude(nearBySearchResult.getNearBySearchGeometry().getNearBySearchLocation().getLat());
+        pointOfInterest.setLongitude(nearBySearchResult.getNearBySearchGeometry().getNearBySearchLocation().getLng());
+        pointOfInterest.setType(nearBySearchResult.getTypes().get(0));
+        pointOfInterest.setIcon(nearBySearchResult.getIcon());
+        return pointOfInterest;
+    }
 }
 

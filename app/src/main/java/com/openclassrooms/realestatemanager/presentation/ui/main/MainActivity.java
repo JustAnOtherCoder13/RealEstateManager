@@ -193,6 +193,7 @@ public class MainActivity extends AppCompatActivity {
             for (Property property : properties) {
                 mPropertyViewModel.setPropertyLocationForProperty(property);
                 mPropertyViewModel.setAllPhotosForProperty(property);
+                mPropertyViewModel.setAllPointOfInterestForProperty(property);
             }
             filterHelper.initRangeSliderValues(properties);
         });
@@ -201,6 +202,9 @@ public class MainActivity extends AppCompatActivity {
 
         mPropertyViewModel.getAllPropertyPhotosForProperty.observe(this,
                 filterHelper::updateAllPropertyPhotos);
+
+        mPropertyViewModel.getAllPointOfInterestForProperty.observe(this,
+                filterHelper::updateAllPropertyPointOfInterest);
 
         mPropertyViewModel.getKnownRegions.observe(this, regions ->
                 mBinding.bottomSheetLayout.filterPropertyLocationSpinner.setSpinnerAdapter(regions));
