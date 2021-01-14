@@ -20,6 +20,7 @@ import static com.picone.core.utils.CalendarStaticValues.MY_YEAR;
 public abstract class ShowDatePicker extends ConstraintLayout implements DatePickerDialog.OnDateSetListener {
 
     private DatePickerDialog picker;
+
     public ShowDatePicker(@NonNull Context context, @Nullable AttributeSet attrs) {
         super(context, attrs);
         picker = new DatePickerDialog(context, this, MY_YEAR, MY_MONTH, MY_DAY_OF_MONTH);

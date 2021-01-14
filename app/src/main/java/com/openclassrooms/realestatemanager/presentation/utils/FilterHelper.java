@@ -141,6 +141,7 @@ public class FilterHelper {
         filterForLocation(allProperties);
         filteredValues = new ArrayList<>();
         iterator = 0;
+        isAtLeastOnePropertyMatchRequestType = true;
         if (!mainBinding.bottomSheetLayout.bottomSheetOnMarketFrom.getDate().equalsIgnoreCase(mainBinding.getRoot().getResources().getString(R.string.dd_mm_yyyy)))
             Log.i("TAG", "filterProperties: know on market from" + mainBinding.bottomSheetLayout.bottomSheetOnMarketFrom.getDate());
 
@@ -193,24 +194,37 @@ public class FilterHelper {
         iterator = 0;
     }
 
+    private boolean isAtLeastOnePropertyMatchRequestType = true;
+
     private void filterForType() {
-        requestPointOfInterest();
-        for (String requestPointOfInterest : requestPropertyType) {
-            for (Property property : filteredProperty)
-                if (property.getPropertyType().equalsIgnoreCase(requestPointOfInterest) && !filteredValues.contains(property))
-                    filteredValues.add(property);
-        }
+        if (isAtLeastOnePropertyMatchRequestType)
+            for (String requestPointOfInterest : requestPropertyType) {
+                isAtLeastOnePropertyMatchRequestType = false;
+                for (Property property : filteredProperty)
+                    if (property.getPropertyType().equalsIgnoreCase(requestPointOfInterest) && !filteredValues.contains(property)) {
+                        isAtLeastOnePropertyMatchRequestType = true;
+                        filteredValues.add(property);
+                    }
+                if (!isAtLeastOnePropertyMatchRequestType){
+                    filteredValues.clear();
+                    break;
+                }
+            }
         if (!filteredValues.isEmpty()) {
-            List<Property> propertiesToDelete=new ArrayList<>();
-            for (Property property : filteredValues) {
-                if (!filteredProperty.contains(property))
-                    propertiesToDelete.add(property);
+            List<Property> propertiesToDelete = new ArrayList<>();
+            for (Property property : filteredProperty) {
+                boolean bol = false;
+                for (Property property1 : filteredValues) {
+                    if (property1.getId() == property.getId()) {
+                        bol = true;
+                        break;
+                    }
+                }
+                if (!bol)
+                propertiesToDelete.add(property);
             }
             filteredProperty.removeAll(propertiesToDelete);
-            Log.i("TAG", "filterForType: " + filteredValues);
-        }
-
-
+        } else filteredProperty.clear();
     }
 
     private void filterForPropertyType() {
@@ -220,8 +234,11 @@ public class FilterHelper {
                 || mainBinding.bottomSheetLayout.bottomSheetPropertyTypeLayoutInclude.flatCheckBox.checkBox.isChecked()
                 || mainBinding.bottomSheetLayout.bottomSheetPropertyTypeLayoutInclude.duplexCheckBox.checkBox.isChecked())
             filterForType();
+        filterForOnMarketFrom();
+    }
 
-
+    private void filterForOnMarketFrom() {
+        filteredValues = new ArrayList<>();
         Log.e("TAG", "filterForPropertyType: " + filteredProperty);
     }
 
@@ -250,7 +267,7 @@ public class FilterHelper {
             }
         }
 
-        filteredProperty = new ArrayList<>();
+        filteredProperty.clear();
         filteredProperty.addAll(filteredValues);
     }
 
