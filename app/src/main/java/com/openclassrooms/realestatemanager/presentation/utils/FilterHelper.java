@@ -2,6 +2,8 @@ package com.openclassrooms.realestatemanager.presentation.utils;
 
 import android.util.Log;
 
+import androidx.annotation.NonNull;
+
 import com.openclassrooms.realestatemanager.R;
 import com.openclassrooms.realestatemanager.databinding.ActivityMainBinding;
 import com.openclassrooms.realestatemanager.databinding.BottomSheetPropertyTypeLayoutBinding;
@@ -22,25 +24,26 @@ public class FilterHelper {
     private List<String> requestPropertyType;
     private List<PropertyPhoto> allPropertiesPhotos = new ArrayList<>();
     private List<PointOfInterest> allPointsOfInterest = new ArrayList<>();
+    private List<Property> filteredValues;
+    private int iterator = 0;
 
 
     public FilterHelper(ActivityMainBinding mainBinding) {
         this.mainBinding = mainBinding;
         List<String> numberOfPhotos = new ArrayList<>();
-        for (int i = 1; i <= 9; i++) numberOfPhotos.add(String.valueOf(i));
-        numberOfPhotos.add("10+");
+        for (int i = 1; i <= 10; i++) numberOfPhotos.add(String.valueOf(i));
         mainBinding.bottomSheetLayout
                 .filterPropertyNumberOfPhotoSpinner.setSpinnerAdapter(numberOfPhotos);
 
     }
 
-    public void updateAllPropertyPhotos(List<PropertyPhoto> photosForProperty) {
+    public void updateAllPropertyPhotos(@NonNull List<PropertyPhoto> photosForProperty) {
         if (allPropertiesPhotos.isEmpty()) allPropertiesPhotos.addAll(photosForProperty);
         else if (!allPropertiesPhotos.containsAll(photosForProperty))
             allPropertiesPhotos.addAll(photosForProperty);
     }
 
-    public void updateAllPropertyPointOfInterest(List<PointOfInterest> pointOfInterests) {
+    public void updateAllPropertyPointOfInterest(@NonNull List<PointOfInterest> pointOfInterests) {
         if (!pointOfInterests.isEmpty())
             if (allPointsOfInterest.isEmpty()) allPointsOfInterest.addAll(pointOfInterests);
             else if (!allPointsOfInterest.containsAll(pointOfInterests))
@@ -68,7 +71,6 @@ public class FilterHelper {
             requestPointOfInterest.add(supermarketStr);
         else if (!pointOfInterestBinding.supermarketCheckBox.checkBox.isChecked())
             requestPointOfInterest.remove(supermarketStr);
-
     }
 
     public void requestPropertyType() {
@@ -98,7 +100,7 @@ public class FilterHelper {
 
     }
 
-    public void initRangeSliderValues(List<Property> allProperties) {
+    public void initRangeSliderValues(@NonNull List<Property> allProperties) {
 
         List<Float> allPrices = new ArrayList<>();
         List<Float> allSurfaces = new ArrayList<>();
@@ -136,6 +138,7 @@ public class FilterHelper {
         requestPropertyType();
         filterForLocation(allProperties);
         filteredValues = new ArrayList<>();
+        iterator = 0;
 
         if (requestPropertyType != null && !requestPropertyType.isEmpty())
             Log.i("TAG", "filterProperties: know type" + requestPropertyType);
@@ -156,7 +159,6 @@ public class FilterHelper {
         filterForNumberOfPhoto(filteredProperty);
     }
 
-    private List<Property> filteredValues;
 
     private void filterForNumberOfPhoto(List<Property> filteredProperty) {
         filteredValues = new ArrayList<>();
@@ -174,37 +176,35 @@ public class FilterHelper {
         if (!filteredValues.isEmpty()) filteredProperty.removeAll(filteredValues);
         filterForPointOfInterest(filteredProperty);
 
-        Log.i("TAG", "filterProperties: know number of photo " + filteredProperty.size());
-
     }
 
     private void filterForPointOfInterestType(List<Property> filteredProperty, CharSequence pointOfInterestType) {
-
-        if (filteredValues.isEmpty()) {
-            for (Property property : filteredProperty)
-                for (PointOfInterest pointOfInterest : allPointsOfInterest) {
-                    if (pointOfInterest.getType().contains(pointOfInterestType)
-                    && property.getId() == pointOfInterest.getPropertyId())
+        Log.i("TAG", "filterForPointOfInterestType: "+ iterator +" "+pointOfInterestType);
+        iterator++;
+        if (filteredValues.isEmpty()&& iterator ==1) {
+            for (PointOfInterest pointOfInterest : allPointsOfInterest) {
+                if (pointOfInterest.getType().contains(pointOfInterestType))
+                    for (Property property : filteredProperty)
+                        if (property.getId() == pointOfInterest.getPropertyId())
                             if (filteredValues.isEmpty() || !filteredValues.contains(property))
                                 filteredValues.add(property);
-                            Log.e("TAG", "filterForPointOfInterestType: filter empty " + filteredValues);
-
-                }
+            }
         } else {
             for (Property property : filteredProperty) {
-                boolean bol = false;
+                boolean isFilteredPropertyHasRequestPointOfInterest = false;
                 for (PointOfInterest pointOfInterest : allPointsOfInterest) {
                     if (pointOfInterest.getType().contains(pointOfInterestType)
                             && property.getId() == pointOfInterest.getPropertyId()) {
-                        if (filteredValues.contains(property)) bol = true;
+                        if (filteredValues.contains(property)) isFilteredPropertyHasRequestPointOfInterest = true;
                         break;
                     }
                 }
-                if (!bol) filteredValues.remove(property);
+                if (!isFilteredPropertyHasRequestPointOfInterest) filteredValues.remove(property);
             }
-            Log.e("TAG", "filterForPointOfInterestType: filter full " + filteredValues);
-
         }
+        filteredProperty = new ArrayList<>();
+        filteredProperty.addAll(filteredValues);
+        filterForPropertyType(filteredProperty);
     }
 
 
@@ -220,9 +220,12 @@ public class FilterHelper {
         if (mainBinding.bottomSheetLayout.bottomSheetPointOfInterestInclude.supermarketCheckBox.checkBox.isChecked()) {
             filterForPointOfInterestType(filteredProperty, mainBinding.getRoot().getResources().getString(R.string.supermarket));
         }
+    }
 
-        Log.i("TAG", "filterForPointOfInterest: " + filteredValues);
+    private void filterForPropertyType(List<Property> filteredProperty) {
+        if (mainBinding.bottomSheetLayout.bottomSheetPropertyTypeLayoutInclude.houseCheckBox.checkBox.isChecked()) {
 
+        }
     }
 
 
