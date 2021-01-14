@@ -94,6 +94,9 @@ public class PropertyViewModel extends BaseViewModel {
     }
 
     //___________________________________SETTERS______________________________________
+    public void setFilteredProperty(List<Property> filteredProperties){
+        allPropertiesMutableLD.setValue(filteredProperties);
+    }
 
     public void setSelectedProperty(Property property) {
         selectedPropertyMutableLD.setValue(property);

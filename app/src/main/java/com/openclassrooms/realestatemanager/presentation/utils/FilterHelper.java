@@ -1,15 +1,11 @@
 package com.openclassrooms.realestatemanager.presentation.utils;
 
-import android.util.Log;
-import android.widget.CheckBox;
-
 import androidx.annotation.NonNull;
 
 import com.openclassrooms.realestatemanager.R;
 import com.openclassrooms.realestatemanager.databinding.ActivityMainBinding;
 import com.openclassrooms.realestatemanager.databinding.BottomSheetPropertyTypeLayoutBinding;
 import com.openclassrooms.realestatemanager.databinding.CustomBottomSheetPointOfInterestLayoutBinding;
-import com.openclassrooms.realestatemanager.databinding.CustomBottomSheetRangeSliderBinding;
 import com.openclassrooms.realestatemanager.presentation.utils.customView.CustomBottomSheetRangeSlider;
 import com.picone.core.domain.entity.PointOfInterest;
 import com.picone.core.domain.entity.Property;
@@ -33,6 +29,10 @@ public class FilterHelper {
     private int iterator = 0;
     private List<Property> filteredProperty;
 
+
+    public List<Property> getFilteredProperty() {
+        return filteredProperty;
+    }
 
     public FilterHelper(ActivityMainBinding mainBinding) {
         this.mainBinding = mainBinding;
@@ -161,7 +161,6 @@ public class FilterHelper {
         filterForNumberOfPhoto();
     }
 
-
     private void filterForNumberOfPhoto() {
         filteredValues = new ArrayList<>();
         if (!mainBinding.bottomSheetLayout.filterPropertyNumberOfPhotoSpinner.getText().trim().isEmpty())
@@ -238,7 +237,7 @@ public class FilterHelper {
         filterForOnMarketFrom();
     }
 
-    private void filterForOnMarketFrom() {
+    public List<Property> filterForOnMarketFrom() {
         filteredValues = new ArrayList<>();
         if (!mainBinding.bottomSheetLayout.bottomSheetOnMarketFrom.getDate().equalsIgnoreCase(mainBinding.getRoot().getResources().getString(R.string.dd_mm_yyyy))) {
             for (Property property : filteredProperty) {
@@ -256,6 +255,7 @@ public class FilterHelper {
             filterForRangeSlider(mainBinding.bottomSheetLayout.filterPropertyLocationRoomRangerSlider,property.getNumberOfRooms(),property);
         }
         if (!filteredValues.isEmpty()) filteredProperty.removeAll(filteredValues);
+        return filteredProperty;
     }
 
     private void filterForRangeSlider(@NonNull CustomBottomSheetRangeSlider rangeSlider, float valueToCompare, Property property) {

@@ -171,7 +171,7 @@ public class MainActivity extends AppCompatActivity {
         mPropertyViewModel.setAllProperties();
         filterHelper = new FilterHelper(mBinding);
         initBottomSheetFilter();
-        initBottomSheetLocationFilter(filterHelper);
+        initBottomSheetLocationFilter();
 
         if (!isGpsAvailable(this))
             Toast.makeText(this, R.string.gps_warning_message, Toast.LENGTH_LONG).show();
@@ -184,13 +184,15 @@ public class MainActivity extends AppCompatActivity {
         });
         mBinding.bottomSheetLayout.bottomSheetOkButton.setOnClickListener(v -> {
             filterHelper.filterProperties(mPropertyViewModel.getAllProperties.getValue());
+            mPropertyViewModel.setFilteredProperty(filterHelper.getFilteredProperty());
+            mBottomSheetBehavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
+            Log.i("TAG", "initBottomSheetFilter: "+filterHelper.getFilteredProperty());
         });
     }
 
-    private void initBottomSheetLocationFilter(FilterHelper filterHelper) {
+    private void initBottomSheetLocationFilter() {
         mPropertyViewModel.getAllProperties.observe(this, properties -> {
             for (Property property : properties) {
-
                 mPropertyViewModel.setPropertyLocationForProperty(property);
                 mPropertyViewModel.setAllPhotosForProperty(property);
                 mPropertyViewModel.setAllPointOfInterestForProperty(property);
