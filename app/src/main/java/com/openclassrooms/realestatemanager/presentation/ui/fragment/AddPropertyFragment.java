@@ -49,6 +49,7 @@ import static com.picone.core.utils.ConstantParameters.GALLERY_REQUEST_CODE;
 import static com.picone.core.utils.ConstantParameters.PROPERTY_TO_ADD;
 import static com.picone.core.utils.ConstantParameters.READ_PERMISSION_CODE;
 import static com.picone.core.utils.ConstantParameters.WRITE_PERMISSION_CODE;
+import static com.picone.core.utils.ConstantParameters.getTodayDate;
 
 public class AddPropertyFragment extends BaseFragment {
 
@@ -389,6 +390,7 @@ public class AddPropertyFragment extends BaseFragment {
     @NonNull
     private Property updateProperty(@NonNull Property originalProperty) {
         Property property = new Property();
+        property.setEnterOnMarket(getTodayDate());
         property.setId(originalProperty.getId());
         property.setRealEstateAgentId(Objects.requireNonNull(mAgentViewModel.getAgent.getValue()).getId());
         return updateKnownProperty(property);

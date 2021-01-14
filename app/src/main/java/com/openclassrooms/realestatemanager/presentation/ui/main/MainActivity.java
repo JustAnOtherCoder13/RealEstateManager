@@ -178,7 +178,6 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
-
     private void initBottomSheetFilter() {
         mBinding.bottomSheetLayout.bottomSheetCloseButton.setOnClickListener(v -> {
             mBottomSheetBehavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
@@ -191,6 +190,7 @@ public class MainActivity extends AppCompatActivity {
     private void initBottomSheetLocationFilter(FilterHelper filterHelper) {
         mPropertyViewModel.getAllProperties.observe(this, properties -> {
             for (Property property : properties) {
+
                 mPropertyViewModel.setPropertyLocationForProperty(property);
                 mPropertyViewModel.setAllPhotosForProperty(property);
                 mPropertyViewModel.setAllPointOfInterestForProperty(property);

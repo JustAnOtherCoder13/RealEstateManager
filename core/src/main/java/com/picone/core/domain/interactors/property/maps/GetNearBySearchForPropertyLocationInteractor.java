@@ -1,7 +1,5 @@
 package com.picone.core.domain.interactors.property.maps;
 
-import android.util.Log;
-
 import androidx.annotation.NonNull;
 
 import com.picone.core.data.property.PropertyRepository;
@@ -59,13 +57,9 @@ public class GetNearBySearchForPropertyLocationInteractor extends PropertyBaseIn
                         break;
                     else isAlreadyKnown = false;
                 }
-                if (!isAlreadyKnown)pointOfInterests.add(pointOfInterest);
+                if (!isAlreadyKnown) pointOfInterests.add(pointOfInterest);
             }
         }
-        for (PointOfInterest pointOfInterest1 : pointOfInterests)
-            Log.d("TAG", "nearBySearchToPointOfInterest: " + pointOfInterest1.getName());
-
-        Log.e("TAG", "nearBySearchToPointOfInterest: " + pointOfInterests);
         return pointOfInterests;
     }
 

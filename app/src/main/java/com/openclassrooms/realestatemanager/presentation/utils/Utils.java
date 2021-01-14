@@ -6,6 +6,11 @@ import android.net.wifi.WifiManager;
 
 import androidx.annotation.NonNull;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.Locale;
+
 import static android.content.Context.LOCATION_SERVICE;
 
 /**
@@ -32,5 +37,15 @@ public class Utils {
         WifiManager wifi = (WifiManager)context.getApplicationContext().getSystemService(Context.WIFI_SERVICE);
         assert wifi != null;
         return wifi.isWifiEnabled();
+    }
+
+    public static Date formatStringToDate(String dateStr){
+        Date date = new Date();
+        try {
+            date = new SimpleDateFormat("dd/MM/yyy", Locale.FRANCE).parse(dateStr);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        return date;
     }
 }

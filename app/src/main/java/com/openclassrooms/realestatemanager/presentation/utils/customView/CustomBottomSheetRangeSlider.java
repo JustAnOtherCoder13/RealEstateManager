@@ -78,6 +78,6 @@ public class CustomBottomSheetRangeSlider extends ConstraintLayout {
     }
 
     public float getStartValue(){return Float.parseFloat(startValue.getText().toString());}
-    public float getEndValue(){return Float.parseFloat(startValue.getText().toString());}
+    public float getEndValue(){return Float.parseFloat(endValue.getText().toString());}
 
 }

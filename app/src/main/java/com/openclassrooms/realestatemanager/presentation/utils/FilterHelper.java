@@ -9,6 +9,8 @@ import com.openclassrooms.realestatemanager.R;
 import com.openclassrooms.realestatemanager.databinding.ActivityMainBinding;
 import com.openclassrooms.realestatemanager.databinding.BottomSheetPropertyTypeLayoutBinding;
 import com.openclassrooms.realestatemanager.databinding.CustomBottomSheetPointOfInterestLayoutBinding;
+import com.openclassrooms.realestatemanager.databinding.CustomBottomSheetRangeSliderBinding;
+import com.openclassrooms.realestatemanager.presentation.utils.customView.CustomBottomSheetRangeSlider;
 import com.picone.core.domain.entity.PointOfInterest;
 import com.picone.core.domain.entity.Property;
 import com.picone.core.domain.entity.PropertyPhoto;
@@ -16,6 +18,8 @@ import com.picone.core.domain.entity.PropertyPhoto;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+
+import static com.openclassrooms.realestatemanager.presentation.utils.Utils.formatStringToDate;
 
 public class FilterHelper {
 
@@ -113,8 +117,8 @@ public class FilterHelper {
             allSurfaces.add((float) property.getPropertyArea());
             allRooms.add((float) property.getNumberOfRooms());
         }
-        mainBinding.bottomSheetLayout.filterPropertyLocationPriceRangerSlider.setRangeSliderTouchListener();
-        mainBinding.bottomSheetLayout.filterPropertyLocationPriceRangerSlider
+        mainBinding.bottomSheetLayout.filterPropertyLocationPriceRangeSlider.setRangeSliderTouchListener();
+        mainBinding.bottomSheetLayout.filterPropertyLocationPriceRangeSlider
                 .setRangeSliderValue(
                         Collections.min(allPrices)
                         , Collections.max(allPrices)
@@ -142,9 +146,6 @@ public class FilterHelper {
         filteredValues = new ArrayList<>();
         iterator = 0;
         isAtLeastOnePropertyMatchRequestType = true;
-        if (!mainBinding.bottomSheetLayout.bottomSheetOnMarketFrom.getDate().equalsIgnoreCase(mainBinding.getRoot().getResources().getString(R.string.dd_mm_yyyy)))
-            Log.i("TAG", "filterProperties: know on market from" + mainBinding.bottomSheetLayout.bottomSheetOnMarketFrom.getDate());
-
     }
 
 
@@ -205,7 +206,7 @@ public class FilterHelper {
                         isAtLeastOnePropertyMatchRequestType = true;
                         filteredValues.add(property);
                     }
-                if (!isAtLeastOnePropertyMatchRequestType){
+                if (!isAtLeastOnePropertyMatchRequestType) {
                     filteredValues.clear();
                     break;
                 }
@@ -221,7 +222,7 @@ public class FilterHelper {
                     }
                 }
                 if (!bol)
-                propertiesToDelete.add(property);
+                    propertiesToDelete.add(property);
             }
             filteredProperty.removeAll(propertiesToDelete);
         } else filteredProperty.clear();
@@ -239,7 +240,28 @@ public class FilterHelper {
 
     private void filterForOnMarketFrom() {
         filteredValues = new ArrayList<>();
-        Log.e("TAG", "filterForPropertyType: " + filteredProperty);
+        if (!mainBinding.bottomSheetLayout.bottomSheetOnMarketFrom.getDate().equalsIgnoreCase(mainBinding.getRoot().getResources().getString(R.string.dd_mm_yyyy))) {
+            for (Property property : filteredProperty) {
+                if (formatStringToDate(property.getEnterOnMarket())
+                        .before(formatStringToDate(mainBinding.bottomSheetLayout.bottomSheetOnMarketFrom.getDate()))) {
+                    filteredValues.add(property);
+                }
+            }
+            if (!filteredValues.isEmpty()) filteredProperty.removeAll(filteredValues);
+        }
+        filteredValues = new ArrayList<>();
+        for (Property property : filteredProperty) {
+            filterForRangeSlider(mainBinding.bottomSheetLayout.filterPropertyLocationPriceRangeSlider,property.getPrice(),property );
+            filterForRangeSlider(mainBinding.bottomSheetLayout.filterPropertyLocationSurfaceRangerSlider,property.getPropertyArea(),property);
+            filterForRangeSlider(mainBinding.bottomSheetLayout.filterPropertyLocationRoomRangerSlider,property.getNumberOfRooms(),property);
+        }
+        if (!filteredValues.isEmpty()) filteredProperty.removeAll(filteredValues);
+    }
+
+    private void filterForRangeSlider(@NonNull CustomBottomSheetRangeSlider rangeSlider, float valueToCompare, Property property) {
+        if (valueToCompare < rangeSlider.getStartValue()
+                || valueToCompare > rangeSlider.getEndValue())
+            filteredValues.add(property);
     }
 
     private void filterForPointOfInterestType(CharSequence pointOfInterestType) {
