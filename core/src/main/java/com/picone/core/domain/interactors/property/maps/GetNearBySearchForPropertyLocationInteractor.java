@@ -41,7 +41,8 @@ public class GetNearBySearchForPropertyLocationInteractor extends PropertyBaseIn
                 .map(nearBySearch -> nearBySearchToPointOfInterest(nearBySearch, propertyLocation.getPropertyId()));
     }
 
-    private List<PointOfInterest> nearBySearchToPointOfInterest(NearBySearch nearBySearch, int propertyId) {
+    //TODO crash when no poi found
+    private List<PointOfInterest> nearBySearchToPointOfInterest(@NonNull NearBySearch nearBySearch, int propertyId) {
 
         PointOfInterest pointOfInterest;
 

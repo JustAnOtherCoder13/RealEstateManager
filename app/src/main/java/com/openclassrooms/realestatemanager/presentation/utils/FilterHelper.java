@@ -12,7 +12,6 @@ import com.picone.core.domain.entity.PropertyPhoto;
 
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Iterator;
 import java.util.List;
 
 public class FilterHelper {
@@ -136,6 +135,7 @@ public class FilterHelper {
         requestPointOfInterest();
         requestPropertyType();
         filterForLocation(allProperties);
+        filteredValues = new ArrayList<>();
 
         if (requestPropertyType != null && !requestPropertyType.isEmpty())
             Log.i("TAG", "filterProperties: know type" + requestPropertyType);
@@ -178,55 +178,50 @@ public class FilterHelper {
 
     }
 
-    private void filterForSchool(List<Property> filteredProperty){
-        for (String requestPointOfInterest: requestPointOfInterest){
-            if (requestPointOfInterest.equalsIgnoreCase(mainBinding.getRoot().getResources().getString(R.string.school)))
-                Log.d("TAG", "filterForSchool: ");
+    private void filterForPointOfInterestType(List<Property> filteredProperty, CharSequence pointOfInterestType) {
+
+        if (filteredValues.isEmpty()) {
+            for (Property property : filteredProperty)
+                for (PointOfInterest pointOfInterest : allPointsOfInterest) {
+                    if (pointOfInterest.getType().contains(pointOfInterestType)
+                    && property.getId() == pointOfInterest.getPropertyId())
+                            if (filteredValues.isEmpty() || !filteredValues.contains(property))
+                                filteredValues.add(property);
+                            Log.e("TAG", "filterForPointOfInterestType: filter empty " + filteredValues);
+
+                }
+        } else {
+            for (Property property : filteredProperty) {
+                boolean bol = false;
+                for (PointOfInterest pointOfInterest : allPointsOfInterest) {
+                    if (pointOfInterest.getType().contains(pointOfInterestType)
+                            && property.getId() == pointOfInterest.getPropertyId()) {
+                        if (filteredValues.contains(property)) bol = true;
+                        break;
+                    }
+                }
+                if (!bol) filteredValues.remove(property);
+            }
+            Log.e("TAG", "filterForPointOfInterestType: filter full " + filteredValues);
+
         }
     }
 
-    //TODO filter for each categorie one to one
+
     private void filterForPointOfInterest(List<Property> filteredProperty) {
         filteredValues = new ArrayList<>();
-        if (requestPointOfInterest != null && !requestPointOfInterest.isEmpty())
-            for (Property property : filteredProperty) {
-                List<PointOfInterest> pointOfInterestsForProperty = new ArrayList<>();
-                for (PointOfInterest pointOfInterest : allPointsOfInterest) {
-                    if (property.getId() == pointOfInterest.getPropertyId()) {
-                        boolean isAlreadyKnown = false;
-                        for (PointOfInterest pointOfInterest1 : pointOfInterestsForProperty) {
-                            if (pointOfInterest1.getName().equalsIgnoreCase(pointOfInterest.getName())) {
-                                isAlreadyKnown = true;
-                            }
-                        }
-                        if (!isAlreadyKnown)
-                            pointOfInterestsForProperty.add(pointOfInterest);
 
-                    }
-                }
-                //poi ok
-                int i = 0;
-                List<String> knowRequestPointOfInterestForProperty = new ArrayList<>();
-                for (String requestPointOfInterest : requestPointOfInterest) {
-                    for (PointOfInterest pointOfInterestForProperty : pointOfInterestsForProperty) {
-                        if (pointOfInterestForProperty.getType().equalsIgnoreCase(requestPointOfInterest)) {
-                            boolean isPointOfInterestTypeAlreadyKnown = false;
-                            if (knowRequestPointOfInterestForProperty.isEmpty())
-                                knowRequestPointOfInterestForProperty.add(pointOfInterestForProperty.getType());
-                            else for (String kPOI : knowRequestPointOfInterestForProperty) {
-                                Log.i("TAG", "filterForPointOfInterest: "+kPOI+" "+pointOfInterestForProperty.getType());
-                                if (pointOfInterestForProperty.getType().equalsIgnoreCase(kPOI))
-                                    isPointOfInterestTypeAlreadyKnown = true;
-                            }
-                            if (!isPointOfInterestTypeAlreadyKnown)
-                                knowRequestPointOfInterestForProperty.add(pointOfInterestForProperty.getType());
+        if (mainBinding.bottomSheetLayout.bottomSheetPointOfInterestInclude.schoolCheckBox.checkBox.isChecked()) {
+            filterForPointOfInterestType(filteredProperty, mainBinding.getRoot().getResources().getString(R.string.school));
+        }
+        if (mainBinding.bottomSheetLayout.bottomSheetPointOfInterestInclude.restaurantCheckBox.checkBox.isChecked()) {
+            filterForPointOfInterestType(filteredProperty, mainBinding.getRoot().getResources().getString(R.string.restaurant));
+        }
+        if (mainBinding.bottomSheetLayout.bottomSheetPointOfInterestInclude.supermarketCheckBox.checkBox.isChecked()) {
+            filterForPointOfInterestType(filteredProperty, mainBinding.getRoot().getResources().getString(R.string.supermarket));
+        }
 
-                        }
-                    }
-                    Log.e("TAG", "filterForPointOfInterest: " + knowRequestPointOfInterestForProperty.size()+" "+property.getId());
-                }
-            }
-
+        Log.i("TAG", "filterForPointOfInterest: " + filteredValues);
 
     }
 
