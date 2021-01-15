@@ -75,7 +75,8 @@ public class MainActivity extends AppCompatActivity {
     @Override
     public void onBackPressed() {
         super.onBackPressed();
-        if (mBottomSheetBehavior.getState()==BottomSheetBehavior.STATE_EXPANDED)mBottomSheetBehavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
+        if (mBottomSheetBehavior.getState() == BottomSheetBehavior.STATE_EXPANDED)
+            mBottomSheetBehavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
         if (Objects.requireNonNull(mNavController.getCurrentDestination()).getId() != R.id.propertyDetailFragment)
             mPropertyViewModel.setSelectedProperty(new Property());
     }
@@ -182,7 +183,7 @@ public class MainActivity extends AppCompatActivity {
 
         mBinding.bottomSheetLayout.bottomSheetCloseButton.setOnClickListener(v -> {
             mBottomSheetBehavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
-            if (mBinding.topAppBar.resetFilterButton.getVisibility()==View.VISIBLE)
+            if (mBinding.topAppBar.resetFilterButton.getVisibility() == View.VISIBLE)
                 mBinding.topAppBar.resetFilterButton.setVisibility(View.GONE);
         });
 
@@ -196,16 +197,18 @@ public class MainActivity extends AppCompatActivity {
                 mPropertyViewModel.setAllProperties();
                 mBinding.topAppBar.resetFilterButton.setVisibility(View.GONE);
             });
-            Log.i("TAG", "initBottomSheetFilter: "+filterHelper.getFilteredProperty());
+            Log.i("TAG", "initBottomSheetFilter: " + filterHelper.getFilteredProperty());
         });
     }
 
     private void initBottomSheetLocationFilter() {
         mPropertyViewModel.getAllProperties.observe(this, properties -> {
-            for (Property property : properties) {
-                mPropertyViewModel.setPropertyLocationForProperty(property);
-                mPropertyViewModel.setAllPhotosForProperty(property);
-                mPropertyViewModel.setAllPointOfInterestForProperty(property);
+            for (int i = 0; i < properties.size(); i++) {
+                mPropertyViewModel.setPropertyLocationForProperty(properties.get(i));
+                mPropertyViewModel.setAllPhotosForProperty(properties.get(i));
+                mPropertyViewModel.setAllPointOfInterestForProperty(properties.get(i));
+                if (i == properties.size() - 1)
+                    mPropertyViewModel.setAllPointOfInterestForProperty(new Property());
             }
         });
         mPropertyViewModel.getPropertyLocationForProperty.observe(this, propertyLocation ->
@@ -217,8 +220,9 @@ public class MainActivity extends AppCompatActivity {
         mPropertyViewModel.getAllPointOfInterestForProperty.observe(this,
                 filterHelper::updateAllPropertyPointOfInterest);
 
-        mPropertyViewModel.getKnownRegions.observe(this, regions ->
-                mBinding.bottomSheetLayout.filterPropertyLocationSpinner.setSpinnerAdapter(regions));
+        mPropertyViewModel.getKnownRegions.observe(this, regions -> {
+            mBinding.bottomSheetLayout.filterPropertyLocationSpinner.setSpinnerAdapter(regions);
+        });
     }
 
     protected void setMenuVisibility(@NonNull Boolean isVisible) {

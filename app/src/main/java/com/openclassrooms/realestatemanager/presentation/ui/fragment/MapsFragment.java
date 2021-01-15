@@ -78,7 +78,6 @@ public class MapsFragment extends BaseFragment implements GoogleMap.OnInfoWindow
         mPropertyViewModel.setAllProperties();
         mPropertyViewModel.setAllPointOfInterestForProperty(new Property());
         placePropertyMarkers();
-        placePointOfInterestMarkersForClickedProperty();
     }
 
     @Override
@@ -161,7 +160,7 @@ public class MapsFragment extends BaseFragment implements GoogleMap.OnInfoWindow
             if (isPropertyMarker(marker)) {
                 setUpMapPosition(marker.getPosition(), MAPS_CAMERA_NEAR_ZOOM);
                 mPropertyViewModel.setAllPointOfInterestForProperty(getPropertyForId(marker.getTitle()));
-                removePointOfInterest();
+                placePointOfInterestMarkersForClickedProperty();
             }
             return true;
         });
@@ -183,12 +182,19 @@ public class MapsFragment extends BaseFragment implements GoogleMap.OnInfoWindow
         });
     }
 
+    int i = 0;
+
     private void placePointOfInterestMarkersForClickedProperty() {
+        i = 0;
+        removePointOfInterest();
         mPropertyViewModel.getAllPointOfInterestForProperty.observe(getViewLifecycleOwner(), allPointOfInterests -> {
-            mPointOfInterestMarkers.clear();
-            if (!allPointOfInterests.isEmpty())
-                for (PointOfInterest pointOfInterest : allPointOfInterests)
-                    createPointOfInterestMarker(pointOfInterest);
+            i++;
+            if (i > 1) {
+                mPointOfInterestMarkers.clear();
+                if (!allPointOfInterests.isEmpty())
+                    for (PointOfInterest pointOfInterest : allPointOfInterests)
+                        createPointOfInterestMarker(pointOfInterest);
+            }
         });
     }
 

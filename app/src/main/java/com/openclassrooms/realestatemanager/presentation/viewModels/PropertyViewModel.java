@@ -119,6 +119,7 @@ public class PropertyViewModel extends BaseViewModel {
     }
 
     public void setAllPointOfInterestForProperty(@NonNull Property property) {
+        Log.d("TAG", "setAllPointOfInterestForProperty: "+property.getAddress());
         if (property.getAddress() != null)
             compositeDisposable.add(
                     getAllPointOfInterestForPropertyIdInteractor.getAllPointOfInterestForPropertyId(property.getId())
