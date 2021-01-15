@@ -171,6 +171,8 @@ public class MapsFragment extends BaseFragment implements GoogleMap.OnInfoWindow
         });
     }
 
+
+    //TODO when have clicked marker and open bottom sheet load all poi
     private void placePropertyMarkers() {
         mPropertyViewModel.getPropertyLocationForProperty.observe(getViewLifecycleOwner(), propertyLocation -> {
             if (mMap != null) {
