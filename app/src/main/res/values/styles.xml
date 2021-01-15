@@ -85,19 +85,23 @@
 
     <!--__________________________________TOP BAR__________________________________-->
 
-    <style name="Widget.TopAppBarIconImageButton" parent="Widget.MaterialComponents.Button">
-        <item name="android:tint">@color/white</item>
-        <item name="android:background">@color/custom_blue</item>
+    <style name="TopAppBarIconImageButton" >
+        <item name="android:background">@android:color/transparent</item>
         <item name="android:paddingStart">@dimen/basic_marge</item>
         <item name="android:paddingEnd">@dimen/basic_marge</item>
     </style>
 
-    <style name="Widget.TopBarFilterIconImageButton" parent="Widget.TopAppBarIconImageButton">
-        <item name="srcCompat">@drawable/ic_top_bar_filter_list_24</item>
+    <style name="TopBarFilterIconImageButton" parent="TopAppBarIconImageButton">
+        <item name="srcCompat">@drawable/ic_top_bar_filter_list</item>
     </style>
 
-    <style name="Widget.TopBarAddIconImageButton" parent="Widget.TopAppBarIconImageButton">
-        <item name="srcCompat">@drawable/ic_top_bar_add_24</item>
+    <style name="TopBarAddIconImageButton" parent="TopAppBarIconImageButton">
+        <item name="srcCompat">@drawable/ic_top_bar_add</item>
+    </style>
+
+    <style name="TopBarResetFilterIconImageButton" parent="TopAppBarIconImageButton">
+        <item name="srcCompat">@drawable/ic_top_bar_reset_filter</item>
+        <item name="android:visibility">gone</item>
     </style>
 
     <style name="top_bar_title" parent="TextAppearance.RealEstateManagerStyles.Subtitle1">
@@ -239,7 +243,6 @@
 
     <style name="custom_alert_dialog_ok_button" parent="custom_alert_dialog_button_base_style">
         <item name="android:text">@string/ok</item>
-        <item name="android:layout_margin">@dimen/big_marge</item>
     </style>
 
     <style name="custom_alert_dialog_set_title_edit_text" parent="subtitle_style">
@@ -375,6 +378,10 @@
         <item name="android:layout_marginTop">@dimen/bottom_sheet_outline_size</item>
         <item name="android:layout_marginEnd">@dimen/bottom_sheet_outline_size</item>
         <item name="android:background">@drawable/custom_bottom_sheet_top_bar</item>
+    </style>
+
+    <style name="bottom_sheet_ok_button" parent="custom_alert_dialog_button_base_style">
+        <item name="android:text">@string/ok</item>
     </style>
 
     <style name="bottom_sheet_close_button">

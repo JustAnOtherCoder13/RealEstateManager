@@ -42,4 +42,8 @@ public class CustomBottomSheetSpinner extends ConstraintLayout {
     public String getText() {
         return autoCompleteTextView.getText().toString();
     }
+
+    public void resetText(){
+        autoCompleteTextView.setText("");
+    }
 }

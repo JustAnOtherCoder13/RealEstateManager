@@ -29,7 +29,6 @@ import com.openclassrooms.realestatemanager.presentation.viewModels.AgentViewMod
 import com.openclassrooms.realestatemanager.presentation.viewModels.PropertyViewModel;
 import com.picone.core.domain.entity.Property;
 
-import java.util.Arrays;
 import java.util.Objects;
 
 import dagger.hilt.android.AndroidEntryPoint;
@@ -76,6 +75,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     public void onBackPressed() {
         super.onBackPressed();
+        if (mBottomSheetBehavior.getState()==BottomSheetBehavior.STATE_EXPANDED)mBottomSheetBehavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
         if (Objects.requireNonNull(mNavController.getCurrentDestination()).getId() != R.id.propertyDetailFragment)
             mPropertyViewModel.setSelectedProperty(new Property());
     }
@@ -170,7 +170,7 @@ public class MainActivity extends AppCompatActivity {
         mAgentViewModel.setAgent();
         mPropertyViewModel.setAllProperties();
         filterHelper = new FilterHelper(mBinding);
-        initBottomSheetFilter();
+        setBottomSheetButtonClickListener();
         initBottomSheetLocationFilter();
 
         if (!isGpsAvailable(this))
@@ -178,15 +178,20 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
-    private void initBottomSheetFilter() {
+    private void setBottomSheetButtonClickListener() {
+
         mBinding.bottomSheetLayout.bottomSheetCloseButton.setOnClickListener(v -> {
             mBottomSheetBehavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
+            if (mBinding.topAppBar.resetFilterButton.getVisibility()==View.VISIBLE)
+                mBinding.topAppBar.resetFilterButton.setVisibility(View.GONE);
         });
+
         mBinding.bottomSheetLayout.bottomSheetOkButton.setOnClickListener(v -> {
             filterHelper.filterProperties(mPropertyViewModel.getAllProperties.getValue());
             mPropertyViewModel.setFilteredProperty(filterHelper.getFilteredProperty());
-            mBottomSheetBehavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
             mBinding.topAppBar.resetFilterButton.setVisibility(View.VISIBLE);
+            mBottomSheetBehavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
+            filterHelper.resetFilter();
             mBinding.topAppBar.resetFilterButton.setOnClickListener(v1 -> {
                 mPropertyViewModel.setAllProperties();
                 mBinding.topAppBar.resetFilterButton.setVisibility(View.GONE);
@@ -202,7 +207,6 @@ public class MainActivity extends AppCompatActivity {
                 mPropertyViewModel.setAllPhotosForProperty(property);
                 mPropertyViewModel.setAllPointOfInterestForProperty(property);
             }
-            filterHelper.initRangeSliderValues(properties);
         });
         mPropertyViewModel.getPropertyLocationForProperty.observe(this, propertyLocation ->
                 mPropertyViewModel.setKnownRegion(propertyLocation.getRegion()));

@@ -7,7 +7,7 @@
 
     <ImageButton
         android:id="@+id/top_bar_filter_icon"
-        style="@style/Widget.TopBarFilterIconImageButton"
+        style="@style/TopBarFilterIconImageButton"
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
         android:contentDescription="@string/menu_icon"
@@ -24,28 +24,23 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <ImageButton
-        android:visibility="gone"
         android:id="@+id/top_reset_filter_property"
-        android:src="@drawable/ic_top_bar_reset_filter"
+        style="@style/TopBarResetFilterIconImageButton"
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
-        android:background="@android:color/transparent"
-        android:contentDescription="@string/add_property_icon"
+        android:contentDescription="@string/reset_filter"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@id/top_bar_add_property"
-        app:layout_constraintTop_toTopOf="parent"
-        />
-
+        app:layout_constraintTop_toTopOf="parent" />
 
     <ImageButton
         android:id="@+id/top_bar_add_property"
-        style="@style/Widget.TopBarAddIconImageButton"
+        style="@style/TopBarAddIconImageButton"
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
         android:contentDescription="@string/add_property_icon"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-       />
+        app:layout_constraintTop_toTopOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

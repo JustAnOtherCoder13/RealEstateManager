@@ -52,4 +52,7 @@ public class CustomBottomSheetDatePicker extends ShowDatePicker {
     public String getDate() {
         return dateTextView.getText().toString();
     }
+    public void resetDate(){
+        dateTextView.setText(R.string.dd_mm_yyyy);
+    }
 }

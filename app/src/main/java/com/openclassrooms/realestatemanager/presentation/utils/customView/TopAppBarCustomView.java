@@ -57,9 +57,11 @@ public class TopAppBarCustomView extends ConstraintLayout {
                             (R.id.addPropertyFragment);
             }
         });
-
-        filterButton.setOnClickListener(v -> bottomSheetBehavior.setState(bottomSheetBehavior.getState() == BottomSheetBehavior.STATE_COLLAPSED ?
-            BottomSheetBehavior.STATE_EXPANDED : BottomSheetBehavior.STATE_COLLAPSED));
+        filterButton.setOnClickListener(v -> {
+            bottomSheetBehavior.setState(bottomSheetBehavior.getState() == BottomSheetBehavior.STATE_COLLAPSED ?
+                BottomSheetBehavior.STATE_EXPANDED : BottomSheetBehavior.STATE_COLLAPSED);
+            propertyViewModel.setAllProperties();
+        });
     }
 
     public void setBottomSheetBehavior(BottomSheetBehavior<ConstraintLayout> bottomSheetBehavior) {

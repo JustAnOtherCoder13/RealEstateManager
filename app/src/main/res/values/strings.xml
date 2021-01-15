@@ -91,6 +91,7 @@
     <string name="restaurant">restaurant</string>
     <string name="supermarket">supermarket</string>
     <string name="close_filter_button">close filter button</string>
+    <string name="reset_filter">reset filter</string>
 
 
 </resources>
