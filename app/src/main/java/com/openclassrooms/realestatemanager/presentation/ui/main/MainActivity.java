@@ -186,6 +186,11 @@ public class MainActivity extends AppCompatActivity {
             filterHelper.filterProperties(mPropertyViewModel.getAllProperties.getValue());
             mPropertyViewModel.setFilteredProperty(filterHelper.getFilteredProperty());
             mBottomSheetBehavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
+            mBinding.topAppBar.resetFilterButton.setVisibility(View.VISIBLE);
+            mBinding.topAppBar.resetFilterButton.setOnClickListener(v1 -> {
+                mPropertyViewModel.setAllProperties();
+                mBinding.topAppBar.resetFilterButton.setVisibility(View.GONE);
+            });
             Log.i("TAG", "initBottomSheetFilter: "+filterHelper.getFilteredProperty());
         });
     }

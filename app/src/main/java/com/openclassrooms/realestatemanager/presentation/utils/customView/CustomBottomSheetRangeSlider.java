@@ -73,6 +73,7 @@ public class CustomBottomSheetRangeSlider extends ConstraintLayout {
         values.add(valueFrom);
         values.add(valueTo);
         rangeSlider.setValues(values);
+        rangeSlider.setStepSize(stepSize);
         startValue.setText(String.valueOf(valueFrom));
         endValue.setText(String.valueOf(valueTo));
     }

@@ -23,6 +23,7 @@ public class TopAppBarCustomView extends ConstraintLayout {
 
     private PropertyViewModel propertyViewModel;
     private BottomSheetBehavior<ConstraintLayout> bottomSheetBehavior;
+    public ImageButton resetFilterButton;
 
     public TopAppBarCustomView(@NonNull Context context, @Nullable AttributeSet attrs) {
         super(context, attrs);
@@ -34,6 +35,7 @@ public class TopAppBarCustomView extends ConstraintLayout {
         inflate(getContext(), R.layout.custom_view_top_nav_bar, this);
         ImageButton addPropertyButton = findViewById(R.id.top_bar_add_property);
         ImageButton filterButton = findViewById(R.id.top_bar_filter_icon);
+        resetFilterButton = findViewById(R.id.top_reset_filter_property);
 
         addPropertyButton.setOnClickListener(v -> {
             resetPropertyValues();

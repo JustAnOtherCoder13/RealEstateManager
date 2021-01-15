@@ -120,22 +120,22 @@ public class FilterHelper {
         mainBinding.bottomSheetLayout.filterPropertyLocationPriceRangeSlider.setRangeSliderTouchListener();
         mainBinding.bottomSheetLayout.filterPropertyLocationPriceRangeSlider
                 .setRangeSliderValue(
-                        Collections.min(allPrices)
-                        , Collections.max(allPrices)
-                        , Math.round((Collections.max(allPrices) - Collections.min(allPrices)) / 10000));
+                        100000
+                        , 1000000
+                        , (float)(1000000 - 100000) / 10000);
 
         mainBinding.bottomSheetLayout.filterPropertyLocationSurfaceRangerSlider.setRangeSliderTouchListener();
         mainBinding.bottomSheetLayout.filterPropertyLocationSurfaceRangerSlider
                 .setRangeSliderValue(
-                        Collections.min(allSurfaces),
-                        Collections.max(allSurfaces),
-                        Math.round((Collections.max(allSurfaces) - Collections.min(allSurfaces)) / 10));
+                        100,
+                        1000,
+                        (float)(1000 - 100) / 10);
 
         mainBinding.bottomSheetLayout.filterPropertyLocationRoomRangerSlider.setRangeSliderTouchListener();
         mainBinding.bottomSheetLayout.filterPropertyLocationRoomRangerSlider
                 .setRangeSliderValue(
-                        Collections.min(allRooms),
-                        Collections.max(allRooms),
+                        5,
+                        20,
                         1);
     }
 
