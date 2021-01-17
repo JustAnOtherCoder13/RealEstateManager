@@ -41,6 +41,14 @@ public class PropertyRepository {
         return propertyDao.getAllPhotosForPropertyId(propertyId);
     }
 
+    public Observable<List<PropertyPhoto>> getAllPhotosForAllProperties() {
+        return propertyDao.getAllPhotosForAllProperties();
+    }
+
+    public Observable<List<String>> getAllRegionsForAllProperties(){
+        return propertyDao.getAllRegionsForAllProperties();
+    }
+
     public Observable<PropertyLocation> getPropertyLocationForPropertyId(int propertyId) {
         return propertyDao.getPropertyLocationForPropertyId(propertyId);
     }
@@ -49,7 +57,7 @@ public class PropertyRepository {
         return propertyDao.getAllPointsOfInterestForAllProperties();
     }
 
-        public Completable addPropertyLocation(PropertyLocation propertyLocation) {
+    public Completable addPropertyLocation(PropertyLocation propertyLocation) {
         return propertyDao.addPropertyLocation(propertyLocation);
     }
 

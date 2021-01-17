@@ -7,6 +7,7 @@ import androidx.hilt.lifecycle.ViewModelInject;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 
+import com.airbnb.lottie.L;
 import com.picone.core.domain.entity.PointOfInterest;
 import com.picone.core.domain.entity.Property;
 import com.picone.core.domain.entity.PropertyLocation;
@@ -15,12 +16,14 @@ import com.picone.core.domain.interactors.property.AddPropertyInteractor;
 import com.picone.core.domain.interactors.property.GetAllPropertiesInteractor;
 import com.picone.core.domain.interactors.property.UpdatePropertyInteractor;
 import com.picone.core.domain.interactors.property.location.AddPropertyLocationInteractor;
+import com.picone.core.domain.interactors.property.location.GetAllRegionsForAllPropertiesInteractor;
 import com.picone.core.domain.interactors.property.location.GetPropertyLocationInteractor;
 import com.picone.core.domain.interactors.property.location.UpdatePropertyLocationInteractor;
 import com.picone.core.domain.interactors.property.maps.GetNearBySearchForPropertyLocationInteractor;
 import com.picone.core.domain.interactors.property.maps.GetPropertyLocationForAddressInteractor;
 import com.picone.core.domain.interactors.property.photo.AddPropertyPhotoInteractor;
 import com.picone.core.domain.interactors.property.photo.DeletePropertyPhotoInteractor;
+import com.picone.core.domain.interactors.property.photo.GetAllPhotosForAllPropertiesInteractor;
 import com.picone.core.domain.interactors.property.photo.GetAllPropertyPhotosForPropertyIdInteractor;
 import com.picone.core.domain.interactors.property.pointOfInterest.AddPropertyPointOfInterestInteractor;
 import com.picone.core.domain.interactors.property.pointOfInterest.DeletePointOfInterestInteractor;
@@ -42,6 +45,7 @@ public class PropertyViewModel extends BaseViewModel {
     private MutableLiveData<List<PointOfInterest>> allPointOfInterestForPropertyMutableLD = new MutableLiveData<>(new ArrayList<>());
     private MutableLiveData<List<PointOfInterest>> allPointsOfInterestForAllPropertiesMutableLD = new MutableLiveData<>();
     private MutableLiveData<List<PropertyPhoto>> allPhotosForPropertyMutableLD = new MutableLiveData<>();
+    private MutableLiveData<List<PropertyPhoto>>allPhotosForAllPropertiesMutableLD = new MutableLiveData<>();
     private MutableLiveData<Property> selectedPropertyMutableLD = new MutableLiveData<>(new Property());
     private MutableLiveData<List<PropertyPhoto>> photosToDeleteMutableLD = new MutableLiveData<>();
     private MutableLiveData<PropertyLocation> propertyLocationForPropertyMutableLd = new MutableLiveData<>();
@@ -56,6 +60,7 @@ public class PropertyViewModel extends BaseViewModel {
     public LiveData<List<PointOfInterest>> getAllPointOfInterestForAllProperties = allPointsOfInterestForAllPropertiesMutableLD;
     public LiveData<List<PointOfInterest>> getAllPointOfInterestForProperty = allPointOfInterestForPropertyMutableLD;
     public LiveData<List<PropertyPhoto>> getAllPropertyPhotosForProperty = allPhotosForPropertyMutableLD;
+    public LiveData<List<PropertyPhoto>> getAllPhotosForAllProperties = allPhotosForAllPropertiesMutableLD;
     public LiveData<Property> getSelectedProperty = selectedPropertyMutableLD;
     public LiveData<List<PropertyPhoto>> getPhotosToDelete = photosToDeleteMutableLD;
     public LiveData<PropertyLocation> getPropertyLocationForProperty = propertyLocationForPropertyMutableLd;
@@ -68,6 +73,8 @@ public class PropertyViewModel extends BaseViewModel {
             , GetAllPointOfInterestForPropertyIdInteractor getAllPointOfInterestForPropertyIdInteractor
             , GetAllPointOfInterestsForAllPropertiesInteractor getAllPointOfInterestsForAllPropertiesInteractor
             , GetAllPropertyPhotosForPropertyIdInteractor getAllPropertyPhotosForPropertyIdInteractor
+            , GetAllPhotosForAllPropertiesInteractor getAllPhotosForAllPropertiesInteractor
+            , GetAllRegionsForAllPropertiesInteractor getAllRegionsForAllPropertiesInteractor
             , AddPropertyInteractor addPropertyInteractor
             , AddPropertyPointOfInterestInteractor addPropertyPointOfInterestInteractor
             , AddPropertyPhotoInteractor addPropertyPhotoInteractor
@@ -84,6 +91,8 @@ public class PropertyViewModel extends BaseViewModel {
         this.getAllPointOfInterestForPropertyIdInteractor = getAllPointOfInterestForPropertyIdInteractor;
         this.getAllPointOfInterestsForAllPropertiesInteractor = getAllPointOfInterestsForAllPropertiesInteractor;
         this.getAllPropertyPhotosForPropertyIdInteractor = getAllPropertyPhotosForPropertyIdInteractor;
+        this.getAllPhotosForAllPropertiesInteractor = getAllPhotosForAllPropertiesInteractor;
+        this.getAllRegionsForAllPropertiesInteractor = getAllRegionsForAllPropertiesInteractor;
         this.addPropertyInteractor = addPropertyInteractor;
         this.addPropertyPointOfInterestInteractor = addPropertyPointOfInterestInteractor;
         this.addPropertyPhotoInteractor = addPropertyPhotoInteractor;
@@ -138,9 +147,8 @@ public class PropertyViewModel extends BaseViewModel {
                 getAllPointOfInterestsForAllPropertiesInteractor.getAllPointsOfInterestForAllProperties()
                 .subscribeOn(schedulerProvider.getIo())
                 .observeOn(schedulerProvider.getUi())
-                .subscribe(pointOfInterests -> {
-                    allPointsOfInterestForAllPropertiesMutableLD.setValue(pointOfInterests);
-                })
+                .subscribe(pointOfInterests ->
+                        allPointsOfInterestForAllPropertiesMutableLD.setValue(pointOfInterests))
         );
     }
 
@@ -152,6 +160,16 @@ public class PropertyViewModel extends BaseViewModel {
                         .subscribe(propertyPhotos -> allPhotosForPropertyMutableLD.setValue(propertyPhotos)));
     }
 
+    public void setAllPhotoForAllProperties(){
+        compositeDisposable.add(
+                getAllPhotosForAllPropertiesInteractor.getAllPhotosForAllProperties()
+                .subscribeOn(schedulerProvider.getIo())
+                .observeOn(schedulerProvider.getUi())
+                .subscribe(propertyPhotos -> {
+                    allPhotosForAllPropertiesMutableLD.setValue(propertyPhotos);
+                })
+        );
+    }
     public void setPropertyLocationForProperty(@NonNull Property property) {
         compositeDisposable.add(
                 getPropertyLocationInteractor.getPropertyLocationForPropertyId(property.getId())
@@ -160,6 +178,16 @@ public class PropertyViewModel extends BaseViewModel {
                         .subscribe(propertyLocation -> propertyLocationForPropertyMutableLd.setValue(propertyLocation)));
     }
 
+    public void setAllRegionForAllProperties(){
+        compositeDisposable.add(
+                getAllRegionsForAllPropertiesInteractor.getAllRegionsForAllProperties()
+                .subscribeOn(schedulerProvider.getIo())
+                .observeOn(schedulerProvider.getUi())
+                .subscribe(allRegions -> {
+                    knownRegionsMutableLD.setValue(allRegions);
+                })
+        );
+    }
     //___________________________________PROPERTY__________________________________
 
     public void addProperty(Property property) {
@@ -281,17 +309,5 @@ public class PropertyViewModel extends BaseViewModel {
                         .subscribeOn(schedulerProvider.getIo())
                         .observeOn(schedulerProvider.getUi())
                         .subscribe(pointOfInterests -> mapsPointOfInterestForPropertyMutableLD.setValue(pointOfInterests)));
-    }
-
-    //___________________________________HELPER__________________________________
-
-    public void setKnownRegion(String region) {
-        List<String> knownRegions = Objects.requireNonNull(knownRegionsMutableLD.getValue());
-        if (!knownRegions.isEmpty()) {
-            for (String knownRegion : knownRegions)
-                if (knownRegion.equalsIgnoreCase(region)) return;
-        }
-        knownRegions.add(region);
-        knownRegionsMutableLD.setValue(knownRegions);
     }
 }

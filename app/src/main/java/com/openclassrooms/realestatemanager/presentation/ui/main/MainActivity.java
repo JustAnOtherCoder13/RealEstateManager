@@ -197,22 +197,15 @@ public class MainActivity extends AppCompatActivity {
                 mPropertyViewModel.setAllProperties();
                 mBinding.topAppBar.resetFilterButton.setVisibility(View.GONE);
             });
-            Log.i("TAG", "initBottomSheetFilter: " + filterHelper.getFilteredProperty());
         });
     }
 
     private void initBottomSheetLocationFilter() {
         mPropertyViewModel.setAllPointOfInterestForAllProperties();
-        mPropertyViewModel.getAllProperties.observe(this, properties -> {
-            for (int i = 0; i < properties.size(); i++) {
-                mPropertyViewModel.setPropertyLocationForProperty(properties.get(i));
-                mPropertyViewModel.setAllPhotosForProperty(properties.get(i));
-            }
-        });
-        mPropertyViewModel.getPropertyLocationForProperty.observe(this, propertyLocation ->
-                mPropertyViewModel.setKnownRegion(propertyLocation.getRegion()));
+        mPropertyViewModel.setAllPhotoForAllProperties();
+        mPropertyViewModel.setAllRegionForAllProperties();
 
-        mPropertyViewModel.getAllPropertyPhotosForProperty.observe(this,
+        mPropertyViewModel.getAllPhotosForAllProperties.observe(this,
                 filterHelper::updateAllPropertyPhotos);
 
         mPropertyViewModel.getAllPointOfInterestForAllProperties.observe(this,

@@ -35,6 +35,12 @@ public interface PropertyRoomDao {
     @Query("SELECT*FROM property_point_of_interest_table")
     Observable<List<PointOfInterest>> getAllPointsOfInterestForAllProperties();
 
+    @Query("SELECT*FROM property_photo_table")
+    Observable<List<PropertyPhoto>> getAllPhotosForAllProperties();
+
+    @Query("SELECT region FROM property_location_table")
+    Observable<List<String>> getAllRegionsForAllProperties();
+
     @Insert
     Completable addProperty(Property property);
 
