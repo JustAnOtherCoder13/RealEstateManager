@@ -19,6 +19,7 @@ import com.picone.core.domain.interactors.property.photo.GetAllPropertyPhotosFor
 import com.picone.core.domain.interactors.property.pointOfInterest.AddPropertyPointOfInterestInteractor;
 import com.picone.core.domain.interactors.property.pointOfInterest.DeletePointOfInterestInteractor;
 import com.picone.core.domain.interactors.property.pointOfInterest.GetAllPointOfInterestForPropertyIdInteractor;
+import com.picone.core.domain.interactors.property.pointOfInterest.GetAllPointOfInterestsForAllPropertiesInteractor;
 import com.picone.core.utils.SchedulerProvider;
 
 import javax.inject.Inject;
@@ -42,6 +43,7 @@ public abstract class BaseViewModel extends ViewModel {
 
     protected GetAllPropertiesInteractor getAllPropertiesInteractor;
     protected GetAllPointOfInterestForPropertyIdInteractor getAllPointOfInterestForPropertyIdInteractor;
+    protected GetAllPointOfInterestsForAllPropertiesInteractor getAllPointOfInterestsForAllPropertiesInteractor;
     protected GetAllPropertyPhotosForPropertyIdInteractor getAllPropertyPhotosForPropertyIdInteractor;
     protected AddPropertyInteractor addPropertyInteractor;
     protected AddPropertyPointOfInterestInteractor addPropertyPointOfInterestInteractor;

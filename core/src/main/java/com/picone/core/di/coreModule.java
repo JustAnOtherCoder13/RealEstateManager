@@ -25,6 +25,7 @@ import com.picone.core.domain.interactors.property.photo.GetAllPropertyPhotosFor
 import com.picone.core.domain.interactors.property.pointOfInterest.AddPropertyPointOfInterestInteractor;
 import com.picone.core.domain.interactors.property.pointOfInterest.DeletePointOfInterestInteractor;
 import com.picone.core.domain.interactors.property.pointOfInterest.GetAllPointOfInterestForPropertyIdInteractor;
+import com.picone.core.domain.interactors.property.pointOfInterest.GetAllPointOfInterestsForAllPropertiesInteractor;
 
 import javax.inject.Singleton;
 
@@ -115,6 +116,11 @@ public final class coreModule {
     @Provides
     static AddPropertyPointOfInterestInteractor provideAddRoomPropertyPointOfInterest(@ApplicationContext Context context) {
         return new AddPropertyPointOfInterestInteractor(providePropertyDataSource(context));
+    }
+
+    @Provides
+    static GetAllPointOfInterestsForAllPropertiesInteractor provideGetAllPointOfInterestForAllProperties(@ApplicationContext Context context){
+        return new GetAllPointOfInterestsForAllPropertiesInteractor(providePropertyDataSource(context));
     }
 
     @Provides

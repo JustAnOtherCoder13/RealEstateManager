@@ -166,10 +166,7 @@ public class FilterHelper {
             allPropertiesPhotos.addAll(photosForProperty);
     }
     public void updateAllPropertyPointOfInterest(@NonNull List<PointOfInterest> pointOfInterests) {
-        if (!pointOfInterests.isEmpty())
-            if (allPointsOfInterest.isEmpty()) allPointsOfInterest.addAll(pointOfInterests);
-            else if (!allPointsOfInterest.containsAll(pointOfInterests))
-                allPointsOfInterest.addAll(pointOfInterests);
+        this.allPointsOfInterest = pointOfInterests;
     }
     private void requestPointOfInterest() {
         String schoolStr = mainBinding.getRoot().getResources().getString(R.string.school);

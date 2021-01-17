@@ -15,6 +15,7 @@ import java.util.List;
 
 import io.reactivex.Completable;
 import io.reactivex.Observable;
+import io.reactivex.Observer;
 
 @Dao
 public interface PropertyRoomDao {
@@ -30,6 +31,9 @@ public interface PropertyRoomDao {
 
     @Query("SELECT*FROM property_location_table WHERE property_location_table.propertyId = :propertyId")
     Observable<PropertyLocation> getPropertyLocationForPropertyId(int propertyId);
+
+    @Query("SELECT*FROM property_point_of_interest_table")
+    Observable<List<PointOfInterest>> getAllPointsOfInterestForAllProperties();
 
     @Insert
     Completable addProperty(Property property);

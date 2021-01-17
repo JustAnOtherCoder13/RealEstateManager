@@ -15,6 +15,7 @@ import javax.inject.Inject;
 
 import io.reactivex.Completable;
 import io.reactivex.Observable;
+import io.reactivex.Observer;
 
 public class PropertyRepository {
 
@@ -44,7 +45,11 @@ public class PropertyRepository {
         return propertyDao.getPropertyLocationForPropertyId(propertyId);
     }
 
-    public Completable addPropertyLocation(PropertyLocation propertyLocation) {
+    public Observable<List<PointOfInterest>> getAllPointsOfInterestForAllProperties() {
+        return propertyDao.getAllPointsOfInterestForAllProperties();
+    }
+
+        public Completable addPropertyLocation(PropertyLocation propertyLocation) {
         return propertyDao.addPropertyLocation(propertyLocation);
     }
 

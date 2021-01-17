@@ -12,6 +12,7 @@ import javax.inject.Inject;
 
 import io.reactivex.Completable;
 import io.reactivex.Observable;
+import io.reactivex.Observer;
 
 public class PropertyDaoImpl {
 
@@ -38,6 +39,10 @@ public class PropertyDaoImpl {
 
     public Observable<PropertyLocation> getPropertyLocationForPropertyId(int propertyId) {
         return mPropertyRoomDao.getPropertyLocationForPropertyId(propertyId);
+    }
+
+    public Observable<List<PointOfInterest>> getAllPointsOfInterestForAllProperties(){
+        return mPropertyRoomDao.getAllPointsOfInterestForAllProperties();
     }
 
     public Completable addProperty(Property property) {

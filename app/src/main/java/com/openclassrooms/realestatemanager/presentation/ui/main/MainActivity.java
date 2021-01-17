@@ -202,13 +202,11 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void initBottomSheetLocationFilter() {
+        mPropertyViewModel.setAllPointOfInterestForAllProperties();
         mPropertyViewModel.getAllProperties.observe(this, properties -> {
             for (int i = 0; i < properties.size(); i++) {
                 mPropertyViewModel.setPropertyLocationForProperty(properties.get(i));
                 mPropertyViewModel.setAllPhotosForProperty(properties.get(i));
-                mPropertyViewModel.setAllPointOfInterestForProperty(properties.get(i));
-                if (i == properties.size() - 1)
-                    mPropertyViewModel.setAllPointOfInterestForProperty(new Property());
             }
         });
         mPropertyViewModel.getPropertyLocationForProperty.observe(this, propertyLocation ->
@@ -217,7 +215,7 @@ public class MainActivity extends AppCompatActivity {
         mPropertyViewModel.getAllPropertyPhotosForProperty.observe(this,
                 filterHelper::updateAllPropertyPhotos);
 
-        mPropertyViewModel.getAllPointOfInterestForProperty.observe(this,
+        mPropertyViewModel.getAllPointOfInterestForAllProperties.observe(this,
                 filterHelper::updateAllPropertyPointOfInterest);
 
         mPropertyViewModel.getKnownRegions.observe(this, regions -> {
