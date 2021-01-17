@@ -1,5 +1,7 @@
 package com.openclassrooms.realestatemanager.presentation.utils;
 
+import android.content.Context;
+
 import androidx.annotation.NonNull;
 
 import com.openclassrooms.realestatemanager.R;
@@ -7,6 +9,7 @@ import com.openclassrooms.realestatemanager.databinding.ActivityMainBinding;
 import com.openclassrooms.realestatemanager.databinding.BottomSheetFilterLayoutBinding;
 import com.openclassrooms.realestatemanager.databinding.BottomSheetPropertyTypeLayoutBinding;
 import com.openclassrooms.realestatemanager.databinding.CustomBottomSheetPointOfInterestLayoutBinding;
+import com.openclassrooms.realestatemanager.presentation.ui.main.MainActivity;
 import com.openclassrooms.realestatemanager.presentation.utils.customView.CustomBottomSheetRangeSlider;
 import com.picone.core.domain.entity.PointOfInterest;
 import com.picone.core.domain.entity.Property;
@@ -19,7 +22,7 @@ import static com.openclassrooms.realestatemanager.presentation.utils.Utils.form
 
 public class FilterHelper {
 
-    private ActivityMainBinding mainBinding;
+    private BottomSheetFilterLayoutBinding bottomSheetFilterLayout;
 
     private List<String> requestPointsOfInterests;
     private List<String> requestPropertyType;
@@ -33,18 +36,21 @@ public class FilterHelper {
         return filteredProperty;
     }
 
-    public FilterHelper(ActivityMainBinding mainBinding) {
-        this.mainBinding = mainBinding;
-        List<String> numberOfPhotos = new ArrayList<>();
-        for (int i = 1; i <= 10; i++) numberOfPhotos.add(String.valueOf(i));
-        mainBinding.bottomSheetLayout
-                .filterPropertyNumberOfPhotoSpinner.setSpinnerAdapter(numberOfPhotos);
+    public FilterHelper(BottomSheetFilterLayoutBinding bottomSheetFilterLayout) {
+        this.bottomSheetFilterLayout = bottomSheetFilterLayout;
+        initPhotoSpinner();
         initRangeSliderValues();
     }
 
+    private void initPhotoSpinner() {
+        List<String> numberOfPhotos = new ArrayList<>();
+        for (int i = 1; i <= 10; i++) numberOfPhotos.add(String.valueOf(i));
+        bottomSheetFilterLayout
+                .filterPropertyNumberOfPhotoSpinner.setSpinnerAdapter(numberOfPhotos);
+    }
+
     private void initRangeSliderValues() {
-        mainBinding.bottomSheetLayout.filterPropertyLocationPriceRangeSlider.setRangeSliderTouchListener();
-        mainBinding.bottomSheetLayout.filterPropertyLocationPriceRangeSlider
+        bottomSheetFilterLayout.filterPropertyLocationPriceRangeSlider
                 .setRangeSliderValue(
                         //Min price selectable
                         100000
@@ -53,8 +59,7 @@ public class FilterHelper {
                         //step
                         , (float) (1000000 - 100000) / 10000);
 
-        mainBinding.bottomSheetLayout.filterPropertyLocationSurfaceRangerSlider.setRangeSliderTouchListener();
-        mainBinding.bottomSheetLayout.filterPropertyLocationSurfaceRangerSlider
+        bottomSheetFilterLayout.filterPropertyLocationSurfaceRangerSlider
                 .setRangeSliderValue(
                         //Min area selectable
                         100,
@@ -63,8 +68,7 @@ public class FilterHelper {
                         //step
                         (float) (1000 - 100) / 10);
 
-        mainBinding.bottomSheetLayout.filterPropertyLocationRoomRangerSlider.setRangeSliderTouchListener();
-        mainBinding.bottomSheetLayout.filterPropertyLocationRoomRangerSlider
+        bottomSheetFilterLayout.filterPropertyLocationRoomRangerSlider
                 .setRangeSliderValue(
                         //Min room
                         5,
@@ -85,9 +89,9 @@ public class FilterHelper {
 
     private void filterForLocation(List<Property> allProperties) {
         filteredProperty = new ArrayList<>();
-        if (!mainBinding.bottomSheetLayout.filterPropertyLocationSpinner.getText().trim().isEmpty()) {
+        if (!bottomSheetFilterLayout.filterPropertyLocationSpinner.getText().trim().isEmpty()) {
             for (Property property : allProperties) {
-                if (property.getRegion().equalsIgnoreCase(mainBinding.bottomSheetLayout.filterPropertyLocationSpinner.getText()))
+                if (property.getRegion().equalsIgnoreCase(bottomSheetFilterLayout.filterPropertyLocationSpinner.getText()))
                     filteredProperty.add(property);
             }
         }
@@ -97,7 +101,7 @@ public class FilterHelper {
 
     private void filterForNumberOfPhoto() {
         filteredValues = new ArrayList<>();
-        if (!mainBinding.bottomSheetLayout.filterPropertyNumberOfPhotoSpinner.getText().trim().isEmpty())
+        if (!bottomSheetFilterLayout.filterPropertyNumberOfPhotoSpinner.getText().trim().isEmpty())
             for (Property property : filteredProperty) {
                 // count photo corresponding to property
                 int numberOfPhotosForProperty = 0;
@@ -107,7 +111,7 @@ public class FilterHelper {
                     }
                 }
                 //add them to a list if don't match filter
-                if (numberOfPhotosForProperty < Integer.parseInt(mainBinding.bottomSheetLayout.filterPropertyNumberOfPhotoSpinner.getText()))
+                if (numberOfPhotosForProperty < Integer.parseInt(bottomSheetFilterLayout.filterPropertyNumberOfPhotoSpinner.getText()))
                     filteredValues.add(property);
             }
         //apply filter
@@ -117,19 +121,19 @@ public class FilterHelper {
 
     private void filterForPointOfInterest() {
         filteredValues = new ArrayList<>();
-        if (mainBinding.bottomSheetLayout.bottomSheetPointOfInterestInclude.schoolCheckBox.checkBox.isChecked()
-                || mainBinding.bottomSheetLayout.bottomSheetPointOfInterestInclude.restaurantCheckBox.checkBox.isChecked()
-                || mainBinding.bottomSheetLayout.bottomSheetPointOfInterestInclude.supermarketCheckBox.checkBox.isChecked()) {
+        if (bottomSheetFilterLayout.bottomSheetPointOfInterestInclude.schoolCheckBox.checkBox.isChecked()
+                || bottomSheetFilterLayout.bottomSheetPointOfInterestInclude.restaurantCheckBox.checkBox.isChecked()
+                || bottomSheetFilterLayout.bottomSheetPointOfInterestInclude.supermarketCheckBox.checkBox.isChecked()) {
             filterForPointOfInterestType();
         }
         filterForPropertyType();
     }
 
     private void filterForPropertyType() {
-        if (mainBinding.bottomSheetLayout.bottomSheetPropertyTypeLayoutInclude.houseCheckBox.checkBox.isChecked()
-                || mainBinding.bottomSheetLayout.bottomSheetPropertyTypeLayoutInclude.penthouseCheckBox.checkBox.isChecked()
-                || mainBinding.bottomSheetLayout.bottomSheetPropertyTypeLayoutInclude.flatCheckBox.checkBox.isChecked()
-                || mainBinding.bottomSheetLayout.bottomSheetPropertyTypeLayoutInclude.duplexCheckBox.checkBox.isChecked())
+        if (bottomSheetFilterLayout.bottomSheetPropertyTypeLayoutInclude.houseCheckBox.checkBox.isChecked()
+                || bottomSheetFilterLayout.bottomSheetPropertyTypeLayoutInclude.penthouseCheckBox.checkBox.isChecked()
+                || bottomSheetFilterLayout.bottomSheetPropertyTypeLayoutInclude.flatCheckBox.checkBox.isChecked()
+                || bottomSheetFilterLayout.bottomSheetPropertyTypeLayoutInclude.duplexCheckBox.checkBox.isChecked())
             filterForType();
 
         filterForOnMarketFrom();
@@ -137,11 +141,11 @@ public class FilterHelper {
 
     private void filterForOnMarketFrom() {
         filteredValues = new ArrayList<>();
-        if (!mainBinding.bottomSheetLayout.bottomSheetOnMarketFrom.getDate().equalsIgnoreCase(mainBinding.getRoot().getResources().getString(R.string.dd_mm_yyyy)))
+        if (!bottomSheetFilterLayout.bottomSheetOnMarketFrom.getDate().equalsIgnoreCase(bottomSheetFilterLayout.getRoot().getResources().getString(R.string.dd_mm_yyyy)))
             for (Property property : filteredProperty) {
                 //check if property don't match request
                 if (formatStringToDate(property.getEnterOnMarket())
-                        .before(formatStringToDate(mainBinding.bottomSheetLayout.bottomSheetOnMarketFrom.getDate()))) {
+                        .before(formatStringToDate(bottomSheetFilterLayout.bottomSheetOnMarketFrom.getDate()))) {
                     filteredValues.add(property);
                 }
             }
@@ -153,9 +157,9 @@ public class FilterHelper {
     private void filterForRangeSlider() {
         filteredValues = new ArrayList<>();
         for (Property property : filteredProperty) {
-            filterForRangeSlider(mainBinding.bottomSheetLayout.filterPropertyLocationPriceRangeSlider, property.getPrice(), property);
-            filterForRangeSlider(mainBinding.bottomSheetLayout.filterPropertyLocationSurfaceRangerSlider, property.getPropertyArea(), property);
-            filterForRangeSlider(mainBinding.bottomSheetLayout.filterPropertyLocationRoomRangerSlider, property.getNumberOfRooms(), property);
+            filterForRangeSlider(bottomSheetFilterLayout.filterPropertyLocationPriceRangeSlider, property.getPrice(), property);
+            filterForRangeSlider(bottomSheetFilterLayout.filterPropertyLocationSurfaceRangerSlider, property.getPropertyArea(), property);
+            filterForRangeSlider(bottomSheetFilterLayout.filterPropertyLocationRoomRangerSlider, property.getNumberOfRooms(), property);
         }
         if (!filteredValues.isEmpty()) filteredProperty.removeAll(filteredValues);
     }
@@ -171,13 +175,13 @@ public class FilterHelper {
     }
 
     private void requestPointOfInterest() {
-        String schoolStr = mainBinding.getRoot().getResources().getString(R.string.school);
-        String restaurantStr = mainBinding.getRoot().getResources().getString(R.string.restaurant);
-        String supermarketStr = mainBinding.getRoot().getResources().getString(R.string.supermarket);
+        String schoolStr = bottomSheetFilterLayout.getRoot().getResources().getString(R.string.school);
+        String restaurantStr = bottomSheetFilterLayout.getRoot().getResources().getString(R.string.restaurant);
+        String supermarketStr = bottomSheetFilterLayout.getRoot().getResources().getString(R.string.supermarket);
         requestPointsOfInterests = new ArrayList<>();
 
         CustomBottomSheetPointOfInterestLayoutBinding pointOfInterestBinding =
-                mainBinding.bottomSheetLayout.bottomSheetPointOfInterestInclude;
+                bottomSheetFilterLayout.bottomSheetPointOfInterestInclude;
 
         if (pointOfInterestBinding.schoolCheckBox.checkBox.isChecked() && !requestPointsOfInterests.contains(schoolStr))
             requestPointsOfInterests.add(schoolStr);
@@ -189,12 +193,12 @@ public class FilterHelper {
 
     private void requestPropertyType() {
         requestPropertyType = new ArrayList<>();
-        String houseStr = mainBinding.getRoot().getResources().getString(R.string.house);
-        String flatStr = mainBinding.getRoot().getResources().getString(R.string.flat);
-        String duplexStr = mainBinding.getRoot().getResources().getString(R.string.duplex);
-        String penthouseStr = mainBinding.getRoot().getResources().getString(R.string.penthouse);
+        String houseStr = bottomSheetFilterLayout.getRoot().getResources().getString(R.string.house);
+        String flatStr = bottomSheetFilterLayout.getRoot().getResources().getString(R.string.flat);
+        String duplexStr = bottomSheetFilterLayout.getRoot().getResources().getString(R.string.duplex);
+        String penthouseStr = bottomSheetFilterLayout.getRoot().getResources().getString(R.string.penthouse);
 
-        BottomSheetPropertyTypeLayoutBinding propertyTypeBinding = mainBinding.bottomSheetLayout.bottomSheetPropertyTypeLayoutInclude;
+        BottomSheetPropertyTypeLayoutBinding propertyTypeBinding = bottomSheetFilterLayout.bottomSheetPropertyTypeLayoutInclude;
         if (propertyTypeBinding.houseCheckBox.checkBox.isChecked() && !requestPropertyType.contains(houseStr))
             requestPropertyType.add(houseStr);
         if (propertyTypeBinding.flatCheckBox.checkBox.isChecked() && !requestPropertyType.contains(flatStr))
@@ -273,17 +277,16 @@ public class FilterHelper {
     }
 
     public void resetFilter() {
-        BottomSheetFilterLayoutBinding bottomSheet = mainBinding.bottomSheetLayout;
         initRangeSliderValues();
-        bottomSheet.bottomSheetPointOfInterestInclude.supermarketCheckBox.checkBox.setChecked(false);
-        bottomSheet.bottomSheetPointOfInterestInclude.schoolCheckBox.checkBox.setChecked(false);
-        bottomSheet.bottomSheetPointOfInterestInclude.restaurantCheckBox.checkBox.setChecked(false);
-        bottomSheet.bottomSheetPropertyTypeLayoutInclude.duplexCheckBox.checkBox.setChecked(false);
-        bottomSheet.bottomSheetPropertyTypeLayoutInclude.houseCheckBox.checkBox.setChecked(false);
-        bottomSheet.bottomSheetPropertyTypeLayoutInclude.penthouseCheckBox.checkBox.setChecked(false);
-        bottomSheet.bottomSheetPropertyTypeLayoutInclude.flatCheckBox.checkBox.setChecked(false);
-        bottomSheet.bottomSheetOnMarketFrom.resetDate();
-        bottomSheet.filterPropertyLocationSpinner.resetText();
-        bottomSheet.filterPropertyNumberOfPhotoSpinner.resetText();
+        bottomSheetFilterLayout.bottomSheetPointOfInterestInclude.supermarketCheckBox.checkBox.setChecked(false);
+        bottomSheetFilterLayout.bottomSheetPointOfInterestInclude.schoolCheckBox.checkBox.setChecked(false);
+        bottomSheetFilterLayout.bottomSheetPointOfInterestInclude.restaurantCheckBox.checkBox.setChecked(false);
+        bottomSheetFilterLayout.bottomSheetPropertyTypeLayoutInclude.duplexCheckBox.checkBox.setChecked(false);
+        bottomSheetFilterLayout.bottomSheetPropertyTypeLayoutInclude.houseCheckBox.checkBox.setChecked(false);
+        bottomSheetFilterLayout.bottomSheetPropertyTypeLayoutInclude.penthouseCheckBox.checkBox.setChecked(false);
+        bottomSheetFilterLayout.bottomSheetPropertyTypeLayoutInclude.flatCheckBox.checkBox.setChecked(false);
+        bottomSheetFilterLayout.bottomSheetOnMarketFrom.resetDate();
+        bottomSheetFilterLayout.filterPropertyLocationSpinner.resetText();
+        bottomSheetFilterLayout.filterPropertyNumberOfPhotoSpinner.resetText();
     }
 }

@@ -62,7 +62,8 @@ public class AddPropertyFragment extends BaseFragment {
     private ManageImageHelper mImageHelper;
     private CustomMediaSetTitleDialog setTitleDialog;
 
-
+    //TODO add loader on photo, init text view
+    //todo disable register button when clicked (avoid multiple click)
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {

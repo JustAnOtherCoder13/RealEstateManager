@@ -4,7 +4,6 @@ import android.Manifest;
 import android.content.Context;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.ImageButton;
@@ -170,7 +169,7 @@ public class MainActivity extends AppCompatActivity {
         NavigationUI.setupWithNavController(mBinding.bottomNavBar, mNavController);
         mAgentViewModel.setAgent();
         mPropertyViewModel.setAllProperties();
-        filterHelper = new FilterHelper(mBinding);
+        filterHelper = new FilterHelper(mBinding.bottomSheetLayout);
         setBottomSheetButtonClickListener();
         initBottomSheetLocationFilter();
 
@@ -211,9 +210,8 @@ public class MainActivity extends AppCompatActivity {
         mPropertyViewModel.getAllPointOfInterestForAllProperties.observe(this,
                 filterHelper::updateAllPropertyPointOfInterest);
 
-        mPropertyViewModel.getKnownRegions.observe(this, regions -> {
-            mBinding.bottomSheetLayout.filterPropertyLocationSpinner.setSpinnerAdapter(regions);
-        });
+        mPropertyViewModel.getKnownRegions.observe(this, regions ->
+                mBinding.bottomSheetLayout.filterPropertyLocationSpinner.setSpinnerAdapter(regions));
     }
 
     protected void setMenuVisibility(@NonNull Boolean isVisible) {

@@ -7,7 +7,6 @@ import androidx.hilt.lifecycle.ViewModelInject;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 
-import com.airbnb.lottie.L;
 import com.picone.core.domain.entity.PointOfInterest;
 import com.picone.core.domain.entity.Property;
 import com.picone.core.domain.entity.PropertyLocation;
@@ -46,6 +45,7 @@ public class PropertyViewModel extends BaseViewModel {
     private MutableLiveData<List<PointOfInterest>> allPointsOfInterestForAllPropertiesMutableLD = new MutableLiveData<>();
     private MutableLiveData<List<PropertyPhoto>> allPhotosForPropertyMutableLD = new MutableLiveData<>();
     private MutableLiveData<List<PropertyPhoto>>allPhotosForAllPropertiesMutableLD = new MutableLiveData<>();
+    private MutableLiveData<List<PropertyPhoto>> firstPhotoOfAllPropertiesMutableLd = new MutableLiveData<>();
     private MutableLiveData<Property> selectedPropertyMutableLD = new MutableLiveData<>(new Property());
     private MutableLiveData<List<PropertyPhoto>> photosToDeleteMutableLD = new MutableLiveData<>();
     private MutableLiveData<PropertyLocation> propertyLocationForPropertyMutableLd = new MutableLiveData<>();
@@ -60,6 +60,7 @@ public class PropertyViewModel extends BaseViewModel {
     public LiveData<List<PointOfInterest>> getAllPointOfInterestForAllProperties = allPointsOfInterestForAllPropertiesMutableLD;
     public LiveData<List<PointOfInterest>> getAllPointOfInterestForProperty = allPointOfInterestForPropertyMutableLD;
     public LiveData<List<PropertyPhoto>> getAllPropertyPhotosForProperty = allPhotosForPropertyMutableLD;
+    public LiveData<List<PropertyPhoto>> getFirstPhotoOfAllProperties = firstPhotoOfAllPropertiesMutableLd;
     public LiveData<List<PropertyPhoto>> getAllPhotosForAllProperties = allPhotosForAllPropertiesMutableLD;
     public LiveData<Property> getSelectedProperty = selectedPropertyMutableLD;
     public LiveData<List<PropertyPhoto>> getPhotosToDelete = photosToDeleteMutableLD;
@@ -165,9 +166,18 @@ public class PropertyViewModel extends BaseViewModel {
                 getAllPhotosForAllPropertiesInteractor.getAllPhotosForAllProperties()
                 .subscribeOn(schedulerProvider.getIo())
                 .observeOn(schedulerProvider.getUi())
-                .subscribe(propertyPhotos -> {
-                    allPhotosForAllPropertiesMutableLD.setValue(propertyPhotos);
-                })
+                .subscribe(propertyPhotos ->
+                        allPhotosForAllPropertiesMutableLD.setValue(propertyPhotos))
+        );
+    }
+
+    public void setFirstPhotoForAllProperties(){
+        compositeDisposable.add(
+                getAllPhotosForAllPropertiesInteractor.getFirstPhotoForAllProperties()
+                .subscribeOn(schedulerProvider.getIo())
+                .observeOn(schedulerProvider.getUi())
+                .subscribe(propertyPhotos ->
+                        firstPhotoOfAllPropertiesMutableLd.setValue(propertyPhotos))
         );
     }
     public void setPropertyLocationForProperty(@NonNull Property property) {
@@ -183,9 +193,8 @@ public class PropertyViewModel extends BaseViewModel {
                 getAllRegionsForAllPropertiesInteractor.getAllRegionsForAllProperties()
                 .subscribeOn(schedulerProvider.getIo())
                 .observeOn(schedulerProvider.getUi())
-                .subscribe(allRegions -> {
-                    knownRegionsMutableLD.setValue(allRegions);
-                })
+                .subscribe(allRegions ->
+                        knownRegionsMutableLD.setValue(allRegions))
         );
     }
     //___________________________________PROPERTY__________________________________

@@ -3,7 +3,6 @@ package com.openclassrooms.realestatemanager.presentation.utils.customView;
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -41,8 +40,7 @@ public class CustomBottomSheetRangeSlider extends ConstraintLayout {
         startValue = findViewById(R.id.custom_range_slider_start_value);
         endValue = findViewById(R.id.custom_range_slider_end_value);
 
-        rangeSlider.setValueFrom(0);
-        rangeSlider.setValueTo(10000);
+        setRangeSliderTouchListener();
 
         rangeSlider.setLabelBehavior(LabelFormatter.LABEL_FLOATING);
         assert attributes != null;
@@ -50,7 +48,7 @@ public class CustomBottomSheetRangeSlider extends ConstraintLayout {
         attributes.recycle();
     }
 
-    public void setRangeSliderTouchListener() {
+    private void setRangeSliderTouchListener() {
         rangeSlider.addOnSliderTouchListener(new RangeSlider.OnSliderTouchListener() {
             @Override
             public void onStartTrackingTouch(@NonNull RangeSlider slider) {
