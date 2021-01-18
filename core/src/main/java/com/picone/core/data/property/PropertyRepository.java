@@ -15,6 +15,7 @@ import javax.inject.Inject;
 
 import io.reactivex.Completable;
 import io.reactivex.Observable;
+import io.reactivex.Observer;
 
 public class PropertyRepository {
 
@@ -40,8 +41,20 @@ public class PropertyRepository {
         return propertyDao.getAllPhotosForPropertyId(propertyId);
     }
 
+    public Observable<List<PropertyPhoto>> getAllPhotosForAllProperties() {
+        return propertyDao.getAllPhotosForAllProperties();
+    }
+
+    public Observable<List<String>> getAllRegionsForAllProperties(){
+        return propertyDao.getAllRegionsForAllProperties();
+    }
+
     public Observable<PropertyLocation> getPropertyLocationForPropertyId(int propertyId) {
         return propertyDao.getPropertyLocationForPropertyId(propertyId);
+    }
+
+    public Observable<List<PointOfInterest>> getAllPointsOfInterestForAllProperties() {
+        return propertyDao.getAllPointsOfInterestForAllProperties();
     }
 
     public Completable addPropertyLocation(PropertyLocation propertyLocation) {
@@ -80,7 +93,7 @@ public class PropertyRepository {
         return placeServiceDao.getPropertyLocationForAddress(address, googleKey);
     }
 
-    public Observable<NearBySearch> getNearBySchoolForPropertyLocation(@NonNull PropertyLocation propertyLocation, String type, String googleKey) {
-        return placeServiceDao.getNearBySchoolForPropertyLocation(propertyLocation, type, googleKey);
+    public Observable<NearBySearch> getNearBySearchForPropertyLocation(@NonNull PropertyLocation propertyLocation, String type, String googleKey) {
+        return placeServiceDao.getNearBySearchForPropertyLocation(propertyLocation, type, googleKey);
     }
 }

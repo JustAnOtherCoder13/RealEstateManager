@@ -78,6 +78,20 @@
     <string name="video">Video</string>
     <string name="pause">Pause</string>
     <string name="play">Play</string>
+    <string name="room">Room</string>
+    <string name="on_market_from">On market from</string>
+    <string name="sold_from">Sold from</string>
+    <string name="house">HOUSE</string>
+    <string name="flat">FLAT</string>
+    <string name="duplex">DUPLEX</string>
+    <string name="penthouse">PENTHOUSE</string>
+    <string name="date_picker_button">date picker button</string>
+    <string name="point_of_interest">Point of interest</string>
+    <string name="school">school</string>
+    <string name="restaurant">restaurant</string>
+    <string name="supermarket">supermarket</string>
+    <string name="close_filter_button">close filter button</string>
+    <string name="reset_filter">reset filter</string>
 
 
 </resources>

@@ -1,22 +1,31 @@
 package com.openclassrooms.realestatemanager.presentation.ui.fragment.adapter;
 
+import android.graphics.drawable.Drawable;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.target.CustomTarget;
+import com.bumptech.glide.request.transition.Transition;
 import com.openclassrooms.realestatemanager.databinding.RecyclerviewPropertyListItemBinding;
 import com.picone.core.domain.entity.Property;
+import com.picone.core.domain.entity.PropertyPhoto;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class PropertyRecyclerViewAdapter extends RecyclerView.Adapter<PropertyRecyclerViewAdapter.ViewHolder> {
 
     private List<Property> mProperties;
+    private List<PropertyPhoto> mPhotos;
 
     public PropertyRecyclerViewAdapter(List<Property> mProperties) {
         this.mProperties = mProperties;
+        mPhotos = new ArrayList<>();
     }
 
     @NonNull
@@ -30,6 +39,10 @@ public class PropertyRecyclerViewAdapter extends RecyclerView.Adapter<PropertyRe
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         final Property property = mProperties.get(position);
+        if (!mPhotos.isEmpty()) {
+            PropertyPhoto photo = mPhotos.get(position);
+            setPropertyPhoto(holder, photo);
+        }
         holder.binding.propertyItemPrice.setText(String.valueOf(property.getPrice()));
         holder.binding.propertyItemTown.setText(property.getRegion());
         holder.binding.propertyItemType.setText(property.getPropertyType());
@@ -53,5 +66,26 @@ public class PropertyRecyclerViewAdapter extends RecyclerView.Adapter<PropertyRe
     public void updateProperties(List<Property> updatedProperties) {
         this.mProperties = updatedProperties;
         notifyDataSetChanged();
+    }
+
+    public void updatePhotos(List<PropertyPhoto> propertyPhotos) {
+        this.mPhotos = propertyPhotos;
+        notifyDataSetChanged();
+    }
+
+    private void setPropertyPhoto(@NonNull PropertyRecyclerViewAdapter.ViewHolder holder, @NonNull PropertyPhoto photo) {
+        Glide.with(holder.binding.propertyItemPhoto.getContext())
+                .load(photo.getPhotoPath())
+                .centerCrop()
+                .into(new CustomTarget<Drawable>() {
+                    @Override
+                    public void onResourceReady(@NonNull Drawable resource, @Nullable Transition<? super Drawable> transition) {
+                        holder.binding.propertyItemPhoto.setImageDrawable(resource);
+                    }
+
+                    @Override
+                    public void onLoadCleared(@Nullable Drawable placeholder) {
+                    }
+                });
     }
 }

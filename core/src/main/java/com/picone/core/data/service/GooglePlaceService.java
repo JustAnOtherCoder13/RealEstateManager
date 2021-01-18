@@ -16,7 +16,7 @@ public interface GooglePlaceService {
     );
 
     @GET("api/place/nearbysearch/json?sensor=true&fields=formatted_address,name,geometry")
-    Observable<NearBySearch> getNearbySchool(
+    Observable<NearBySearch> getNearBySearch(
             @Query("location") String location,
             @Query("radius") String radius,
             @Query("type") String type,

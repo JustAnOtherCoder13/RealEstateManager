@@ -18,5 +18,21 @@
         <attr name="android:singleLine"/>
         <attr name="android:lines"/>
     </declare-styleable>
+
+    <declare-styleable name="CustomBottomSheetRangeSlider">
+        <attr name="title"/>
+    </declare-styleable>
+
+    <declare-styleable name="CustomBottomSheetPropertyTypeCheckBox">
+        <attr name="title"/>
+    </declare-styleable>
+
+    <declare-styleable name="CustomBottomSheetDatePicker">
+        <attr name="title"/>
+    </declare-styleable>
+
+    <declare-styleable name="CustomBottomSheetSpinner">
+        <attr name="title"/>
+    </declare-styleable>
     
 </resources>

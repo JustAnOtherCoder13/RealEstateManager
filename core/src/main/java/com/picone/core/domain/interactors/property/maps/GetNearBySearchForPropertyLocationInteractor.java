@@ -26,36 +26,55 @@ public class GetNearBySearchForPropertyLocationInteractor extends PropertyBaseIn
 
     public Observable<List<PointOfInterest>> getNearBySearchForPropertyLocation(@NonNull PropertyLocation propertyLocation, String googleKey) {
 
-        return propertyDataSource.getNearBySchoolForPropertyLocation(propertyLocation, POINT_OF_INTEREST_TYPE.get(0), googleKey)
+        pointOfInterests = new ArrayList<>();
+        return propertyDataSource.getNearBySearchForPropertyLocation(propertyLocation, POINT_OF_INTEREST_TYPE.get(0), googleKey)
                 .flatMap(nearBySearch -> {
                     nearBySearchToPointOfInterest(nearBySearch, propertyLocation.getPropertyId());
-                    return propertyDataSource.getNearBySchoolForPropertyLocation(propertyLocation, POINT_OF_INTEREST_TYPE.get(1), googleKey);
+                    return propertyDataSource.getNearBySearchForPropertyLocation(propertyLocation, POINT_OF_INTEREST_TYPE.get(1), googleKey);
                 })
                 .flatMap(nearBySearch -> {
                     nearBySearchToPointOfInterest(nearBySearch, propertyLocation.getPropertyId());
-                    return propertyDataSource.getNearBySchoolForPropertyLocation(propertyLocation, POINT_OF_INTEREST_TYPE.get(2), googleKey);
+                    return propertyDataSource.getNearBySearchForPropertyLocation(propertyLocation, POINT_OF_INTEREST_TYPE.get(2), googleKey);
                 })
                 .map(nearBySearch -> nearBySearchToPointOfInterest(nearBySearch, propertyLocation.getPropertyId()));
     }
 
-    private List<PointOfInterest> nearBySearchToPointOfInterest(NearBySearch nearBySearch, int propertyId) {
+    //TODO crash when no poi found
+    private List<PointOfInterest> nearBySearchToPointOfInterest(@NonNull NearBySearch nearBySearch, int propertyId) {
 
         PointOfInterest pointOfInterest;
 
         for (NearBySearchResult nearBySearchResult : nearBySearch.getNearBySearchResults()) {
-            pointOfInterest = new PointOfInterest();
-            pointOfInterest.setPropertyId(propertyId);
-            pointOfInterest.setName(nearBySearchResult.getName());
-            pointOfInterest.setLatitude(nearBySearchResult.getNearBySearchGeometry().getNearBySearchLocation().getLat());
-            pointOfInterest.setLongitude(nearBySearchResult.getNearBySearchGeometry().getNearBySearchLocation().getLng());
-            pointOfInterest.setType(nearBySearchResult.getTypes().get(0));
-            pointOfInterest.setIcon(nearBySearchResult.getIcon());
-
-            pointOfInterests.add(pointOfInterest);
-
+            pointOfInterest = getPointOfInterest(propertyId, nearBySearchResult);
+            if (pointOfInterests.isEmpty()) pointOfInterests.add(pointOfInterest);
+            else {
+                boolean isAlreadyKnown = true;
+                for (PointOfInterest pointOfInterestForProperty : pointOfInterests) {
+                    isAlreadyKnown = true;
+                    if (pointOfInterestForProperty.getLatitude() == pointOfInterest.getLatitude()
+                            && pointOfInterest.getLongitude() == pointOfInterestForProperty.getLongitude()
+                            && pointOfInterest.getType().equalsIgnoreCase(pointOfInterestForProperty.getType()))
+                        break;
+                    else isAlreadyKnown = false;
+                }
+                if (!isAlreadyKnown) pointOfInterests.add(pointOfInterest);
+            }
         }
         return pointOfInterests;
     }
 
+
+    @NonNull
+    private PointOfInterest getPointOfInterest(int propertyId, @NonNull NearBySearchResult nearBySearchResult) {
+        PointOfInterest pointOfInterest;
+        pointOfInterest = new PointOfInterest();
+        pointOfInterest.setPropertyId(propertyId);
+        pointOfInterest.setName(nearBySearchResult.getName());
+        pointOfInterest.setLatitude(nearBySearchResult.getNearBySearchGeometry().getNearBySearchLocation().getLat());
+        pointOfInterest.setLongitude(nearBySearchResult.getNearBySearchGeometry().getNearBySearchLocation().getLng());
+        pointOfInterest.setType(nearBySearchResult.getTypes().get(0));
+        pointOfInterest.setIcon(nearBySearchResult.getIcon());
+        return pointOfInterest;
+    }
 }
 

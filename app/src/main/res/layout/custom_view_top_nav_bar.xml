@@ -6,8 +6,8 @@
     android:background="@color/custom_blue">
 
     <ImageButton
-        android:id="@+id/top_bar_menu_icon"
-        style="@style/Widget.TopBarMenuIconImageButton"
+        android:id="@+id/top_bar_filter_icon"
+        style="@style/TopBarFilterIconImageButton"
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
         android:contentDescription="@string/menu_icon"
@@ -20,13 +20,22 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toEndOf="@id/top_bar_menu_icon"
+        app:layout_constraintStart_toEndOf="@id/top_bar_filter_icon"
         app:layout_constraintTop_toTopOf="parent" />
 
+    <ImageButton
+        android:id="@+id/top_reset_filter_property"
+        style="@style/TopBarResetFilterIconImageButton"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:contentDescription="@string/reset_filter"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@id/top_bar_add_property"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <ImageButton
         android:id="@+id/top_bar_add_property"
-        style="@style/Widget.TopBarAddIconImageButton"
+        style="@style/TopBarAddIconImageButton"
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
         android:contentDescription="@string/add_property_icon"

@@ -11,6 +11,7 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.lifecycle.ViewModelProvider;
@@ -19,8 +20,10 @@ import androidx.navigation.Navigation;
 import androidx.navigation.ui.NavigationUI;
 
 import com.airbnb.lottie.LottieAnimationView;
+import com.google.android.material.bottomsheet.BottomSheetBehavior;
 import com.openclassrooms.realestatemanager.R;
 import com.openclassrooms.realestatemanager.databinding.ActivityMainBinding;
+import com.openclassrooms.realestatemanager.presentation.utils.FilterHelper;
 import com.openclassrooms.realestatemanager.presentation.viewModels.AgentViewModel;
 import com.openclassrooms.realestatemanager.presentation.viewModels.PropertyViewModel;
 import com.picone.core.domain.entity.Property;
@@ -47,6 +50,14 @@ public class MainActivity extends AppCompatActivity {
     private NavController mNavController;
     protected ImageButton mUpdateButton;
     protected LottieAnimationView mLoader;
+    protected boolean isCameraPermissionGranted;
+    protected boolean isLocationPermissionGranted;
+    protected boolean isReadPermissionGranted;
+    protected boolean isWritePermissionGranted;
+    private FilterHelper filterHelper;
+
+
+    private BottomSheetBehavior<ConstraintLayout> mBottomSheetBehavior;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -63,14 +74,20 @@ public class MainActivity extends AppCompatActivity {
     @Override
     public void onBackPressed() {
         super.onBackPressed();
+        if (mBottomSheetBehavior.getState() == BottomSheetBehavior.STATE_EXPANDED)
+            mBottomSheetBehavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
         if (Objects.requireNonNull(mNavController.getCurrentDestination()).getId() != R.id.propertyDetailFragment)
             mPropertyViewModel.setSelectedProperty(new Property());
     }
 
-    protected boolean isCameraPermissionGranted;
-    protected boolean isLocationPermissionGranted;
-    protected boolean isReadPermissionGranted;
-    protected boolean isWritePermissionGranted;
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        mBottomSheetBehavior = BottomSheetBehavior.from(mBinding.bottomSheetLayout.bottomSheet);
+        mBottomSheetBehavior.setDraggable(false);
+        mBinding.topAppBar.setBottomSheetBehavior(mBottomSheetBehavior);
+    }
 
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
@@ -92,7 +109,6 @@ public class MainActivity extends AppCompatActivity {
                 break;
         }
     }
-
 
     private boolean checkResult(@NonNull int[] grantResults) {
         return grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED;
@@ -121,7 +137,6 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-
     private void askReadPermission() {
         if (ContextCompat.checkSelfPermission(this,
                 Manifest.permission.READ_EXTERNAL_STORAGE)
@@ -135,7 +150,6 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void askWritePermission() {
-
         if (ContextCompat.checkSelfPermission(this,
                 Manifest.permission.WRITE_EXTERNAL_STORAGE)
                 != PackageManager.PERMISSION_GRANTED)
@@ -146,6 +160,7 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+
     private void initValues() {
         mUpdateButton = mBinding.updateButtonCustomView.findViewById(R.id.custom_view_update_image_button);
         mPropertyViewModel = new ViewModelProvider(this).get(PropertyViewModel.class);
@@ -153,9 +168,50 @@ public class MainActivity extends AppCompatActivity {
         mNavController = Navigation.findNavController(this, R.id.nav_host_fragment);
         NavigationUI.setupWithNavController(mBinding.bottomNavBar, mNavController);
         mAgentViewModel.setAgent();
+        mPropertyViewModel.setAllProperties();
+        filterHelper = new FilterHelper(mBinding.bottomSheetLayout);
+        setBottomSheetButtonClickListener();
+        initBottomSheetLocationFilter();
+
         if (!isGpsAvailable(this))
             Toast.makeText(this, R.string.gps_warning_message, Toast.LENGTH_LONG).show();
 
+    }
+
+    private void setBottomSheetButtonClickListener() {
+
+        mBinding.bottomSheetLayout.bottomSheetCloseButton.setOnClickListener(v -> {
+            mBottomSheetBehavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
+            if (mBinding.topAppBar.resetFilterButton.getVisibility() == View.VISIBLE)
+                mBinding.topAppBar.resetFilterButton.setVisibility(View.GONE);
+        });
+
+        mBinding.bottomSheetLayout.bottomSheetOkButton.setOnClickListener(v -> {
+            filterHelper.filterProperties(mPropertyViewModel.getAllProperties.getValue());
+            mPropertyViewModel.setFilteredProperty(filterHelper.getFilteredProperty());
+            mBinding.topAppBar.resetFilterButton.setVisibility(View.VISIBLE);
+            mBottomSheetBehavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
+            filterHelper.resetFilter();
+            mBinding.topAppBar.resetFilterButton.setOnClickListener(v1 -> {
+                mPropertyViewModel.setAllProperties();
+                mBinding.topAppBar.resetFilterButton.setVisibility(View.GONE);
+            });
+        });
+    }
+
+    private void initBottomSheetLocationFilter() {
+        mPropertyViewModel.setAllPointOfInterestForAllProperties();
+        mPropertyViewModel.setAllPhotoForAllProperties();
+        mPropertyViewModel.setAllRegionForAllProperties();
+
+        mPropertyViewModel.getAllPhotosForAllProperties.observe(this,
+                filterHelper::updateAllPropertyPhotos);
+
+        mPropertyViewModel.getAllPointOfInterestForAllProperties.observe(this,
+                filterHelper::updateAllPropertyPointOfInterest);
+
+        mPropertyViewModel.getKnownRegions.observe(this, regions ->
+                mBinding.bottomSheetLayout.filterPropertyLocationSpinner.setSpinnerAdapter(regions));
     }
 
     protected void setMenuVisibility(@NonNull Boolean isVisible) {

@@ -36,8 +36,20 @@ public class PropertyDaoImpl {
         return mPropertyRoomDao.getAllPhotosForPropertyId(propertyId);
     }
 
+    public Observable<List<PropertyPhoto>> getAllPhotosForAllProperties(){
+        return mPropertyRoomDao.getAllPhotosForAllProperties();
+    }
+
+    public Observable<List<String>> getAllRegionsForAllProperties(){
+        return mPropertyRoomDao.getAllRegionsForAllProperties();
+    }
+
     public Observable<PropertyLocation> getPropertyLocationForPropertyId(int propertyId) {
         return mPropertyRoomDao.getPropertyLocationForPropertyId(propertyId);
+    }
+
+    public Observable<List<PointOfInterest>> getAllPointsOfInterestForAllProperties() {
+        return mPropertyRoomDao.getAllPointsOfInterestForAllProperties();
     }
 
     public Completable addProperty(Property property) {

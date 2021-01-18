@@ -30,7 +30,7 @@ import com.openclassrooms.realestatemanager.presentation.utils.ManageImageHelper
 import com.openclassrooms.realestatemanager.presentation.utils.PathUtil;
 import com.openclassrooms.realestatemanager.presentation.utils.RecyclerViewItemClickListener;
 import com.openclassrooms.realestatemanager.presentation.utils.customView.CustomMediaDialog;
-import com.openclassrooms.realestatemanager.presentation.utils.customView.CustomSetTitleDialog;
+import com.openclassrooms.realestatemanager.presentation.utils.customView.CustomMediaSetTitleDialog;
 import com.picone.core.domain.entity.PointOfInterest;
 import com.picone.core.domain.entity.Property;
 import com.picone.core.domain.entity.PropertyLocation;
@@ -49,6 +49,7 @@ import static com.picone.core.utils.ConstantParameters.GALLERY_REQUEST_CODE;
 import static com.picone.core.utils.ConstantParameters.PROPERTY_TO_ADD;
 import static com.picone.core.utils.ConstantParameters.READ_PERMISSION_CODE;
 import static com.picone.core.utils.ConstantParameters.WRITE_PERMISSION_CODE;
+import static com.picone.core.utils.ConstantParameters.getTodayDate;
 
 public class AddPropertyFragment extends BaseFragment {
 
@@ -59,16 +60,17 @@ public class AddPropertyFragment extends BaseFragment {
     private String mPreviousSavedPropertyAddress;
     private PhotoRecyclerViewAdapter mAdapter;
     private ManageImageHelper mImageHelper;
-    private CustomSetTitleDialog setTitleDialog;
+    private CustomMediaSetTitleDialog setTitleDialog;
 
-
+    //TODO add loader on photo, init text view
+    //todo disable register button when clicked (avoid multiple click)
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         mBinding = FragmentAddPropertyBinding.inflate(getLayoutInflater());
         mNavController = Navigation.findNavController(requireActivity(), R.id.nav_host_fragment);
         mImageHelper = new ManageImageHelper(requireContext());
-        setTitleDialog = new CustomSetTitleDialog(requireContext());
+        setTitleDialog = new CustomMediaSetTitleDialog(requireContext());
         setAppBarVisibility(false);
         initRecyclerView();
         setUpdateButtonIcon(false);
@@ -307,7 +309,7 @@ public class AddPropertyFragment extends BaseFragment {
                 if (!mPropertyPhotos.isEmpty()) persistAllNewPhotos();
 
                 if (isAddressHaveChanged(originalProperty))
-                    UpdatePropertyWhenAddressChange(updateProperty(originalProperty), originalProperty);
+                    UpdatePropertyWhenAddressChange(originalProperty);
                 else {
                     mPropertyViewModel.updateProperty(updateProperty(originalProperty));
                     mPropertyViewModel.getCompletionState.observe(getViewLifecycleOwner(), completionState -> {
@@ -347,9 +349,10 @@ public class AddPropertyFragment extends BaseFragment {
         });
     }
 
-    private void UpdatePropertyWhenAddressChange(Property updatedProperty, Property originalProperty) {
+    private void UpdatePropertyWhenAddressChange(Property originalProperty) {
         mPropertyViewModel.setAllPointOfInterestForProperty(originalProperty);
         mPropertyViewModel.setPropertyLocationForProperty(originalProperty);
+        Property updatedProperty = updateKnownProperty(originalProperty);
 
         mPropertyViewModel.getPropertyLocationForProperty.observe(getViewLifecycleOwner(), propertyLocation ->
                 mPropertyViewModel.setPropertyLocationForPropertyAddress(updatedProperty));
@@ -388,8 +391,13 @@ public class AddPropertyFragment extends BaseFragment {
     @NonNull
     private Property updateProperty(@NonNull Property originalProperty) {
         Property property = new Property();
+        property.setEnterOnMarket(getTodayDate());
         property.setId(originalProperty.getId());
         property.setRealEstateAgentId(Objects.requireNonNull(mAgentViewModel.getAgent.getValue()).getId());
+        return updateKnownProperty(property);
+    }
+
+    private Property updateKnownProperty(Property property) {
         property.setAddress(mBinding.addPropertyInformationLayout.addPropertyInformationAddress.getValueForView());
         property.setNumberOfRooms(Integer.parseInt(mBinding.addPropertyInformationLayout.addPropertyInformationNumberOfRooms.getValueForView()));
         property.setNumberOfBathrooms(Integer.parseInt((mBinding.addPropertyInformationLayout.addPropertyInformationNumberOfBathrooms.getValueForView())));

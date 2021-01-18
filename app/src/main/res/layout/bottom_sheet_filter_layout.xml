@@ -1,0 +1,138 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/bottom_sheet"
+    style="@style/bottom_sheet"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/bottom_sheet_close_button">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <com.openclassrooms.realestatemanager.presentation.utils.customView.CustomBottomSheetSpinner
+                android:id="@+id/filter_property_location_spinner"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                app:layout_constraintBottom_toTopOf="@id/filter_property_number_of_photo_spinner"
+                app:layout_constraintEnd_toStartOf="@id/bottom_sheet_point_of_interest_include"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:title="@string/propertyLocation" />
+
+            <com.openclassrooms.realestatemanager.presentation.utils.customView.CustomBottomSheetSpinner
+                android:id="@+id/filter_property_number_of_photo_spinner"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                app:layout_constraintBottom_toTopOf="@id/filter_property_location_price_range_slider"
+                app:layout_constraintEnd_toStartOf="@id/bottom_sheet_point_of_interest_include"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/filter_property_location_spinner"
+                app:title="@string/photo" />
+
+            <include
+                android:id="@+id/bottom_sheet_point_of_interest_include"
+                layout="@layout/custom_bottom_sheet_point_of_interest_layout"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="@dimen/basic_marge"
+                app:layout_constraintBottom_toTopOf="@id/filter_property_location_price_range_slider"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@id/filter_property_location_spinner"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <com.openclassrooms.realestatemanager.presentation.utils.customView.CustomBottomSheetRangeSlider
+                android:id="@+id/filter_property_location_price_range_slider"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:layout_constraintBottom_toTopOf="@id/filter_property_location_surface_ranger_slider"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/filter_property_number_of_photo_spinner"
+                app:title="@string/price" />
+
+            <com.openclassrooms.realestatemanager.presentation.utils.customView.CustomBottomSheetRangeSlider
+                android:id="@+id/filter_property_location_surface_ranger_slider"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:layout_constraintBottom_toTopOf="@id/filter_property_location_room_ranger_slider"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/filter_property_location_price_range_slider"
+                app:title="@string/surface" />
+
+            <com.openclassrooms.realestatemanager.presentation.utils.customView.CustomBottomSheetRangeSlider
+                android:id="@+id/filter_property_location_room_ranger_slider"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:layout_constraintBottom_toTopOf="@id/bottom_sheet_property_type_layout_include"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/filter_property_location_surface_ranger_slider"
+                app:title="@string/room" />
+
+            <include
+                android:id="@+id/bottom_sheet_property_type_layout_include"
+                style="@style/bottom_sheet_property_type_layout_include"
+                layout="@layout/bottom_sheet_property_type_layout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:layout_constraintBottom_toTopOf="@id/bottom_sheet_on_market_from"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/filter_property_location_room_ranger_slider" />
+
+            <com.openclassrooms.realestatemanager.presentation.utils.customView.CustomBottomSheetDatePicker
+                android:id="@+id/bottom_sheet_on_market_from"
+                android:layout_width="wrap_content"
+                android:layout_height="0dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toStartOf="@id/bottom_sheet_ok_button"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/bottom_sheet_property_type_layout_include"
+                app:title="@string/on_market_from" />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/bottom_sheet_ok_button"
+                style="@style/bottom_sheet_ok_button"
+                android:layout_marginTop="@dimen/big_marge"
+                android:layout_marginBottom="@dimen/XL_marge"
+                android:layout_marginStart="@dimen/basic_marge"
+                android:layout_marginEnd="@dimen/basic_marge"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@id/bottom_sheet_on_market_from"
+                app:layout_constraintTop_toBottomOf="@id/bottom_sheet_property_type_layout_include" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </ScrollView>
+
+    <FrameLayout
+        style="@style/bottom_sheet_close_button_frame_layout"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/bottom_sheet_close_button_frame_size"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <ImageButton
+        android:id="@+id/bottom_sheet_close_button"
+        style="@style/bottom_sheet_close_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:contentDescription="@string/close_filter_button"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

@@ -41,7 +41,7 @@ public class ConstantParameters {
     public static final String RADIUS = "400";
 
     @NonNull
-    private static String getTodayDate(){
+    public static String getTodayDate(){
         DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy", Locale.FRANCE);
         return dateFormat.format(new Date());
     }
@@ -50,7 +50,6 @@ public class ConstantParameters {
     public static Property PROPERTY_TO_ADD(@NonNull RealEstateAgent agent) {
       Property property = new Property();
       property.setRealEstateAgentId(agent.getId());
-      property.setEnterOnMarket(getTodayDate());
       return property;
     }
 

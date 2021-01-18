@@ -40,6 +40,8 @@ public class PropertyListFragment extends BaseFragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         configureOnClickRecyclerView();
+        mPropertyViewModel.setFirstPhotoForAllProperties();
+
         mPropertyViewModel.getSelectedProperty.observe(getViewLifecycleOwner(), property -> {
             if (property.getAddress() != null) {
                 mPropertyViewModel.setAllPointOfInterestForProperty(property);
@@ -54,6 +56,7 @@ public class PropertyListFragment extends BaseFragment {
         mBinding.fragmentPropertyListRecyclerview.setLayoutManager(linearLayout);
         mBinding.fragmentPropertyListRecyclerview.setAdapter(adapter);
         mPropertyViewModel.getAllProperties.observe(getViewLifecycleOwner(), adapter::updateProperties);
+        mPropertyViewModel.getFirstPhotoOfAllProperties.observe(getViewLifecycleOwner(), adapter::updatePhotos);
     }
 
     public void configureOnClickRecyclerView() {

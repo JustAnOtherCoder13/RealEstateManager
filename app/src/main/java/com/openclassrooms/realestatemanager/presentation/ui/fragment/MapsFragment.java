@@ -78,7 +78,6 @@ public class MapsFragment extends BaseFragment implements GoogleMap.OnInfoWindow
         mPropertyViewModel.setAllProperties();
         mPropertyViewModel.setAllPointOfInterestForProperty(new Property());
         placePropertyMarkers();
-        placePointOfInterestMarkersForClickedProperty();
     }
 
     @Override
@@ -161,7 +160,7 @@ public class MapsFragment extends BaseFragment implements GoogleMap.OnInfoWindow
             if (isPropertyMarker(marker)) {
                 setUpMapPosition(marker.getPosition(), MAPS_CAMERA_NEAR_ZOOM);
                 mPropertyViewModel.setAllPointOfInterestForProperty(getPropertyForId(marker.getTitle()));
-                removePointOfInterest();
+                placePointOfInterestMarkersForClickedProperty();
             }
             return true;
         });
@@ -172,23 +171,32 @@ public class MapsFragment extends BaseFragment implements GoogleMap.OnInfoWindow
         });
     }
 
+
+    //TODO when have clicked marker and open bottom sheet load all poi
     private void placePropertyMarkers() {
         mPropertyViewModel.getPropertyLocationForProperty.observe(getViewLifecycleOwner(), propertyLocation -> {
             if (mMap != null) {
                 mMap.addMarker(mMarkerOptions.position(new LatLng(propertyLocation.getLatitude(), propertyLocation.getLongitude()))
                         .title(String.valueOf(propertyLocation.getPropertyId()))
                         .snippet(getPropertyForId(String.valueOf(propertyLocation.getPropertyId())).getAddress())
-                        .icon(BitmapDescriptorFactory.fromBitmap(getBitmapFromVectorOrDrawable(requireContext(), R.drawable.ic_fragment_detail_location_on_zone1_24))));
+                        .icon(BitmapDescriptorFactory.fromBitmap(getBitmapFromVectorOrDrawable(requireContext(), R.drawable.ic_fragment_detail_location_24))));
             }
         });
     }
 
+    int i = 0;
+
     private void placePointOfInterestMarkersForClickedProperty() {
+        i = 0;
+        removePointOfInterest();
         mPropertyViewModel.getAllPointOfInterestForProperty.observe(getViewLifecycleOwner(), allPointOfInterests -> {
-            mPointOfInterestMarkers.clear();
-            if (!allPointOfInterests.isEmpty())
-                for (PointOfInterest pointOfInterest : allPointOfInterests)
-                    createPointOfInterestMarker(pointOfInterest);
+            i++;
+            if (i > 1) {
+                mPointOfInterestMarkers.clear();
+                if (!allPointOfInterests.isEmpty())
+                    for (PointOfInterest pointOfInterest : allPointOfInterests)
+                        createPointOfInterestMarker(pointOfInterest);
+            }
         });
     }
 

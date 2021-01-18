@@ -21,7 +21,7 @@ import com.openclassrooms.realestatemanager.R;
 import com.openclassrooms.realestatemanager.databinding.CustomDialogSetPhotoTitleBinding;
 import com.openclassrooms.realestatemanager.presentation.utils.PathUtil;
 
-public class CustomSetTitleDialog extends Dialog implements android.view.View.OnClickListener {
+public class CustomMediaSetTitleDialog extends Dialog implements android.view.View.OnClickListener {
 
     private Context context;
     private ImageView photo;
@@ -31,7 +31,7 @@ public class CustomSetTitleDialog extends Dialog implements android.view.View.On
     private String mVideoPath;
 
 
-    public CustomSetTitleDialog(@NonNull Context context) {
+    public CustomMediaSetTitleDialog(@NonNull Context context) {
         super(context);
         this.context = context;
     }

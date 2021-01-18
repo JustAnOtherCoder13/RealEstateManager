@@ -44,6 +44,22 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
 
+
+    <androidx.coordinatorlayout.widget.CoordinatorLayout
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+    <include
+        android:id="@+id/bottom_sheet_layout"
+        layout="@layout/bottom_sheet_filter_layout"
+      />
+
+    </androidx.coordinatorlayout.widget.CoordinatorLayout>
+
+
     <include
         android:id="@+id/loader"
         layout="@layout/loader_layout"
