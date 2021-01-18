@@ -3,6 +3,7 @@ package com.openclassrooms.realestatemanager.presentation.ui.fragment;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -38,7 +39,6 @@ import static com.picone.core.utils.ConstantParameters.STATIC_MAP_SIZE;
 public class PropertyDetailFragment extends BaseFragment {
 
     private FragmentPropertyDetailBinding mBinding;
-    public static final String TAG = PropertyDetailFragment.class.getSimpleName();
 
     @Nullable
     @Override
@@ -56,6 +56,7 @@ public class PropertyDetailFragment extends BaseFragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         mPropertyViewModel.getSelectedProperty.observe(getViewLifecycleOwner(), property -> {
+            Log.i("TAG", "onViewCreated: "+property.getAddress());
             mPropertyViewModel.setPropertyLocationForProperty(property);
             mPropertyViewModel.setAllPhotosForProperty(property);
             initValue(mBinding.fragmentDetailInformationLayout,
@@ -77,7 +78,7 @@ public class PropertyDetailFragment extends BaseFragment {
         setTextForCustomView(detailInformationLayout.fragmentDetailNumbersOfRoomsCustomView, String.valueOf(property.getNumberOfRooms()));
         setTextForCustomView(detailInformationLayout.fragmentDetailNumbersOfBedroomsCustomView, String.valueOf(property.getNumberOfBedrooms()));
         setTextForCustomView(detailInformationLayout.fragmentDetailNumbersOfBathroomsCustomView, String.valueOf(property.getNumberOfBathrooms()));
-        descriptionTextView.setText(property.getPropertyType());
+        descriptionTextView.setText(property.getDescription());
         mPropertyViewModel.getPropertyLocationForProperty.observe(getViewLifecycleOwner(), this::setStaticMap);
     }
 

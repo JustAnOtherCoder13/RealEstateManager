@@ -15,6 +15,7 @@ import androidx.core.app.ActivityCompat;
 import androidx.navigation.Navigation;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.RequestOptions;
 import com.bumptech.glide.request.target.CustomTarget;
 import com.bumptech.glide.request.transition.Transition;
 import com.google.android.gms.location.FusedLocationProviderClient;
@@ -53,8 +54,9 @@ public class MapsFragment extends BaseFragment implements GoogleMap.OnInfoWindow
     private MarkerOptions mMarkerOptions = new MarkerOptions();
     private List<Marker> mPointOfInterestMarkers = new ArrayList<>();
     private Marker mMarkerToAdd;
-    public static final String TAG = MapsFragment.class.getSimpleName();
+    private int count = 0;
 
+//todo highlight recycler on marker click
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -72,7 +74,6 @@ public class MapsFragment extends BaseFragment implements GoogleMap.OnInfoWindow
         return mBinding.getRoot();
     }
 
-//todo reduce icon size for tab
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
@@ -87,15 +88,17 @@ public class MapsFragment extends BaseFragment implements GoogleMap.OnInfoWindow
         mMap = googleMap;
         updateLocationUI();
         mMap.setOnInfoWindowClickListener(this);
-        if (getView()!=null)
-        mPropertyViewModel.getAllProperties.observe(getViewLifecycleOwner(), this::initMarkersValue);
+        if (getView() != null)
+            mPropertyViewModel.getAllProperties.observe(getViewLifecycleOwner(), this::initMarkersValue);
     }
 
     @Override
     public void onInfoWindowClick(@NonNull Marker marker) {
         if (isPropertyMarker(marker)) {
             mPropertyViewModel.setSelectedProperty(getPropertyForId(marker.getTitle()));
-            mNavController.navigate(R.id.action_mapsFragment_to_propertyDetailFragment);
+            if (Objects.requireNonNull(mNavController.getCurrentDestination()).getId() == R.id.mapsFragment)
+                mNavController.navigate(R.id.action_mapsFragment_to_propertyDetailFragment);
+            else mNavController.navigate(R.id.propertyDetailFragment);
         }
     }
 
@@ -174,8 +177,6 @@ public class MapsFragment extends BaseFragment implements GoogleMap.OnInfoWindow
         });
     }
 
-
-    //TODO when have clicked marker and open bottom sheet load all poi
     private void placePropertyMarkers() {
         mPropertyViewModel.getPropertyLocationForProperty.observe(getViewLifecycleOwner(), propertyLocation -> {
             if (mMap != null) {
@@ -187,14 +188,14 @@ public class MapsFragment extends BaseFragment implements GoogleMap.OnInfoWindow
         });
     }
 
-    int i = 0;
 
     private void placePointOfInterestMarkersForClickedProperty() {
-        i = 0;
+        count = 0;
         removePointOfInterest();
         mPropertyViewModel.getAllPointOfInterestForProperty.observe(getViewLifecycleOwner(), allPointOfInterests -> {
-            i++;
-            if (i > 1) {
+            count++;
+            //count cause pass first for last clicked marker, and only the second time pass for the good property
+            if (count > 1) {
                 mPointOfInterestMarkers.clear();
                 if (!allPointOfInterests.isEmpty())
                     for (PointOfInterest pointOfInterest : allPointOfInterests)
@@ -215,6 +216,7 @@ public class MapsFragment extends BaseFragment implements GoogleMap.OnInfoWindow
 
         Glide.with(requireContext())
                 .load(pointOfInterest.getIcon())
+                .apply(new RequestOptions().override(40))
                 .centerCrop()
                 .into(new CustomTarget<Drawable>() {
                     @Override

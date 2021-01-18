@@ -5,4 +5,10 @@
     <style name="fragmentWithNavStyle">
     </style>
 
+    <style name="recyclerview_list_photo_item">
+        <item name="android:scaleType">centerCrop</item>
+        <item name="android:layout_marginStart">@dimen/little_marge</item>
+    </style>
+
+
 </resources>

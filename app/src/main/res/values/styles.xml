@@ -392,4 +392,8 @@
         <item name="android:background">@drawable/custom_round_primary</item>
     </style>
 
+    <style name="recyclerview_list_photo_item">
+        <item name="android:scaleType">centerCrop</item>
+    </style>
+
 </resources>

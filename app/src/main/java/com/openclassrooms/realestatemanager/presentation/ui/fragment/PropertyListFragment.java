@@ -28,7 +28,7 @@ public class PropertyListFragment extends BaseFragment {
 
     private FragmentPropertyListBinding mBinding;
     private PropertyRecyclerViewAdapter adapter;
-
+//todo when no match found in filter, recycler go to 0
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -54,7 +54,7 @@ public class PropertyListFragment extends BaseFragment {
     }
 
     private void initRecyclerView() {
-        PropertyRecyclerViewAdapter adapter = new PropertyRecyclerViewAdapter(new ArrayList<>());
+        PropertyRecyclerViewAdapter adapter = new PropertyRecyclerViewAdapter(new ArrayList<>(),requireContext());
         RecyclerView.LayoutManager linearLayout = new LinearLayoutManager(getContext());
         mBinding.fragmentPropertyListRecyclerview.setLayoutManager(linearLayout);
         mBinding.fragmentPropertyListRecyclerview.setAdapter(adapter);

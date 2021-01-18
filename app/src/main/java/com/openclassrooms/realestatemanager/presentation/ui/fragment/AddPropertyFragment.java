@@ -61,11 +61,9 @@ public class AddPropertyFragment extends BaseFragment {
     private PhotoRecyclerViewAdapter mAdapter;
     private ManageImageHelper mImageHelper;
     private CustomMediaSetTitleDialog setTitleDialog;
-    public static final String TAG = AddPropertyFragment.class.getSimpleName();
 
     //TODO add loader on photo, init text view
     //todo disable register button when clicked (avoid multiple click) phone
-    //todo set edit text to 0 when add new property
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -82,17 +80,17 @@ public class AddPropertyFragment extends BaseFragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        isNewPropertyToPersist = Objects.requireNonNull(mPropertyViewModel.getSelectedProperty.getValue()).getAddress() == null;
         mPreviousSavedPropertyAddress = Objects.requireNonNull(mPropertyViewModel.getAllProperties.getValue()).get(mPropertyViewModel.getAllProperties.getValue().size() - 1).getAddress();
         mPropertyViewModel.isDataLoading.observe(getViewLifecycleOwner(), this::playLoader);
         initClickListener();
-        initView();
-        initViewModel();
     }
 
     @Override
     public void onResume() {
         super.onResume();
+        isNewPropertyToPersist = Objects.requireNonNull(mPropertyViewModel.getSelectedProperty.getValue()).getAddress() == null;
+        initViewModel();
+        setSoldLayoutVisibility();
     }
 
     @Override
@@ -149,6 +147,7 @@ public class AddPropertyFragment extends BaseFragment {
         });
 
         mPropertyViewModel.getAllPropertyPhotosForProperty.observe(getViewLifecycleOwner(), propertyPhotos -> {
+            Log.i("TAG", "initViewModel: "+mPropertyViewModel.getSelectedProperty.getValue().getAddress());
             mPropertyPhotos = propertyPhotos;
             mAdapter.updatePhotos(mImageHelper.propertyPhotosWithAddButton(propertyPhotos));
         });
@@ -162,8 +161,9 @@ public class AddPropertyFragment extends BaseFragment {
         mBinding.addPropertyMediaLayout.detailCustomViewRecyclerView.setAdapter(mAdapter);
     }
 
-    private void initView() {
+    private void setSoldLayoutVisibility() {
         initPropertyTypeDropDownMenu();
+        Log.i("TAG", "setSoldLayoutVisibility: "+isNewPropertyToPersist);
         if (isNewPropertyToPersist)
             mBinding.addPropertySoldLayout.getRoot().setVisibility(View.GONE);
         else
@@ -172,6 +172,7 @@ public class AddPropertyFragment extends BaseFragment {
 
     private void initViewValueWhenUpdate(@NonNull FragmentAddPropertyInformationLayoutBinding addPropertyInformationCustomView, @NonNull Property property) {
         mPropertyViewModel.setPhotosToDelete(new ArrayList<>());
+        Log.e("TAG", "initViewValueWhenUpdate: "+property.getAddress() );
         EditText descriptionEditText = mBinding.addPropertyDescriptionLayout.addPropertyDescriptionEditText;
         AutoCompleteTextView propertyTypeDropDownMenu = mBinding.addPropertyInformationLayout.addPropertyInformationTypeCustomViewAutocompleteTextView;
         addPropertyInformationCustomView.addPropertyInformationPrice.setText(String.valueOf(property.getPrice()));
@@ -325,7 +326,6 @@ public class AddPropertyFragment extends BaseFragment {
         } else
             Toast.makeText(requireContext(), R.string.information_not_filled, Toast.LENGTH_SHORT).show();
     }
-
 
     private void addNewPropertyAdditionalInformation() {
         mPropertyViewModel.getAllProperties.observe(getViewLifecycleOwner(), properties -> {

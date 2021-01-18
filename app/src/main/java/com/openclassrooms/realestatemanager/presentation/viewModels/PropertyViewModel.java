@@ -154,6 +154,7 @@ public class PropertyViewModel extends BaseViewModel {
     }
 
     public void setAllPhotosForProperty(@NonNull Property property) {
+        Log.d("TAG", "setAllPhotosForProperty: ");
         compositeDisposable.add(
                 getAllPropertyPhotosForPropertyIdInteractor.getAllPhotosForPropertyId(property.getId())
                         .subscribeOn(schedulerProvider.getIo())

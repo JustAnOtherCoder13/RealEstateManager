@@ -6,6 +6,7 @@ import android.content.pm.ActivityInfo;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.ImageButton;
@@ -28,8 +29,6 @@ import com.airbnb.lottie.LottieAnimationView;
 import com.google.android.material.bottomsheet.BottomSheetBehavior;
 import com.openclassrooms.realestatemanager.R;
 import com.openclassrooms.realestatemanager.databinding.ActivityMainBinding;
-import com.openclassrooms.realestatemanager.presentation.ui.fragment.AddPropertyFragment;
-import com.openclassrooms.realestatemanager.presentation.ui.fragment.PropertyDetailFragment;
 import com.openclassrooms.realestatemanager.presentation.ui.fragment.adapter.PropertyRecyclerViewAdapter;
 import com.openclassrooms.realestatemanager.presentation.utils.FilterHelper;
 import com.openclassrooms.realestatemanager.presentation.utils.RecyclerViewItemClickListener;
@@ -62,7 +61,7 @@ public class MainActivity extends AppCompatActivity {
     protected ImageButton mUpdateButton;
     protected ImageButton mAddButton;
     protected LottieAnimationView mLoader;
-    protected boolean isCameraPermissionGranted,isLocationPermissionGranted,isReadPermissionGranted,isWritePermissionGranted,isPhone;
+    protected boolean isCameraPermissionGranted, isLocationPermissionGranted, isReadPermissionGranted, isWritePermissionGranted, isPhone;
     private FilterHelper filterHelper;
     private BottomSheetBehavior<ConstraintLayout> mBottomSheetBehavior;
     private PropertyRecyclerViewAdapter adapter;
@@ -75,21 +74,39 @@ public class MainActivity extends AppCompatActivity {
         mAddButton = mBinding.topAppBar.addPropertyButton;
         mUpdateButton = mBinding.updateButtonCustomView.updateButton;
         setContentView(mBinding.getRoot());
+        initValues();
     }
 
     @Override
     public void onBackPressed() {
-        super.onBackPressed();
         if (mBottomSheetBehavior.getState() == BottomSheetBehavior.STATE_EXPANDED)
             mBottomSheetBehavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
-        if (mNavController.getCurrentDestination() != null && isPhone)
-            setPhoneNavigation();
-        if (Objects.requireNonNull(mNavController.getCurrentDestination()).getId() != R.id.propertyDetailFragment && isPhone)
+        //reset selected property if not on add or detail fragment
+        Log.i("TAG", "setTabBackNavigation: " + mNavController.getCurrentDestination());
+
+        if (Objects.requireNonNull(mNavController.getCurrentDestination().getId() != R.id.addPropertyFragment))
             mPropertyViewModel.setSelectedProperty(new Property());
+        //set back press nav
+        if (mNavController.getCurrentDestination() != null && isPhone) setPhoneBackNavigation();
+        else if (mNavController.getCurrentDestination() != null && !isPhone) setTabBackNavigation();
+        else super.onBackPressed();
+    }
+
+    private void setTabBackNavigation() {
+        switch (Objects.requireNonNull(mNavController.getCurrentDestination()).getId()) {
+            case R.id.addPropertyFragment:
+                mNavController.navigate(R.id.propertyDetailFragment);
+                break;
+            case R.id.propertyDetailFragment:
+                mNavController.navigate(R.id.mapsFragment);
+                break;
+            case R.id.mapsFragment:
+                this.finish();
+        }
     }
 
     @SuppressWarnings("ConstantConditions")//already checked
-    private void setPhoneNavigation() {
+    private void setPhoneBackNavigation() {
         switch (mNavController.getCurrentDestination().getId()) {
             case R.id.addPropertyFragment:
                 mNavController.navigate(R.id.action_addPropertyFragment_to_propertyDetailFragment);
@@ -101,14 +118,13 @@ public class MainActivity extends AppCompatActivity {
                 mNavController.navigate(R.id.action_propertyListFragment_to_mapsFragment);
                 break;
             case R.id.mapsFragment:
-                finish();
+                this.finish();
                 break;
         }
     }
 
     @Override
     protected void onResume() {
-        initValues();
         initLoader();
         askLocationPermission();
         isPhone = getResources().getBoolean(R.bool.phone_device);
@@ -227,7 +243,7 @@ public class MainActivity extends AppCompatActivity {
 
     @SuppressWarnings("ConstantConditions")//already checked
     private void initRecyclerView() {
-        adapter = new PropertyRecyclerViewAdapter(new ArrayList<>());
+        adapter = new PropertyRecyclerViewAdapter(new ArrayList<>(), this);
         RecyclerView.LayoutManager linearLayout = new LinearLayoutManager(this);
         mBinding.fragmentPropertyListRecyclerview.setLayoutManager(linearLayout);
         mBinding.fragmentPropertyListRecyclerview.setAdapter(adapter);
@@ -235,10 +251,13 @@ public class MainActivity extends AppCompatActivity {
         mPropertyViewModel.getFirstPhotoOfAllProperties.observe(this, adapter::updatePhotos);
         mPropertyViewModel.getSelectedProperty.observe(this, property -> {
             if (property.getAddress() != null) {
+                adapter.updateSelectedProperty(property);
                 mPropertyViewModel.setAllPointOfInterestForProperty(property);
                 if (isPhone)
                     mNavController.navigate(R.id.action_mapsFragment_to_propertyDetailFragment);
-                else mNavController.navigate(R.id.propertyDetailFragment);
+                else {
+                    mNavController.navigate(R.id.propertyDetailFragment);
+                }
             }
         });
     }
@@ -251,20 +270,6 @@ public class MainActivity extends AppCompatActivity {
                     assert allProperties != null;
                     Property property = allProperties.get(position);
                     mPropertyViewModel.setSelectedProperty(property);
-
-                        for (View item : adapter.getItemViewList()){
-                            TextView textView = item.findViewById(R.id.property_item_price);
-                            //check if view is clicked
-                            if (adapter.getItemViewList().get(position)==item){
-                                item.setBackgroundColor(getResources().getColor(R.color.custom_pink));
-                                textView.setTextColor(getResources().getColor(R.color.white));
-                            }
-                            else {
-                                item.setBackgroundColor(Color.TRANSPARENT);
-                                textView.setTextColor(getResources().getColor(R.color.custom_pink));
-                            }
-                        }
-
                 });
     }
 
@@ -324,9 +329,10 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
-    protected void setSaveButtonClickListener(View.OnClickListener clickListener){
+    protected void setSaveButtonClickListener(View.OnClickListener clickListener) {
         mUpdateButton.setOnClickListener(clickListener);
     }
+
     protected void hideSoftKeyboard(@NonNull View view) {
         InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
         assert imm != null;

@@ -1,12 +1,15 @@
 package com.openclassrooms.realestatemanager.presentation.ui.fragment.adapter;
 
 import android.annotation.SuppressLint;
+import android.content.Context;
 import android.graphics.Color;
 import android.graphics.drawable.Drawable;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -27,17 +30,16 @@ public class PropertyRecyclerViewAdapter extends RecyclerView.Adapter<PropertyRe
 
     private List<Property> mProperties;
     private List<PropertyPhoto> mPhotos;
-    private List<View>itemViewList = new ArrayList<>();
+    private Property selectedProperty;
+    private Context context;
 
 
-    public PropertyRecyclerViewAdapter(List<Property> mProperties) {
+    public PropertyRecyclerViewAdapter(List<Property> mProperties, Context context) {
         this.mProperties = mProperties;
-        mPhotos = new ArrayList<>();
+        this.context = context;
+        this.mPhotos = new ArrayList<>();
     }
 
-    public List<View> getItemViewList() {
-        return itemViewList;
-    }
 
     @NonNull
     @Override
@@ -49,7 +51,6 @@ public class PropertyRecyclerViewAdapter extends RecyclerView.Adapter<PropertyRe
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-        itemViewList.add(holder.itemView);
         final Property property = mProperties.get(position);
         if (!mPhotos.isEmpty()) {
             PropertyPhoto photo = mPhotos.get(position);
@@ -58,6 +59,17 @@ public class PropertyRecyclerViewAdapter extends RecyclerView.Adapter<PropertyRe
         holder.binding.propertyItemPrice.setText(String.valueOf(property.getPrice()));
         holder.binding.propertyItemTown.setText(property.getRegion());
         holder.binding.propertyItemType.setText(property.getPropertyType());
+        TextView textView = holder.itemView.findViewById(R.id.property_item_price);
+
+        Log.i("TAG", "onBindViewHolder: "+selectedProperty);
+        if (selectedProperty != null)
+            if (selectedProperty.getAddress() != null && this.selectedProperty.getId() == property.getId()) {
+                holder.itemView.setBackgroundColor(context.getResources().getColor(R.color.custom_pink));
+                textView.setTextColor(context.getResources().getColor(R.color.white));
+            } else if (selectedProperty.getAddress() == null) {
+                holder.itemView.setBackgroundColor(Color.TRANSPARENT);
+                textView.setTextColor(context.getResources().getColor(R.color.custom_pink));
+            }
     }
 
     @Override
@@ -85,6 +97,11 @@ public class PropertyRecyclerViewAdapter extends RecyclerView.Adapter<PropertyRe
         notifyDataSetChanged();
     }
 
+    public void updateSelectedProperty(Property property) {
+        this.selectedProperty = property;
+        notifyDataSetChanged();
+    }
+
     private void setPropertyPhoto(@NonNull PropertyRecyclerViewAdapter.ViewHolder holder, @NonNull PropertyPhoto photo) {
         Glide.with(holder.binding.propertyItemPhoto.getContext())
                 .load(photo.getPhotoPath())
@@ -100,4 +117,6 @@ public class PropertyRecyclerViewAdapter extends RecyclerView.Adapter<PropertyRe
                     }
                 });
     }
+
+
 }
