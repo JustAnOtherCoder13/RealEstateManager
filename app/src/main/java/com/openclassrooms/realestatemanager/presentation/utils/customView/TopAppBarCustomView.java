@@ -24,44 +24,53 @@ public class TopAppBarCustomView extends ConstraintLayout {
     private PropertyViewModel propertyViewModel;
     private BottomSheetBehavior<ConstraintLayout> bottomSheetBehavior;
     public ImageButton resetFilterButton;
+    public ImageButton addPropertyButton;
 
     public TopAppBarCustomView(@NonNull Context context, @Nullable AttributeSet attrs) {
         super(context, attrs);
         propertyViewModel = new ViewModelProvider((MainActivity) context).get(PropertyViewModel.class);
-        initView(context);
+        initView();
     }
 
-    private void initView(Context context) {
+    private void initView() {
         inflate(getContext(), R.layout.custom_view_top_nav_bar, this);
-        ImageButton addPropertyButton = findViewById(R.id.top_bar_add_property);
+        addPropertyButton = findViewById(R.id.top_bar_add_property);
         ImageButton filterButton = findViewById(R.id.top_bar_filter_icon);
         resetFilterButton = findViewById(R.id.top_reset_filter_property);
 
-        addPropertyButton.setOnClickListener(v -> {
-            resetPropertyValues();
-            bottomSheetBehavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
-            NavController navController = Navigation.findNavController((MainActivity) context, R.id.nav_host_fragment);
-            switch (Objects.requireNonNull(navController.getCurrentDestination()).getId()) {
-                case R.id.propertyListFragment:
-                    navController.navigate
-                            (R.id.action_propertyListFragment_to_addPropertyFragment);
-                    break;
-
-                case R.id.mapsFragment:
-                    navController.navigate
-                            (R.id.action_mapsFragment_to_addPropertyFragment);
-                    break;
-
-                default:
-                    navController.navigate
-                            (R.id.addPropertyFragment);
-            }
-        });
         filterButton.setOnClickListener(v -> {
             bottomSheetBehavior.setState(bottomSheetBehavior.getState() == BottomSheetBehavior.STATE_COLLAPSED ?
-                BottomSheetBehavior.STATE_EXPANDED : BottomSheetBehavior.STATE_COLLAPSED);
+                    BottomSheetBehavior.STATE_EXPANDED : BottomSheetBehavior.STATE_COLLAPSED);
             propertyViewModel.setAllProperties();
         });
+    }
+
+    private void initClickForAdd(MainActivity context) {
+        resetPropertyValues();
+        bottomSheetBehavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
+        NavController navController = Navigation.findNavController(context, R.id.nav_host_fragment);
+        switch (Objects.requireNonNull(navController.getCurrentDestination()).getId()) {
+            case R.id.propertyListFragment:
+                navController.navigate
+                        (R.id.action_propertyListFragment_to_addPropertyFragment);
+                break;
+
+            case R.id.mapsFragment:
+                navController.navigate
+                        (R.id.action_mapsFragment_to_addPropertyFragment);
+                break;
+
+            default:
+                navController.navigate
+                        (R.id.addPropertyFragment);
+        }
+    }
+
+    public void addButtonSetOnClickListener(OnClickListener clickListener) {
+        addPropertyButton.setOnClickListener(
+                clickListener == null ?
+                        v -> initClickForAdd((MainActivity) getContext())
+                        : clickListener);
     }
 
     public void setBottomSheetBehavior(BottomSheetBehavior<ConstraintLayout> bottomSheetBehavior) {

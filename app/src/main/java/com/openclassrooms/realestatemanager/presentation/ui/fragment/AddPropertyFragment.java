@@ -61,6 +61,7 @@ public class AddPropertyFragment extends BaseFragment {
     private PhotoRecyclerViewAdapter mAdapter;
     private ManageImageHelper mImageHelper;
     private CustomMediaSetTitleDialog setTitleDialog;
+    public static final String TAG = AddPropertyFragment.class.getSimpleName();
 
     //TODO add loader on photo, init text view
     //todo disable register button when clicked (avoid multiple click)
@@ -74,6 +75,7 @@ public class AddPropertyFragment extends BaseFragment {
         setAppBarVisibility(false);
         initRecyclerView();
         setUpdateButtonIcon(false);
+        setAddButtonIcon(TAG);
         return mBinding.getRoot();
     }
 
@@ -116,14 +118,6 @@ public class AddPropertyFragment extends BaseFragment {
                 break;
         }
     }
-
-    @Override
-    public void onResume() {
-        super.onResume();
-        if (!isNewPropertyToPersist)
-            initViewValueWhenUpdate(mBinding.addPropertyInformationLayout, Objects.requireNonNull(mPropertyViewModel.getSelectedProperty.getValue()));
-    }
-
     //___________________________________VIEW_____________________________________________
 
     private void initViewModel() {
@@ -164,8 +158,10 @@ public class AddPropertyFragment extends BaseFragment {
 
     private void initView() {
         initPropertyTypeDropDownMenu();
-        if (isNewPropertyToPersist)
+        if (isNewPropertyToPersist){
             mBinding.addPropertySoldLayout.getRoot().setVisibility(View.GONE);
+            initViewValueWhenUpdate(mBinding.addPropertyInformationLayout, Objects.requireNonNull(mPropertyViewModel.getSelectedProperty.getValue()));
+        }
     }
 
     private void initViewValueWhenUpdate(@NonNull FragmentAddPropertyInformationLayoutBinding addPropertyInformationCustomView, @NonNull Property property) {
@@ -270,7 +266,9 @@ public class AddPropertyFragment extends BaseFragment {
                         mBinding.addPropertySoldLayout.addPropertySoldCheckbox.isChecked() ?
                                 View.VISIBLE : View.GONE));
 
+        if (getResources().getBoolean(R.bool.phone_device))
         mUpdateButton.setOnClickListener(v -> initAddButtonClick());
+        else setAddButtonClickListener(v -> initAddButtonClick());
     }
 
     private void initSelectPhotoToDeleteOnLongClickListener() {

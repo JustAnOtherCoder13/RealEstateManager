@@ -84,7 +84,6 @@ public class FilterHelper {
         requestPointOfInterest();
         requestPropertyType();
         filterForLocation(allProperties);
-        filteredValues = new ArrayList<>();
     }
 
     private void filterForLocation(List<Property> allProperties) {

@@ -92,6 +92,7 @@
     <string name="supermarket">supermarket</string>
     <string name="close_filter_button">close filter button</string>
     <string name="reset_filter">reset filter</string>
+    <string name="contextual_add_or_update_button">contextual add or update button</string>
 
 
 </resources>

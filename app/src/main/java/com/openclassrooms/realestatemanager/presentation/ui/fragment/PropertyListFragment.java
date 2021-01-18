@@ -25,6 +25,7 @@ import java.util.List;
 public class PropertyListFragment extends BaseFragment {
 
     private FragmentPropertyListBinding mBinding;
+    public static final String TAG = PropertyListFragment.class.getSimpleName();
 
     @Nullable
     @Override
@@ -32,6 +33,8 @@ public class PropertyListFragment extends BaseFragment {
         mBinding = FragmentPropertyListBinding.inflate(inflater, container, false);
         mNavController = Navigation.findNavController(requireActivity(), R.id.nav_host_fragment);
         setAppBarVisibility(true);
+        setAddButtonIcon(TAG);
+        setAddButtonClickListener(null);
         initRecyclerView();
         return mBinding.getRoot();
     }

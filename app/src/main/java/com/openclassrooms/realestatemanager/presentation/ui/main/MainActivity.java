@@ -2,8 +2,10 @@ package com.openclassrooms.realestatemanager.presentation.ui.main;
 
 import android.Manifest;
 import android.content.Context;
+import android.content.pm.ActivityInfo;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.ImageButton;
@@ -18,16 +20,25 @@ import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import androidx.navigation.ui.NavigationUI;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.airbnb.lottie.LottieAnimationView;
 import com.google.android.material.bottomsheet.BottomSheetBehavior;
 import com.openclassrooms.realestatemanager.R;
 import com.openclassrooms.realestatemanager.databinding.ActivityMainBinding;
+import com.openclassrooms.realestatemanager.presentation.ui.fragment.AddPropertyFragment;
+import com.openclassrooms.realestatemanager.presentation.ui.fragment.MapsFragment;
+import com.openclassrooms.realestatemanager.presentation.ui.fragment.PropertyDetailFragment;
+import com.openclassrooms.realestatemanager.presentation.ui.fragment.adapter.PropertyRecyclerViewAdapter;
 import com.openclassrooms.realestatemanager.presentation.utils.FilterHelper;
+import com.openclassrooms.realestatemanager.presentation.utils.RecyclerViewItemClickListener;
 import com.openclassrooms.realestatemanager.presentation.viewModels.AgentViewModel;
 import com.openclassrooms.realestatemanager.presentation.viewModels.PropertyViewModel;
 import com.picone.core.domain.entity.Property;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 
 import dagger.hilt.android.AndroidEntryPoint;
@@ -49,26 +60,22 @@ public class MainActivity extends AppCompatActivity {
     private AgentViewModel mAgentViewModel;
     private NavController mNavController;
     protected ImageButton mUpdateButton;
+    protected ImageButton mAddButton;
     protected LottieAnimationView mLoader;
     protected boolean isCameraPermissionGranted;
     protected boolean isLocationPermissionGranted;
     protected boolean isReadPermissionGranted;
     protected boolean isWritePermissionGranted;
     private FilterHelper filterHelper;
-
-
+    private boolean isPhone;
     private BottomSheetBehavior<ConstraintLayout> mBottomSheetBehavior;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         mBinding = ActivityMainBinding.inflate(getLayoutInflater());
+        mAddButton = mBinding.topAppBar.addPropertyButton;
         setContentView(mBinding.getRoot());
-        initValues();
-        initLoader();
-        askLocationPermission();
-        if (!getPackageManager().hasSystemFeature(PackageManager.FEATURE_CAMERA_ANY))
-            Toast.makeText(this, R.string.no_camera_warning, Toast.LENGTH_LONG).show();
     }
 
     @Override
@@ -76,10 +83,41 @@ public class MainActivity extends AppCompatActivity {
         super.onBackPressed();
         if (mBottomSheetBehavior.getState() == BottomSheetBehavior.STATE_EXPANDED)
             mBottomSheetBehavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
+        if (mNavController.getCurrentDestination() != null && isPhone)
+            setPhoneNavigation();
         if (Objects.requireNonNull(mNavController.getCurrentDestination()).getId() != R.id.propertyDetailFragment)
             mPropertyViewModel.setSelectedProperty(new Property());
     }
 
+    @SuppressWarnings("ConstantConditions")//already checked
+    private void setPhoneNavigation() {
+        switch (mNavController.getCurrentDestination().getId()) {
+            case R.id.addPropertyFragment:
+                mNavController.navigate(R.id.action_addPropertyFragment_to_propertyDetailFragment);
+                break;
+            case R.id.propertyDetailFragment:
+                mNavController.navigate(R.id.action_propertyDetailFragment_to_propertyListFragment);
+                break;
+            case R.id.propertyListFragment:
+                mNavController.navigate(R.id.action_propertyListFragment_to_mapsFragment);
+                break;
+            case R.id.mapsFragment:
+                finish();
+                break;
+        }
+    }
+
+
+    @Override
+    protected void onResume() {
+        initValues();
+        initLoader();
+        askLocationPermission();
+        isPhone = getResources().getBoolean(R.bool.phone_device);
+        if (!getPackageManager().hasSystemFeature(PackageManager.FEATURE_CAMERA_ANY))
+            Toast.makeText(this, R.string.no_camera_warning, Toast.LENGTH_LONG).show();
+        super.onResume();
+    }
 
     @Override
     protected void onStart() {
@@ -107,6 +145,19 @@ public class MainActivity extends AppCompatActivity {
             case WRITE_PERMISSION_CODE:
                 isWritePermissionGranted = checkResult(grantResults);
                 break;
+        }
+    }
+
+    @SuppressWarnings("ConstantConditions")//can't be null on phone
+    private void initPhoneOrTablet() {
+        if (getResources().getBoolean(R.bool.phone_device)) {
+            setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+            mUpdateButton = mBinding.updateButtonCustomView.updateButton;
+            NavigationUI.setupWithNavController(mBinding.bottomNavBar, mNavController);
+        } else {
+            setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
+            initRecyclerView();
+            configureOnClickRecyclerView();
         }
     }
 
@@ -162,11 +213,10 @@ public class MainActivity extends AppCompatActivity {
 
 
     private void initValues() {
-        mUpdateButton = mBinding.updateButtonCustomView.findViewById(R.id.custom_view_update_image_button);
         mPropertyViewModel = new ViewModelProvider(this).get(PropertyViewModel.class);
         mAgentViewModel = new ViewModelProvider(this).get(AgentViewModel.class);
         mNavController = Navigation.findNavController(this, R.id.nav_host_fragment);
-        NavigationUI.setupWithNavController(mBinding.bottomNavBar, mNavController);
+        initPhoneOrTablet();
         mAgentViewModel.setAgent();
         mPropertyViewModel.setAllProperties();
         filterHelper = new FilterHelper(mBinding.bottomSheetLayout);
@@ -178,17 +228,50 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
+    @SuppressWarnings("ConstantConditions")//already checked
+    private void initRecyclerView() {
+        PropertyRecyclerViewAdapter adapter = new PropertyRecyclerViewAdapter(new ArrayList<>());
+        RecyclerView.LayoutManager linearLayout = new LinearLayoutManager(this);
+        mBinding.fragmentPropertyListRecyclerview.setLayoutManager(linearLayout);
+        mBinding.fragmentPropertyListRecyclerview.setAdapter(adapter);
+        mPropertyViewModel.getAllProperties.observe(this, adapter::updateProperties);
+        mPropertyViewModel.getFirstPhotoOfAllProperties.observe(this, adapter::updatePhotos);
+        mPropertyViewModel.getSelectedProperty.observe(this, property -> {
+            if (property.getAddress() != null) {
+                mPropertyViewModel.setAllPointOfInterestForProperty(property);
+                if (isPhone)
+                    mNavController.navigate(R.id.action_mapsFragment_to_propertyDetailFragment);
+                else mNavController.navigate(R.id.propertyDetailFragment);
+            }
+        });
+    }
+
+    @SuppressWarnings("ConstantConditions")//already checked
+    public void configureOnClickRecyclerView() {
+        RecyclerViewItemClickListener.addTo(mBinding.fragmentPropertyListRecyclerview, R.layout.fragment_property_list)
+                .setOnItemClickListener((recyclerView, position, v) -> {
+                    List<Property> allProperties = mPropertyViewModel.getAllProperties.getValue();
+                    assert allProperties != null;
+                    Property property = allProperties.get(position);
+                    mPropertyViewModel.setSelectedProperty(property);
+                });
+    }
+
+    private void setResetButtonVisibility(ImageButton resetButton, int visibility) {
+        resetButton.setVisibility(visibility);
+    }
+
     private void setBottomSheetButtonClickListener() {
 
         mBinding.bottomSheetLayout.bottomSheetCloseButton.setOnClickListener(v -> {
             mBottomSheetBehavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
-            if (mBinding.topAppBar.resetFilterButton.getVisibility() == View.VISIBLE)
-                mBinding.topAppBar.resetFilterButton.setVisibility(View.GONE);
+            setResetButtonVisibility(mBinding.topAppBar.resetFilterButton, View.GONE);
         });
 
         mBinding.bottomSheetLayout.bottomSheetOkButton.setOnClickListener(v -> {
             filterHelper.filterProperties(mPropertyViewModel.getAllProperties.getValue());
             mPropertyViewModel.setFilteredProperty(filterHelper.getFilteredProperty());
+
             mBinding.topAppBar.resetFilterButton.setVisibility(View.VISIBLE);
             mBottomSheetBehavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
             filterHelper.resetFilter();
@@ -214,20 +297,40 @@ public class MainActivity extends AppCompatActivity {
                 mBinding.bottomSheetLayout.filterPropertyLocationSpinner.setSpinnerAdapter(regions));
     }
 
+    @SuppressWarnings("ConstantConditions")//can't be null for phone
     protected void setMenuVisibility(@NonNull Boolean isVisible) {
-        mBinding.topAppBar.setVisibility(isVisible ? View.VISIBLE : View.GONE);
-        mBinding.bottomNavBar.setVisibility(isVisible ? View.VISIBLE : View.GONE);
-        mBinding.updateButtonCustomView.setVisibility(isVisible ? View.GONE : View.VISIBLE);
+        if (isPhone) {
+            mBinding.topAppBar.setVisibility(isVisible ? View.VISIBLE : View.GONE);
+            mBinding.bottomNavBar.setVisibility(isVisible ? View.VISIBLE : View.GONE);
+            mBinding.updateButtonCustomView.setVisibility(isVisible ? View.GONE : View.VISIBLE);
+        }
     }
 
     protected void initUpdateButton(boolean isForUpdate) {
-        mUpdateButton.setImageResource(isForUpdate ?
-                R.drawable.ic_custom_view_update_24
-                : R.drawable.ic_custom_view_save_24);
+        if (isPhone) {
+            mUpdateButton.setImageResource(isForUpdate ?
+                    R.drawable.ic_custom_view_update_24
+                    : R.drawable.ic_custom_view_save_24);
 
-        if (isForUpdate) mUpdateButton.setOnClickListener
-                (v -> mNavController.navigate
-                        (R.id.action_propertyDetailFragment_to_addPropertyFragment));
+            if (isForUpdate) mUpdateButton.setOnClickListener
+                    (v -> mNavController.navigate
+                            (R.id.action_propertyDetailFragment_to_addPropertyFragment));
+        }
+    }
+
+    protected void initAddButtonForTablet(String TAG) {
+        if (!isPhone) {
+            mBinding.topAppBar.addPropertyButton.setImageResource(
+                    TAG.equals(AddPropertyFragment.TAG) ?
+                            R.drawable.ic_custom_view_save_24
+                            : TAG.equals(PropertyDetailFragment.TAG) ?
+                            R.drawable.ic_custom_view_update_24 :
+                            R.drawable.ic_top_bar_add);
+        }
+    }
+
+    protected void setAddButtonClickListener(View.OnClickListener clickListener){
+        mBinding.topAppBar.addButtonSetOnClickListener(clickListener);
     }
 
     protected void hideSoftKeyboard(@NonNull View view) {

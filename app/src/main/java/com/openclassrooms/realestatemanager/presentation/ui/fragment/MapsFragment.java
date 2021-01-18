@@ -53,6 +53,7 @@ public class MapsFragment extends BaseFragment implements GoogleMap.OnInfoWindow
     private MarkerOptions mMarkerOptions = new MarkerOptions();
     private List<Marker> mPointOfInterestMarkers = new ArrayList<>();
     private Marker mMarkerToAdd;
+    public static final String TAG = MapsFragment.class.getSimpleName();
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -68,8 +69,11 @@ public class MapsFragment extends BaseFragment implements GoogleMap.OnInfoWindow
         mBinding.mapView.getMapAsync(this);
         mNavController = Navigation.findNavController(requireActivity(), R.id.nav_host_fragment);
         setAppBarVisibility(true);
+        setAddButtonIcon(TAG);
+        setAddButtonClickListener(null);
         return mBinding.getRoot();
     }
+
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
@@ -85,6 +89,7 @@ public class MapsFragment extends BaseFragment implements GoogleMap.OnInfoWindow
         mMap = googleMap;
         updateLocationUI();
         mMap.setOnInfoWindowClickListener(this);
+        if (getView()!=null)
         mPropertyViewModel.getAllProperties.observe(getViewLifecycleOwner(), this::initMarkersValue);
     }
 

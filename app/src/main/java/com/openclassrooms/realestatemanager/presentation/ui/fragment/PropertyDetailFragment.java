@@ -38,6 +38,7 @@ import static com.picone.core.utils.ConstantParameters.STATIC_MAP_SIZE;
 public class PropertyDetailFragment extends BaseFragment {
 
     private FragmentPropertyDetailBinding mBinding;
+    public static final String TAG = PropertyDetailFragment.class.getSimpleName();
 
     @Nullable
     @Override
@@ -47,6 +48,9 @@ public class PropertyDetailFragment extends BaseFragment {
         setAppBarVisibility(false);
         initRecyclerView();
         setUpdateButtonIcon(true);
+        setAddButtonIcon(TAG);
+        setAddButtonClickListener(v -> mNavController.navigate
+                (R.id.action_propertyDetailFragment_to_addPropertyFragment));
         initClickOnMedia();
         return mBinding.getRoot();
     }

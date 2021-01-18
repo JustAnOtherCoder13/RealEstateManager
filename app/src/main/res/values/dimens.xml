@@ -30,4 +30,12 @@
     <dimen name="bottom_sheet_outline_size">3dp</dimen>
     <dimen name="bottom_sheet_close_button_frame_size">30dp</dimen>
 
+    <dimen name="headline1">30sp</dimen>
+    <dimen name="headline2">19sp</dimen>
+    <dimen name="subtitle1">17sp</dimen>
+    <dimen name="body1">14sp</dimen>
+
+
+
+
 </resources>

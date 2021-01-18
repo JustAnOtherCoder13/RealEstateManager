@@ -1,6 +1,7 @@
 package com.openclassrooms.realestatemanager.presentation.ui.main;
 
 import android.os.Bundle;
+import android.os.IBinder;
 import android.view.View;
 import android.widget.ImageButton;
 
@@ -9,6 +10,7 @@ import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.NavController;
 
+import com.openclassrooms.realestatemanager.R;
 import com.openclassrooms.realestatemanager.presentation.viewModels.AgentViewModel;
 import com.openclassrooms.realestatemanager.presentation.viewModels.PropertyViewModel;
 import com.picone.core.domain.entity.Property;
@@ -45,8 +47,15 @@ public abstract class BaseFragment extends Fragment {
         mUpdateButton = mainActivity.mUpdateButton;
     }
 
+    protected void setAddButtonClickListener(View.OnClickListener clickListener){
+        mainActivity.setAddButtonClickListener(clickListener);
+    }
+
     protected void setAppBarVisibility(boolean isVisible) {
         mainActivity.setMenuVisibility(isVisible);
+    }
+    protected void setAddButtonIcon(String TAG){
+        mainActivity.initAddButtonForTablet(TAG);
     }
 
     protected void setUpdateButtonIcon(boolean isForUpdate) {

@@ -8,6 +8,8 @@
         <item name="colorAccent">@color/custom_pink</item>
     </style>
 
+    <bool name="phone_device">true</bool>
+
     <!--__________________________________TEXT VIEW STYLE__________________________________-->
 
     <style name="subtitle_style" parent="TextAppearance.RealEstateManagerStyles.Subtitle1" />
