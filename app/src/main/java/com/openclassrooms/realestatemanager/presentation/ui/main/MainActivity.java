@@ -4,10 +4,12 @@ import android.Manifest;
 import android.content.Context;
 import android.content.pm.ActivityInfo;
 import android.content.pm.PackageManager;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.ImageButton;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -63,6 +65,8 @@ public class MainActivity extends AppCompatActivity {
     protected boolean isCameraPermissionGranted,isLocationPermissionGranted,isReadPermissionGranted,isWritePermissionGranted,isPhone;
     private FilterHelper filterHelper;
     private BottomSheetBehavior<ConstraintLayout> mBottomSheetBehavior;
+    private PropertyRecyclerViewAdapter adapter;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -223,7 +227,7 @@ public class MainActivity extends AppCompatActivity {
 
     @SuppressWarnings("ConstantConditions")//already checked
     private void initRecyclerView() {
-        PropertyRecyclerViewAdapter adapter = new PropertyRecyclerViewAdapter(new ArrayList<>());
+        adapter = new PropertyRecyclerViewAdapter(new ArrayList<>());
         RecyclerView.LayoutManager linearLayout = new LinearLayoutManager(this);
         mBinding.fragmentPropertyListRecyclerview.setLayoutManager(linearLayout);
         mBinding.fragmentPropertyListRecyclerview.setAdapter(adapter);
@@ -247,6 +251,20 @@ public class MainActivity extends AppCompatActivity {
                     assert allProperties != null;
                     Property property = allProperties.get(position);
                     mPropertyViewModel.setSelectedProperty(property);
+
+                        for (View item : adapter.getItemViewList()){
+                            TextView textView = item.findViewById(R.id.property_item_price);
+                            //check if view is clicked
+                            if (adapter.getItemViewList().get(position)==item){
+                                item.setBackgroundColor(getResources().getColor(R.color.custom_pink));
+                                textView.setTextColor(getResources().getColor(R.color.white));
+                            }
+                            else {
+                                item.setBackgroundColor(Color.TRANSPARENT);
+                                textView.setTextColor(getResources().getColor(R.color.custom_pink));
+                            }
+                        }
+
                 });
     }
 

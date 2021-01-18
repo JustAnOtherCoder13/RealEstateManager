@@ -1,7 +1,11 @@
 package com.openclassrooms.realestatemanager.presentation.ui.fragment.adapter;
 
+import android.annotation.SuppressLint;
+import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
+import android.view.View;
 import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
@@ -11,6 +15,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.target.CustomTarget;
 import com.bumptech.glide.request.transition.Transition;
+import com.openclassrooms.realestatemanager.R;
 import com.openclassrooms.realestatemanager.databinding.RecyclerviewPropertyListItemBinding;
 import com.picone.core.domain.entity.Property;
 import com.picone.core.domain.entity.PropertyPhoto;
@@ -22,10 +27,16 @@ public class PropertyRecyclerViewAdapter extends RecyclerView.Adapter<PropertyRe
 
     private List<Property> mProperties;
     private List<PropertyPhoto> mPhotos;
+    private List<View>itemViewList = new ArrayList<>();
+
 
     public PropertyRecyclerViewAdapter(List<Property> mProperties) {
         this.mProperties = mProperties;
         mPhotos = new ArrayList<>();
+    }
+
+    public List<View> getItemViewList() {
+        return itemViewList;
     }
 
     @NonNull
@@ -38,6 +49,7 @@ public class PropertyRecyclerViewAdapter extends RecyclerView.Adapter<PropertyRe
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
+        itemViewList.add(holder.itemView);
         final Property property = mProperties.get(position);
         if (!mPhotos.isEmpty()) {
             PropertyPhoto photo = mPhotos.get(position);

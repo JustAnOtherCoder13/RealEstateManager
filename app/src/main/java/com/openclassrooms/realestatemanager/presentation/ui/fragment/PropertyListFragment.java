@@ -1,6 +1,8 @@
 package com.openclassrooms.realestatemanager.presentation.ui.fragment;
 
+import android.graphics.Color;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -25,7 +27,7 @@ import java.util.List;
 public class PropertyListFragment extends BaseFragment {
 
     private FragmentPropertyListBinding mBinding;
-    public static final String TAG = PropertyListFragment.class.getSimpleName();
+    private PropertyRecyclerViewAdapter adapter;
 
     @Nullable
     @Override
@@ -69,4 +71,6 @@ public class PropertyListFragment extends BaseFragment {
                     mPropertyViewModel.setSelectedProperty(property);
                 });
     }
+
+
 }
