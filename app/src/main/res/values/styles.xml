@@ -10,6 +10,8 @@
 
     <bool name="phone_device">true</bool>
 
+    <!--todo theme all -->
+
     <!--__________________________________TEXT VIEW STYLE__________________________________-->
 
     <style name="subtitle_style" parent="TextAppearance.RealEstateManagerStyles.Subtitle1" />

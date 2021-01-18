@@ -5,6 +5,7 @@
     android:id="@+id/nav_graph"
     app:startDestination="@id/mapsFragment">
 
+    <!--todo review action, cause bug on phone-->
     <fragment
         android:id="@+id/mapsFragment"
         android:name="com.openclassrooms.realestatemanager.presentation.ui.fragment.MapsFragment"

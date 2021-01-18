@@ -19,7 +19,8 @@ import static android.content.Context.LOCATION_SERVICE;
 
 public class Utils {
 
-
+//todo don't forget this class
+    //todo add currency, format numbers
     public static int convertDollarToEuro(int dollars){
         return (int) Math.round(dollars * 0.812);
     }

@@ -57,6 +57,7 @@ public class MapsFragment extends BaseFragment implements GoogleMap.OnInfoWindow
     private int count = 0;
 
 //todo highlight recycler on marker click
+    //todo resize icon for phone
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

@@ -105,6 +105,8 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+    //todo review back press for phone
+
     @SuppressWarnings("ConstantConditions")//already checked
     private void setPhoneBackNavigation() {
         switch (mNavController.getCurrentDestination().getId()) {
@@ -241,6 +243,8 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
+    //todo don't show first image for tab
+    //todo fix multiple selected properties on tablet
     @SuppressWarnings("ConstantConditions")//already checked
     private void initRecyclerView() {
         adapter = new PropertyRecyclerViewAdapter(new ArrayList<>(), this);

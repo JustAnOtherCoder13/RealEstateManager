@@ -146,6 +146,9 @@ public class AddPropertyFragment extends BaseFragment {
             }
         });
 
+        //todo add twice photo when add button pressed on phone only, fix height for custom media full screen on phone only
+        //todo fix no title for video
+
         mPropertyViewModel.getAllPropertyPhotosForProperty.observe(getViewLifecycleOwner(), propertyPhotos -> {
             Log.i("TAG", "initViewModel: "+mPropertyViewModel.getSelectedProperty.getValue().getAddress());
             mPropertyPhotos = propertyPhotos;

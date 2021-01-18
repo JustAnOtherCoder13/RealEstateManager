@@ -56,7 +56,6 @@ public class PropertyDetailFragment extends BaseFragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         mPropertyViewModel.getSelectedProperty.observe(getViewLifecycleOwner(), property -> {
-            Log.i("TAG", "onViewCreated: "+property.getAddress());
             mPropertyViewModel.setPropertyLocationForProperty(property);
             mPropertyViewModel.setAllPhotosForProperty(property);
             initValue(mBinding.fragmentDetailInformationLayout,
@@ -95,6 +94,7 @@ public class PropertyDetailFragment extends BaseFragment {
         textView.setText(text);
     }
 
+    //todo add stroke to static map
     private void setStaticMap(@NonNull PropertyLocation propertyLocation) {
 
         String propertyLocationStr = String.valueOf(propertyLocation.getLatitude())
