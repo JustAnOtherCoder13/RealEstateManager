@@ -48,9 +48,6 @@ public class PropertyDetailFragment extends BaseFragment {
         setAppBarVisibility(false);
         initRecyclerView();
         setUpdateButtonIcon(true);
-        setAddButtonIcon(TAG);
-        setAddButtonClickListener(v -> mNavController.navigate
-                (R.id.action_propertyDetailFragment_to_addPropertyFragment));
         initClickOnMedia();
         return mBinding.getRoot();
     }

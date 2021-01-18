@@ -39,27 +39,21 @@ public abstract class BaseFragment extends Fragment {
         super.onCreate(savedInstanceState);
         mainActivity = (MainActivity) getActivity();
         assert mainActivity != null;
+        mUpdateButton = mainActivity.mUpdateButton;
         mAgentViewModel = new ViewModelProvider(requireActivity()).get(AgentViewModel.class);
         mPropertyViewModel = new ViewModelProvider(requireActivity()).get(PropertyViewModel.class);
-    }
-
-    protected void setUpdateButton() {
-        mUpdateButton = mainActivity.mUpdateButton;
-    }
-
-    protected void setAddButtonClickListener(View.OnClickListener clickListener){
-        mainActivity.setAddButtonClickListener(clickListener);
     }
 
     protected void setAppBarVisibility(boolean isVisible) {
         mainActivity.setMenuVisibility(isVisible);
     }
-    protected void setAddButtonIcon(String TAG){
-        mainActivity.initAddButtonForTablet(TAG);
-    }
 
     protected void setUpdateButtonIcon(boolean isForUpdate) {
         mainActivity.initUpdateButton(isForUpdate);
+    }
+
+    protected void setSaveButtonOnClickListener(View.OnClickListener clickListener){
+        mainActivity.setSaveButtonClickListener(clickListener);
     }
 
     protected void hideSoftKeyboard(View view) {
@@ -79,18 +73,18 @@ public abstract class BaseFragment extends Fragment {
         return propertyToReturn;
     }
 
-    protected boolean isPermissionGrantedForRequestCode(int requestCode){
-        switch (requestCode){
+    protected boolean isPermissionGrantedForRequestCode(int requestCode) {
+        switch (requestCode) {
             case LOCATION_PERMISSION_CODE:
                 return mainActivity.isLocationPermissionGranted;
             case CAMERA_PERMISSION_CODE:
                 return mainActivity.isCameraPermissionGranted;
             case READ_PERMISSION_CODE:
                 return mainActivity.isReadPermissionGranted;
-            case WRITE_PERMISSION_CODE :
+            case WRITE_PERMISSION_CODE:
                 return mainActivity.isWritePermissionGranted;
             default:
                 return false;
-                        }
+        }
     }
 }

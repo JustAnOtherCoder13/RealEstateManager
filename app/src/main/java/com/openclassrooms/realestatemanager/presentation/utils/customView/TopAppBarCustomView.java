@@ -29,10 +29,10 @@ public class TopAppBarCustomView extends ConstraintLayout {
     public TopAppBarCustomView(@NonNull Context context, @Nullable AttributeSet attrs) {
         super(context, attrs);
         propertyViewModel = new ViewModelProvider((MainActivity) context).get(PropertyViewModel.class);
-        initView();
+        initView(context);
     }
 
-    private void initView() {
+    private void initView(Context context) {
         inflate(getContext(), R.layout.custom_view_top_nav_bar, this);
         addPropertyButton = findViewById(R.id.top_bar_add_property);
         ImageButton filterButton = findViewById(R.id.top_bar_filter_icon);
@@ -43,6 +43,7 @@ public class TopAppBarCustomView extends ConstraintLayout {
                     BottomSheetBehavior.STATE_EXPANDED : BottomSheetBehavior.STATE_COLLAPSED);
             propertyViewModel.setAllProperties();
         });
+        addPropertyButton.setOnClickListener(v -> initClickForAdd((MainActivity)context));
     }
 
     private void initClickForAdd(MainActivity context) {
@@ -64,13 +65,6 @@ public class TopAppBarCustomView extends ConstraintLayout {
                 navController.navigate
                         (R.id.addPropertyFragment);
         }
-    }
-
-    public void addButtonSetOnClickListener(OnClickListener clickListener) {
-        addPropertyButton.setOnClickListener(
-                clickListener == null ?
-                        v -> initClickForAdd((MainActivity) getContext())
-                        : clickListener);
     }
 
     public void setBottomSheetBehavior(BottomSheetBehavior<ConstraintLayout> bottomSheetBehavior) {

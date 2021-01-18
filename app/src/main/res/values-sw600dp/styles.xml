@@ -3,7 +3,6 @@
     <bool name="phone_device">false</bool>
 
     <style name="fragmentWithNavStyle">
-        <item name="android:layout_marginTop">?attr/actionBarSize</item>
     </style>
 
 </resources>

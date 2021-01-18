@@ -5,7 +5,6 @@ import android.content.Context;
 import android.content.pm.ActivityInfo;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.ImageButton;
@@ -28,7 +27,6 @@ import com.google.android.material.bottomsheet.BottomSheetBehavior;
 import com.openclassrooms.realestatemanager.R;
 import com.openclassrooms.realestatemanager.databinding.ActivityMainBinding;
 import com.openclassrooms.realestatemanager.presentation.ui.fragment.AddPropertyFragment;
-import com.openclassrooms.realestatemanager.presentation.ui.fragment.MapsFragment;
 import com.openclassrooms.realestatemanager.presentation.ui.fragment.PropertyDetailFragment;
 import com.openclassrooms.realestatemanager.presentation.ui.fragment.adapter.PropertyRecyclerViewAdapter;
 import com.openclassrooms.realestatemanager.presentation.utils.FilterHelper;
@@ -62,12 +60,8 @@ public class MainActivity extends AppCompatActivity {
     protected ImageButton mUpdateButton;
     protected ImageButton mAddButton;
     protected LottieAnimationView mLoader;
-    protected boolean isCameraPermissionGranted;
-    protected boolean isLocationPermissionGranted;
-    protected boolean isReadPermissionGranted;
-    protected boolean isWritePermissionGranted;
+    protected boolean isCameraPermissionGranted,isLocationPermissionGranted,isReadPermissionGranted,isWritePermissionGranted,isPhone;
     private FilterHelper filterHelper;
-    private boolean isPhone;
     private BottomSheetBehavior<ConstraintLayout> mBottomSheetBehavior;
 
     @Override
@@ -75,6 +69,7 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         mBinding = ActivityMainBinding.inflate(getLayoutInflater());
         mAddButton = mBinding.topAppBar.addPropertyButton;
+        mUpdateButton = mBinding.updateButtonCustomView.updateButton;
         setContentView(mBinding.getRoot());
     }
 
@@ -85,7 +80,7 @@ public class MainActivity extends AppCompatActivity {
             mBottomSheetBehavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
         if (mNavController.getCurrentDestination() != null && isPhone)
             setPhoneNavigation();
-        if (Objects.requireNonNull(mNavController.getCurrentDestination()).getId() != R.id.propertyDetailFragment)
+        if (Objects.requireNonNull(mNavController.getCurrentDestination()).getId() != R.id.propertyDetailFragment && isPhone)
             mPropertyViewModel.setSelectedProperty(new Property());
     }
 
@@ -106,7 +101,6 @@ public class MainActivity extends AppCompatActivity {
                 break;
         }
     }
-
 
     @Override
     protected void onResume() {
@@ -152,7 +146,6 @@ public class MainActivity extends AppCompatActivity {
     private void initPhoneOrTablet() {
         if (getResources().getBoolean(R.bool.phone_device)) {
             setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
-            mUpdateButton = mBinding.updateButtonCustomView.updateButton;
             NavigationUI.setupWithNavController(mBinding.bottomNavBar, mNavController);
         } else {
             setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
@@ -257,15 +250,11 @@ public class MainActivity extends AppCompatActivity {
                 });
     }
 
-    private void setResetButtonVisibility(ImageButton resetButton, int visibility) {
-        resetButton.setVisibility(visibility);
-    }
-
     private void setBottomSheetButtonClickListener() {
 
         mBinding.bottomSheetLayout.bottomSheetCloseButton.setOnClickListener(v -> {
             mBottomSheetBehavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
-            setResetButtonVisibility(mBinding.topAppBar.resetFilterButton, View.GONE);
+            mBinding.topAppBar.resetFilterButton.setVisibility(View.GONE);
         });
 
         mBinding.bottomSheetLayout.bottomSheetOkButton.setOnClickListener(v -> {
@@ -299,40 +288,27 @@ public class MainActivity extends AppCompatActivity {
 
     @SuppressWarnings("ConstantConditions")//can't be null for phone
     protected void setMenuVisibility(@NonNull Boolean isVisible) {
-        if (isPhone) {
-            mBinding.topAppBar.setVisibility(isVisible ? View.VISIBLE : View.GONE);
+        if (isPhone)
             mBinding.bottomNavBar.setVisibility(isVisible ? View.VISIBLE : View.GONE);
-            mBinding.updateButtonCustomView.setVisibility(isVisible ? View.GONE : View.VISIBLE);
-        }
+
+        mBinding.topAppBar.setVisibility(isVisible ? View.VISIBLE : View.GONE);
+        mBinding.updateButtonCustomView.setVisibility(isVisible ? View.GONE : View.VISIBLE);
     }
 
     protected void initUpdateButton(boolean isForUpdate) {
-        if (isPhone) {
-            mUpdateButton.setImageResource(isForUpdate ?
-                    R.drawable.ic_custom_view_update_24
-                    : R.drawable.ic_custom_view_save_24);
+        mUpdateButton.setImageResource(isForUpdate ?
+                R.drawable.ic_custom_view_update_24
+                : R.drawable.ic_custom_view_save_24);
 
-            if (isForUpdate) mUpdateButton.setOnClickListener
-                    (v -> mNavController.navigate
-                            (R.id.action_propertyDetailFragment_to_addPropertyFragment));
-        }
+        if (isForUpdate) mUpdateButton.setOnClickListener
+                (v -> mNavController.navigate
+                        (R.id.action_propertyDetailFragment_to_addPropertyFragment));
+
     }
 
-    protected void initAddButtonForTablet(String TAG) {
-        if (!isPhone) {
-            mBinding.topAppBar.addPropertyButton.setImageResource(
-                    TAG.equals(AddPropertyFragment.TAG) ?
-                            R.drawable.ic_custom_view_save_24
-                            : TAG.equals(PropertyDetailFragment.TAG) ?
-                            R.drawable.ic_custom_view_update_24 :
-                            R.drawable.ic_top_bar_add);
-        }
+    protected void setSaveButtonClickListener(View.OnClickListener clickListener){
+        mUpdateButton.setOnClickListener(clickListener);
     }
-
-    protected void setAddButtonClickListener(View.OnClickListener clickListener){
-        mBinding.topAppBar.addButtonSetOnClickListener(clickListener);
-    }
-
     protected void hideSoftKeyboard(@NonNull View view) {
         InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
         assert imm != null;

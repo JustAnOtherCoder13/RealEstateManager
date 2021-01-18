@@ -5,5 +5,8 @@
     <dimen name="subtitle1">12sp</dimen>
     <dimen name="body1">9sp</dimen>
 
+    <dimen name="static_map_size">200dp</dimen>
+
+
 
 </resources>

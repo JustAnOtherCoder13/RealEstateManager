@@ -17,12 +17,12 @@ public class UpdateButtonCustomView extends ConstraintLayout {
 
     public UpdateButtonCustomView(@NonNull Context context, @Nullable AttributeSet attrs) {
         super(context, attrs);
-        updateButton = findViewById(R.id.custom_view_update_image_button);
         initView();
     }
 
     private void initView() {
         inflate(getContext(), R.layout.custom_view_update_button, this);
+        updateButton = findViewById(R.id.custom_view_update_image_button);
     }
 
 }

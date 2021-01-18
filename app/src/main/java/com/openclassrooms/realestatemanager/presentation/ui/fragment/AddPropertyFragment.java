@@ -64,7 +64,8 @@ public class AddPropertyFragment extends BaseFragment {
     public static final String TAG = AddPropertyFragment.class.getSimpleName();
 
     //TODO add loader on photo, init text view
-    //todo disable register button when clicked (avoid multiple click)
+    //todo disable register button when clicked (avoid multiple click) phone
+    //todo set edit text to 0 when add new property
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -75,7 +76,6 @@ public class AddPropertyFragment extends BaseFragment {
         setAppBarVisibility(false);
         initRecyclerView();
         setUpdateButtonIcon(false);
-        setAddButtonIcon(TAG);
         return mBinding.getRoot();
     }
 
@@ -85,10 +85,14 @@ public class AddPropertyFragment extends BaseFragment {
         isNewPropertyToPersist = Objects.requireNonNull(mPropertyViewModel.getSelectedProperty.getValue()).getAddress() == null;
         mPreviousSavedPropertyAddress = Objects.requireNonNull(mPropertyViewModel.getAllProperties.getValue()).get(mPropertyViewModel.getAllProperties.getValue().size() - 1).getAddress();
         mPropertyViewModel.isDataLoading.observe(getViewLifecycleOwner(), this::playLoader);
-        setUpdateButton();
         initClickListener();
         initView();
         initViewModel();
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
     }
 
     @Override
@@ -136,7 +140,9 @@ public class AddPropertyFragment extends BaseFragment {
                 case ADD_POINT_OF_INTEREST_COMPLETE:
                     if (Objects.requireNonNull(mNavController.getCurrentDestination()).getId() == R.id.addPropertyFragment) {
                         playLoader(false);
-                        mNavController.navigate(R.id.action_addPropertyFragment_to_propertyListFragment);
+                        if (getResources().getBoolean(R.bool.phone_device))
+                            mNavController.navigate(R.id.action_addPropertyFragment_to_propertyListFragment);
+                        else mNavController.navigate(R.id.mapsFragment);
                     }
                     break;
             }
@@ -158,10 +164,10 @@ public class AddPropertyFragment extends BaseFragment {
 
     private void initView() {
         initPropertyTypeDropDownMenu();
-        if (isNewPropertyToPersist){
+        if (isNewPropertyToPersist)
             mBinding.addPropertySoldLayout.getRoot().setVisibility(View.GONE);
+        else
             initViewValueWhenUpdate(mBinding.addPropertyInformationLayout, Objects.requireNonNull(mPropertyViewModel.getSelectedProperty.getValue()));
-        }
     }
 
     private void initViewValueWhenUpdate(@NonNull FragmentAddPropertyInformationLayoutBinding addPropertyInformationCustomView, @NonNull Property property) {
@@ -266,9 +272,7 @@ public class AddPropertyFragment extends BaseFragment {
                         mBinding.addPropertySoldLayout.addPropertySoldCheckbox.isChecked() ?
                                 View.VISIBLE : View.GONE));
 
-        if (getResources().getBoolean(R.bool.phone_device))
-        mUpdateButton.setOnClickListener(v -> initAddButtonClick());
-        else setAddButtonClickListener(v -> initAddButtonClick());
+        setSaveButtonOnClickListener(v -> initAddButtonClick());
     }
 
     private void initSelectPhotoToDeleteOnLongClickListener() {
@@ -381,7 +385,6 @@ public class AddPropertyFragment extends BaseFragment {
         propertyPhoto.setDescription(title);
         propertyPhoto.setPropertyId(isNewPropertyToPersist ? Objects.requireNonNull(mPropertyViewModel.getAllProperties.getValue()).size() + 1
                 : Objects.requireNonNull(mPropertyViewModel.getSelectedProperty.getValue()).getId());
-        Log.d("TAG", "createPropertyPhoto: " + mPropertyPhotos.size());
         mPropertyPhotos.add(propertyPhoto);
         mAdapter.updatePhotos(mImageHelper.propertyPhotosWithAddButton(mPropertyPhotos));
     }

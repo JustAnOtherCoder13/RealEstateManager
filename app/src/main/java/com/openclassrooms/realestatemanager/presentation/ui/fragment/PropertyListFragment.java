@@ -33,8 +33,6 @@ public class PropertyListFragment extends BaseFragment {
         mBinding = FragmentPropertyListBinding.inflate(inflater, container, false);
         mNavController = Navigation.findNavController(requireActivity(), R.id.nav_host_fragment);
         setAppBarVisibility(true);
-        setAddButtonIcon(TAG);
-        setAddButtonClickListener(null);
         initRecyclerView();
         return mBinding.getRoot();
     }

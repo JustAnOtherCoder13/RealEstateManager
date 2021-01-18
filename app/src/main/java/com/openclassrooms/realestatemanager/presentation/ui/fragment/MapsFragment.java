@@ -69,12 +69,10 @@ public class MapsFragment extends BaseFragment implements GoogleMap.OnInfoWindow
         mBinding.mapView.getMapAsync(this);
         mNavController = Navigation.findNavController(requireActivity(), R.id.nav_host_fragment);
         setAppBarVisibility(true);
-        setAddButtonIcon(TAG);
-        setAddButtonClickListener(null);
         return mBinding.getRoot();
     }
 
-
+//todo reduce icon size for tab
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);

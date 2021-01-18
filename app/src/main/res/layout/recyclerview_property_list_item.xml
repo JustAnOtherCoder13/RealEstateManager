@@ -16,6 +16,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
+    <!--todo no margin start for image view on phone-->
     <TextView
         android:id="@+id/property_item_type"
         style="@style/recycler_view_property_list_item_type"
