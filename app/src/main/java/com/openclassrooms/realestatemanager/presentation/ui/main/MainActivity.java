@@ -4,13 +4,10 @@ import android.Manifest;
 import android.content.Context;
 import android.content.pm.ActivityInfo;
 import android.content.pm.PackageManager;
-import android.graphics.Color;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.ImageButton;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -82,9 +79,7 @@ public class MainActivity extends AppCompatActivity {
         if (mBottomSheetBehavior.getState() == BottomSheetBehavior.STATE_EXPANDED)
             mBottomSheetBehavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
         //reset selected property if not on add or detail fragment
-        Log.i("TAG", "setTabBackNavigation: " + mNavController.getCurrentDestination());
-
-        if (Objects.requireNonNull(mNavController.getCurrentDestination().getId() != R.id.addPropertyFragment))
+        if (Objects.requireNonNull(mNavController.getCurrentDestination()).getId() != R.id.addPropertyFragment)
             mPropertyViewModel.setSelectedProperty(new Property());
         //set back press nav
         if (mNavController.getCurrentDestination() != null && isPhone) setPhoneBackNavigation();
@@ -251,8 +246,12 @@ public class MainActivity extends AppCompatActivity {
         RecyclerView.LayoutManager linearLayout = new LinearLayoutManager(this);
         mBinding.fragmentPropertyListRecyclerview.setLayoutManager(linearLayout);
         mBinding.fragmentPropertyListRecyclerview.setAdapter(adapter);
-        mPropertyViewModel.getAllProperties.observe(this, adapter::updateProperties);
+        mPropertyViewModel.getAllProperties.observe(this, properties -> {
+            adapter.updateProperties(properties);
+            mPropertyViewModel.setFirstPhotoForAllProperties();
+        });
         mPropertyViewModel.getFirstPhotoOfAllProperties.observe(this, adapter::updatePhotos);
+
         mPropertyViewModel.getSelectedProperty.observe(this, property -> {
             if (property.getAddress() != null) {
                 adapter.updateSelectedProperty(property);
@@ -262,7 +261,7 @@ public class MainActivity extends AppCompatActivity {
                 else {
                     mNavController.navigate(R.id.propertyDetailFragment);
                 }
-            }
+            }else adapter.updateSelectedProperty(new Property());
         });
     }
 

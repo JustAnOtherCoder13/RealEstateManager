@@ -30,6 +30,7 @@ public class PropertyRecyclerViewAdapter extends RecyclerView.Adapter<PropertyRe
 
     private List<Property> mProperties;
     private List<PropertyPhoto> mPhotos;
+    private List<View> mItems = new ArrayList<>();
     private Property selectedProperty;
     private Context context;
 
@@ -51,19 +52,26 @@ public class PropertyRecyclerViewAdapter extends RecyclerView.Adapter<PropertyRe
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
+        mItems.add(holder.itemView);
         final Property property = mProperties.get(position);
         if (!mPhotos.isEmpty()) {
-            PropertyPhoto photo = mPhotos.get(position);
-            setPropertyPhoto(holder, photo);
+            if (position<mPhotos.size()){
+                PropertyPhoto photo = mPhotos.get(position);
+                setPropertyPhoto(holder, photo);
+            }
         }
         holder.binding.propertyItemPrice.setText(String.valueOf(property.getPrice()));
         holder.binding.propertyItemTown.setText(property.getRegion());
         holder.binding.propertyItemType.setText(property.getPropertyType());
         TextView textView = holder.itemView.findViewById(R.id.property_item_price);
 
-        Log.i("TAG", "onBindViewHolder: "+selectedProperty);
         if (selectedProperty != null)
-            if (selectedProperty.getAddress() != null && this.selectedProperty.getId() == property.getId()) {
+            if (this.selectedProperty.getId() == property.getId()) {
+                //reset all views
+                for (View item : mItems) {
+                    item.setBackgroundColor(Color.TRANSPARENT);
+                    textView.setTextColor(context.getResources().getColor(R.color.custom_pink));
+                }
                 holder.itemView.setBackgroundColor(context.getResources().getColor(R.color.custom_pink));
                 textView.setTextColor(context.getResources().getColor(R.color.white));
             } else if (selectedProperty.getAddress() == null) {
