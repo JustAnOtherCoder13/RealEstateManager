@@ -154,7 +154,6 @@ public class PropertyViewModel extends BaseViewModel {
     }
 
     public void setAllPhotosForProperty(@NonNull Property property) {
-        Log.d("TAG", "setAllPhotosForProperty: ");
         compositeDisposable.add(
                 getAllPropertyPhotosForPropertyIdInteractor.getAllPhotosForPropertyId(property.getId())
                         .subscribeOn(schedulerProvider.getIo())
@@ -205,12 +204,16 @@ public class PropertyViewModel extends BaseViewModel {
                 addPropertyInteractor.addRoomProperty(property)
                         .subscribeOn(schedulerProvider.getIo())
                         .observeOn(schedulerProvider.getUi())
+                        .doOnComplete(()->completionStateMutableLD.postValue(CompletionState.ADD_PROPERTY_COMPLETE))
                         .andThen(getAllPropertiesInteractor.getAllProperties())
-                        .subscribe(properties -> {
-                            completionStateMutableLD.postValue(CompletionState.ADD_PROPERTY_COMPLETE);
-                            allPropertiesMutableLD.postValue(properties);
-                        }, throwable -> checkException()));
+                        .subscribe(properties -> allPropertiesMutableLD.postValue(properties)
+                                , throwable -> checkException()));
     }
+
+    private MutableLiveData<List<PropertyPhoto>> photoToSaveMutableLD = new MutableLiveData<>();
+    public LiveData<List<PropertyPhoto>> getPhotoToSave = photoToSaveMutableLD;
+    public void setPhotoToSave(List<PropertyPhoto> photosToSave){photoToSaveMutableLD.setValue(photosToSave);}
+
 
     public void updateProperty(Property property) {
         compositeDisposable.add(

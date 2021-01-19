@@ -238,8 +238,6 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
-    //todo don't show first image for tab
-    //todo fix multiple selected properties on tablet
     @SuppressWarnings("ConstantConditions")//already checked
     private void initRecyclerView() {
         adapter = new PropertyRecyclerViewAdapter(new ArrayList<>(), this);

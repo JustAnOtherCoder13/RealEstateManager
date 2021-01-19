@@ -65,6 +65,7 @@ public class PropertyRecyclerViewAdapter extends RecyclerView.Adapter<PropertyRe
         holder.binding.propertyItemType.setText(property.getPropertyType());
         TextView textView = holder.itemView.findViewById(R.id.property_item_price);
 
+        //TODO don't set text color when not clicked
         if (selectedProperty != null)
             if (this.selectedProperty.getId() == property.getId()) {
                 //reset all views
