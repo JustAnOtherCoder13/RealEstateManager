@@ -8,6 +8,7 @@
         <item name="colorAccent">@color/custom_pink</item>
     </style>
 
+
     <bool name="phone_device">true</bool>
 
     <!--todo theme all -->
@@ -396,6 +397,15 @@
 
     <style name="recyclerview_list_photo_item">
         <item name="android:scaleType">centerCrop</item>
+    </style>
+
+    <style name="currency_switch_style" parent="TextAppearance.RealEstateManagerStyles.Subtitle1">
+        <item name="android:textOn">@string/euro</item>
+        <item name="android:textOff">@string/dollar</item>
+        <item name="android:thumb">@drawable/currency_thumb</item>
+        <item name="showText">true</item>
+        <item name="track">@drawable/currency_track</item>
+        <item name="useMaterialThemeColors">false</item>
     </style>
 
 </resources>

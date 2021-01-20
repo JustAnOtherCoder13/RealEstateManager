@@ -30,6 +30,8 @@ import java.util.Currency;
 import java.util.List;
 import java.util.Locale;
 
+import static com.openclassrooms.realestatemanager.presentation.utils.Utils.convertDollarToEuro;
+
 public class PropertyRecyclerViewAdapter extends RecyclerView.Adapter<PropertyRecyclerViewAdapter.ViewHolder> {
 
     private List<Property> mProperties;
@@ -38,13 +40,17 @@ public class PropertyRecyclerViewAdapter extends RecyclerView.Adapter<PropertyRe
     private Property selectedProperty;
     private Currency currency;
     private Context context;
+    private Locale locale;
 
 
+    public void updateLocale(Locale locale){
+        this.locale = locale;
+        notifyDataSetChanged();
+    }
     public PropertyRecyclerViewAdapter(List<Property> mProperties, Context context) {
         this.mProperties = mProperties;
         this.context = context;
         this.mPhotos = new ArrayList<>();
-        currency = Currency.getInstance(Locale.US);
     }
 
 
@@ -58,6 +64,8 @@ public class PropertyRecyclerViewAdapter extends RecyclerView.Adapter<PropertyRe
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
+        if (locale==null)locale=Locale.US;
+        currency = Currency.getInstance(locale);
         mItems.add(holder.itemView);
         final Property property = mProperties.get(position);
         if (!mPhotos.isEmpty()) {
@@ -66,7 +74,7 @@ public class PropertyRecyclerViewAdapter extends RecyclerView.Adapter<PropertyRe
                 setPropertyPhoto(holder, photo);
             }
         }
-        holder.binding.propertyItemPrice.setText(formatWithSpace().format(property.getPrice()).concat(" ").concat(currency.getSymbol(Locale.US)));
+        holder.binding.propertyItemPrice.setText(convertedPrice(property));
         holder.binding.propertyItemTown.setText(property.getRegion());
         holder.binding.propertyItemType.setText(property.getPropertyType());
         TextView textView = holder.itemView.findViewById(R.id.property_item_price);
@@ -100,6 +108,16 @@ public class PropertyRecyclerViewAdapter extends RecyclerView.Adapter<PropertyRe
             super(binding.getRoot());
             this.binding = binding;
         }
+    }
+
+    public String convertedPrice(Property property){
+        int price;
+        if (locale==Locale.US){
+            price = property.getPrice();
+        }
+        else price = convertDollarToEuro(property.getPrice());
+
+        return formatWithSpace().format(price).concat(" ").concat(currency.getSymbol(locale));
     }
 
     public void updateProperties(List<Property> updatedProperties) {

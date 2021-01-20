@@ -35,6 +35,7 @@ import com.picone.core.domain.entity.Property;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 import java.util.Objects;
 
 import dagger.hilt.android.AndroidEntryPoint;
@@ -161,13 +162,18 @@ public class MainActivity extends AppCompatActivity {
 
     @SuppressWarnings("ConstantConditions")//can't be null on phone
     private void initPhoneOrTablet() {
-        if (getResources().getBoolean(R.bool.phone_device)) {
+        if (isPhone) {
             setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
             NavigationUI.setupWithNavController(mBinding.bottomNavBar, mNavController);
         } else {
             setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
             initRecyclerView();
             configureOnClickRecyclerView();
+            mBinding.currencySwitch.setOnClickListener(v -> {
+                adapter.updateLocale(mBinding.currencySwitch.isChecked() ?
+                        Locale.FRANCE
+                        : Locale.US);
+            });
         }
     }
 
@@ -259,7 +265,7 @@ public class MainActivity extends AppCompatActivity {
                 else {
                     mNavController.navigate(R.id.propertyDetailFragment);
                 }
-            }else adapter.updateSelectedProperty(new Property());
+            } else adapter.updateSelectedProperty(new Property());
         });
     }
 
