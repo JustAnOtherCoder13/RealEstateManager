@@ -118,7 +118,7 @@ public class PropertyViewModel extends BaseViewModel {
     }
 
     public void setPhotosToDelete(List<PropertyPhoto> photosToDelete) {
-        photosToDeleteMutableLD.setValue(photosToDelete);
+        photosToDeleteMutableLD.postValue(photosToDelete);
     }
 
     public void resetCompletionState() {
@@ -209,11 +209,6 @@ public class PropertyViewModel extends BaseViewModel {
                         .subscribe(properties -> allPropertiesMutableLD.postValue(properties)
                                 , throwable -> checkException()));
     }
-
-    private MutableLiveData<List<PropertyPhoto>> photoToSaveMutableLD = new MutableLiveData<>();
-    public LiveData<List<PropertyPhoto>> getPhotoToSave = photoToSaveMutableLD;
-    public void setPhotoToSave(List<PropertyPhoto> photosToSave){photoToSaveMutableLD.setValue(photosToSave);}
-
 
     public void updateProperty(Property property) {
         compositeDisposable.add(

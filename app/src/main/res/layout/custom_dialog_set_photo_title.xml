@@ -56,8 +56,8 @@
         android:hint="@string/description"
         android:inputType="text"
         app:layout_constraintBottom_toTopOf="@id/set_photo_back_button"
-        app:layout_constraintEnd_toEndOf="@id/set_photo_title_image_view"
-        app:layout_constraintStart_toStartOf="@id/set_photo_title_image_view"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="@id/guideline" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

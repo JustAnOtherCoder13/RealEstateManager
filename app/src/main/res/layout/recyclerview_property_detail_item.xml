@@ -2,28 +2,30 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="wrap_content"
-    android:layout_height="wrap_content">
+    android:layout_height="wrap_content"
+    android:paddingEnd="@dimen/little_marge"
+    android:paddingStart="@dimen/little_marge">
 
     <VideoView
         android:id="@+id/property_detail_item_video"
         android:layout_width="@dimen/thumbnail_size"
         android:layout_height="@dimen/thumbnail_size"
-        android:layout_marginStart="@dimen/little_marge"
-        android:layout_marginEnd="@dimen/little_marge"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"/>
 
     <ImageView
         android:id="@+id/property_detail_item_photo"
         android:layout_width="@dimen/thumbnail_size"
         android:layout_height="@dimen/thumbnail_size"
-        android:layout_marginStart="@dimen/little_marge"
-        android:layout_marginEnd="@dimen/little_marge"
         android:contentDescription="@string/property_detail_item_photo"
         android:scaleType="centerCrop"
         android:src="@drawable/img_contemporary_styled_house"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"/>
 
     <TextView
         android:id="@+id/property_detail_item_photo_description"
@@ -32,8 +34,8 @@
         android:layout_height="wrap_content"
         android:gravity="center"
         app:layout_constraintBottom_toBottomOf="@id/property_detail_item_photo"
-        app:layout_constraintEnd_toEndOf="@id/property_detail_item_photo"
-        app:layout_constraintStart_toStartOf="@id/property_detail_item_photo" />
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
 
     <CheckBox
         android:id="@+id/property_detail_item_check_box"

@@ -39,33 +39,32 @@ public class GetNearBySearchForPropertyLocationInteractor extends PropertyBaseIn
                 .map(nearBySearch -> nearBySearchToPointOfInterest(nearBySearch, propertyLocation.getPropertyId()));
     }
 
-    //TODO crash when no poi found
     private List<PointOfInterest> nearBySearchToPointOfInterest(@NonNull NearBySearch nearBySearch, int propertyId) {
-
         PointOfInterest pointOfInterest;
 
-        for (NearBySearchResult nearBySearchResult : nearBySearch.getNearBySearchResults()) {
-            pointOfInterest = getPointOfInterest(propertyId, nearBySearchResult);
-            if (pointOfInterests.isEmpty()) pointOfInterests.add(pointOfInterest);
-            else {
-                boolean isAlreadyKnown = true;
-                for (PointOfInterest pointOfInterestForProperty : pointOfInterests) {
-                    isAlreadyKnown = true;
-                    if (pointOfInterestForProperty.getLatitude() == pointOfInterest.getLatitude()
-                            && pointOfInterest.getLongitude() == pointOfInterestForProperty.getLongitude()
-                            && pointOfInterest.getType().equalsIgnoreCase(pointOfInterestForProperty.getType()))
-                        break;
-                    else isAlreadyKnown = false;
+        if (!nearBySearch.getNearBySearchResults().isEmpty())
+            for (NearBySearchResult nearBySearchResult : nearBySearch.getNearBySearchResults()) {
+                pointOfInterest = createPointOfInterest(propertyId, nearBySearchResult);
+                if (pointOfInterests.isEmpty()) pointOfInterests.add(pointOfInterest);
+                else {
+                    boolean isAlreadyKnown = true;
+                    for (PointOfInterest pointOfInterestForProperty : pointOfInterests) {
+                        isAlreadyKnown = true;
+                        if (pointOfInterestForProperty.getLatitude() == pointOfInterest.getLatitude()
+                                && pointOfInterest.getLongitude() == pointOfInterestForProperty.getLongitude()
+                                && pointOfInterest.getType().equalsIgnoreCase(pointOfInterestForProperty.getType()))
+                            break;
+                        else isAlreadyKnown = false;
+                    }
+                    if (!isAlreadyKnown) pointOfInterests.add(pointOfInterest);
                 }
-                if (!isAlreadyKnown) pointOfInterests.add(pointOfInterest);
             }
-        }
         return pointOfInterests;
     }
 
 
     @NonNull
-    private PointOfInterest getPointOfInterest(int propertyId, @NonNull NearBySearchResult nearBySearchResult) {
+    private PointOfInterest createPointOfInterest(int propertyId, @NonNull NearBySearchResult nearBySearchResult) {
         PointOfInterest pointOfInterest;
         pointOfInterest = new PointOfInterest();
         pointOfInterest.setPropertyId(propertyId);

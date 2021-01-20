@@ -147,6 +147,8 @@ public class AddPropertyFragment extends BaseFragment {
             }
         });
 
+        //todo show when sold
+        //todo don't update location when update photo too
         //todo fix height for custom media full screen on phone only
         //todo fix no title for video
 

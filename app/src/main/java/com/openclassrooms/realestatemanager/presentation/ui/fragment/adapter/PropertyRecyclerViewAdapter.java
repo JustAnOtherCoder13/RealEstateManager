@@ -151,6 +151,7 @@ public class PropertyRecyclerViewAdapter extends RecyclerView.Adapter<PropertyRe
                 });
     }
 
+    @NonNull
     private DecimalFormat formatWithSpace(){
         DecimalFormatSymbols symbols = new DecimalFormatSymbols();
         symbols.setGroupingSeparator(' ');
