@@ -151,8 +151,9 @@ public class AddPropertyFragment extends BaseFragment {
         //todo fix no title for video
 
         mPropertyViewModel.getAllPropertyPhotosForProperty.observe(getViewLifecycleOwner(), propertyPhotos -> {
-            mPropertyViewModel.setPhotoToSave(propertyPhotos);
-            mAdapter.updatePhotos(mImageHelper.propertyPhotosWithAddButton(propertyPhotos));
+            mPropertyPhotos.clear();
+            mPropertyPhotos.addAll(propertyPhotos);
+            mAdapter.updatePhotos(mImageHelper.propertyPhotosWithAddButton(mPropertyPhotos));
         });
 
         mPropertyViewModel.getPhotosToDelete.observe(getViewLifecycleOwner(), photosToDelete ->
@@ -174,6 +175,7 @@ public class AddPropertyFragment extends BaseFragment {
 
     private void initViewValueWhenUpdate(@NonNull FragmentAddPropertyInformationLayoutBinding addPropertyInformationCustomView, @NonNull Property property) {
         mPropertyViewModel.setPhotosToDelete(new ArrayList<>());
+
         EditText descriptionEditText = mBinding.addPropertyDescriptionLayout.addPropertyDescriptionEditText;
         AutoCompleteTextView propertyTypeDropDownMenu = mBinding.addPropertyInformationLayout.addPropertyInformationTypeCustomViewAutocompleteTextView;
         addPropertyInformationCustomView.addPropertyInformationPrice.setText(String.valueOf(property.getPrice()));
@@ -240,7 +242,7 @@ public class AddPropertyFragment extends BaseFragment {
                     if (isPermissionGrantedForRequestCode(CAMERA_PERMISSION_CODE)
                             && isPermissionGrantedForRequestCode(WRITE_PERMISSION_CODE)) {
                         Intent takeVideoIntent = new Intent(MediaStore.ACTION_VIDEO_CAPTURE);
-                        takeVideoIntent.putExtra(MediaStore.EXTRA_DURATION_LIMIT, 10);
+                        takeVideoIntent.putExtra(MediaStore.EXTRA_DURATION_LIMIT, 90);
                         startActivityForResult(takeVideoIntent, CAMERA_VIDEO_INTENT_REQUEST_CODE);
                         playLoader(true);
                     } else

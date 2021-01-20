@@ -23,8 +23,12 @@ import com.openclassrooms.realestatemanager.databinding.RecyclerviewPropertyList
 import com.picone.core.domain.entity.Property;
 import com.picone.core.domain.entity.PropertyPhoto;
 
+import java.text.DecimalFormat;
+import java.text.DecimalFormatSymbols;
 import java.util.ArrayList;
+import java.util.Currency;
 import java.util.List;
+import java.util.Locale;
 
 public class PropertyRecyclerViewAdapter extends RecyclerView.Adapter<PropertyRecyclerViewAdapter.ViewHolder> {
 
@@ -32,6 +36,7 @@ public class PropertyRecyclerViewAdapter extends RecyclerView.Adapter<PropertyRe
     private List<PropertyPhoto> mPhotos;
     private List<View> mItems = new ArrayList<>();
     private Property selectedProperty;
+    private Currency currency;
     private Context context;
 
 
@@ -39,6 +44,7 @@ public class PropertyRecyclerViewAdapter extends RecyclerView.Adapter<PropertyRe
         this.mProperties = mProperties;
         this.context = context;
         this.mPhotos = new ArrayList<>();
+        currency = Currency.getInstance(Locale.US);
     }
 
 
@@ -60,24 +66,24 @@ public class PropertyRecyclerViewAdapter extends RecyclerView.Adapter<PropertyRe
                 setPropertyPhoto(holder, photo);
             }
         }
-        holder.binding.propertyItemPrice.setText(String.valueOf(property.getPrice()));
+        holder.binding.propertyItemPrice.setText(formatWithSpace().format(property.getPrice()).concat(" ").concat(currency.getSymbol(Locale.US)));
         holder.binding.propertyItemTown.setText(property.getRegion());
         holder.binding.propertyItemType.setText(property.getPropertyType());
         TextView textView = holder.itemView.findViewById(R.id.property_item_price);
 
-        //TODO don't set text color when not clicked
         if (selectedProperty != null)
             if (this.selectedProperty.getId() == property.getId()) {
                 //reset all views
                 for (View item : mItems) {
+                    TextView itemYTextView = item.findViewById(R.id.property_item_price);
+                    itemYTextView.setTextColor(context.getResources().getColor(R.color.custom_pink));
                     item.setBackgroundColor(Color.TRANSPARENT);
-                    textView.setTextColor(context.getResources().getColor(R.color.custom_pink));
                 }
                 holder.itemView.setBackgroundColor(context.getResources().getColor(R.color.custom_pink));
                 textView.setTextColor(context.getResources().getColor(R.color.white));
             } else if (selectedProperty.getAddress() == null) {
-                holder.itemView.setBackgroundColor(Color.TRANSPARENT);
                 textView.setTextColor(context.getResources().getColor(R.color.custom_pink));
+                holder.itemView.setBackgroundColor(Color.TRANSPARENT);
             }
     }
 
@@ -125,6 +131,15 @@ public class PropertyRecyclerViewAdapter extends RecyclerView.Adapter<PropertyRe
                     public void onLoadCleared(@Nullable Drawable placeholder) {
                     }
                 });
+    }
+
+    private DecimalFormat formatWithSpace(){
+        DecimalFormatSymbols symbols = new DecimalFormatSymbols();
+        symbols.setGroupingSeparator(' ');
+        DecimalFormat df = new DecimalFormat();
+        df.setDecimalFormatSymbols(symbols);
+        df.setGroupingSize(3);
+        return df;
     }
 
 
