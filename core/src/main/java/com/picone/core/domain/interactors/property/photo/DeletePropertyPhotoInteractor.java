@@ -15,4 +15,10 @@ public class DeletePropertyPhotoInteractor extends PropertyBaseInteractor {
     public Completable deleteRoomPropertyPhoto(PropertyPhoto propertyPhoto) {
         return propertyDataSource.deletePropertyPhoto(propertyPhoto);
     }
+
+
+    public Completable deleteAllPhotoForProperty(int propertyId){
+        return propertyDataSource.deleteAllPhotoForProperty(propertyId);
+    }
+
 }

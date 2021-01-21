@@ -72,6 +72,11 @@ public class PropertyDaoImpl {
         return mPropertyRoomDao.deletePropertyPhoto(propertyPhoto);
     }
 
+    public Completable deleteAllPhotoForProperty(int propertyId){
+        return mPropertyRoomDao.deleteAllPhotoForProperty(propertyId);
+    }
+
+
     public Completable updateProperty(Property property) {
         return mPropertyRoomDao.updateProperty(property);
     }

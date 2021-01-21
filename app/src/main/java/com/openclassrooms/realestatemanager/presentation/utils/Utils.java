@@ -19,12 +19,11 @@ import static android.content.Context.LOCATION_SERVICE;
 
 public class Utils {
 
-//todo don't forget this class
-    //todo add currency, format numbers
     public static int convertDollarToEuro(int dollars){
         return (int) Math.round(dollars * 0.812);
     }
 
+    //todo convert dollar to euro and test
 
     public static boolean isGpsAvailable(@NonNull Context context){
         LocationManager locationManager = (LocationManager) context.getSystemService(LOCATION_SERVICE);
@@ -32,13 +31,14 @@ public class Utils {
         return locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER);
     }
 
-
     @NonNull
     public static Boolean isInternetAvailable(@NonNull Context context){
         WifiManager wifi = (WifiManager)context.getApplicationContext().getSystemService(Context.WIFI_SERVICE);
         assert wifi != null;
         return wifi.isWifiEnabled();
     }
+
+    //todo do a better method to check internet
 
     public static Date formatStringToDate(String dateStr){
         Date date = new Date();

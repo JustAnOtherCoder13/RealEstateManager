@@ -54,7 +54,7 @@ import static com.picone.core.utils.ConstantParameters.getTodayDate;
 public class AddPropertyFragment extends BaseFragment {
 
     private FragmentAddPropertyBinding mBinding;
-    private List<PropertyPhoto> mPropertyPhotos = new ArrayList<>();
+    private Property propertyToUpdate;
     private List<PropertyPhoto> mPhotosToDelete = new ArrayList<>();
     private boolean isNewPropertyToPersist;
     private String mPreviousSavedPropertyAddress;
@@ -64,6 +64,9 @@ public class AddPropertyFragment extends BaseFragment {
 
     //TODO add loader on photo, init text view
     //todo disable register button when clicked (avoid multiple click) phone
+    //todo send notification when add or update ok
+    //todo if sold, force to enter date
+    //todo don't save region if update and don't change address
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -99,6 +102,7 @@ public class AddPropertyFragment extends BaseFragment {
         super.onActivityResult(requestCode, resultCode, data);
         switch (requestCode) {
 
+            //manage returned media
             case CAMERA_PHOTO_INTENT_REQUEST_CODE:
                 if (resultCode == RESULT_OK) {
                     mImageHelper.saveImageInGallery();
@@ -127,37 +131,54 @@ public class AddPropertyFragment extends BaseFragment {
         mPropertyViewModel.resetCompletionState();
 
         if (!isNewPropertyToPersist) {
+            //if is not a new property set value for selected property and assign value to propertyToUpdate
+            propertyToUpdate = mPropertyViewModel.getSelectedProperty.getValue();
             mPropertyViewModel.setAllPhotosForProperty(Objects.requireNonNull(mPropertyViewModel.getSelectedProperty.getValue()));
             mPropertyViewModel.setPropertyLocationForProperty(Objects.requireNonNull(mPropertyViewModel.getSelectedProperty.getValue()));
-        } else mPropertyViewModel.setAllPhotosForProperty(new Property());
+        }
+        //else reset photo for property and assign value to propertyToUpdate
+        else {
+            propertyToUpdate = PROPERTY_TO_ADD(Objects.requireNonNull(mAgentViewModel.getAgent.getValue()));
+            mPropertyViewModel.setAllPhotosForProperty(new Property());
+        }
 
         mPropertyViewModel.getCompletionState.observe(getViewLifecycleOwner(), completionState -> {
             switch (completionState) {
+                //if add complete mean that we add new property, so add additional information
                 case ADD_PROPERTY_COMPLETE:
                     addNewPropertyAdditionalInformation();
                     break;
+                //when point of interest complete, mean that add or update is finish
                 case ADD_POINT_OF_INTEREST_COMPLETE:
                     if (Objects.requireNonNull(mNavController.getCurrentDestination()).getId() == R.id.addPropertyFragment) {
                         playLoader(false);
                         if (getResources().getBoolean(R.bool.phone_device))
-                            mNavController.navigate(R.id.action_addPropertyFragment_to_propertyListFragment);
-                        else mNavController.navigate(R.id.mapsFragment);
+                            mNavController.navigate(getResources().getBoolean(R.bool.phone_device) ?
+                                    R.id.action_addPropertyFragment_to_propertyListFragment
+                                    : R.id.mapsFragment);
                     }
                     break;
             }
         });
-
         //todo don't update location when update photo too
-
+        //update photo and set propertyToUpdate photo list
         mPropertyViewModel.getAllPropertyPhotosForProperty.observe(getViewLifecycleOwner(), propertyPhotos -> {
-            mPropertyPhotos.clear();
-            mPropertyPhotos.addAll(propertyPhotos);
-            mAdapter.updatePhotos(mImageHelper.propertyPhotosWithAddButton(mPropertyPhotos));
+            propertyToUpdate.setPropertyPhotos(propertyToUpdate.getPropertyPhotos().isEmpty() ?
+                    propertyPhotos//if propertyToUpdate have no photo
+                    : !propertyToUpdate.getPropertyPhotos().containsAll(propertyPhotos) ?
+                    propertyPhotos// if propertyToUpdate have photo but don' contain propertyPhotos
+                    : new ArrayList<>());
+            mAdapter.updatePhotos(mImageHelper.propertyPhotosWithAddButton(propertyToUpdate.getPropertyPhotos()));
         });
+        //assign value to base photoList to know if photo have changed before register
+        basePhotoList = mPropertyViewModel.getAllPropertyPhotosForProperty.getValue();
 
+        //todo how to remove observer
         mPropertyViewModel.getPhotosToDelete.observe(getViewLifecycleOwner(), photosToDelete ->
                 mBinding.addPropertyMediaLayout.detailCustomViewDeleteButton.setVisibility(photosToDelete.isEmpty() ? View.GONE : View.VISIBLE));
     }
+
+    private List<PropertyPhoto> basePhotoList;
 
     private void initRecyclerView() {
         mAdapter = new PhotoRecyclerViewAdapter(mImageHelper.propertyPhotosWithAddButton(new ArrayList<>()));
@@ -206,6 +227,7 @@ public class AddPropertyFragment extends BaseFragment {
             hideSoftKeyboard(mBinding.addPropertyInformationLayout.getRoot());
             if (!setTitleDialog.getText().trim().isEmpty()) {
                 createPropertyPhoto(setTitleDialog.getText(), isPhoto);
+                setTitleDialog.resetEditText();
                 setTitleDialog.dismiss();
             } else
                 Toast.makeText(requireContext(), "You have to enter a description before accept.", Toast.LENGTH_LONG).show();
@@ -261,13 +283,9 @@ public class AddPropertyFragment extends BaseFragment {
 
         mBinding.addPropertyMediaLayout.detailCustomViewDeleteButton.setOnClickListener(v -> {
             mAdapter.isPhotoHaveBeenDeleted(true);
-            if (mPropertyViewModel.getAllPropertyPhotosForProperty.getValue() != null) {
-                for (PropertyPhoto propertyPhoto : mPhotosToDelete)
-                    mPropertyPhotos.remove(propertyPhoto);
-
-                mAdapter.updatePhotos(mImageHelper.propertyPhotosWithAddButton(mPropertyPhotos));
-                mBinding.addPropertyMediaLayout.detailCustomViewDeleteButton.setVisibility(View.GONE);
-            }
+            propertyToUpdate.getPropertyPhotos().removeAll(mPhotosToDelete);
+            mAdapter.updatePhotos(mImageHelper.propertyPhotosWithAddButton(propertyToUpdate.getPropertyPhotos()));
+            mBinding.addPropertyMediaLayout.detailCustomViewDeleteButton.setVisibility(View.GONE);
         });
 
         mBinding.addPropertySoldLayout.addPropertySoldCheckbox.setOnClickListener(v ->
@@ -309,9 +327,9 @@ public class AddPropertyFragment extends BaseFragment {
             else {
                 Property originalProperty = Objects.requireNonNull(mPropertyViewModel.getSelectedProperty.getValue());
 
-                if (!mPhotosToDelete.isEmpty()) deleteSelectedPhotos();
-
-                if (!mPropertyPhotos.isEmpty()) persistAllNewPhotos();
+                if (!propertyToUpdate.getPropertyPhotos().containsAll(basePhotoList)
+                        || propertyToUpdate.getPropertyPhotos().size() != basePhotoList.size())
+                    persistAllNewPhotos();
 
                 if (isAddressHaveChanged(originalProperty))
                     UpdatePropertyWhenAddressChange(originalProperty);
@@ -378,6 +396,7 @@ public class AddPropertyFragment extends BaseFragment {
 
     //___________________________________HELPERS_____________________________________________
 
+    //todo certainly here cause pb when update
     private void createPropertyPhoto(String title, boolean isPhoto) {
         PropertyPhoto propertyPhoto = new PropertyPhoto();
         if (isPhoto)
@@ -387,8 +406,8 @@ public class AddPropertyFragment extends BaseFragment {
         propertyPhoto.setDescription(title);
         propertyPhoto.setPropertyId(isNewPropertyToPersist ? Objects.requireNonNull(mPropertyViewModel.getAllProperties.getValue()).size() + 1
                 : Objects.requireNonNull(mPropertyViewModel.getSelectedProperty.getValue()).getId());
-        mPropertyPhotos.add(propertyPhoto);
-        mAdapter.updatePhotos(mImageHelper.propertyPhotosWithAddButton(mPropertyPhotos));
+        propertyToUpdate.getPropertyPhotos().add(propertyPhoto);
+        mAdapter.updatePhotos(mImageHelper.propertyPhotosWithAddButton(propertyToUpdate.getPropertyPhotos()));
     }
 
     @NonNull
@@ -416,24 +435,18 @@ public class AddPropertyFragment extends BaseFragment {
 
     private void setPhotoToDeleteList(int position, @NonNull CheckBox selectToDeleteCheckBox) {
         int indexForExistingMedia = position - 1;
-        List<PropertyPhoto> existingMediaForProperty = mPropertyViewModel.getAllPropertyPhotosForProperty.getValue();
-        assert existingMediaForProperty != null;
-        if (selectToDeleteCheckBox.isChecked() && !mPhotosToDelete.contains(existingMediaForProperty.get(indexForExistingMedia)))
-            mPhotosToDelete.add(existingMediaForProperty.get(indexForExistingMedia));
+        if (selectToDeleteCheckBox.isChecked() &&
+                !mPhotosToDelete.contains(propertyToUpdate.getPropertyPhotos().get(indexForExistingMedia)))
+            mPhotosToDelete.add(propertyToUpdate.getPropertyPhotos().get(indexForExistingMedia));
         else if (!mPhotosToDelete.isEmpty())
-            mPhotosToDelete.remove(existingMediaForProperty.get(indexForExistingMedia));
+            mPhotosToDelete.remove(propertyToUpdate.getPropertyPhotos().get(indexForExistingMedia));
         mPropertyViewModel.setPhotosToDelete(mPhotosToDelete);
     }
 
     private void persistAllNewPhotos() {
-        Log.i("TAG", "persistAllNewPhotos: "+mPropertyPhotos);
-        for (PropertyPhoto propertyPhoto : mPropertyPhotos)
+        mPropertyViewModel.resetPhotoForProperty(propertyToUpdate);
+        for (PropertyPhoto propertyPhoto : propertyToUpdate.getPropertyPhotos())
             mPropertyViewModel.addPropertyPhoto(propertyPhoto);
-    }
-
-    private void deleteSelectedPhotos() {
-        for (PropertyPhoto propertyPhoto : mPhotosToDelete)
-            mPropertyViewModel.deletePropertyPhoto(propertyPhoto);
     }
 
     //___________________________________BOOLEAN_____________________________________________
@@ -459,7 +472,7 @@ public class AddPropertyFragment extends BaseFragment {
                 && !binding.addPropertyInformationNumberOfBedrooms.isEditTextEmpty()
                 && !binding.addPropertyInformationNumberOfRooms.isEditTextEmpty()
                 && !binding.addPropertyInformationPrice.isEditTextEmpty()
-                && !mPropertyPhotos.isEmpty();
+                && !propertyToUpdate.getPropertyPhotos().isEmpty();
     }
 
     private boolean isNewPropertyAddressNotEqualPreviousSavedPropertyAddress(@NonNull Property property) {

@@ -7,6 +7,9 @@ import androidx.room.ForeignKey;
 import androidx.room.Ignore;
 import androidx.room.PrimaryKey;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import static com.picone.core.utils.ConstantParameters.propertyTable;
 
 @Entity(tableName = propertyTable, foreignKeys = @ForeignKey(entity = RealEstateAgent.class,
@@ -38,6 +41,9 @@ public class Property {
     private String soldFrom;
 
     @Ignore
+    List<PropertyPhoto> propertyPhotos = new ArrayList<>();
+
+    @Ignore
     public Property() {
     }
 
@@ -56,6 +62,14 @@ public class Property {
         this.isSold = isSold;
         this.enterOnMarket = enterOnMarket;
         this.soldFrom = soldFrom;
+    }
+
+    public List<PropertyPhoto> getPropertyPhotos() {
+        return propertyPhotos;
+    }
+
+    public void setPropertyPhotos(List<PropertyPhoto> propertyPhotos) {
+        this.propertyPhotos = propertyPhotos;
     }
 
     public int getId() {

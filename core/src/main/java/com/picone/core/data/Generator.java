@@ -39,8 +39,8 @@ public abstract class Generator {
     }
 
     private static List<Property> PROPERTIES = Arrays.asList(
-            new Property(1, 1, "Avenue Henry Barbusse, Les Tilleuls, 13250 Saint Chamas","Bouches-du-rhône", "cotage",500,15,560000,"First house description",6,3,false,"30/06/2020","0"),
-            new Property(2, 1, "Property2 address","Bouches-du-rhône", "penthouse",200,7,450000,"Second house description",3,1,false,"15/10/2020","0")
+            new Property(1, 1, "Avenue Henry Barbusse, Les Tilleuls, 13250 Saint Chamas","Bouches-du-rhône", "cotage",500,15,560000,"First house description",6,3,false,"30/06/2020",""),
+            new Property(2, 1, "Property2 address","Bouches-du-rhône", "penthouse",200,7,450000,"Second house description",3,1,false,"15/10/2020","")
     );
 
     public static List<Property> generateProperties() {

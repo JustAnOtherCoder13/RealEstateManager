@@ -306,6 +306,15 @@ public class PropertyViewModel extends BaseViewModel {
                         .subscribe(propertyPhotos -> allPhotosForPropertyMutableLD.postValue(propertyPhotos)));
     }
 
+    public void resetPhotoForProperty(@NonNull Property property){
+        compositeDisposable.add(
+                deletePropertyPhotoInteractor.deleteAllPhotoForProperty(property.getId())
+                .subscribeOn(schedulerProvider.getIo())
+                .observeOn(schedulerProvider.getUi())
+                .subscribe(()->{},throwable -> Log.e("TAG", "resetPhotoForProperty: "+throwable ))
+        );
+    }
+
     //___________________________________MAPS__________________________________
 
     public void setPropertyLocationForPropertyAddress(@NonNull Property property) {

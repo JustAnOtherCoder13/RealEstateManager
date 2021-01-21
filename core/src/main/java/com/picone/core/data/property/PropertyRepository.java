@@ -77,6 +77,10 @@ public class PropertyRepository {
         return propertyDao.deletePropertyPhoto(propertyPhoto);
     }
 
+    public Completable deleteAllPhotoForProperty(int propertyId){
+        return propertyDao.deleteAllPhotoForProperty(propertyId);
+    }
+
     public Completable updateProperty(Property property) {
         return propertyDao.updateProperty(property);
     }

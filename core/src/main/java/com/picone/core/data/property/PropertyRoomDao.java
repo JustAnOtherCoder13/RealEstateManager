@@ -56,6 +56,9 @@ public interface PropertyRoomDao {
     @Delete
     Completable deletePropertyPhoto(PropertyPhoto propertyPhoto);
 
+    @Query("DELETE FROM property_photo_table WHERE propertyId = :propertyId")
+    Completable deleteAllPhotoForProperty(int propertyId);
+
     @Update
     Completable updateProperty(Property property);
 

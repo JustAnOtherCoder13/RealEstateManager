@@ -78,8 +78,6 @@ public class CustomMediaSetTitleDialog extends Dialog implements android.view.Vi
         isPhoto(false);
         video.setVideoURI(videoPath);
         mVideoPath = PathUtil.getPath(context, videoPath);
-        //TODO change
-        description.setText(R.string.app_name);
         video.start();
     }
 
@@ -91,6 +89,9 @@ public class CustomMediaSetTitleDialog extends Dialog implements android.view.Vi
     public String getText() {
         if (description.getText() != null) return description.getText().toString();
         else return " ";
+    }
+    public void resetEditText(){
+        description.setText(" ");
     }
 
     private void isPhoto(boolean isPhoto) {
