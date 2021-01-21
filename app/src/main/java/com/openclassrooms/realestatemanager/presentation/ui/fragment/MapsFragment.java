@@ -80,7 +80,6 @@ public class MapsFragment extends BaseFragment implements GoogleMap.OnInfoWindow
         super.onViewCreated(view, savedInstanceState);
         initMapView(savedInstanceState);
         mPropertyViewModel.setAllProperties();
-        mPropertyViewModel.setAllPointOfInterestForProperty(new Property());
         placePropertyMarkers();
     }
 
@@ -115,6 +114,7 @@ public class MapsFragment extends BaseFragment implements GoogleMap.OnInfoWindow
         }
     }
 
+    //todo remove cause already in main
     private void requestLocationPermission() {
         ActivityCompat.requestPermissions(this.requireActivity(),
                 new String[]{ACCESS_FINE_LOCATION},
@@ -155,10 +155,6 @@ public class MapsFragment extends BaseFragment implements GoogleMap.OnInfoWindow
 
     private void initMarkersValue(@NonNull List<Property> allProperties) {
         mMap.clear();
-        if (!Objects.requireNonNull(mPropertyViewModel.getAllPointOfInterestForProperty.getValue()).isEmpty())
-            removePointOfInterest();
-        mPointOfInterestMarkers.clear();
-
         for (Property property : allProperties)
             mPropertyViewModel.setPropertyLocationForProperty(property);
 
@@ -166,8 +162,7 @@ public class MapsFragment extends BaseFragment implements GoogleMap.OnInfoWindow
             if (!marker.isInfoWindowShown()) marker.showInfoWindow();
             if (isPropertyMarker(marker)) {
                 setUpMapPosition(marker.getPosition(), MAPS_CAMERA_NEAR_ZOOM);
-                mPropertyViewModel.setAllPointOfInterestForProperty(getPropertyForId(marker.getTitle()));
-                placePointOfInterestMarkersForClickedProperty();
+                placePointOfInterestMarkersForClickedProperty(getPropertyForId(marker.getTitle()));
             }
             return true;
         });
@@ -190,19 +185,10 @@ public class MapsFragment extends BaseFragment implements GoogleMap.OnInfoWindow
     }
 
 
-    private void placePointOfInterestMarkersForClickedProperty() {
-        count = 0;
+    private void placePointOfInterestMarkersForClickedProperty(@NonNull Property property) {
         removePointOfInterest();
-        mPropertyViewModel.getAllPointOfInterestForProperty.observe(getViewLifecycleOwner(), allPointOfInterests -> {
-            count++;
-            //count cause pass first for last clicked marker, and only the second time pass for the good property
-            if (count > 1) {
-                mPointOfInterestMarkers.clear();
-                if (!allPointOfInterests.isEmpty())
-                    for (PointOfInterest pointOfInterest : allPointOfInterests)
-                        createPointOfInterestMarker(pointOfInterest);
-            }
-        });
+        for (PointOfInterest pointOfInterest:property.getPointOfInterests())
+            createPointOfInterestMarker(pointOfInterest);
     }
 
     //----------------------------------HELPERS----------------------------------------------
@@ -224,7 +210,7 @@ public class MapsFragment extends BaseFragment implements GoogleMap.OnInfoWindow
                     public void onResourceReady(@NonNull Drawable resource, @Nullable Transition<? super Drawable> transition) {
                         pointOfInterestMarkerOptions.icon(BitmapDescriptorFactory.fromBitmap(getBitmapFromVectorOrDrawable(requireContext(), resource)));
                         mMarkerToAdd = mMap.addMarker(pointOfInterestMarkerOptions);
-                        updateMarkerList(mMarkerToAdd);
+                        mPointOfInterestMarkers.add(mMarkerToAdd);
                     }
 
                     @Override
@@ -233,23 +219,12 @@ public class MapsFragment extends BaseFragment implements GoogleMap.OnInfoWindow
                 });
     }
 
-    private void updateMarkerList(Marker marker) {
-        if (!mPointOfInterestMarkers.contains(marker)) mPointOfInterestMarkers.add(marker);
-    }
-
     private boolean isPropertyMarker(@NonNull Marker marker) {
         return getPropertyForId(marker.getTitle()).getAddress() != null;
     }
 
     private void removePointOfInterest() {
-        List<PointOfInterest> pointOfInterests = mPropertyViewModel.getAllPointOfInterestForProperty.getValue();
-        if (pointOfInterests != null) {
-            for (Marker marker1 : mPointOfInterestMarkers)
-                for (PointOfInterest pointOfInterest : pointOfInterests) {
-                    if (marker1.getSnippet().equalsIgnoreCase(pointOfInterest.getName())) {
-                        marker1.remove();
-                    }
-                }
+       for (Marker marker:mPointOfInterestMarkers)
+           marker.remove();
         }
-    }
 }

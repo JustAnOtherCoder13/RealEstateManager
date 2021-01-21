@@ -41,7 +41,10 @@ public class Property {
     private String soldFrom;
 
     @Ignore
-    List<PropertyPhoto> propertyPhotos = new ArrayList<>();
+    private List<PropertyPhoto> propertyPhotos = new ArrayList<>();
+    @Ignore
+    private List<PointOfInterest> pointOfInterests = new ArrayList<>();
+
 
     @Ignore
     public Property() {
@@ -70,6 +73,14 @@ public class Property {
 
     public void setPropertyPhotos(List<PropertyPhoto> propertyPhotos) {
         this.propertyPhotos = propertyPhotos;
+    }
+
+    public List<PointOfInterest> getPointOfInterests() {
+        return pointOfInterests;
+    }
+
+    public void setPointOfInterests(List<PointOfInterest> pointOfInterests) {
+        this.pointOfInterests = pointOfInterests;
     }
 
     public int getId() {

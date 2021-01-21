@@ -137,7 +137,7 @@ public class PropertyViewModel extends BaseViewModel {
                         .subscribe(properties ->{
                             allPropertiesMutableLD.setValue(properties);
                             for (Property property:properties)
-                            setPhotoForProperty(property);
+                            addPhotoAndPointOfInterestForProperty(property);
                         }));
     }
 
@@ -329,12 +329,16 @@ public class PropertyViewModel extends BaseViewModel {
     }
 
 
-    private void setPhotoForProperty(@NonNull Property property){
+    private void addPhotoAndPointOfInterestForProperty(@NonNull Property property){
         compositeDisposable.add(
                 getAllPropertyPhotosForPropertyIdInteractor.getAllPhotosForPropertyId(property.getId())
                         .subscribeOn(schedulerProvider.getIo())
                         .observeOn(schedulerProvider.getUi())
-                        .subscribe(property::setPropertyPhotos)
+                        .flatMap(propertyPhotos -> {
+                            property.setPropertyPhotos(propertyPhotos);
+                            return getAllPointOfInterestForPropertyIdInteractor.getAllPointOfInterestForPropertyId(property.getId());
+                        })
+                        .subscribe(property::setPointOfInterests)
         );
     }
 }

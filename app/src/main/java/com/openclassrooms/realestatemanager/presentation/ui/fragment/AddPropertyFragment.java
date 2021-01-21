@@ -163,15 +163,6 @@ public class AddPropertyFragment extends BaseFragment {
             }
         });
         //todo don't update location when update photo too
-       /* //update photo and set propertyToUpdate photo list
-        mPropertyViewModel.getAllPropertyPhotosForProperty.observe(getViewLifecycleOwner(), propertyPhotos -> {
-            propertyToUpdate.setPropertyPhotos(propertyToUpdate.getPropertyPhotos().isEmpty() ?
-                    propertyPhotos//if propertyToUpdate have no photo
-                    : !propertyToUpdate.getPropertyPhotos().containsAll(propertyPhotos) ?
-                    propertyPhotos// if propertyToUpdate have photo but don' contain propertyPhotos
-                    : new ArrayList<>());
-            mAdapter.updatePhotos(mImageHelper.propertyPhotosWithAddButton(propertyToUpdate.getPropertyPhotos()));
-        });*/
         //assign value to base photoList to know if photo have changed before register
         basePhotoList = new ArrayList<>(propertyToUpdate.getPropertyPhotos());
 

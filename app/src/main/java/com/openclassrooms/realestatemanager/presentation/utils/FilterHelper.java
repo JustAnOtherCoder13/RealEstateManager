@@ -1,15 +1,11 @@
 package com.openclassrooms.realestatemanager.presentation.utils;
 
-import android.content.Context;
-
 import androidx.annotation.NonNull;
 
 import com.openclassrooms.realestatemanager.R;
-import com.openclassrooms.realestatemanager.databinding.ActivityMainBinding;
 import com.openclassrooms.realestatemanager.databinding.BottomSheetFilterLayoutBinding;
 import com.openclassrooms.realestatemanager.databinding.BottomSheetPropertyTypeLayoutBinding;
 import com.openclassrooms.realestatemanager.databinding.CustomBottomSheetPointOfInterestLayoutBinding;
-import com.openclassrooms.realestatemanager.presentation.ui.main.MainActivity;
 import com.openclassrooms.realestatemanager.presentation.utils.customView.CustomBottomSheetRangeSlider;
 import com.picone.core.domain.entity.PointOfInterest;
 import com.picone.core.domain.entity.Property;
@@ -28,7 +24,7 @@ public class FilterHelper {
     private List<String> requestPropertyType;
     private List<PropertyPhoto> allPropertiesPhotos = new ArrayList<>();
     private List<PointOfInterest> allPointsOfInterest = new ArrayList<>();
-    private List<Property> filteredValues;
+    private List<Property> propertiesTempValue;
     private List<Property> filteredProperty;
 
 
@@ -99,27 +95,20 @@ public class FilterHelper {
     }
 
     private void filterForNumberOfPhoto() {
-        filteredValues = new ArrayList<>();
+        propertiesTempValue = new ArrayList<>();
         if (!bottomSheetFilterLayout.filterPropertyNumberOfPhotoSpinner.getText().trim().isEmpty())
+            // check property that don't match request
             for (Property property : filteredProperty) {
-                // count photo corresponding to property
-                int numberOfPhotosForProperty = 0;
-                for (PropertyPhoto propertyPhoto : allPropertiesPhotos) {
-                    if (property.getId() == propertyPhoto.getPropertyId()) {
-                        numberOfPhotosForProperty++;
-                    }
-                }
-                //add them to a list if don't match filter
-                if (numberOfPhotosForProperty < Integer.parseInt(bottomSheetFilterLayout.filterPropertyNumberOfPhotoSpinner.getText()))
-                    filteredValues.add(property);
+                if (property.getPropertyPhotos().size() < Integer.parseInt(bottomSheetFilterLayout.filterPropertyNumberOfPhotoSpinner.getText()))
+                    propertiesTempValue.add(property);
             }
         //apply filter
-        if (!filteredValues.isEmpty()) filteredProperty.removeAll(filteredValues);
+        if (!propertiesTempValue.isEmpty()) filteredProperty.removeAll(propertiesTempValue);
         filterForPointOfInterest();
     }
 
     private void filterForPointOfInterest() {
-        filteredValues = new ArrayList<>();
+        propertiesTempValue = new ArrayList<>();
         if (bottomSheetFilterLayout.bottomSheetPointOfInterestInclude.schoolCheckBox.checkBox.isChecked()
                 || bottomSheetFilterLayout.bottomSheetPointOfInterestInclude.restaurantCheckBox.checkBox.isChecked()
                 || bottomSheetFilterLayout.bottomSheetPointOfInterestInclude.supermarketCheckBox.checkBox.isChecked()) {
@@ -139,28 +128,28 @@ public class FilterHelper {
     }
 
     private void filterForOnMarketFrom() {
-        filteredValues = new ArrayList<>();
+        propertiesTempValue = new ArrayList<>();
         if (!bottomSheetFilterLayout.bottomSheetOnMarketFrom.getDate().equalsIgnoreCase(bottomSheetFilterLayout.getRoot().getResources().getString(R.string.dd_mm_yyyy)))
             for (Property property : filteredProperty) {
                 //check if property don't match request
                 if (formatStringToDate(property.getEnterOnMarket())
                         .before(formatStringToDate(bottomSheetFilterLayout.bottomSheetOnMarketFrom.getDate()))) {
-                    filteredValues.add(property);
+                    propertiesTempValue.add(property);
                 }
             }
         //apply filter
-        if (!filteredValues.isEmpty()) filteredProperty.removeAll(filteredValues);
+        if (!propertiesTempValue.isEmpty()) filteredProperty.removeAll(propertiesTempValue);
         filterForRangeSlider();
     }
 
     private void filterForRangeSlider() {
-        filteredValues = new ArrayList<>();
+        propertiesTempValue = new ArrayList<>();
         for (Property property : filteredProperty) {
             filterForRangeSlider(bottomSheetFilterLayout.filterPropertyLocationPriceRangeSlider, property.getPrice(), property);
             filterForRangeSlider(bottomSheetFilterLayout.filterPropertyLocationSurfaceRangerSlider, property.getPropertyArea(), property);
             filterForRangeSlider(bottomSheetFilterLayout.filterPropertyLocationRoomRangerSlider, property.getNumberOfRooms(), property);
         }
-        if (!filteredValues.isEmpty()) filteredProperty.removeAll(filteredValues);
+        if (!propertiesTempValue.isEmpty()) filteredProperty.removeAll(propertiesTempValue);
     }
 
     //--------------------------------------LIST HELPERS--------------------------------------------------------
@@ -211,46 +200,50 @@ public class FilterHelper {
     //--------------------------------------FILTER HELPERS--------------------------------------------------------
 
     private void filterForType() {
-        filteredValues = new ArrayList<>();
+        propertiesTempValue = new ArrayList<>();
         for (String requestPropertyType : requestPropertyType) {
             //check if property match request
             for (Property property : filteredProperty) {
-                if (property.getPropertyType().equalsIgnoreCase(requestPropertyType) && !filteredValues.contains(property)) {
-                    filteredValues.add(property);
+                if (property.getPropertyType().equalsIgnoreCase(requestPropertyType) && !propertiesTempValue.contains(property)) {
+                    propertiesTempValue.add(property);
                 }
             }
 
         }
         //apply filter
         filteredProperty.clear();
-        filteredProperty.addAll(filteredValues);
+        filteredProperty.addAll(propertiesTempValue);
     }
 
 
     private void filterForRangeSlider(@NonNull CustomBottomSheetRangeSlider rangeSlider, float valueToCompare, Property property) {
         if (valueToCompare < rangeSlider.getStartValue()
                 || valueToCompare > rangeSlider.getEndValue())
-            filteredValues.add(property);
+            propertiesTempValue.add(property);
     }
 
     private void filterForPointOfInterestType() {
         for (int type = 0; type < requestPointsOfInterests.size(); type++) {
-            if (filteredValues.isEmpty() && type == 0) filterForFirstType(type);
-            else if (filteredValues.isEmpty() && type > 1) break;
+            // if no value in tempValue and on 1st request type
+            if (propertiesTempValue.isEmpty() && type == 0) filterForFirstType(type);
+            // if no value in temp value and not first type, means that no property match first type, so break to return empty list
+            else if (propertiesTempValue.isEmpty() && type > 1) break;
+            //else apply filter for following type
             else filterIfNotFirstType(type);
         }
+        //apply final filtered value
         filteredProperty.clear();
-        filteredProperty.addAll(filteredValues);
+        filteredProperty.addAll(propertiesTempValue);
 
     }
 
     private void filterForFirstType(int type) {
+        //for first Point of interest type, add to value if match
         for (Property property : filteredProperty)
-            for (PointOfInterest pointOfInterest : allPointsOfInterest) {
+            for (PointOfInterest pointOfInterest : property.getPointOfInterests()) {
                 if (pointOfInterest.getType().contains(requestPointsOfInterests.get(type))
-                        && property.getId() == pointOfInterest.getPropertyId()
-                        && !filteredValues.contains(property)) {
-                    filteredValues.add(property);
+                        && !propertiesTempValue.contains(property)) {
+                    propertiesTempValue.add(property);
                 }
             }
     }
@@ -258,20 +251,19 @@ public class FilterHelper {
     private void filterIfNotFirstType(int type) {
         for (Property property : filteredProperty) {
             boolean isFilteredPropertyHasRequestPointOfInterest = false;
-            //for each property check if at least one point of interest match request type
-            for (PointOfInterest pointOfInterest : allPointsOfInterest) {
+            //for each property in filtered list check if at least one point of interest match request type
+            for (PointOfInterest pointOfInterest : property.getPointOfInterests()) {
                 if (pointOfInterest.getType().contains(requestPointsOfInterests.get(type))
-                        && property.getId() == pointOfInterest.getPropertyId())
-                    //filtered values have values as it's not first type to apply filter
-                    //if property is already known and match request it's ok
-                    if (filteredValues.contains(property)) {
+                && propertiesTempValue.contains(property)) {
+                    //temp value got properties that match past point of interest
+                    //if match actual type and is in list, means that match all request type
                         isFilteredPropertyHasRequestPointOfInterest = true;
                         break;
                     }
             }
-            //else that means that property match first type but not this type, so remove from value
+            //else that means that property match first type but not actual type, so remove from value
             if (!isFilteredPropertyHasRequestPointOfInterest)
-                filteredValues.remove(property);
+                propertiesTempValue.remove(property);
         }
     }
 
