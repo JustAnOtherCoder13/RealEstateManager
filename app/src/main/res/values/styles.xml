@@ -413,4 +413,17 @@
         <item name="android:background">?attr/colorControlNormal</item>
     </style>
 
+    <style name="property_item_sold">
+        <item name="android:background">@color/custom_pink_dark</item>
+        <item name="android:textAppearance">
+            @style/TextAppearance.RealEstateManagerStyles.Headline1
+        </item>
+        <item name="android:textColor">@color/white</item>
+        <item name="android:textAlignment">center</item>
+        <item name="android:alpha">0.7</item>
+        <item name="android:paddingTop">@dimen/little_marge</item>
+        <item name="android:paddingBottom">@dimen/little_marge</item>
+        <item name="android:visibility">gone</item>
+    </style>
+
 </resources>

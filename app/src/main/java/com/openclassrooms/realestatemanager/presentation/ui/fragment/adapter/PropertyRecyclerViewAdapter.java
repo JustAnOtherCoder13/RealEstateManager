@@ -93,6 +93,9 @@ public class PropertyRecyclerViewAdapter extends RecyclerView.Adapter<PropertyRe
                 textView.setTextColor(context.getResources().getColor(R.color.custom_pink));
                 holder.itemView.setBackgroundColor(Color.TRANSPARENT);
             }
+        holder.binding.propertyItemSold.setVisibility(property.getSoldFrom().trim().isEmpty()?
+                View.GONE
+                :View.VISIBLE);
     }
 
     @Override

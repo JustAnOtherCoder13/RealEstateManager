@@ -16,7 +16,16 @@
         app:layout_constraintTop_toTopOf="parent"
         style="@style/recyclerview_list_photo_item" />
 
-    <!--todo no margin start for image view on phone-->
+    <TextView
+        android:id="@+id/property_item_sold"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        app:layout_constraintStart_toStartOf="@id/property_item_photo"
+        app:layout_constraintEnd_toEndOf="@id/property_item_photo"
+        app:layout_constraintBottom_toBottomOf="@id/property_item_photo"
+        android:text="@string/sold"
+        style="@style/property_item_sold" />
+
     <TextView
         android:id="@+id/property_item_type"
         style="@style/recycler_view_property_list_item_type"

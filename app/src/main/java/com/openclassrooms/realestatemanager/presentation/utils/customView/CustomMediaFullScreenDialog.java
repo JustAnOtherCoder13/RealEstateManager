@@ -16,6 +16,7 @@ import androidx.annotation.Nullable;
 import androidx.core.content.res.ResourcesCompat;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.RequestOptions;
 import com.bumptech.glide.request.target.CustomTarget;
 import com.bumptech.glide.request.transition.Transition;
 import com.openclassrooms.realestatemanager.R;
@@ -59,6 +60,7 @@ public class CustomMediaFullScreenDialog extends Dialog implements android.view.
         if (PathUtil.isImageFileFromPath(mediaPath))
             Glide.with(photo)
                     .load(mediaPath)
+                    .apply(new RequestOptions().override(800))
                     .centerCrop()
                     .into(new CustomTarget<Drawable>() {
                         @Override
