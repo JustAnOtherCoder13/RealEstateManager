@@ -264,9 +264,7 @@ public class MainActivity extends AppCompatActivity {
         mBinding.fragmentPropertyListRecyclerview.setAdapter(adapter);
         mPropertyViewModel.getAllProperties.observe(this, properties -> {
             adapter.updateProperties(properties);
-            mPropertyViewModel.setFirstPhotoForAllProperties();
         });
-        mPropertyViewModel.getFirstPhotoOfAllProperties.observe(this, adapter::updatePhotos);
 
         mPropertyViewModel.getSelectedProperty.observe(this, property -> {
             if (property.getAddress() != null) {

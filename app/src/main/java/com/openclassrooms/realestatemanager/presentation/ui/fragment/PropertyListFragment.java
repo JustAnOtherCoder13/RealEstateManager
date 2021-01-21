@@ -43,7 +43,6 @@ public class PropertyListFragment extends BaseFragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         configureOnClickRecyclerView();
-        mPropertyViewModel.setFirstPhotoForAllProperties();
 
         mPropertyViewModel.getSelectedProperty.observe(getViewLifecycleOwner(), property -> {
             if (property.getAddress() != null) {
@@ -54,13 +53,13 @@ public class PropertyListFragment extends BaseFragment {
     }
 
     private void initRecyclerView() {
+        mPropertyViewModel.setAllProperties();
         PropertyRecyclerViewAdapter adapter = new PropertyRecyclerViewAdapter(new ArrayList<>(),requireContext());
         RecyclerView.LayoutManager linearLayout = new LinearLayoutManager(getContext());
         setCurrencySwitch(adapter);
         mBinding.fragmentPropertyListRecyclerview.setLayoutManager(linearLayout);
         mBinding.fragmentPropertyListRecyclerview.setAdapter(adapter);
         mPropertyViewModel.getAllProperties.observe(getViewLifecycleOwner(), adapter::updateProperties);
-        mPropertyViewModel.getFirstPhotoOfAllProperties.observe(getViewLifecycleOwner(), adapter::updatePhotos);
     }
 
     public void configureOnClickRecyclerView() {

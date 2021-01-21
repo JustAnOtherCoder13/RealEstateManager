@@ -133,7 +133,9 @@ public class AddPropertyFragment extends BaseFragment {
         if (!isNewPropertyToPersist) {
             //if is not a new property set value for selected property and assign value to propertyToUpdate
             propertyToUpdate = mPropertyViewModel.getSelectedProperty.getValue();
-            mPropertyViewModel.setAllPhotosForProperty(Objects.requireNonNull(mPropertyViewModel.getSelectedProperty.getValue()));
+            Log.e("TAG", "initViewModel: "+propertyToUpdate.getPropertyPhotos() );
+            mAdapter.updatePhotos(mImageHelper.propertyPhotosWithAddButton(propertyToUpdate.getPropertyPhotos()));
+            //mPropertyViewModel.setAllPhotosForProperty(Objects.requireNonNull(mPropertyViewModel.getSelectedProperty.getValue()));
             mPropertyViewModel.setPropertyLocationForProperty(Objects.requireNonNull(mPropertyViewModel.getSelectedProperty.getValue()));
         }
         //else reset photo for property and assign value to propertyToUpdate
@@ -161,7 +163,7 @@ public class AddPropertyFragment extends BaseFragment {
             }
         });
         //todo don't update location when update photo too
-        //update photo and set propertyToUpdate photo list
+       /* //update photo and set propertyToUpdate photo list
         mPropertyViewModel.getAllPropertyPhotosForProperty.observe(getViewLifecycleOwner(), propertyPhotos -> {
             propertyToUpdate.setPropertyPhotos(propertyToUpdate.getPropertyPhotos().isEmpty() ?
                     propertyPhotos//if propertyToUpdate have no photo
@@ -169,9 +171,9 @@ public class AddPropertyFragment extends BaseFragment {
                     propertyPhotos// if propertyToUpdate have photo but don' contain propertyPhotos
                     : new ArrayList<>());
             mAdapter.updatePhotos(mImageHelper.propertyPhotosWithAddButton(propertyToUpdate.getPropertyPhotos()));
-        });
+        });*/
         //assign value to base photoList to know if photo have changed before register
-        basePhotoList = mPropertyViewModel.getAllPropertyPhotosForProperty.getValue();
+        basePhotoList = new ArrayList<>(propertyToUpdate.getPropertyPhotos());
 
         //todo how to remove observer
         mPropertyViewModel.getPhotosToDelete.observe(getViewLifecycleOwner(), photosToDelete ->
@@ -396,7 +398,6 @@ public class AddPropertyFragment extends BaseFragment {
 
     //___________________________________HELPERS_____________________________________________
 
-    //todo certainly here cause pb when update
     private void createPropertyPhoto(String title, boolean isPhoto) {
         PropertyPhoto propertyPhoto = new PropertyPhoto();
         if (isPhoto)
@@ -419,7 +420,7 @@ public class AddPropertyFragment extends BaseFragment {
         return updateKnownProperty(property);
     }
 
-    private Property updateKnownProperty(Property property) {
+    private Property updateKnownProperty(@NonNull Property property) {
         property.setAddress(mBinding.addPropertyInformationLayout.addPropertyInformationAddress.getValueForView());
         property.setNumberOfRooms(Integer.parseInt(mBinding.addPropertyInformationLayout.addPropertyInformationNumberOfRooms.getValueForView()));
         property.setNumberOfBathrooms(Integer.parseInt((mBinding.addPropertyInformationLayout.addPropertyInformationNumberOfBathrooms.getValueForView())));

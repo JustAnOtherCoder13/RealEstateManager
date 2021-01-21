@@ -46,7 +46,6 @@ public class PropertyViewModel extends BaseViewModel {
     private MutableLiveData<List<PointOfInterest>> allPointsOfInterestForAllPropertiesMutableLD = new MutableLiveData<>();
     private MutableLiveData<List<PropertyPhoto>> allPhotosForPropertyMutableLD = new MutableLiveData<>();
     private MutableLiveData<List<PropertyPhoto>>allPhotosForAllPropertiesMutableLD = new MutableLiveData<>();
-    private MutableLiveData<List<PropertyPhoto>> firstPhotoOfAllPropertiesMutableLd = new MutableLiveData<>();
     private MutableLiveData<Property> selectedPropertyMutableLD = new MutableLiveData<>(new Property());
     private MutableLiveData<List<PropertyPhoto>> photosToDeleteMutableLD = new MutableLiveData<>();
     private MutableLiveData<PropertyLocation> propertyLocationForPropertyMutableLd = new MutableLiveData<>();
@@ -61,7 +60,6 @@ public class PropertyViewModel extends BaseViewModel {
     public LiveData<List<PointOfInterest>> getAllPointOfInterestForAllProperties = allPointsOfInterestForAllPropertiesMutableLD;
     public LiveData<List<PointOfInterest>> getAllPointOfInterestForProperty = allPointOfInterestForPropertyMutableLD;
     public LiveData<List<PropertyPhoto>> getAllPropertyPhotosForProperty = allPhotosForPropertyMutableLD;
-    public LiveData<List<PropertyPhoto>> getFirstPhotoOfAllProperties = firstPhotoOfAllPropertiesMutableLd;
     public LiveData<List<PropertyPhoto>> getAllPhotosForAllProperties = allPhotosForAllPropertiesMutableLD;
     public LiveData<Property> getSelectedProperty = selectedPropertyMutableLD;
     public LiveData<List<PropertyPhoto>> getPhotosToDelete = photosToDeleteMutableLD;
@@ -136,8 +134,13 @@ public class PropertyViewModel extends BaseViewModel {
                 getAllPropertiesInteractor.getAllProperties()
                         .subscribeOn(schedulerProvider.getIo())
                         .observeOn(schedulerProvider.getUi())
-                        .subscribe(properties -> allPropertiesMutableLD.setValue(properties)));
+                        .subscribe(properties ->{
+                            allPropertiesMutableLD.setValue(properties);
+                            for (Property property:properties)
+                            setPhotoForProperty(property);
+                        }));
     }
+
 
     public void setAllPointOfInterestForProperty(@NonNull Property property) {
         if (property.getAddress() != null)
@@ -177,15 +180,6 @@ public class PropertyViewModel extends BaseViewModel {
         );
     }
 
-    public void setFirstPhotoForAllProperties(){
-        compositeDisposable.add(
-                getAllPhotosForAllPropertiesInteractor.getFirstPhotoForAllProperties()
-                .subscribeOn(schedulerProvider.getIo())
-                .observeOn(schedulerProvider.getUi())
-                .subscribe(propertyPhotos ->
-                        firstPhotoOfAllPropertiesMutableLd.setValue(propertyPhotos))
-        );
-    }
     public void setPropertyLocationForProperty(@NonNull Property property) {
         compositeDisposable.add(
                 getPropertyLocationInteractor.getPropertyLocationForPropertyId(property.getId())
@@ -311,7 +305,7 @@ public class PropertyViewModel extends BaseViewModel {
                 deletePropertyPhotoInteractor.deleteAllPhotoForProperty(property.getId())
                 .subscribeOn(schedulerProvider.getIo())
                 .observeOn(schedulerProvider.getUi())
-                .subscribe(()->{},throwable -> Log.e("TAG", "resetPhotoForProperty: "+throwable ))
+                .subscribe(()->{},throwable -> checkException())
         );
     }
 
@@ -332,5 +326,15 @@ public class PropertyViewModel extends BaseViewModel {
                         .subscribeOn(schedulerProvider.getIo())
                         .observeOn(schedulerProvider.getUi())
                         .subscribe(pointOfInterests -> mapsPointOfInterestForPropertyMutableLD.setValue(pointOfInterests)));
+    }
+
+
+    private void setPhotoForProperty(@NonNull Property property){
+        compositeDisposable.add(
+                getAllPropertyPhotosForPropertyIdInteractor.getAllPhotosForPropertyId(property.getId())
+                        .subscribeOn(schedulerProvider.getIo())
+                        .observeOn(schedulerProvider.getUi())
+                        .subscribe(property::setPropertyPhotos)
+        );
     }
 }

@@ -35,7 +35,6 @@ import static com.openclassrooms.realestatemanager.presentation.utils.Utils.conv
 public class PropertyRecyclerViewAdapter extends RecyclerView.Adapter<PropertyRecyclerViewAdapter.ViewHolder> {
 
     private List<Property> mProperties;
-    private List<PropertyPhoto> mPhotos;
     private List<View> mItems = new ArrayList<>();
     private Property selectedProperty;
     private Currency currency;
@@ -50,7 +49,6 @@ public class PropertyRecyclerViewAdapter extends RecyclerView.Adapter<PropertyRe
     public PropertyRecyclerViewAdapter(List<Property> mProperties, Context context) {
         this.mProperties = mProperties;
         this.context = context;
-        this.mPhotos = new ArrayList<>();
     }
 
 
@@ -68,12 +66,8 @@ public class PropertyRecyclerViewAdapter extends RecyclerView.Adapter<PropertyRe
         currency = Currency.getInstance(locale);
         mItems.add(holder.itemView);
         final Property property = mProperties.get(position);
-        if (!mPhotos.isEmpty()) {
-            if (position<mPhotos.size()){
-                PropertyPhoto photo = mPhotos.get(position);
-                setPropertyPhoto(holder, photo);
-            }
-        }
+        if (!property.getPropertyPhotos().isEmpty())
+        setPropertyPhoto(holder,property.getPropertyPhotos().get(0));
         holder.binding.propertyItemPrice.setText(convertedPrice(property));
         holder.binding.propertyItemTown.setText(property.getRegion());
         holder.binding.propertyItemType.setText(property.getPropertyType());
@@ -125,11 +119,6 @@ public class PropertyRecyclerViewAdapter extends RecyclerView.Adapter<PropertyRe
 
     public void updateProperties(List<Property> updatedProperties) {
         this.mProperties = updatedProperties;
-        notifyDataSetChanged();
-    }
-
-    public void updatePhotos(List<PropertyPhoto> propertyPhotos) {
-        this.mPhotos = propertyPhotos;
         notifyDataSetChanged();
     }
 
