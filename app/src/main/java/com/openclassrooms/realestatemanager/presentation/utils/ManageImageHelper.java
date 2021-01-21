@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Environment;
 import android.provider.MediaStore;
+import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
 
@@ -89,8 +90,9 @@ public class ManageImageHelper {
         return photos;
     }
 
-    public static void playLoader(boolean bol, LottieAnimationView animationView) {
-        if (bol) {
+    public static void playLoader(boolean isVisible, LottieAnimationView animationView) {
+        Log.e("TAG", "playLoader: "+animationView.isAnimating() );
+        if (isVisible) {
             animationView.setVisibility(View.VISIBLE);
             animationView.playAnimation();
         } else {

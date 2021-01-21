@@ -1,8 +1,6 @@
 package com.openclassrooms.realestatemanager.presentation.ui.fragment;
 
 import android.Manifest;
-import android.app.AlertDialog;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
@@ -164,7 +162,6 @@ public class AddPropertyFragment extends BaseFragment {
         //assign value to base photoList to know if photo have changed before register
         basePhotoList = new ArrayList<>(propertyToUpdate.getPropertyPhotos());
 
-        //todo how to remove observer
         mPropertyViewModel.getPhotosToDelete.observe(getViewLifecycleOwner(), photosToDelete ->
                 mBinding.addPropertyMediaLayout.detailCustomViewDeleteButton.setVisibility(photosToDelete.isEmpty() ? View.GONE : View.VISIBLE));
     }
@@ -314,7 +311,7 @@ public class AddPropertyFragment extends BaseFragment {
             if (mBinding.addPropertySoldLayout.getRoot().getVisibility() == View.VISIBLE
                     && mBinding.addPropertySoldLayout.addPropertySoldCheckbox.isChecked()
                     && mBinding.addPropertySoldLayout.addPropertySoldEditText.getText().toString().trim().isEmpty()) {
-                Toast.makeText(requireContext(), "you have to enter a date if sold is set", Toast.LENGTH_LONG).show();
+                Toast.makeText(requireContext(), R.string.add_date_message, Toast.LENGTH_LONG).show();
                 return;
             }
             hideSoftKeyboard(mBinding.addPropertyInformationLayout.getRoot());
@@ -365,7 +362,6 @@ public class AddPropertyFragment extends BaseFragment {
         builder.setPositiveButton(R.string.ok, (dialog, which) -> {
         });
         builder.show();
-        return;
     }
 
     private void addNewPropertyAdditionalInformation() {

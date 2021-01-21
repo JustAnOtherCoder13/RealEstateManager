@@ -45,7 +45,6 @@ public class PhotoRecyclerViewAdapter extends RecyclerView.Adapter<PhotoRecycler
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-        playLoader(true,holder.binding.propertyDetailItemLoader.animationView);
         PropertyPhoto photo = mPhotos.get(position);
         holder.binding.propertyDetailItemPlayLogo.setVisibility(isImageFileFromPath(photo.getPhotoPath()) ?
                 View.GONE
@@ -96,6 +95,12 @@ public class PhotoRecyclerViewAdapter extends RecyclerView.Adapter<PhotoRecycler
                 .load(photo.getPhotoPath())
                 .centerCrop()
                 .into(new CustomTarget<Drawable>() {
+                    @Override
+                    public void onLoadStarted(@Nullable Drawable placeholder) {
+                        super.onLoadStarted(placeholder);
+                        playLoader(true,holder.binding.propertyDetailItemLoader.animationView);
+                    }
+
                     @Override
                     public void onResourceReady(@NonNull Drawable resource, @Nullable Transition<? super Drawable> transition) {
                         holder.binding.propertyDetailItemPhoto.setImageDrawable(resource);

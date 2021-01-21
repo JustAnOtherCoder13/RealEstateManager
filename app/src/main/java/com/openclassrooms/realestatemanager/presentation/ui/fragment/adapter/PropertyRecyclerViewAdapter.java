@@ -1,12 +1,10 @@
 package com.openclassrooms.realestatemanager.presentation.ui.fragment.adapter;
 
-import android.annotation.SuppressLint;
 import android.content.Context;
 import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.util.Log;
 import android.view.LayoutInflater;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
@@ -16,7 +14,11 @@ import androidx.annotation.Nullable;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.DataSource;
+import com.bumptech.glide.load.engine.GlideException;
+import com.bumptech.glide.request.RequestListener;
 import com.bumptech.glide.request.target.CustomTarget;
+import com.bumptech.glide.request.target.Target;
 import com.bumptech.glide.request.transition.Transition;
 import com.openclassrooms.realestatemanager.R;
 import com.openclassrooms.realestatemanager.databinding.RecyclerviewPropertyListItemBinding;
@@ -63,7 +65,6 @@ public class PropertyRecyclerViewAdapter extends RecyclerView.Adapter<PropertyRe
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-        playLoader(true,holder.binding.propertyDetailItemLoader.animationView);
         if (locale==null)locale=Locale.US;
         currency = Currency.getInstance(locale);
         mItems.add(holder.itemView);
@@ -129,11 +130,18 @@ public class PropertyRecyclerViewAdapter extends RecyclerView.Adapter<PropertyRe
         notifyDataSetChanged();
     }
 
+    //todo don't pass in resource ready sometimes
     private void setPropertyPhoto(@NonNull PropertyRecyclerViewAdapter.ViewHolder holder, @NonNull PropertyPhoto photo) {
         Glide.with(holder.binding.propertyItemPhoto.getContext())
                 .load(photo.getPhotoPath())
                 .centerCrop()
                 .into(new CustomTarget<Drawable>() {
+                    @Override
+                    public void onLoadStarted(@Nullable Drawable placeholder) {
+                        super.onLoadStarted(placeholder);
+                        playLoader(true,holder.binding.propertyDetailItemLoader.animationView);
+                    }
+
                     @Override
                     public void onResourceReady(@NonNull Drawable resource, @Nullable Transition<? super Drawable> transition) {
                         holder.binding.propertyItemPhoto.setImageDrawable(resource);
