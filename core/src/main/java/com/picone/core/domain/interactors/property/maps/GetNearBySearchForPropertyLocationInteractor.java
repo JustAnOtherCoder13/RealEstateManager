@@ -48,6 +48,7 @@ public class GetNearBySearchForPropertyLocationInteractor extends PropertyBaseIn
                 if (pointOfInterests.isEmpty()) pointOfInterests.add(pointOfInterest);
                 else {
                     boolean isAlreadyKnown = true;
+                    //todo concurrentModificationException in some case, pass the good property id? change photo propertyId
                     for (PointOfInterest pointOfInterestForProperty : pointOfInterests) {
                         isAlreadyKnown = true;
                         if (pointOfInterestForProperty.getLatitude() == pointOfInterest.getLatitude()

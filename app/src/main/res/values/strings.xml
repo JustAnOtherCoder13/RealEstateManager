@@ -27,7 +27,7 @@
     <!-- ______________________TEXT VIEW__________________ -->
     <string name="property_type">Property Type</string>
     <string name="town">Town</string>
-    <string name="price">Price</string>
+    <string name="price">Price ($)</string>
     <string name="description">Description</string>
     <string name="media">Media</string>
     <string name="surface">Surface</string>

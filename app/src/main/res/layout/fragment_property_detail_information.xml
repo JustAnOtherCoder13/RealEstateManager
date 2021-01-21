@@ -79,11 +79,11 @@
         android:id="@+id/fragment_detail_maps_view"
         android:layout_width="@dimen/static_map_size"
         android:layout_height="@dimen/static_map_size"
-        android:background="@color/custom_pink_light"
         android:contentDescription="@string/location_maps_view"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@id/fragment_detail_numbers_of_bedrooms_custom_view"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        style="@style/static_maps_size" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -12,11 +12,13 @@ import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 
 import com.google.android.material.bottomsheet.BottomSheetBehavior;
+import com.google.android.material.switchmaterial.SwitchMaterial;
 import com.openclassrooms.realestatemanager.R;
 import com.openclassrooms.realestatemanager.presentation.ui.main.MainActivity;
 import com.openclassrooms.realestatemanager.presentation.viewModels.PropertyViewModel;
 import com.picone.core.domain.entity.Property;
 
+import java.util.Locale;
 import java.util.Objects;
 
 public class TopAppBarCustomView extends ConstraintLayout {
@@ -25,6 +27,7 @@ public class TopAppBarCustomView extends ConstraintLayout {
     private BottomSheetBehavior<ConstraintLayout> bottomSheetBehavior;
     public ImageButton resetFilterButton;
     public ImageButton addPropertyButton;
+    public SwitchMaterial currencySwitch;
 
     public TopAppBarCustomView(@NonNull Context context, @Nullable AttributeSet attrs) {
         super(context, attrs);
@@ -37,12 +40,14 @@ public class TopAppBarCustomView extends ConstraintLayout {
         addPropertyButton = findViewById(R.id.top_bar_add_property);
         ImageButton filterButton = findViewById(R.id.top_bar_filter_icon);
         resetFilterButton = findViewById(R.id.top_reset_filter_property);
+        currencySwitch = findViewById(R.id.currency_switch);
 
         filterButton.setOnClickListener(v -> {
             bottomSheetBehavior.setState(bottomSheetBehavior.getState() == BottomSheetBehavior.STATE_COLLAPSED ?
                     BottomSheetBehavior.STATE_EXPANDED : BottomSheetBehavior.STATE_COLLAPSED);
             propertyViewModel.setAllProperties();
         });
+
         addPropertyButton.setOnClickListener(v -> initClickForAdd((MainActivity)context));
     }
 

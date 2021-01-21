@@ -11,6 +11,8 @@ import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.NavController;
 
 import com.openclassrooms.realestatemanager.R;
+import com.openclassrooms.realestatemanager.presentation.ui.fragment.adapter.PropertyRecyclerViewAdapter;
+import com.openclassrooms.realestatemanager.presentation.utils.customView.TopAppBarCustomView;
 import com.openclassrooms.realestatemanager.presentation.viewModels.AgentViewModel;
 import com.openclassrooms.realestatemanager.presentation.viewModels.PropertyViewModel;
 import com.picone.core.domain.entity.Property;
@@ -30,6 +32,7 @@ public abstract class BaseFragment extends Fragment {
     protected AgentViewModel mAgentViewModel;
     protected PropertyViewModel mPropertyViewModel;
     protected NavController mNavController;
+    protected TopAppBarCustomView topAppBar;
 
     private MainActivity mainActivity;
     protected ImageButton mUpdateButton;
@@ -42,6 +45,10 @@ public abstract class BaseFragment extends Fragment {
         mUpdateButton = mainActivity.mUpdateButton;
         mAgentViewModel = new ViewModelProvider(requireActivity()).get(AgentViewModel.class);
         mPropertyViewModel = new ViewModelProvider(requireActivity()).get(PropertyViewModel.class);
+    }
+
+    protected void setCurrencySwitch(PropertyRecyclerViewAdapter adapter){
+        mainActivity.setTopAppBarCurrencySwitch(adapter);
     }
 
     protected void setAppBarVisibility(boolean isVisible) {

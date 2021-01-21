@@ -32,6 +32,7 @@ import com.picone.core.utils.SchedulerProvider;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 import java.util.Objects;
 
 import static com.picone.core.utils.ConstantParameters.MAPS_KEY;
@@ -109,6 +110,11 @@ public class PropertyViewModel extends BaseViewModel {
     }
 
     //___________________________________SETTERS______________________________________
+
+    private MutableLiveData<Locale> localeMutableLD = new MutableLiveData<>();
+    public LiveData<Locale> getLocale = localeMutableLD;
+    public void setLocale(Locale locale){localeMutableLD.setValue(locale);}
+
     public void setFilteredProperty(List<Property> filteredProperties){
         allPropertiesMutableLD.setValue(filteredProperties);
     }

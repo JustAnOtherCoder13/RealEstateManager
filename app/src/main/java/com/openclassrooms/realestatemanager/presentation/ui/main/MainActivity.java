@@ -107,13 +107,13 @@ public class MainActivity extends AppCompatActivity {
     private void setPhoneBackNavigation() {
         switch (mNavController.getCurrentDestination().getId()) {
             case R.id.addPropertyFragment:
-                mNavController.navigate(R.id.action_addPropertyFragment_to_propertyDetailFragment);
+                mNavController.navigate(R.id.propertyDetailFragment);
                 break;
             case R.id.propertyDetailFragment:
-                mNavController.navigate(R.id.action_propertyDetailFragment_to_propertyListFragment);
+                mNavController.navigate(R.id.propertyListFragment);
                 break;
             case R.id.propertyListFragment:
-                mNavController.navigate(R.id.action_propertyListFragment_to_mapsFragment);
+                mNavController.navigate(R.id.mapsFragment);
                 break;
             case R.id.mapsFragment:
                 this.finish();
@@ -159,12 +159,14 @@ public class MainActivity extends AppCompatActivity {
                 break;
         }
     }
+    //todo go to maps on back press if on add property and selected property == null
 
     @SuppressWarnings("ConstantConditions")//can't be null on phone
     private void initPhoneOrTablet() {
-        if (isPhone) {
+        if (getResources().getBoolean(R.bool.phone_device)) {
             setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
             NavigationUI.setupWithNavController(mBinding.bottomNavBar, mNavController);
+
         } else {
             setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
             initRecyclerView();
@@ -175,6 +177,16 @@ public class MainActivity extends AppCompatActivity {
                         : Locale.US);
             });
         }
+    }
+
+    protected void setTopAppBarCurrencySwitch(@NonNull PropertyRecyclerViewAdapter adapter) {
+        mBinding.topAppBar.currencySwitch.setOnClickListener(v -> {
+            assert mBinding.currencySwitch != null;
+            mPropertyViewModel.setLocale(mBinding.currencySwitch.isChecked() ?
+                    Locale.FRANCE
+                    : Locale.US);
+        });
+        mPropertyViewModel.getLocale.observe(this, adapter::updateLocale);
     }
 
     private boolean checkResult(@NonNull int[] grantResults) {

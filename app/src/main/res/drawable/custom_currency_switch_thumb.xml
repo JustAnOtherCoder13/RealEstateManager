@@ -8,5 +8,5 @@
         android:height="30dp" />
     <stroke
         android:width="2dp"
-        android:color="@color/custom_blue" />
+        android:color="@color/custom_pink_dark" />
 </shape>

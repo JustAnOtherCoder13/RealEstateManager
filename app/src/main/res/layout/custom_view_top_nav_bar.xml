@@ -16,12 +16,23 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
+        android:id="@+id/top_app_bar_title"
         style="@style/top_bar_title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toEndOf="@id/top_bar_filter_icon"
         app:layout_constraintTop_toTopOf="parent" />
+
+    <com.google.android.material.switchmaterial.SwitchMaterial
+        android:layout_height="wrap_content"
+        android:layout_width="0dp"
+        android:layout_marginStart="@dimen/basic_marge"
+        android:id="@+id/currency_switch"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toEndOf="@id/top_app_bar_title"
+        style="@style/currency_switch_style" />
 
     <ImageButton
         android:id="@+id/top_reset_filter_property"

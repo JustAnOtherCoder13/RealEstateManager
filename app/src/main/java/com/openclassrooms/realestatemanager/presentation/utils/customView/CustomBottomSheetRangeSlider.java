@@ -31,7 +31,7 @@ public class CustomBottomSheetRangeSlider extends ConstraintLayout {
         initView(attributes);
     }
 
-
+//todo remove decimal after dot
     private void initView(@Nullable TypedArray attributes) {
         inflate(context, R.layout.custom_bottom_sheet_range_slider, this);
 
