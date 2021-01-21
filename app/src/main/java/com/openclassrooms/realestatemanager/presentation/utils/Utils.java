@@ -2,6 +2,8 @@ package com.openclassrooms.realestatemanager.presentation.utils;
 
 import android.content.Context;
 import android.location.LocationManager;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.net.wifi.WifiManager;
 
 import androidx.annotation.NonNull;
@@ -12,6 +14,7 @@ import java.util.Date;
 import java.util.Locale;
 
 import static android.content.Context.LOCATION_SERVICE;
+import static androidx.core.content.ContextCompat.getSystemService;
 
 /**
  * Created by Philippe on 21/02/2018.
@@ -31,14 +34,15 @@ public class Utils {
         return locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER);
     }
 
+    //check for all network and return the first connected or null if internet not available
     @NonNull
     public static Boolean isInternetAvailable(@NonNull Context context){
-        WifiManager wifi = (WifiManager)context.getApplicationContext().getSystemService(Context.WIFI_SERVICE);
-        assert wifi != null;
-        return wifi.isWifiEnabled();
+        ConnectivityManager connMgr = (ConnectivityManager)
+                context.getApplicationContext().getSystemService(Context.CONNECTIVITY_SERVICE);
+        assert connMgr != null;
+        NetworkInfo networkInfo = connMgr.getActiveNetworkInfo();
+        return (networkInfo != null && networkInfo.isConnected());
     }
-
-    //todo do a better method to check internet
 
     public static Date formatStringToDate(String dateStr){
         Date date = new Date();

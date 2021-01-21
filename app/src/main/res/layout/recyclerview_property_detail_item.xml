@@ -6,27 +6,27 @@
     android:paddingEnd="@dimen/little_marge"
     android:paddingStart="@dimen/little_marge">
 
-    <VideoView
-        android:id="@+id/property_detail_item_video"
-        android:layout_width="@dimen/thumbnail_size"
-        android:layout_height="@dimen/thumbnail_size"
-        style="@style/static_maps_size"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"/>
-
     <ImageView
         android:id="@+id/property_detail_item_photo"
         android:layout_width="@dimen/thumbnail_size"
         android:layout_height="@dimen/thumbnail_size"
         android:contentDescription="@string/property_detail_item_photo"
         android:scaleType="centerCrop"
-        android:src="@drawable/img_contemporary_styled_house"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"/>
+    <ImageView
+        android:id="@+id/property_detail_item_play_logo"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toTopOf="@id/property_detail_item_photo"
+        app:layout_constraintBottom_toBottomOf="@id/property_detail_item_photo"
+        app:layout_constraintStart_toStartOf="@id/property_detail_item_photo"
+        app:layout_constraintEnd_toEndOf="@id/property_detail_item_photo"
+        android:visibility="gone"
+        app:srcCompat="@drawable/ic_custom_media_controler_play_unchecked_24"
+        android:contentDescription="@string/play_logo_if_video" />
 
     <TextView
         android:id="@+id/property_detail_item_photo_description"
@@ -48,4 +48,16 @@
         app:layout_constraintBottom_toBottomOf="@id/property_detail_item_photo_description"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="@id/property_detail_item_photo_description" />
+
+    <include
+        android:id="@+id/property_detail_item_loader"
+        layout="@layout/loader_layout"
+        android:layout_width="@dimen/thumbnail_size"
+        android:layout_height="@dimen/thumbnail_size"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        />
+
 </androidx.constraintlayout.widget.ConstraintLayout>

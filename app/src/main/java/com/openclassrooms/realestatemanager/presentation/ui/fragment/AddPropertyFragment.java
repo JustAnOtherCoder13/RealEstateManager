@@ -1,6 +1,8 @@
 package com.openclassrooms.realestatemanager.presentation.ui.fragment;
 
 import android.Manifest;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
@@ -19,8 +21,10 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.core.app.ActivityCompat;
+import androidx.core.content.res.ResourcesCompat;
 import androidx.navigation.Navigation;
 
+import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.openclassrooms.realestatemanager.R;
 import com.openclassrooms.realestatemanager.databinding.FragmentAddPropertyBinding;
 import com.openclassrooms.realestatemanager.databinding.FragmentAddPropertyInformationLayoutBinding;
@@ -41,6 +45,7 @@ import java.util.List;
 import java.util.Objects;
 
 import static android.app.Activity.RESULT_OK;
+import static com.openclassrooms.realestatemanager.presentation.utils.Utils.isInternetAvailable;
 import static com.openclassrooms.realestatemanager.presentation.viewModels.BaseViewModel.CompletionState.UPDATE_PROPERTY_COMPLETE;
 import static com.picone.core.utils.ConstantParameters.CAMERA_PERMISSION_CODE;
 import static com.picone.core.utils.ConstantParameters.CAMERA_PHOTO_INTENT_REQUEST_CODE;
@@ -62,11 +67,7 @@ public class AddPropertyFragment extends BaseFragment {
     private ManageImageHelper mImageHelper;
     private CustomMediaSetTitleDialog setTitleDialog;
 
-    //TODO add loader on photo, init text view
-    //todo disable register button when clicked (avoid multiple click) phone
     //todo send notification when add or update ok
-    //todo if sold, force to enter date
-    //todo don't save region if update and don't change address
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -133,16 +134,14 @@ public class AddPropertyFragment extends BaseFragment {
         if (!isNewPropertyToPersist) {
             //if is not a new property set value for selected property and assign value to propertyToUpdate
             propertyToUpdate = mPropertyViewModel.getSelectedProperty.getValue();
-            Log.e("TAG", "initViewModel: "+propertyToUpdate.getPropertyPhotos() );
+            assert propertyToUpdate != null;
             mAdapter.updatePhotos(mImageHelper.propertyPhotosWithAddButton(propertyToUpdate.getPropertyPhotos()));
-            //mPropertyViewModel.setAllPhotosForProperty(Objects.requireNonNull(mPropertyViewModel.getSelectedProperty.getValue()));
             mPropertyViewModel.setPropertyLocationForProperty(Objects.requireNonNull(mPropertyViewModel.getSelectedProperty.getValue()));
         }
-        //else reset photo for property and assign value to propertyToUpdate
-        else {
+        //else assign value to propertyToUpdate
+        else
             propertyToUpdate = PROPERTY_TO_ADD(Objects.requireNonNull(mAgentViewModel.getAgent.getValue()));
-            mPropertyViewModel.setAllPhotosForProperty(new Property());
-        }
+
 
         mPropertyViewModel.getCompletionState.observe(getViewLifecycleOwner(), completionState -> {
             switch (completionState) {
@@ -154,15 +153,14 @@ public class AddPropertyFragment extends BaseFragment {
                 case ADD_POINT_OF_INTEREST_COMPLETE:
                     if (Objects.requireNonNull(mNavController.getCurrentDestination()).getId() == R.id.addPropertyFragment) {
                         playLoader(false);
-                        if (getResources().getBoolean(R.bool.phone_device))
-                            mNavController.navigate(getResources().getBoolean(R.bool.phone_device) ?
-                                    R.id.action_addPropertyFragment_to_propertyListFragment
-                                    : R.id.mapsFragment);
+                        mPropertyViewModel.setAllProperties();
+                        mNavController.navigate(getResources().getBoolean(R.bool.phone_device) ?
+                                R.id.action_addPropertyFragment_to_propertyListFragment
+                                : R.id.mapsFragment);
                     }
                     break;
             }
         });
-        //todo don't update location when update photo too
         //assign value to base photoList to know if photo have changed before register
         basePhotoList = new ArrayList<>(propertyToUpdate.getPropertyPhotos());
 
@@ -311,26 +309,46 @@ public class AddPropertyFragment extends BaseFragment {
     //___________________________________ADD AND UPDATE LOGIC_____________________________________________
 
     private void initAddButtonClick() {
+
         if (isRequiredInformationAreFilled()) {
+            if (mBinding.addPropertySoldLayout.getRoot().getVisibility() == View.VISIBLE
+                    && mBinding.addPropertySoldLayout.addPropertySoldCheckbox.isChecked()
+                    && mBinding.addPropertySoldLayout.addPropertySoldEditText.getText().toString().trim().isEmpty()) {
+                Toast.makeText(requireContext(), "you have to enter a date if sold is set", Toast.LENGTH_LONG).show();
+                return;
+            }
             hideSoftKeyboard(mBinding.addPropertyInformationLayout.getRoot());
 
-            if (isNewPropertyToPersist)
+            if (isNewPropertyToPersist) {
+                //if no network can't add new property cause no access at position or point of interest
+                if (!isInternetAvailable(requireContext())) {
+                    initAlertNoNetworkAvailable();
+                    return;
+                }
                 mPropertyViewModel.addProperty(updateProperty(PROPERTY_TO_ADD(Objects.requireNonNull(mAgentViewModel.getAgent.getValue()))));
-
-            else {
+            } else {
                 Property originalProperty = Objects.requireNonNull(mPropertyViewModel.getSelectedProperty.getValue());
-
+                //check if address have changed, if case persist new address and get point of interests
+                if (isAddressHaveChanged(originalProperty)) {
+                    //if no network return cause can't update position or point of interest
+                    if (!isInternetAvailable(requireContext())) {
+                        initAlertNoNetworkAvailable();
+                        return;
+                    }
+                    UpdatePropertyWhenAddressChange(originalProperty);
+                }
+                //check if photos have changed, if case persist photos
                 if (!propertyToUpdate.getPropertyPhotos().containsAll(basePhotoList)
                         || propertyToUpdate.getPropertyPhotos().size() != basePhotoList.size())
                     persistAllNewPhotos();
-
-                if (isAddressHaveChanged(originalProperty))
-                    UpdatePropertyWhenAddressChange(originalProperty);
+                    //else update property with new value and update property
                 else {
+                    Log.i("TAG", "initAddButtonClick: " + originalProperty.getRegion());
                     mPropertyViewModel.updateProperty(updateProperty(originalProperty));
                     mPropertyViewModel.getCompletionState.observe(getViewLifecycleOwner(), completionState -> {
                         if (completionState.equals(UPDATE_PROPERTY_COMPLETE)) {
                             playLoader(false);
+                            mPropertyViewModel.setAllProperties();
                             mNavController.navigate(R.id.action_addPropertyFragment_to_propertyListFragment);
                         }
                     });
@@ -338,6 +356,16 @@ public class AddPropertyFragment extends BaseFragment {
             }
         } else
             Toast.makeText(requireContext(), R.string.information_not_filled, Toast.LENGTH_SHORT).show();
+    }
+
+    private void initAlertNoNetworkAvailable() {
+        MaterialAlertDialogBuilder builder = new MaterialAlertDialogBuilder(requireContext());
+        builder.setBackground(ResourcesCompat.getDrawable(getResources(), R.drawable.custom_dialog_shape, null));
+        builder.setMessage(R.string.no_internet_message);
+        builder.setPositiveButton(R.string.ok, (dialog, which) -> {
+        });
+        builder.show();
+        return;
     }
 
     private void addNewPropertyAdditionalInformation() {
@@ -389,6 +417,8 @@ public class AddPropertyFragment extends BaseFragment {
 
     //___________________________________HELPERS_____________________________________________
 
+
+    //todo review when remove and add new photo and change address same time
     private void createPropertyPhoto(String title, boolean isPhoto) {
         PropertyPhoto propertyPhoto = new PropertyPhoto();
         if (isPhoto)
@@ -405,6 +435,7 @@ public class AddPropertyFragment extends BaseFragment {
     @NonNull
     private Property updateProperty(@NonNull Property originalProperty) {
         Property property = new Property();
+        property.setRegion(originalProperty.getRegion());
         property.setEnterOnMarket(getTodayDate());
         property.setId(originalProperty.getId());
         property.setRealEstateAgentId(Objects.requireNonNull(mAgentViewModel.getAgent.getValue()).getId());

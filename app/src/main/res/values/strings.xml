@@ -96,6 +96,11 @@
 
     <string name="euro">€</string>
     <string name="dollar">$</string>
+    <string name="play_logo_if_video">play logo if video</string>
+    <string name="is_sold_from">\"Is sold from : \"</string>
+
+
+    <string name="no_internet_message">Network is not available, you\'ll not be able to download position or points of interests.\n \n   Please try again when internet is available</string>
 
 
 </resources>

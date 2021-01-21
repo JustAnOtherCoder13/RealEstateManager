@@ -88,10 +88,10 @@ public class CustomMediaSetTitleDialog extends Dialog implements android.view.Vi
 
     public String getText() {
         if (description.getText() != null) return description.getText().toString();
-        else return " ";
+        else return "";
     }
     public void resetEditText(){
-        description.setText(" ");
+        description.setText("");
     }
 
     private void isPhoto(boolean isPhoto) {

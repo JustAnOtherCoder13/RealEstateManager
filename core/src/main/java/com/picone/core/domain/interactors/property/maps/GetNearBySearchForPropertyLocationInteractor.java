@@ -41,14 +41,12 @@ public class GetNearBySearchForPropertyLocationInteractor extends PropertyBaseIn
 
     private List<PointOfInterest> nearBySearchToPointOfInterest(@NonNull NearBySearch nearBySearch, int propertyId) {
         PointOfInterest pointOfInterest;
-
         if (!nearBySearch.getNearBySearchResults().isEmpty())
             for (NearBySearchResult nearBySearchResult : nearBySearch.getNearBySearchResults()) {
                 pointOfInterest = createPointOfInterest(propertyId, nearBySearchResult);
                 if (pointOfInterests.isEmpty()) pointOfInterests.add(pointOfInterest);
                 else {
                     boolean isAlreadyKnown = true;
-                    //todo concurrentModificationException in some case, pass the good property id? change photo propertyId
                     for (PointOfInterest pointOfInterestForProperty : pointOfInterests) {
                         isAlreadyKnown = true;
                         if (pointOfInterestForProperty.getLatitude() == pointOfInterest.getLatitude()

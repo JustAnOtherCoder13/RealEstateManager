@@ -30,6 +30,7 @@ import java.util.Currency;
 import java.util.List;
 import java.util.Locale;
 
+import static com.openclassrooms.realestatemanager.presentation.utils.ManageImageHelper.playLoader;
 import static com.openclassrooms.realestatemanager.presentation.utils.Utils.convertDollarToEuro;
 
 public class PropertyRecyclerViewAdapter extends RecyclerView.Adapter<PropertyRecyclerViewAdapter.ViewHolder> {
@@ -55,13 +56,14 @@ public class PropertyRecyclerViewAdapter extends RecyclerView.Adapter<PropertyRe
     @NonNull
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        RecyclerviewPropertyListItemBinding binding = RecyclerviewPropertyListItemBinding.inflate(LayoutInflater.from(parent.getContext())
-                , parent, false);
+        RecyclerviewPropertyListItemBinding binding = RecyclerviewPropertyListItemBinding.inflate(LayoutInflater.from(parent.getContext()), parent, false);
+        binding.propertyDetailItemLoader.animationView.setAnimation(R.raw.loader);
         return new ViewHolder(binding);
     }
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
+        playLoader(true,holder.binding.propertyDetailItemLoader.animationView);
         if (locale==null)locale=Locale.US;
         currency = Currency.getInstance(locale);
         mItems.add(holder.itemView);
@@ -135,6 +137,7 @@ public class PropertyRecyclerViewAdapter extends RecyclerView.Adapter<PropertyRe
                     @Override
                     public void onResourceReady(@NonNull Drawable resource, @Nullable Transition<? super Drawable> transition) {
                         holder.binding.propertyItemPhoto.setImageDrawable(resource);
+                        playLoader(false,holder.binding.propertyDetailItemLoader.animationView);
                     }
 
                     @Override

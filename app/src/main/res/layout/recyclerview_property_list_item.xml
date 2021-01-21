@@ -10,7 +10,6 @@
         android:layout_width="@dimen/thumbnail_size"
         android:layout_height="@dimen/thumbnail_size"
         android:contentDescription="@string/property_item_photo"
-        android:src="@drawable/img_contemporary_styled_house"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
@@ -55,6 +54,17 @@
         app:layout_constraintBottom_toBottomOf="@id/property_item_photo"
         app:layout_constraintStart_toStartOf="@id/property_item_type"
         app:layout_constraintTop_toBottomOf="@id/property_item_town" />
+
+    <include
+        android:id="@+id/property_detail_item_loader"
+        layout="@layout/loader_layout"
+        android:layout_width="@dimen/thumbnail_size"
+        android:layout_height="@dimen/thumbnail_size"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="@id/property_item_photo"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        />
 
     <FrameLayout
         android:layout_width="0dp"

@@ -101,13 +101,14 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    //todo review back press for phone
 
     @SuppressWarnings("ConstantConditions")//already checked
     private void setPhoneBackNavigation() {
         switch (mNavController.getCurrentDestination().getId()) {
             case R.id.addPropertyFragment:
-                mNavController.navigate(R.id.propertyDetailFragment);
+                mNavController.navigate(mPropertyViewModel.getSelectedProperty.getValue().getAddress()!=null?
+                        R.id.propertyDetailFragment
+                        :R.id.propertyListFragment);
                 break;
             case R.id.propertyDetailFragment:
                 mNavController.navigate(R.id.propertyListFragment);
@@ -159,7 +160,6 @@ public class MainActivity extends AppCompatActivity {
                 break;
         }
     }
-    //todo go to maps on back press if on add property and selected property == null
 
     @SuppressWarnings("ConstantConditions")//can't be null on phone
     private void initPhoneOrTablet() {
@@ -333,6 +333,10 @@ public class MainActivity extends AppCompatActivity {
 
         mBinding.topAppBar.setVisibility(isVisible ? View.VISIBLE : View.GONE);
         mBinding.updateButtonCustomView.setVisibility(isVisible ? View.GONE : View.VISIBLE);
+    }
+
+    protected void setUpdateButtonCustomViewVisibility(boolean isVisible){
+        mBinding.updateButtonCustomView.setVisibility(isVisible?View.VISIBLE:View.GONE);
     }
 
     protected void initUpdateButton(boolean isForUpdate) {

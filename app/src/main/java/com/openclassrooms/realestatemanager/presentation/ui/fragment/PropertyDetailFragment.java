@@ -39,8 +39,8 @@ import static com.picone.core.utils.ConstantParameters.STATIC_MAP_SIZE;
 public class PropertyDetailFragment extends BaseFragment {
 
     private FragmentPropertyDetailBinding mBinding;
+    private PhotoRecyclerViewAdapter adapter;
 
-    //todo show date when sold
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -49,7 +49,6 @@ public class PropertyDetailFragment extends BaseFragment {
         setAppBarVisibility(false);
         initRecyclerView();
         setUpdateButtonIcon(true);
-        initClickOnMedia();
         return mBinding.getRoot();
     }
 
@@ -58,7 +57,12 @@ public class PropertyDetailFragment extends BaseFragment {
         super.onViewCreated(view, savedInstanceState);
         mPropertyViewModel.getSelectedProperty.observe(getViewLifecycleOwner(), property -> {
             mPropertyViewModel.setPropertyLocationForProperty(property);
-            mPropertyViewModel.setAllPhotosForProperty(property);
+            mBinding.fragmentDetailSoldTextView.setVisibility(property.isSold()?View.VISIBLE:View.GONE);
+            setUpdateButtonCustomViewVisibility(!property.isSold());
+            if (property.getSoldFrom()!=null)
+            mBinding.fragmentDetailSoldTextView.setText(getString(R.string.is_sold_from).concat(property.getSoldFrom()));
+            adapter.updatePhotos(property.getPropertyPhotos());
+            initClickOnMedia(property);
             initValue(mBinding.fragmentDetailInformationLayout,
                     Objects.requireNonNull(property),
                     mBinding.fragmentDetailDescriptionLayout.detailMediaDescriptionLayoutText);
@@ -66,10 +70,9 @@ public class PropertyDetailFragment extends BaseFragment {
     }
 
     private void initRecyclerView() {
-        PhotoRecyclerViewAdapter adapter = new PhotoRecyclerViewAdapter(new ArrayList<>());
+        adapter = new PhotoRecyclerViewAdapter(new ArrayList<>());
         adapter.isPhotoHaveBeenDeleted(false);
         mBinding.fragmentDetailMediaLayout.detailCustomViewRecyclerView.setAdapter(adapter);
-        mPropertyViewModel.getAllPropertyPhotosForProperty.observe(getViewLifecycleOwner(), adapter::updatePhotos);
     }
 
     private void initValue(@NonNull FragmentPropertyDetailInformationBinding detailInformationLayout, @NonNull Property property, @NonNull TextView descriptionTextView) {
@@ -82,10 +85,10 @@ public class PropertyDetailFragment extends BaseFragment {
         mPropertyViewModel.getPropertyLocationForProperty.observe(getViewLifecycleOwner(), this::setStaticMap);
     }
 
-    private void initClickOnMedia() {
+    private void initClickOnMedia(Property property) {
         RecyclerViewItemClickListener.addTo(mBinding.fragmentDetailMediaLayout.detailCustomViewRecyclerView, R.layout.fragment_property_detail)
                 .setOnItemClickListener((recyclerView, position, v) -> {
-                    CustomMediaFullScreenDialog fullScreenMediaDialog = new CustomMediaFullScreenDialog(requireContext(), Objects.requireNonNull(mPropertyViewModel.getAllPropertyPhotosForProperty.getValue()).get(position).getPhotoPath());
+                    CustomMediaFullScreenDialog fullScreenMediaDialog = new CustomMediaFullScreenDialog(requireContext(), property.getPropertyPhotos().get(position).getPhotoPath());
                     fullScreenMediaDialog.show();
                 });
     }
@@ -95,7 +98,6 @@ public class PropertyDetailFragment extends BaseFragment {
         textView.setText(text);
     }
 
-    //todo add stroke to static map
     private void setStaticMap(@NonNull PropertyLocation propertyLocation) {
 
         String propertyLocationStr = String.valueOf(propertyLocation.getLatitude())

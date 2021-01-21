@@ -59,6 +59,10 @@ public abstract class BaseFragment extends Fragment {
         mainActivity.initUpdateButton(isForUpdate);
     }
 
+    protected void setUpdateButtonCustomViewVisibility(boolean isVisible){
+        mainActivity.setUpdateButtonCustomViewVisibility(isVisible);
+    }
+
     protected void setSaveButtonOnClickListener(View.OnClickListener clickListener){
         mainActivity.setSaveButtonClickListener(clickListener);
     }

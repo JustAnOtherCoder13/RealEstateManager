@@ -31,7 +31,6 @@ public class CustomBottomSheetRangeSlider extends ConstraintLayout {
         initView(attributes);
     }
 
-//todo remove decimal after dot
     private void initView(@Nullable TypedArray attributes) {
         inflate(context, R.layout.custom_bottom_sheet_range_slider, this);
 
@@ -42,7 +41,6 @@ public class CustomBottomSheetRangeSlider extends ConstraintLayout {
 
         setRangeSliderTouchListener();
 
-        rangeSlider.setLabelBehavior(LabelFormatter.LABEL_FLOATING);
         assert attributes != null;
         title.setText(attributes.getText(R.styleable.CustomBottomSheetRangeSlider_title));
         attributes.recycle();
@@ -65,15 +63,17 @@ public class CustomBottomSheetRangeSlider extends ConstraintLayout {
     }
 
     public void setRangeSliderValue(float valueFrom, float valueTo, float stepSize) {
-        rangeSlider.setValueFrom(valueFrom);
-        rangeSlider.setValueTo(valueTo);
+        int startValueInt = (int)valueFrom;
+        int endValueInt = (int)valueTo;
+        rangeSlider.setValueFrom(startValueInt);
+        rangeSlider.setValueTo(endValueInt);
         List<Float> values = new ArrayList<>();
         values.add(valueFrom);
         values.add(valueTo);
         rangeSlider.setValues(values);
         rangeSlider.setStepSize(stepSize);
-        startValue.setText(String.valueOf(valueFrom));
-        endValue.setText(String.valueOf(valueTo));
+        startValue.setText(String.valueOf(startValueInt));
+        endValue.setText(String.valueOf(endValueInt));
     }
 
     public float getStartValue(){return Float.parseFloat(startValue.getText().toString());}

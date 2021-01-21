@@ -28,7 +28,6 @@ public class PropertyListFragment extends BaseFragment {
 
     private FragmentPropertyListBinding mBinding;
     private PropertyRecyclerViewAdapter adapter;
-//todo when no match found in filter, recycler go to 0
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {

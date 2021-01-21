@@ -54,10 +54,7 @@ public class MapsFragment extends BaseFragment implements GoogleMap.OnInfoWindow
     private MarkerOptions mMarkerOptions = new MarkerOptions();
     private List<Marker> mPointOfInterestMarkers = new ArrayList<>();
     private Marker mMarkerToAdd;
-    private int count = 0;
 
-//todo highlight recycler on marker click
-    //todo resize icon for phone
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -203,7 +200,9 @@ public class MapsFragment extends BaseFragment implements GoogleMap.OnInfoWindow
 
         Glide.with(requireContext())
                 .load(pointOfInterest.getIcon())
-                .apply(new RequestOptions().override(40))
+                .apply(getResources().getBoolean(R.bool.phone_device)?
+                        new RequestOptions()
+                        :new RequestOptions().override(40))
                 .centerCrop()
                 .into(new CustomTarget<Drawable>() {
                     @Override
