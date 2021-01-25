@@ -3,6 +3,7 @@ package com.picone.core.data.property;
 import com.picone.core.data.RealEstateManagerRoomDatabase;
 import com.picone.core.domain.entity.PointOfInterest;
 import com.picone.core.domain.entity.Property;
+import com.picone.core.domain.entity.PropertyFactory;
 import com.picone.core.domain.entity.PropertyLocation;
 import com.picone.core.domain.entity.PropertyPhoto;
 
@@ -28,6 +29,11 @@ public class PropertyDaoImpl {
         return mPropertyRoomDao.getAllProperties();
     }
 
+    public Observable<PropertyFactory> getPropertyAndAllValues(int propertyId) {
+        return mPropertyRoomDao.getPropertyAndAllValues(propertyId);
+    }
+
+
     public Observable<List<PointOfInterest>> getAllPointOfInterestForPropertyId(int propertyId) {
         return mPropertyRoomDao.getAllPointOfInterestForPropertyId(propertyId);
     }
@@ -36,11 +42,11 @@ public class PropertyDaoImpl {
         return mPropertyRoomDao.getAllPhotosForPropertyId(propertyId);
     }
 
-    public Observable<List<PropertyPhoto>> getAllPhotosForAllProperties(){
+    public Observable<List<PropertyPhoto>> getAllPhotosForAllProperties() {
         return mPropertyRoomDao.getAllPhotosForAllProperties();
     }
 
-    public Observable<List<String>> getAllRegionsForAllProperties(){
+    public Observable<List<String>> getAllRegionsForAllProperties() {
         return mPropertyRoomDao.getAllRegionsForAllProperties();
     }
 
@@ -72,7 +78,7 @@ public class PropertyDaoImpl {
         return mPropertyRoomDao.deletePropertyPhoto(propertyPhoto);
     }
 
-    public Completable deleteAllPhotoForProperty(int propertyId){
+    public Completable deleteAllPhotoForProperty(int propertyId) {
         return mPropertyRoomDao.deleteAllPhotoForProperty(propertyId);
     }
 

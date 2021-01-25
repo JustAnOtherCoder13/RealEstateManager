@@ -5,10 +5,13 @@ import android.util.Log;
 import androidx.annotation.NonNull;
 import androidx.hilt.lifecycle.ViewModelInject;
 import androidx.lifecycle.LiveData;
+import androidx.lifecycle.MediatorLiveData;
 import androidx.lifecycle.MutableLiveData;
+import androidx.lifecycle.Observer;
 
 import com.picone.core.domain.entity.PointOfInterest;
 import com.picone.core.domain.entity.Property;
+import com.picone.core.domain.entity.PropertyFactory;
 import com.picone.core.domain.entity.PropertyLocation;
 import com.picone.core.domain.entity.PropertyPhoto;
 import com.picone.core.domain.interactors.property.AddPropertyInteractor;
@@ -42,6 +45,8 @@ public class PropertyViewModel extends BaseViewModel {
     private MutableLiveData<List<PointOfInterest>> mapsPointOfInterestForPropertyMutableLD = new MutableLiveData<>();
     private MutableLiveData<CompletionState> completionStateMutableLD = new MutableLiveData<>(CompletionState.START_STATE);
     private MutableLiveData<List<Property>> allPropertiesMutableLD = new MutableLiveData<>();
+    private MutableLiveData<List<PropertyFactory>> allPropertiesMutableLD_ = new MutableLiveData<>();
+
     private MutableLiveData<List<PointOfInterest>> allPointOfInterestForPropertyMutableLD = new MutableLiveData<>(new ArrayList<>());
     private MutableLiveData<List<PointOfInterest>> allPointsOfInterestForAllPropertiesMutableLD = new MutableLiveData<>();
     private MutableLiveData<List<PropertyPhoto>> allPhotosForPropertyMutableLD = new MutableLiveData<>();
@@ -57,6 +62,8 @@ public class PropertyViewModel extends BaseViewModel {
     public LiveData<List<PointOfInterest>> getMapsPointOfInterest = mapsPointOfInterestForPropertyMutableLD;
     public LiveData<CompletionState> getCompletionState = completionStateMutableLD;
     public LiveData<List<Property>> getAllProperties = allPropertiesMutableLD;
+    public LiveData<List<PropertyFactory>> getAllProperties_ = allPropertiesMutableLD_;
+
     public LiveData<List<PointOfInterest>> getAllPointOfInterestForAllProperties = allPointsOfInterestForAllPropertiesMutableLD;
     public LiveData<List<PointOfInterest>> getAllPointOfInterestForProperty = allPointOfInterestForPropertyMutableLD;
     public LiveData<List<PropertyPhoto>> getAllPropertyPhotosForProperty = allPhotosForPropertyMutableLD;
@@ -111,6 +118,32 @@ public class PropertyViewModel extends BaseViewModel {
 
     private MutableLiveData<Locale> localeMutableLD = new MutableLiveData<>();
     public LiveData<Locale> getLocale = localeMutableLD;
+
+
+    private MutableLiveData<PropertyFactory> propertyAndAllValuesMutableLD = new MutableLiveData<>();
+    private MutableLiveData<List<PropertyFactory>> allPropertiesAndAllValues = new MutableLiveData<>();
+    public LiveData<PropertyFactory> getPropertyAndAllValues = propertyAndAllValuesMutableLD;
+    public LiveData<List<PropertyFactory>> getAllPropertiesAndAllValues = allPropertiesAndAllValues;
+
+    public void setPropertyAndAllValues(Property property) {
+        compositeDisposable.add(
+                getAllPropertiesInteractor.getPropertyAndAllValues(property.getId())
+                        .subscribeOn(schedulerProvider.getIo())
+                        .observeOn(schedulerProvider.getUi())
+                        .subscribe(propertyAndAllValues -> propertyAndAllValuesMutableLD.setValue(propertyAndAllValues))
+        );
+    }
+
+    public void setAllPropertiesAndAllValues() {
+            compositeDisposable.add(
+                    getAllPropertiesInteractor.getAllProperties_()
+                    .subscribeOn(schedulerProvider.getIo())
+                    .observeOn(schedulerProvider.getUi())
+                    .subscribe(propertyFactories ->
+                            allPropertiesMutableLD_.setValue(propertyFactories))
+            );
+
+    }
 
     public void setLocale(Locale locale) {
         localeMutableLD.setValue(locale);

@@ -4,6 +4,7 @@ import androidx.annotation.NonNull;
 
 import com.picone.core.domain.entity.PointOfInterest;
 import com.picone.core.domain.entity.Property;
+import com.picone.core.domain.entity.PropertyFactory;
 import com.picone.core.domain.entity.PropertyLocation;
 import com.picone.core.domain.entity.PropertyPhoto;
 import com.picone.core.domain.entity.pojo.nearBySearch.NearBySearch;
@@ -15,7 +16,6 @@ import javax.inject.Inject;
 
 import io.reactivex.Completable;
 import io.reactivex.Observable;
-import io.reactivex.Observer;
 
 public class PropertyRepository {
 
@@ -31,6 +31,10 @@ public class PropertyRepository {
 
     public Observable<List<Property>> getAllProperties() {
         return propertyDao.getAllProperties();
+    }
+
+    public Observable<PropertyFactory> getPropertyAndAllValues(int propertyId) {
+        return propertyDao.getPropertyAndAllValues(propertyId);
     }
 
     public Observable<List<PointOfInterest>> getAllPointOfInterestForPropertyId(int propertyId) {

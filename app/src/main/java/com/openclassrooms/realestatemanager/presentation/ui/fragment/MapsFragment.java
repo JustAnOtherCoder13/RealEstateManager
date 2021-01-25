@@ -152,8 +152,11 @@ public class MapsFragment extends BaseFragment implements GoogleMap.OnInfoWindow
 
     private void initMarkersValue(@NonNull List<Property> allProperties) {
         mMap.clear();
-        for (Property property : allProperties)
+
+
+        for (Property property : allProperties){
             mPropertyViewModel.setPropertyLocationForProperty(property);
+        }
 
         mMap.setOnMarkerClickListener(marker -> {
             if (!marker.isInfoWindowShown()) marker.showInfoWindow();

@@ -247,6 +247,7 @@ public class MainActivity extends AppCompatActivity {
         initPhoneOrTablet();
         mAgentViewModel.setAgent();
         mPropertyViewModel.setAllProperties();
+        mPropertyViewModel.setAllPropertiesAndAllValues();
         filterHelper = new FilterHelper(mBinding.bottomSheetLayout);
         setBottomSheetButtonClickListener();
         initBottomSheetLocationFilter();
