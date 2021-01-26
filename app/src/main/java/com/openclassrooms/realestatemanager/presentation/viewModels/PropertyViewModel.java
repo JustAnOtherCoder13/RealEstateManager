@@ -168,20 +168,6 @@ public class PropertyViewModel extends BaseViewModel {
     public void setSelectedProperty_(PropertyFactory property_){
         selectedPropertyMutableLD_.setValue(property_);
     }
-    public void setSelectedProperty_(Property property) {
-        compositeDisposable.add(
-                getAllPropertiesInteractor.getPropertyAndAllValues(property.getId())
-                        .subscribeOn(schedulerProvider.getIo())
-                        .observeOn(schedulerProvider.getUi())
-                        .flatMap(new Function<PropertyFactory, ObservableSource<PropertyFactory>>() {
-                                       @Override
-                                       public ObservableSource<PropertyFactory> apply(PropertyFactory propertyFactory) throws Exception {
-                                           Log.i("TAG", "apply: "+propertyFactory.property.getAddress());
-                                           return Observable.just(propertyFactory);
-                                       }
-                                   })
-                .subscribe(propertyFactory ->selectedPropertyMutableLD_.setValue(propertyFactory)) );
-    }
 
     public void setPhotosToDelete(List<PropertyPhoto> photosToDelete) {
         photosToDeleteMutableLD.postValue(photosToDelete);
@@ -261,9 +247,9 @@ public class PropertyViewModel extends BaseViewModel {
     }
     //___________________________________PROPERTY__________________________________
 
-    public void addProperty(Property property) {
+    public void addProperty(PropertyFactory property) {
         compositeDisposable.add(
-                addPropertyInteractor.addRoomProperty(property)
+                addPropertyInteractor.addRoomProperty(property.property)
                         .subscribeOn(schedulerProvider.getIo())
                         .observeOn(schedulerProvider.getUi())
                         .doOnComplete(() -> completionStateMutableLD.postValue(CompletionState.ADD_PROPERTY_COMPLETE))
@@ -272,9 +258,9 @@ public class PropertyViewModel extends BaseViewModel {
                                 , throwable -> checkException()));
     }
 
-    public void updateProperty(Property property) {
+    public void updateProperty(PropertyFactory property) {
         compositeDisposable.add(
-                updatePropertyInteractor.updateProperty(property)
+                updatePropertyInteractor.updateProperty(property.property)
                         .subscribeOn(schedulerProvider.getIo())
                         .observeOn(schedulerProvider.getUi())
                         .doOnComplete(() -> completionStateMutableLD.setValue(CompletionState.UPDATE_PROPERTY_COMPLETE))
@@ -363,9 +349,9 @@ public class PropertyViewModel extends BaseViewModel {
                         .subscribe(propertyPhotos -> allPhotosForPropertyMutableLD.postValue(propertyPhotos)));
     }
 
-    public void resetPhotoForProperty(@NonNull Property property) {
+    public void resetPhotoForProperty(@NonNull PropertyFactory property) {
         compositeDisposable.add(
-                deletePropertyPhotoInteractor.deleteAllPhotoForProperty(property.getId())
+                deletePropertyPhotoInteractor.deleteAllPhotoForProperty(property.property.getId())
                         .subscribeOn(schedulerProvider.getIo())
                         .observeOn(schedulerProvider.getUi())
                         .subscribe(() -> {

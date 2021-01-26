@@ -34,6 +34,7 @@ import com.openclassrooms.realestatemanager.databinding.FragmentMapsBinding;
 import com.openclassrooms.realestatemanager.presentation.ui.main.BaseFragment;
 import com.picone.core.domain.entity.PointOfInterest;
 import com.picone.core.domain.entity.Property;
+import com.picone.core.domain.entity.PropertyFactory;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -76,8 +77,7 @@ public class MapsFragment extends BaseFragment implements GoogleMap.OnInfoWindow
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         initMapView(savedInstanceState);
-        mPropertyViewModel.setAllProperties();
-        placePropertyMarkers();
+        mPropertyViewModel.setAllPropertiesAndAllValues();
     }
 
     @Override
@@ -86,13 +86,13 @@ public class MapsFragment extends BaseFragment implements GoogleMap.OnInfoWindow
         updateLocationUI();
         mMap.setOnInfoWindowClickListener(this);
         if (getView() != null)
-            mPropertyViewModel.getAllProperties.observe(getViewLifecycleOwner(), this::initMarkersValue);
+            mPropertyViewModel.getAllProperties_.observe(getViewLifecycleOwner(), this::initMarkersValue);
     }
 
     @Override
     public void onInfoWindowClick(@NonNull Marker marker) {
         if (isPropertyMarker(marker)) {
-            mPropertyViewModel.setSelectedProperty(getPropertyForId(marker.getTitle()));
+            mPropertyViewModel.setSelectedProperty_(getPropertyForId(marker.getTitle()));
             if (Objects.requireNonNull(mNavController.getCurrentDestination()).getId() == R.id.mapsFragment)
                 mNavController.navigate(R.id.action_mapsFragment_to_propertyDetailFragment);
             else mNavController.navigate(R.id.propertyDetailFragment);
@@ -150,44 +150,35 @@ public class MapsFragment extends BaseFragment implements GoogleMap.OnInfoWindow
 
     //----------------------------------MAPS MARKERS----------------------------------------------
 
-    private void initMarkersValue(@NonNull List<Property> allProperties) {
+    private void initMarkersValue(@NonNull List<PropertyFactory> allProperties) {
         mMap.clear();
-
-
-        for (Property property : allProperties){
-            mPropertyViewModel.setPropertyLocationForProperty(property);
-        }
-
-        mMap.setOnMarkerClickListener(marker -> {
-            if (!marker.isInfoWindowShown()) marker.showInfoWindow();
-            if (isPropertyMarker(marker)) {
-                setUpMapPosition(marker.getPosition(), MAPS_CAMERA_NEAR_ZOOM);
-                placePointOfInterestMarkersForClickedProperty(getPropertyForId(marker.getTitle()));
-            }
-            return true;
-        });
-
-        mMap.setOnMyLocationButtonClickListener(() -> {
-            removePointOfInterest();
-            return false;
-        });
-    }
-
-    private void placePropertyMarkers() {
-        mPropertyViewModel.getPropertyLocationForProperty.observe(getViewLifecycleOwner(), propertyLocation -> {
-            if (mMap != null) {
-                mMap.addMarker(mMarkerOptions.position(new LatLng(propertyLocation.getLatitude(), propertyLocation.getLongitude()))
-                        .title(String.valueOf(propertyLocation.getPropertyId()))
-                        .snippet(getPropertyForId(String.valueOf(propertyLocation.getPropertyId())).getAddress())
+        if (mMap != null) {
+            for (PropertyFactory propertyFactory : allProperties)
+                mMap.addMarker(mMarkerOptions.position(new LatLng(propertyFactory.propertyLocation.getLatitude(), propertyFactory.propertyLocation.getLongitude()))
+                        .title(String.valueOf(propertyFactory.propertyLocation.getPropertyId()))
+                        .snippet(getPropertyForId(String.valueOf(propertyFactory.propertyLocation.getPropertyId())).property.getAddress())
                         .icon(BitmapDescriptorFactory.fromBitmap(getBitmapFromVectorOrDrawable(requireContext(), R.drawable.ic_fragment_detail_location_24))));
-            }
-        });
+
+
+            mMap.setOnMarkerClickListener(marker -> {
+                if (!marker.isInfoWindowShown()) marker.showInfoWindow();
+                if (isPropertyMarker(marker)) {
+                    setUpMapPosition(marker.getPosition(), MAPS_CAMERA_NEAR_ZOOM);
+                    placePointOfInterestMarkersForClickedProperty(getPropertyForId(marker.getTitle()));
+                }
+                return true;
+            });
+
+            mMap.setOnMyLocationButtonClickListener(() -> {
+                removePointOfInterest();
+                return false;
+            });
+        }
     }
 
-
-    private void placePointOfInterestMarkersForClickedProperty(@NonNull Property property) {
+    private void placePointOfInterestMarkersForClickedProperty(@NonNull PropertyFactory property) {
         removePointOfInterest();
-        for (PointOfInterest pointOfInterest:property.getPointOfInterests())
+        for (PointOfInterest pointOfInterest : property.pointOfInterests)
             createPointOfInterestMarker(pointOfInterest);
     }
 
@@ -203,9 +194,9 @@ public class MapsFragment extends BaseFragment implements GoogleMap.OnInfoWindow
 
         Glide.with(requireContext())
                 .load(pointOfInterest.getIcon())
-                .apply(getResources().getBoolean(R.bool.phone_device)?
+                .apply(getResources().getBoolean(R.bool.phone_device) ?
                         new RequestOptions()
-                        :new RequestOptions().override(40))
+                        : new RequestOptions().override(40))
                 .centerCrop()
                 .into(new CustomTarget<Drawable>() {
                     @Override
@@ -222,11 +213,11 @@ public class MapsFragment extends BaseFragment implements GoogleMap.OnInfoWindow
     }
 
     private boolean isPropertyMarker(@NonNull Marker marker) {
-        return getPropertyForId(marker.getTitle()).getAddress() != null;
+        return getPropertyForId(marker.getTitle()).property.getAddress() != null;
     }
 
     private void removePointOfInterest() {
-       for (Marker marker:mPointOfInterestMarkers)
-           marker.remove();
-        }
+        for (Marker marker : mPointOfInterestMarkers)
+            marker.remove();
+    }
 }

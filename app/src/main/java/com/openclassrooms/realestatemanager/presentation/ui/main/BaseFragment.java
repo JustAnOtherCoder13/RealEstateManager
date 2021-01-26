@@ -16,6 +16,7 @@ import com.openclassrooms.realestatemanager.presentation.utils.customView.TopApp
 import com.openclassrooms.realestatemanager.presentation.viewModels.AgentViewModel;
 import com.openclassrooms.realestatemanager.presentation.viewModels.PropertyViewModel;
 import com.picone.core.domain.entity.Property;
+import com.picone.core.domain.entity.PropertyFactory;
 
 import java.util.Objects;
 
@@ -75,10 +76,10 @@ public abstract class BaseFragment extends Fragment {
         mainActivity.playLoader(isVisible);
     }
 
-    protected Property getPropertyForId(String propertyId) {
-        Property propertyToReturn = new Property();
-        for (Property property : Objects.requireNonNull(mPropertyViewModel.getAllProperties.getValue())) {
-            if (String.valueOf(property.getId()).equalsIgnoreCase(propertyId))
+    protected PropertyFactory getPropertyForId(String propertyId) {
+        PropertyFactory propertyToReturn = new PropertyFactory();
+        for (PropertyFactory property : Objects.requireNonNull(mPropertyViewModel.getAllProperties_.getValue())) {
+            if (String.valueOf(property.property.getId()).equalsIgnoreCase(propertyId))
                 propertyToReturn = property;
         }
         return propertyToReturn;
