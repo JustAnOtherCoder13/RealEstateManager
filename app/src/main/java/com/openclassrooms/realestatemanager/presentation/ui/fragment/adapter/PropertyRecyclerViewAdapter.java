@@ -2,6 +2,7 @@ package com.openclassrooms.realestatemanager.presentation.ui.fragment.adapter;
 
 import android.content.Context;
 import android.graphics.Color;
+import android.graphics.PointF;
 import android.graphics.drawable.Drawable;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -23,6 +24,7 @@ import com.bumptech.glide.request.transition.Transition;
 import com.openclassrooms.realestatemanager.R;
 import com.openclassrooms.realestatemanager.databinding.RecyclerviewPropertyListItemBinding;
 import com.picone.core.domain.entity.Property;
+import com.picone.core.domain.entity.PropertyFactory;
 import com.picone.core.domain.entity.PropertyPhoto;
 
 import java.text.DecimalFormat;
@@ -37,7 +39,7 @@ import static com.openclassrooms.realestatemanager.presentation.utils.Utils.conv
 
 public class PropertyRecyclerViewAdapter extends RecyclerView.Adapter<PropertyRecyclerViewAdapter.ViewHolder> {
 
-    private List<Property> mProperties;
+    private List<PropertyFactory> mProperties;
     private List<View> mItems = new ArrayList<>();
     private Property selectedProperty;
     private Currency currency;
@@ -49,7 +51,7 @@ public class PropertyRecyclerViewAdapter extends RecyclerView.Adapter<PropertyRe
         this.locale = locale;
         notifyDataSetChanged();
     }
-    public PropertyRecyclerViewAdapter(List<Property> mProperties, Context context) {
+    public PropertyRecyclerViewAdapter(List<PropertyFactory> mProperties, Context context) {
         this.mProperties = mProperties;
         this.context = context;
     }
@@ -68,16 +70,16 @@ public class PropertyRecyclerViewAdapter extends RecyclerView.Adapter<PropertyRe
         if (locale==null)locale=Locale.US;
         currency = Currency.getInstance(locale);
         mItems.add(holder.itemView);
-        final Property property = mProperties.get(position);
-        if (!property.getPropertyPhotos().isEmpty())
-        setPropertyPhoto(holder,property.getPropertyPhotos().get(0));
-        holder.binding.propertyItemPrice.setText(convertedPrice(property));
-        holder.binding.propertyItemTown.setText(property.getRegion());
-        holder.binding.propertyItemType.setText(property.getPropertyType());
+        final PropertyFactory property = mProperties.get(position);
+        if (!property.photos.isEmpty())
+        setPropertyPhoto(holder,property.photos.get(0));
+        holder.binding.propertyItemPrice.setText(convertedPrice(property.property));
+        holder.binding.propertyItemTown.setText(property.propertyLocation.getRegion());
+        holder.binding.propertyItemType.setText(property.property.getPropertyType());
         TextView textView = holder.itemView.findViewById(R.id.property_item_price);
 
         if (selectedProperty != null)
-            if (this.selectedProperty.getId() == property.getId()) {
+            if (this.selectedProperty.getId() == property.property.getId()) {
                 //reset all views
                 for (View item : mItems) {
                     TextView itemYTextView = item.findViewById(R.id.property_item_price);
@@ -90,7 +92,7 @@ public class PropertyRecyclerViewAdapter extends RecyclerView.Adapter<PropertyRe
                 textView.setTextColor(context.getResources().getColor(R.color.custom_pink));
                 holder.itemView.setBackgroundColor(Color.TRANSPARENT);
             }
-        holder.binding.propertyItemSold.setVisibility(property.getSoldFrom().trim().isEmpty()?
+        holder.binding.propertyItemSold.setVisibility(property.property.getSoldFrom().trim().isEmpty()?
                 View.GONE
                 :View.VISIBLE);
     }
@@ -120,7 +122,7 @@ public class PropertyRecyclerViewAdapter extends RecyclerView.Adapter<PropertyRe
         return formatWithSpace().format(price).concat(" ").concat(currency.getSymbol(locale));
     }
 
-    public void updateProperties(List<Property> updatedProperties) {
+    public void updateProperties(List<PropertyFactory> updatedProperties) {
         this.mProperties = updatedProperties;
         notifyDataSetChanged();
     }
@@ -130,7 +132,6 @@ public class PropertyRecyclerViewAdapter extends RecyclerView.Adapter<PropertyRe
         notifyDataSetChanged();
     }
 
-    //todo don't pass in resource ready sometimes
     private void setPropertyPhoto(@NonNull PropertyRecyclerViewAdapter.ViewHolder holder, @NonNull PropertyPhoto photo) {
         Glide.with(holder.binding.propertyItemPhoto.getContext())
                 .load(photo.getPhotoPath())

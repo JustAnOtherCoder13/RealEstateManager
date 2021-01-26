@@ -1,5 +1,7 @@
 package com.picone.core.domain.interactors.property;
 
+import androidx.annotation.NonNull;
+
 import com.picone.core.data.property.PropertyRepository;
 import com.picone.core.domain.entity.Property;
 import com.picone.core.domain.entity.PropertyFactory;
@@ -27,7 +29,7 @@ public class GetAllPropertiesInteractor extends PropertyBaseInteractor {
                 .flatMap(this::addPropertyToList);
     }
 
-    private Observable<List<PropertyFactory>> addPropertyToList(Property property) {
+    private Observable<List<PropertyFactory>> addPropertyToList(@NonNull Property property) {
         return propertyDataSource.getPropertyAndAllValues(property.getId())
                 .flatMap(propertyFactory -> {
                     if (propertyFactory!=null&& allProperties!=null)

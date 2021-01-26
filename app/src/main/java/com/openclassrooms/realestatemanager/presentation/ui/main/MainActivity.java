@@ -32,6 +32,7 @@ import com.openclassrooms.realestatemanager.presentation.utils.RecyclerViewItemC
 import com.openclassrooms.realestatemanager.presentation.viewModels.AgentViewModel;
 import com.openclassrooms.realestatemanager.presentation.viewModels.PropertyViewModel;
 import com.picone.core.domain.entity.Property;
+import com.picone.core.domain.entity.PropertyFactory;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -81,7 +82,7 @@ public class MainActivity extends AppCompatActivity {
             mBottomSheetBehavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
         //reset selected property if not on add or detail fragment
         if (Objects.requireNonNull(mNavController.getCurrentDestination()).getId() != R.id.addPropertyFragment)
-            mPropertyViewModel.setSelectedProperty(new Property());
+            mPropertyViewModel.setSelectedProperty_(new PropertyFactory());
         //set back press nav
         if (mNavController.getCurrentDestination() != null && isPhone) setPhoneBackNavigation();
         else if (mNavController.getCurrentDestination() != null && !isPhone) setTabBackNavigation();
@@ -169,8 +170,8 @@ public class MainActivity extends AppCompatActivity {
 
         } else {
             setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
-            initRecyclerView();
-            configureOnClickRecyclerView();
+            //initRecyclerView();
+            //configureOnClickRecyclerView();
             mBinding.currencySwitch.setOnClickListener(v -> {
                 adapter.updateLocale(mBinding.currencySwitch.isChecked() ?
                         Locale.FRANCE
@@ -258,7 +259,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     @SuppressWarnings("ConstantConditions")//already checked
-    private void initRecyclerView() {
+   /* private void initRecyclerView() {
         adapter = new PropertyRecyclerViewAdapter(new ArrayList<>(), this);
         RecyclerView.LayoutManager linearLayout = new LinearLayoutManager(this);
         mBinding.fragmentPropertyListRecyclerview.setLayoutManager(linearLayout);
@@ -289,7 +290,7 @@ public class MainActivity extends AppCompatActivity {
                     Property property = allProperties.get(position);
                     mPropertyViewModel.setSelectedProperty(property);
                 });
-    }
+    }*/
 
     private void setBottomSheetButtonClickListener() {
 

@@ -7,6 +7,9 @@ import java.util.List;
 
 public class PropertyFactory {
 
+    public PropertyFactory() {
+    }
+
     @Embedded
     public Property property;
 

@@ -91,7 +91,6 @@ public class ManageImageHelper {
     }
 
     public static void playLoader(boolean isVisible, LottieAnimationView animationView) {
-        Log.e("TAG", "playLoader: "+animationView.isAnimating() );
         if (isVisible) {
             animationView.setVisibility(View.VISIBLE);
             animationView.playAnimation();

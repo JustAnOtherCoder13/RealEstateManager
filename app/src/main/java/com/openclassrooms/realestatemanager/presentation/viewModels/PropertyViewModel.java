@@ -38,6 +38,10 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Objects;
 
+import io.reactivex.Observable;
+import io.reactivex.ObservableSource;
+import io.reactivex.functions.Function;
+
 import static com.picone.core.utils.ConstantParameters.MAPS_KEY;
 
 public class PropertyViewModel extends BaseViewModel {
@@ -52,6 +56,8 @@ public class PropertyViewModel extends BaseViewModel {
     private MutableLiveData<List<PropertyPhoto>> allPhotosForPropertyMutableLD = new MutableLiveData<>();
     private MutableLiveData<List<PropertyPhoto>> allPhotosForAllPropertiesMutableLD = new MutableLiveData<>();
     private MutableLiveData<Property> selectedPropertyMutableLD = new MutableLiveData<>(new Property());
+    private MutableLiveData<PropertyFactory> selectedPropertyMutableLD_ = new MutableLiveData<>(new PropertyFactory());
+
     private MutableLiveData<List<PropertyPhoto>> photosToDeleteMutableLD = new MutableLiveData<>();
     private MutableLiveData<PropertyLocation> propertyLocationForPropertyMutableLd = new MutableLiveData<>();
     private MutableLiveData<PropertyLocation> locationForAddressMutableLD = new MutableLiveData<>();
@@ -69,6 +75,8 @@ public class PropertyViewModel extends BaseViewModel {
     public LiveData<List<PropertyPhoto>> getAllPropertyPhotosForProperty = allPhotosForPropertyMutableLD;
     public LiveData<List<PropertyPhoto>> getAllPhotosForAllProperties = allPhotosForAllPropertiesMutableLD;
     public LiveData<Property> getSelectedProperty = selectedPropertyMutableLD;
+    public LiveData<PropertyFactory> getSelectedProperty_ = selectedPropertyMutableLD_;
+
     public LiveData<List<PropertyPhoto>> getPhotosToDelete = photosToDeleteMutableLD;
     public LiveData<PropertyLocation> getPropertyLocationForProperty = propertyLocationForPropertyMutableLd;
     public LiveData<PropertyLocation> getLocationForAddress = locationForAddressMutableLD;
@@ -135,13 +143,13 @@ public class PropertyViewModel extends BaseViewModel {
     }
 
     public void setAllPropertiesAndAllValues() {
-            compositeDisposable.add(
-                    getAllPropertiesInteractor.getAllProperties_()
-                    .subscribeOn(schedulerProvider.getIo())
-                    .observeOn(schedulerProvider.getUi())
-                    .subscribe(propertyFactories ->
-                            allPropertiesMutableLD_.setValue(propertyFactories))
-            );
+        compositeDisposable.add(
+                getAllPropertiesInteractor.getAllProperties_()
+                        .subscribeOn(schedulerProvider.getIo())
+                        .observeOn(schedulerProvider.getUi())
+                        .subscribe(propertyFactories ->
+                                allPropertiesMutableLD_.setValue(propertyFactories))
+        );
 
     }
 
@@ -155,6 +163,24 @@ public class PropertyViewModel extends BaseViewModel {
 
     public void setSelectedProperty(Property property) {
         selectedPropertyMutableLD.setValue(property);
+    }
+
+    public void setSelectedProperty_(PropertyFactory property_){
+        selectedPropertyMutableLD_.setValue(property_);
+    }
+    public void setSelectedProperty_(Property property) {
+        compositeDisposable.add(
+                getAllPropertiesInteractor.getPropertyAndAllValues(property.getId())
+                        .subscribeOn(schedulerProvider.getIo())
+                        .observeOn(schedulerProvider.getUi())
+                        .flatMap(new Function<PropertyFactory, ObservableSource<PropertyFactory>>() {
+                                       @Override
+                                       public ObservableSource<PropertyFactory> apply(PropertyFactory propertyFactory) throws Exception {
+                                           Log.i("TAG", "apply: "+propertyFactory.property.getAddress());
+                                           return Observable.just(propertyFactory);
+                                       }
+                                   })
+                .subscribe(propertyFactory ->selectedPropertyMutableLD_.setValue(propertyFactory)) );
     }
 
     public void setPhotosToDelete(List<PropertyPhoto> photosToDelete) {

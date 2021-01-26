@@ -4,6 +4,7 @@ import androidx.room.Dao;
 import androidx.room.Delete;
 import androidx.room.Insert;
 import androidx.room.Query;
+import androidx.room.Transaction;
 import androidx.room.Update;
 
 import com.picone.core.domain.entity.PointOfInterest;
@@ -23,6 +24,7 @@ public interface PropertyRoomDao {
     @Query("SELECT*FROM property_table")
     Observable<List<Property>> getAllProperties();
 
+    @Transaction
     @Query("SELECT*FROM property_table WHERE id = :propertyId")
     Observable<PropertyFactory> getPropertyAndAllValues(int propertyId);
 

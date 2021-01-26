@@ -25,6 +25,7 @@ import com.openclassrooms.realestatemanager.presentation.utils.RecyclerViewItemC
 import com.openclassrooms.realestatemanager.presentation.utils.customView.CustomMediaFullScreenDialog;
 import com.openclassrooms.realestatemanager.presentation.utils.customView.DetailInformationCustomView;
 import com.picone.core.domain.entity.Property;
+import com.picone.core.domain.entity.PropertyFactory;
 import com.picone.core.domain.entity.PropertyLocation;
 
 import java.util.ArrayList;
@@ -52,20 +53,22 @@ public class PropertyDetailFragment extends BaseFragment {
         return mBinding.getRoot();
     }
 
+
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        mPropertyViewModel.getSelectedProperty.observe(getViewLifecycleOwner(), property -> {
-            mPropertyViewModel.setPropertyLocationForProperty(property);
-            mBinding.fragmentDetailSoldTextView.setVisibility(property.isSold()?View.VISIBLE:View.GONE);
-            setUpdateButtonCustomViewVisibility(!property.isSold());
-            if (property.getSoldFrom()!=null)
-            mBinding.fragmentDetailSoldTextView.setText(getString(R.string.is_sold_from).concat(property.getSoldFrom()));
-            adapter.updatePhotos(property.getPropertyPhotos());
-            initClickOnMedia(property);
-            initValue(mBinding.fragmentDetailInformationLayout,
-                    Objects.requireNonNull(property),
-                    mBinding.fragmentDetailDescriptionLayout.detailMediaDescriptionLayoutText);
+        mPropertyViewModel.getSelectedProperty_.observe(getViewLifecycleOwner(), property -> {
+            if (property.property!=null){
+             mBinding.fragmentDetailSoldTextView.setVisibility(property.property.isSold()?View.VISIBLE:View.GONE);
+                setUpdateButtonCustomViewVisibility(!property.property.isSold());
+                if (property.property.getSoldFrom()!=null)
+                    mBinding.fragmentDetailSoldTextView.setText(getString(R.string.is_sold_from).concat(property.property.getSoldFrom()));
+                adapter.updatePhotos(property.photos);
+                initClickOnMedia(property);
+                initValue(mBinding.fragmentDetailInformationLayout,
+                        Objects.requireNonNull(property),
+                        mBinding.fragmentDetailDescriptionLayout.detailMediaDescriptionLayoutText);
+            }
         });
     }
 
@@ -75,20 +78,20 @@ public class PropertyDetailFragment extends BaseFragment {
         mBinding.fragmentDetailMediaLayout.detailCustomViewRecyclerView.setAdapter(adapter);
     }
 
-    private void initValue(@NonNull FragmentPropertyDetailInformationBinding detailInformationLayout, @NonNull Property property, @NonNull TextView descriptionTextView) {
-        setTextForCustomView(detailInformationLayout.fragmentDetailAreaCustomView, String.valueOf(property.getPropertyArea()).concat(" ").concat("sq m"));
-        setTextForCustomView(detailInformationLayout.fragmentDetailLocationCustomView, property.getAddress());
-        setTextForCustomView(detailInformationLayout.fragmentDetailNumbersOfRoomsCustomView, String.valueOf(property.getNumberOfRooms()));
-        setTextForCustomView(detailInformationLayout.fragmentDetailNumbersOfBedroomsCustomView, String.valueOf(property.getNumberOfBedrooms()));
-        setTextForCustomView(detailInformationLayout.fragmentDetailNumbersOfBathroomsCustomView, String.valueOf(property.getNumberOfBathrooms()));
-        descriptionTextView.setText(property.getDescription());
-        mPropertyViewModel.getPropertyLocationForProperty.observe(getViewLifecycleOwner(), this::setStaticMap);
+    private void initValue(@NonNull FragmentPropertyDetailInformationBinding detailInformationLayout, @NonNull PropertyFactory property, @NonNull TextView descriptionTextView) {
+        setTextForCustomView(detailInformationLayout.fragmentDetailAreaCustomView, String.valueOf(property.property.getPropertyArea()).concat(" ").concat("sq m"));
+        setTextForCustomView(detailInformationLayout.fragmentDetailLocationCustomView, property.property.getAddress());
+        setTextForCustomView(detailInformationLayout.fragmentDetailNumbersOfRoomsCustomView, String.valueOf(property.property.getNumberOfRooms()));
+        setTextForCustomView(detailInformationLayout.fragmentDetailNumbersOfBedroomsCustomView, String.valueOf(property.property.getNumberOfBedrooms()));
+        setTextForCustomView(detailInformationLayout.fragmentDetailNumbersOfBathroomsCustomView, String.valueOf(property.property.getNumberOfBathrooms()));
+        descriptionTextView.setText(property.property.getDescription());
+        setStaticMap(property.propertyLocation);
     }
 
-    private void initClickOnMedia(Property property) {
+    private void initClickOnMedia(PropertyFactory property) {
         RecyclerViewItemClickListener.addTo(mBinding.fragmentDetailMediaLayout.detailCustomViewRecyclerView, R.layout.fragment_property_detail)
                 .setOnItemClickListener((recyclerView, position, v) -> {
-                    CustomMediaFullScreenDialog fullScreenMediaDialog = new CustomMediaFullScreenDialog(requireContext(), property.getPropertyPhotos().get(position).getPhotoPath());
+                    CustomMediaFullScreenDialog fullScreenMediaDialog = new CustomMediaFullScreenDialog(requireContext(), property.property.getPropertyPhotos().get(position).getPhotoPath());
                     fullScreenMediaDialog.show();
                 });
     }
