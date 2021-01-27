@@ -9,7 +9,7 @@ import androidx.room.Update;
 
 import com.picone.core.domain.entity.PointOfInterest;
 import com.picone.core.domain.entity.Property;
-import com.picone.core.domain.entity.PropertyFactory;
+import com.picone.core.domain.entity.PropertyInformation;
 import com.picone.core.domain.entity.PropertyLocation;
 import com.picone.core.domain.entity.PropertyPhoto;
 
@@ -21,12 +21,12 @@ import io.reactivex.Observable;
 @Dao
 public interface PropertyRoomDao {
 
-    @Query("SELECT*FROM property_table")
-    Observable<List<Property>> getAllProperties();
+    @Query("SELECT*FROM property_information_table")
+    Observable<List<PropertyInformation>> getAllProperties();
 
     @Transaction
-    @Query("SELECT*FROM property_table WHERE id = :propertyId")
-    Observable<PropertyFactory> getPropertyAndAllValues(int propertyId);
+    @Query("SELECT*FROM property_information_table WHERE id = :propertyId")
+    Observable<Property> getPropertyAndAllValues(int propertyId);
 
     @Query("SELECT*FROM property_point_of_interest_table WHERE property_point_of_interest_table.propertyId = :propertyId")
     Observable<List<PointOfInterest>> getAllPointOfInterestForPropertyId(int propertyId);
@@ -47,7 +47,7 @@ public interface PropertyRoomDao {
     Observable<List<String>> getAllRegionsForAllProperties();
 
     @Insert
-    Completable addProperty(Property property);
+    Completable addProperty(PropertyInformation propertyInformation);
 
     @Insert
     Completable addPropertyPointOfInterest(PointOfInterest pointOfInterest);
@@ -65,7 +65,7 @@ public interface PropertyRoomDao {
     Completable deleteAllPhotoForProperty(int propertyId);
 
     @Update
-    Completable updateProperty(Property property);
+    Completable updateProperty(PropertyInformation propertyInformation);
 
     @Update
     Completable updatePropertyLocation(PropertyLocation propertyLocation);

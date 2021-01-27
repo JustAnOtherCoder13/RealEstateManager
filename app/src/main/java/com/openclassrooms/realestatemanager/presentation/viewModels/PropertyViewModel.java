@@ -5,13 +5,11 @@ import android.util.Log;
 import androidx.annotation.NonNull;
 import androidx.hilt.lifecycle.ViewModelInject;
 import androidx.lifecycle.LiveData;
-import androidx.lifecycle.MediatorLiveData;
 import androidx.lifecycle.MutableLiveData;
-import androidx.lifecycle.Observer;
 
 import com.picone.core.domain.entity.PointOfInterest;
 import com.picone.core.domain.entity.Property;
-import com.picone.core.domain.entity.PropertyFactory;
+import com.picone.core.domain.entity.PropertyInformation;
 import com.picone.core.domain.entity.PropertyLocation;
 import com.picone.core.domain.entity.PropertyPhoto;
 import com.picone.core.domain.interactors.property.AddPropertyInteractor;
@@ -38,10 +36,6 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Objects;
 
-import io.reactivex.Observable;
-import io.reactivex.ObservableSource;
-import io.reactivex.functions.Function;
-
 import static com.picone.core.utils.ConstantParameters.MAPS_KEY;
 
 public class PropertyViewModel extends BaseViewModel {
@@ -49,14 +43,14 @@ public class PropertyViewModel extends BaseViewModel {
     private MutableLiveData<List<PointOfInterest>> mapsPointOfInterestForPropertyMutableLD = new MutableLiveData<>();
     private MutableLiveData<CompletionState> completionStateMutableLD = new MutableLiveData<>(CompletionState.START_STATE);
     private MutableLiveData<List<Property>> allPropertiesMutableLD = new MutableLiveData<>();
-    private MutableLiveData<List<PropertyFactory>> allPropertiesMutableLD_ = new MutableLiveData<>();
+    private MutableLiveData<List<Property>> allPropertiesMutableLD_ = new MutableLiveData<>();
 
     private MutableLiveData<List<PointOfInterest>> allPointOfInterestForPropertyMutableLD = new MutableLiveData<>(new ArrayList<>());
     private MutableLiveData<List<PointOfInterest>> allPointsOfInterestForAllPropertiesMutableLD = new MutableLiveData<>();
     private MutableLiveData<List<PropertyPhoto>> allPhotosForPropertyMutableLD = new MutableLiveData<>();
     private MutableLiveData<List<PropertyPhoto>> allPhotosForAllPropertiesMutableLD = new MutableLiveData<>();
-    private MutableLiveData<Property> selectedPropertyMutableLD = new MutableLiveData<>(new Property());
-    private MutableLiveData<PropertyFactory> selectedPropertyMutableLD_ = new MutableLiveData<>(new PropertyFactory());
+    private MutableLiveData<PropertyInformation> selectedPropertyMutableLD = new MutableLiveData<>(new PropertyInformation());
+    private MutableLiveData<Property> selectedPropertyMutableLD_ = new MutableLiveData<>(new Property());
 
     private MutableLiveData<List<PropertyPhoto>> photosToDeleteMutableLD = new MutableLiveData<>();
     private MutableLiveData<PropertyLocation> propertyLocationForPropertyMutableLd = new MutableLiveData<>();
@@ -68,14 +62,14 @@ public class PropertyViewModel extends BaseViewModel {
     public LiveData<List<PointOfInterest>> getMapsPointOfInterest = mapsPointOfInterestForPropertyMutableLD;
     public LiveData<CompletionState> getCompletionState = completionStateMutableLD;
     public LiveData<List<Property>> getAllProperties = allPropertiesMutableLD;
-    public LiveData<List<PropertyFactory>> getAllProperties_ = allPropertiesMutableLD_;
+    public LiveData<List<Property>> getAllProperties_ = allPropertiesMutableLD_;
 
     public LiveData<List<PointOfInterest>> getAllPointOfInterestForAllProperties = allPointsOfInterestForAllPropertiesMutableLD;
     public LiveData<List<PointOfInterest>> getAllPointOfInterestForProperty = allPointOfInterestForPropertyMutableLD;
     public LiveData<List<PropertyPhoto>> getAllPropertyPhotosForProperty = allPhotosForPropertyMutableLD;
     public LiveData<List<PropertyPhoto>> getAllPhotosForAllProperties = allPhotosForAllPropertiesMutableLD;
-    public LiveData<Property> getSelectedProperty = selectedPropertyMutableLD;
-    public LiveData<PropertyFactory> getSelectedProperty_ = selectedPropertyMutableLD_;
+    public LiveData<PropertyInformation> getSelectedProperty = selectedPropertyMutableLD;
+    public LiveData<Property> getSelectedProperty_ = selectedPropertyMutableLD_;
 
     public LiveData<List<PropertyPhoto>> getPhotosToDelete = photosToDeleteMutableLD;
     public LiveData<PropertyLocation> getPropertyLocationForProperty = propertyLocationForPropertyMutableLd;
@@ -128,14 +122,14 @@ public class PropertyViewModel extends BaseViewModel {
     public LiveData<Locale> getLocale = localeMutableLD;
 
 
-    private MutableLiveData<PropertyFactory> propertyAndAllValuesMutableLD = new MutableLiveData<>();
-    private MutableLiveData<List<PropertyFactory>> allPropertiesAndAllValues = new MutableLiveData<>();
-    public LiveData<PropertyFactory> getPropertyAndAllValues = propertyAndAllValuesMutableLD;
-    public LiveData<List<PropertyFactory>> getAllPropertiesAndAllValues = allPropertiesAndAllValues;
+    private MutableLiveData<Property> propertyAndAllValuesMutableLD = new MutableLiveData<>();
+    private MutableLiveData<List<Property>> allPropertiesAndAllValues = new MutableLiveData<>();
+    public LiveData<Property> getPropertyAndAllValues = propertyAndAllValuesMutableLD;
+    public LiveData<List<Property>> getAllPropertiesAndAllValues = allPropertiesAndAllValues;
 
-    public void setPropertyAndAllValues(Property property) {
+    public void setPropertyAndAllValues(PropertyInformation propertyInformation) {
         compositeDisposable.add(
-                getAllPropertiesInteractor.getPropertyAndAllValues(property.getId())
+                getAllPropertiesInteractor.getPropertyAndAllValues(propertyInformation.getId())
                         .subscribeOn(schedulerProvider.getIo())
                         .observeOn(schedulerProvider.getUi())
                         .subscribe(propertyAndAllValues -> propertyAndAllValuesMutableLD.setValue(propertyAndAllValues))
@@ -161,11 +155,11 @@ public class PropertyViewModel extends BaseViewModel {
         allPropertiesMutableLD.setValue(filteredProperties);
     }
 
-    public void setSelectedProperty(Property property) {
-        selectedPropertyMutableLD.setValue(property);
+    public void setSelectedProperty(PropertyInformation propertyInformation) {
+        selectedPropertyMutableLD.setValue(propertyInformation);
     }
 
-    public void setSelectedProperty_(PropertyFactory property_){
+    public void setSelectedProperty_(Property property_){
         selectedPropertyMutableLD_.setValue(property_);
     }
 
@@ -179,21 +173,19 @@ public class PropertyViewModel extends BaseViewModel {
 
     public void setAllProperties() {
         compositeDisposable.add(
-                getAllPropertiesInteractor.getAllProperties()
+                getAllPropertiesInteractor.getAllProperties_()
                         .subscribeOn(schedulerProvider.getIo())
                         .observeOn(schedulerProvider.getUi())
                         .subscribe(properties -> {
                             allPropertiesMutableLD.setValue(properties);
-                            for (Property property : properties)
-                                addPhotoAndPointOfInterestForProperty(property);
                         }));
     }
 
 
     public void setAllPointOfInterestForProperty(@NonNull Property property) {
-        if (property.getAddress() != null)
+        if (property.propertyLocation.getAddress() != null)
             compositeDisposable.add(
-                    getAllPointOfInterestForPropertyIdInteractor.getAllPointOfInterestForPropertyId(property.getId())
+                    getAllPointOfInterestForPropertyIdInteractor.getAllPointOfInterestForPropertyId(property.propertyInformation.getId())
                             .subscribeOn(schedulerProvider.getIo())
                             .observeOn(schedulerProvider.getUi())
                             .subscribe(pointOfInterests -> allPointOfInterestForPropertyMutableLD.setValue(pointOfInterests)));
@@ -210,9 +202,9 @@ public class PropertyViewModel extends BaseViewModel {
         );
     }
 
-    public void setAllPhotosForProperty(@NonNull Property property) {
+    public void setAllPhotosForProperty(@NonNull PropertyInformation propertyInformation) {
         compositeDisposable.add(
-                getAllPropertyPhotosForPropertyIdInteractor.getAllPhotosForPropertyId(property.getId())
+                getAllPropertyPhotosForPropertyIdInteractor.getAllPhotosForPropertyId(propertyInformation.getId())
                         .subscribeOn(schedulerProvider.getIo())
                         .observeOn(schedulerProvider.getUi())
                         .subscribe(propertyPhotos -> allPhotosForPropertyMutableLD.setValue(propertyPhotos)));
@@ -228,9 +220,9 @@ public class PropertyViewModel extends BaseViewModel {
         );
     }
 
-    public void setPropertyLocationForProperty(@NonNull Property property) {
+    public void setPropertyLocationForProperty(@NonNull PropertyInformation propertyInformation) {
         compositeDisposable.add(
-                getPropertyLocationInteractor.getPropertyLocationForPropertyId(property.getId())
+                getPropertyLocationInteractor.getPropertyLocationForPropertyId(propertyInformation.getId())
                         .subscribeOn(schedulerProvider.getIo())
                         .observeOn(schedulerProvider.getUi())
                         .subscribe(propertyLocation -> propertyLocationForPropertyMutableLd.setValue(propertyLocation)));
@@ -247,24 +239,24 @@ public class PropertyViewModel extends BaseViewModel {
     }
     //___________________________________PROPERTY__________________________________
 
-    public void addProperty(PropertyFactory property) {
+    public void addProperty(Property property) {
         compositeDisposable.add(
-                addPropertyInteractor.addRoomProperty(property.property)
+                addPropertyInteractor.addRoomProperty(property.propertyInformation)
                         .subscribeOn(schedulerProvider.getIo())
                         .observeOn(schedulerProvider.getUi())
                         .doOnComplete(() -> completionStateMutableLD.postValue(CompletionState.ADD_PROPERTY_COMPLETE))
-                        .andThen(getAllPropertiesInteractor.getAllProperties())
+                        .andThen(getAllPropertiesInteractor.getAllProperties_())
                         .subscribe(properties -> allPropertiesMutableLD.postValue(properties)
                                 , throwable -> checkException()));
     }
 
-    public void updateProperty(PropertyFactory property) {
+    public void updateProperty(Property property) {
         compositeDisposable.add(
-                updatePropertyInteractor.updateProperty(property.property)
+                updatePropertyInteractor.updateProperty(property.propertyInformation)
                         .subscribeOn(schedulerProvider.getIo())
                         .observeOn(schedulerProvider.getUi())
                         .doOnComplete(() -> completionStateMutableLD.setValue(CompletionState.UPDATE_PROPERTY_COMPLETE))
-                        .andThen(getAllPropertiesInteractor.getAllProperties())
+                        .andThen(getAllPropertiesInteractor.getAllProperties_())
                         .subscribe(properties -> allPropertiesMutableLD.postValue(properties), throwable -> checkException()));
     }
 
@@ -277,7 +269,7 @@ public class PropertyViewModel extends BaseViewModel {
                         .subscribeOn(schedulerProvider.getIo())
                         .observeOn(schedulerProvider.getUi())
                         .doOnComplete(() -> completionStateMutableLD.setValue(CompletionState.ADD_LOCATION_COMPLETE))
-                        .subscribe(() -> setSelectedProperty(new Property()), throwable -> checkException()));
+                        .subscribe(() -> setSelectedProperty(new PropertyInformation()), throwable -> checkException()));
     }
 
     public void updatePropertyLocation(@NonNull PropertyLocation propertyLocation) {
@@ -286,7 +278,7 @@ public class PropertyViewModel extends BaseViewModel {
                         .subscribeOn(schedulerProvider.getIo())
                         .observeOn(schedulerProvider.getUi())
                         .andThen(getAllPropertiesInteractor.getAllProperties())
-                        .subscribe(properties -> selectedPropertyMutableLD.postValue(new Property()), throwable -> Log.e("TAG", "updatePropertyLocation: " + throwable)));
+                        .subscribe(properties -> selectedPropertyMutableLD.postValue(new PropertyInformation()), throwable -> Log.e("TAG", "updatePropertyLocation: " + throwable)));
 
     }
     //___________________________________PROPERTY POINT OF INTEREST__________________________________
@@ -349,9 +341,9 @@ public class PropertyViewModel extends BaseViewModel {
                         .subscribe(propertyPhotos -> allPhotosForPropertyMutableLD.postValue(propertyPhotos)));
     }
 
-    public void resetPhotoForProperty(@NonNull PropertyFactory property) {
+    public void resetPhotoForProperty(@NonNull Property property) {
         compositeDisposable.add(
-                deletePropertyPhotoInteractor.deleteAllPhotoForProperty(property.property.getId())
+                deletePropertyPhotoInteractor.deleteAllPhotoForProperty(property.propertyInformation.getId())
                         .subscribeOn(schedulerProvider.getIo())
                         .observeOn(schedulerProvider.getUi())
                         .subscribe(() -> {
@@ -362,7 +354,7 @@ public class PropertyViewModel extends BaseViewModel {
     //___________________________________MAPS__________________________________
 
     public void setPropertyLocationForPropertyAddress(@NonNull Property property) {
-        if (property.getAddress() != null)
+       // if (propertyInformation.getAddress() != null)
             compositeDisposable.add(
                     getPropertyLocationForAddressInteractor.getPropertyLocationForAddress(property, MAPS_KEY)
                             .subscribeOn(schedulerProvider.getIo())
@@ -378,17 +370,4 @@ public class PropertyViewModel extends BaseViewModel {
                         .subscribe(pointOfInterests -> mapsPointOfInterestForPropertyMutableLD.setValue(pointOfInterests)));
     }
 
-
-    private void addPhotoAndPointOfInterestForProperty(@NonNull Property property) {
-        compositeDisposable.add(
-                getAllPropertyPhotosForPropertyIdInteractor.getAllPhotosForPropertyId(property.getId())
-                        .subscribeOn(schedulerProvider.getIo())
-                        .observeOn(schedulerProvider.getUi())
-                        .flatMap(propertyPhotos -> {
-                            property.setPropertyPhotos(propertyPhotos);
-                            return getAllPointOfInterestForPropertyIdInteractor.getAllPointOfInterestForPropertyId(property.getId());
-                        })
-                        .subscribe(property::setPointOfInterests)
-        );
-    }
 }

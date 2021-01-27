@@ -10,15 +10,15 @@
 
     <!-- ______________________TOP BAR__________________ -->
     <string name="menu_icon">Menu icon</string>
-    <string name="update_property_icon">update property icon</string>
-    <string name="add_property_icon">add property icon</string>
+    <string name="update_property_icon">update propertyInformation icon</string>
+    <string name="add_property_icon">add propertyInformation icon</string>
 
     <!-- ______________________CONTENT DESCRIPTION__________________ -->
-    <string name="property_item_photo">property item photo</string>
-    <string name="property_detail_item_photo">property detail item photo</string>
+    <string name="property_item_photo">propertyInformation item photo</string>
+    <string name="property_detail_item_photo">propertyInformation detail item photo</string>
     <string name="location_maps_view">propertyLocation maps view</string>
     <string name="icon">Icon</string>
-    <string name="update_property_button">update property button</string>
+    <string name="update_property_button">update propertyInformation button</string>
     <string name="delete_button">delete button</string>
     <string name="full_screen_image">full screen image</string>
     <string name="photo_set_on_set_title_dialog">photo set on set title dialog</string>

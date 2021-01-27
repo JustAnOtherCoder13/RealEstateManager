@@ -3,7 +3,7 @@ package com.picone.core.data.property;
 import com.picone.core.data.RealEstateManagerRoomDatabase;
 import com.picone.core.domain.entity.PointOfInterest;
 import com.picone.core.domain.entity.Property;
-import com.picone.core.domain.entity.PropertyFactory;
+import com.picone.core.domain.entity.PropertyInformation;
 import com.picone.core.domain.entity.PropertyLocation;
 import com.picone.core.domain.entity.PropertyPhoto;
 
@@ -25,11 +25,11 @@ public class PropertyDaoImpl {
         mPropertyRoomDao = mRoomDatabase.propertyRoomDao();
     }
 
-    public Observable<List<Property>> getAllProperties() {
+    public Observable<List<PropertyInformation>> getAllProperties() {
         return mPropertyRoomDao.getAllProperties();
     }
 
-    public Observable<PropertyFactory> getPropertyAndAllValues(int propertyId) {
+    public Observable<Property> getPropertyAndAllValues(int propertyId) {
         return mPropertyRoomDao.getPropertyAndAllValues(propertyId);
     }
 
@@ -58,8 +58,8 @@ public class PropertyDaoImpl {
         return mPropertyRoomDao.getAllPointsOfInterestForAllProperties();
     }
 
-    public Completable addProperty(Property property) {
-        return mPropertyRoomDao.addProperty(property);
+    public Completable addProperty(PropertyInformation propertyInformation) {
+        return mPropertyRoomDao.addProperty(propertyInformation);
     }
 
     public Completable addPropertyPointOfInterest(PointOfInterest pointOfInterest) {
@@ -83,8 +83,8 @@ public class PropertyDaoImpl {
     }
 
 
-    public Completable updateProperty(Property property) {
-        return mPropertyRoomDao.updateProperty(property);
+    public Completable updateProperty(PropertyInformation propertyInformation) {
+        return mPropertyRoomDao.updateProperty(propertyInformation);
     }
 
     public Completable updatePropertyLocation(PropertyLocation propertyLocation) {

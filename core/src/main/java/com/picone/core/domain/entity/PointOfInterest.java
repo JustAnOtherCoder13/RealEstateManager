@@ -8,7 +8,7 @@ import androidx.room.PrimaryKey;
 
 import static com.picone.core.utils.ConstantParameters.pointOfInterestTable;
 
-@Entity(tableName = pointOfInterestTable, foreignKeys = @ForeignKey(entity = Property.class,
+@Entity(tableName = pointOfInterestTable, foreignKeys = @ForeignKey(entity = PropertyInformation.class,
         parentColumns = "id",
         childColumns = "propertyId"))
 public class PointOfInterest {

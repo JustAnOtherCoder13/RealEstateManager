@@ -1,7 +1,6 @@
 package com.openclassrooms.realestatemanager.presentation.ui.main;
 
 import android.os.Bundle;
-import android.os.IBinder;
 import android.view.View;
 import android.widget.ImageButton;
 
@@ -10,13 +9,11 @@ import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.NavController;
 
-import com.openclassrooms.realestatemanager.R;
 import com.openclassrooms.realestatemanager.presentation.ui.fragment.adapter.PropertyRecyclerViewAdapter;
 import com.openclassrooms.realestatemanager.presentation.utils.customView.TopAppBarCustomView;
 import com.openclassrooms.realestatemanager.presentation.viewModels.AgentViewModel;
 import com.openclassrooms.realestatemanager.presentation.viewModels.PropertyViewModel;
 import com.picone.core.domain.entity.Property;
-import com.picone.core.domain.entity.PropertyFactory;
 
 import java.util.Objects;
 
@@ -76,10 +73,10 @@ public abstract class BaseFragment extends Fragment {
         mainActivity.playLoader(isVisible);
     }
 
-    protected PropertyFactory getPropertyForId(String propertyId) {
-        PropertyFactory propertyToReturn = new PropertyFactory();
-        for (PropertyFactory property : Objects.requireNonNull(mPropertyViewModel.getAllProperties_.getValue())) {
-            if (String.valueOf(property.property.getId()).equalsIgnoreCase(propertyId))
+    protected Property getPropertyForId(String propertyId) {
+        Property propertyToReturn = new Property();
+        for (Property property : Objects.requireNonNull(mPropertyViewModel.getAllProperties_.getValue())) {
+            if (String.valueOf(property.propertyInformation.getId()).equalsIgnoreCase(propertyId))
                 propertyToReturn = property;
         }
         return propertyToReturn;

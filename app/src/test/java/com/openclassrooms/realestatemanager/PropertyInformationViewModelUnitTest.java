@@ -11,7 +11,7 @@ import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 
-public class PropertyViewModelUnitTest extends BaseUnitTest {
+public class PropertyInformationViewModelUnitTest extends BaseUnitTest {
 
     @Test
     public void testNotNull(){
@@ -30,17 +30,17 @@ public class PropertyViewModelUnitTest extends BaseUnitTest {
 
     @Test
     public void addPropertyShouldUpdatePropertiesList(){
-        propertyViewModel.addProperty(propertyToAdd);
+        propertyViewModel.addProperty(propertyInformationToAdd);
         assertEquals(3, Objects.requireNonNull(propertyViewModel.getAllProperties.getValue()).size());
-        assertTrue(propertyViewModel.getAllProperties.getValue().contains(propertyToAdd));
-        assertEquals(propertyToAdd.getAddress(),propertyViewModel.getAllProperties.getValue().get(2).getAddress());
+        assertTrue(propertyViewModel.getAllProperties.getValue().contains(propertyInformationToAdd));
+        assertEquals(propertyInformationToAdd.getAddress(),propertyViewModel.getAllProperties.getValue().get(2).getAddress());
     }
 
     @Test
     public void updatePropertyShouldUpdatePropertyValue(){
-        firstPropertyToUpdate.setAddress("my updated address");
-        propertyViewModel.updateProperty(firstPropertyToUpdate);
-        assertEquals(Objects.requireNonNull(propertyViewModel.getAllProperties.getValue()).get(0).getAddress(),firstPropertyToUpdate.getAddress());
+        firstPropertyInformationToUpdate.setAddress("my updated address");
+        propertyViewModel.updateProperty(firstPropertyInformationToUpdate);
+        assertEquals(Objects.requireNonNull(propertyViewModel.getAllProperties.getValue()).get(0).getAddress(), firstPropertyInformationToUpdate.getAddress());
     }
 
     @Test
@@ -88,7 +88,7 @@ public class PropertyViewModelUnitTest extends BaseUnitTest {
     @Test
     public void addPropertyPositionShouldAddNewPropertyLocation(){
         propertyViewModel.addPropertyLocationForProperty(propertyLocationToAdd);
-        propertyViewModel.setPropertyLocationForProperty(propertyToAdd);
+        propertyViewModel.setPropertyLocationForProperty(propertyInformationToAdd);
         assertEquals(Objects.requireNonNull(propertyViewModel.getPropertyLocationForProperty.getValue()).getLatitude(), propertyLocationToAdd.getLatitude(), 0.0);
     }
 
@@ -96,7 +96,7 @@ public class PropertyViewModelUnitTest extends BaseUnitTest {
     public void UpdatePropertyLocationShouldUpdateOriginalPropertyLocationValue(){
         propertyViewModel.addPropertyLocationForProperty(propertyLocationToAdd);
         propertyViewModel.updatePropertyLocation(updatedPropertyLocation);
-        propertyViewModel.setPropertyLocationForProperty(propertyToAdd);
+        propertyViewModel.setPropertyLocationForProperty(propertyInformationToAdd);
         assertTrue(Objects.requireNonNull(propertyViewModel.getPropertyLocationForProperty.getValue()).getRegion().equalsIgnoreCase(updatedPropertyLocation.getRegion()));
     }
 

@@ -1,7 +1,7 @@
 package com.picone.core.domain.interactors.property;
 
 import com.picone.core.data.property.PropertyRepository;
-import com.picone.core.domain.entity.Property;
+import com.picone.core.domain.entity.PropertyInformation;
 
 import io.reactivex.Completable;
 
@@ -11,7 +11,7 @@ public class AddPropertyInteractor extends PropertyBaseInteractor {
         super(propertyDataSource);
     }
 
-    public Completable addRoomProperty(Property property){
-        return propertyDataSource.addProperty(property);
+    public Completable addRoomProperty(PropertyInformation propertyInformation){
+        return propertyDataSource.addProperty(propertyInformation);
     }
 }

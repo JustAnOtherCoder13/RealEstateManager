@@ -19,8 +19,6 @@ import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import androidx.navigation.ui.NavigationUI;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
 
 import com.airbnb.lottie.LottieAnimationView;
 import com.google.android.material.bottomsheet.BottomSheetBehavior;
@@ -28,14 +26,10 @@ import com.openclassrooms.realestatemanager.R;
 import com.openclassrooms.realestatemanager.databinding.ActivityMainBinding;
 import com.openclassrooms.realestatemanager.presentation.ui.fragment.adapter.PropertyRecyclerViewAdapter;
 import com.openclassrooms.realestatemanager.presentation.utils.FilterHelper;
-import com.openclassrooms.realestatemanager.presentation.utils.RecyclerViewItemClickListener;
 import com.openclassrooms.realestatemanager.presentation.viewModels.AgentViewModel;
 import com.openclassrooms.realestatemanager.presentation.viewModels.PropertyViewModel;
 import com.picone.core.domain.entity.Property;
-import com.picone.core.domain.entity.PropertyFactory;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Locale;
 import java.util.Objects;
 
@@ -82,7 +76,7 @@ public class MainActivity extends AppCompatActivity {
             mBottomSheetBehavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
         //reset selected property if not on add or detail fragment
         if (Objects.requireNonNull(mNavController.getCurrentDestination()).getId() != R.id.addPropertyFragment)
-            mPropertyViewModel.setSelectedProperty_(new PropertyFactory());
+            mPropertyViewModel.setSelectedProperty_(new Property());
         //set back press nav
         if (mNavController.getCurrentDestination() != null && isPhone) setPhoneBackNavigation();
         else if (mNavController.getCurrentDestination() != null && !isPhone) setTabBackNavigation();
@@ -107,7 +101,7 @@ public class MainActivity extends AppCompatActivity {
     private void setPhoneBackNavigation() {
         switch (mNavController.getCurrentDestination().getId()) {
             case R.id.addPropertyFragment:
-                mNavController.navigate(mPropertyViewModel.getSelectedProperty_.getValue().property.getAddress()!=null?
+                mNavController.navigate(mPropertyViewModel.getSelectedProperty_.getValue().propertyLocation.getAddress()!=null?
                         R.id.propertyDetailFragment
                         :R.id.propertyListFragment);
                 break;
@@ -301,8 +295,8 @@ public class MainActivity extends AppCompatActivity {
 
         //todo pass new properties
         mBinding.bottomSheetLayout.bottomSheetOkButton.setOnClickListener(v -> {
-            filterHelper.filterProperties(mPropertyViewModel.getAllProperties.getValue());
-            mPropertyViewModel.setFilteredProperty(filterHelper.getFilteredProperty());
+            filterHelper.filterProperties(mPropertyViewModel.getAllProperties_.getValue());
+            mPropertyViewModel.setFilteredProperty(filterHelper.getFilteredPropertyInformation());
 
             mBinding.topAppBar.resetFilterButton.setVisibility(View.VISIBLE);
             mBottomSheetBehavior.setState(BottomSheetBehavior.STATE_COLLAPSED);

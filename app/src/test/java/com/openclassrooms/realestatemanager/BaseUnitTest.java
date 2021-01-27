@@ -9,7 +9,7 @@ import com.picone.core.data.Generator;
 import com.picone.core.data.property.PropertyRepository;
 import com.picone.core.data.realEstateAgent.RealEstateAgentRepository;
 import com.picone.core.domain.entity.PointOfInterest;
-import com.picone.core.domain.entity.Property;
+import com.picone.core.domain.entity.PropertyInformation;
 import com.picone.core.domain.entity.PropertyLocation;
 import com.picone.core.domain.entity.PropertyPhoto;
 import com.picone.core.domain.entity.RealEstateAgent;
@@ -57,8 +57,8 @@ public abstract class BaseUnitTest {
 
     final int propertyId = Generator.generateProperties().get(0).getId();
 
-    Property propertyToAdd = new Property(3,2,"property3Adress","zone","House",120,6,350000,"description",2,1,false,"0","0");
-    Property firstPropertyToUpdate = Generator.generateProperties().get(0);
+    PropertyInformation propertyInformationToAdd = new PropertyInformation(3,2,"property3Adress","zone","House",120,6,350000,"description",2,1,false,"0","0");
+    PropertyInformation firstPropertyInformationToUpdate = Generator.generateProperties().get(0);
     List<PropertyPhoto> photoForPropertyId = new ArrayList<>();
     PropertyPhoto photoToAdd = new PropertyPhoto(5,"newPhoto","newDescription",1);
     PropertyPhoto photoToDelete = Generator.generatePhotos().get(1);
@@ -68,7 +68,7 @@ public abstract class BaseUnitTest {
     List<PointOfInterest> pointOfInterestsToAdd = new ArrayList<>();
     List<PointOfInterest> updatedPointOfInterests = new ArrayList<>();
 
-    PropertyLocation propertyLocationToAdd = new PropertyLocation(3,42.543732,5.036950,"region",propertyToAdd.getId());
+    PropertyLocation propertyLocationToAdd = new PropertyLocation(3,42.543732,5.036950,"region", propertyInformationToAdd.getId());
     PropertyLocation updatedPropertyLocation = propertyLocationToAdd;
     SchedulerProvider schedulerProvider = new SchedulerProvider(Schedulers.trampoline(), Schedulers.trampoline());
 
@@ -120,7 +120,7 @@ public abstract class BaseUnitTest {
 
     //mock observer
     @Mock
-    Observer<List<Property>> propertyObserver;
+    Observer<List<PropertyInformation>> propertyObserver;
     @Mock
     Observer<List<PointOfInterest>> pointOfInterestObserver;
     @Mock
@@ -158,10 +158,10 @@ public abstract class BaseUnitTest {
         //stub return
         when(propertyRepository.getAllProperties())
                 .thenReturn(Observable.create(emitter -> emitter.onNext(Generator.generateProperties())));
-        when(propertyRepository.addProperty(propertyToAdd))
+        when(propertyRepository.addProperty(propertyInformationToAdd))
                 .thenReturn(Completable.create
-                        (emitter -> Objects.requireNonNull(propertyViewModel.getAllProperties.getValue()).add(propertyToAdd)));
-        when(propertyRepository.updateProperty(firstPropertyToUpdate))
+                        (emitter -> Objects.requireNonNull(propertyViewModel.getAllProperties.getValue()).add(propertyInformationToAdd)));
+        when(propertyRepository.updateProperty(firstPropertyInformationToUpdate))
                 .thenReturn(Completable.create(CompletableEmitter::onComplete));
 
         when(propertyRepository.getAllPhotosForPropertyId(propertyId))
@@ -185,7 +185,7 @@ public abstract class BaseUnitTest {
 
         when(propertyRepository.getPropertyLocationForPropertyId(propertyId))
                 .thenReturn(Observable.create(emitter -> emitter.onNext(Generator.generatePropertyLocation().get(0))));
-        when(propertyRepository.getPropertyLocationForPropertyId(propertyToAdd.getId()))
+        when(propertyRepository.getPropertyLocationForPropertyId(propertyInformationToAdd.getId()))
                 .thenReturn(Observable.create(emitter -> emitter.onNext(propertyLocationToAdd)));
         when(propertyRepository.addPropertyLocation(propertyLocationToAdd))
                 .thenReturn(Completable.create(CompletableEmitter::onComplete));

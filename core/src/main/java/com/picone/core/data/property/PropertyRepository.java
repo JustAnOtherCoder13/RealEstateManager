@@ -4,7 +4,7 @@ import androidx.annotation.NonNull;
 
 import com.picone.core.domain.entity.PointOfInterest;
 import com.picone.core.domain.entity.Property;
-import com.picone.core.domain.entity.PropertyFactory;
+import com.picone.core.domain.entity.PropertyInformation;
 import com.picone.core.domain.entity.PropertyLocation;
 import com.picone.core.domain.entity.PropertyPhoto;
 import com.picone.core.domain.entity.pojo.nearBySearch.NearBySearch;
@@ -29,11 +29,11 @@ public class PropertyRepository {
         this.placeServiceDao = placeServiceDao;
     }
 
-    public Observable<List<Property>> getAllProperties() {
+    public Observable<List<PropertyInformation>> getAllProperties() {
         return propertyDao.getAllProperties();
     }
 
-    public Observable<PropertyFactory> getPropertyAndAllValues(int propertyId) {
+    public Observable<Property> getPropertyAndAllValues(int propertyId) {
         return propertyDao.getPropertyAndAllValues(propertyId);
     }
 
@@ -65,8 +65,8 @@ public class PropertyRepository {
         return propertyDao.addPropertyLocation(propertyLocation);
     }
 
-    public Completable addProperty(Property property) {
-        return propertyDao.addProperty(property);
+    public Completable addProperty(PropertyInformation propertyInformation) {
+        return propertyDao.addProperty(propertyInformation);
     }
 
     public Completable addPropertyPointOfInterest(PointOfInterest pointOfInterest) {
@@ -85,8 +85,8 @@ public class PropertyRepository {
         return propertyDao.deleteAllPhotoForProperty(propertyId);
     }
 
-    public Completable updateProperty(Property property) {
-        return propertyDao.updateProperty(property);
+    public Completable updateProperty(PropertyInformation propertyInformation) {
+        return propertyDao.updateProperty(propertyInformation);
     }
 
     public Completable updatePropertyLocation(PropertyLocation propertyLocation) {

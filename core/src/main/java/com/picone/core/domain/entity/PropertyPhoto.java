@@ -8,7 +8,7 @@ import androidx.room.PrimaryKey;
 
 import static com.picone.core.utils.ConstantParameters.propertyPhotoTable;
 
-@Entity(tableName = propertyPhotoTable, foreignKeys = @ForeignKey(entity = Property.class,
+@Entity(tableName = propertyPhotoTable, foreignKeys = @ForeignKey(entity = PropertyInformation.class,
         parentColumns = "id",
         childColumns = "propertyId"))
 public class PropertyPhoto {

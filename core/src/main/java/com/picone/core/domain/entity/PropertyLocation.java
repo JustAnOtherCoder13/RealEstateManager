@@ -8,7 +8,7 @@ import androidx.room.PrimaryKey;
 
 import static com.picone.core.utils.ConstantParameters.propertyLocationTable;
 
-@Entity(tableName = propertyLocationTable, foreignKeys = @ForeignKey(entity = Property.class,
+@Entity(tableName = propertyLocationTable, foreignKeys = @ForeignKey(entity = PropertyInformation.class,
         parentColumns = "id",
         childColumns = "propertyId"))
 public class PropertyLocation {
@@ -17,14 +17,16 @@ public class PropertyLocation {
     private int id;
     private double latitude;
     private double longitude;
+    private String address;
     private String region;
     @ColumnInfo(index = true)
     private int propertyId;
 
-    public PropertyLocation(int id, double latitude, double longitude, String region, int propertyId) {
+    public PropertyLocation(int id, double latitude, double longitude, String address, String region, int propertyId) {
         this.id = id;
         this.latitude = latitude;
         this.longitude = longitude;
+        this.address = address;
         this.region = region;
         this.propertyId = propertyId;
     }
@@ -65,7 +67,19 @@ public class PropertyLocation {
         this.propertyId = propertyId;
     }
 
-    public String getRegion() { return region; }
+    public String getAddress() {
+        return address;
+    }
 
-    public void setRegion(String region) { this.region = region; }
+    public void setAddress(String address) {
+        this.address = address;
+    }
+
+    public String getRegion() {
+        return region;
+    }
+
+    public void setRegion(String region) {
+        this.region = region;
+    }
 }

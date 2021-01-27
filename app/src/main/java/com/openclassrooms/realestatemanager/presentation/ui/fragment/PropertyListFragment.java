@@ -1,6 +1,5 @@
 package com.openclassrooms.realestatemanager.presentation.ui.fragment;
 
-import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -19,7 +18,6 @@ import com.openclassrooms.realestatemanager.presentation.ui.fragment.adapter.Pro
 import com.openclassrooms.realestatemanager.presentation.ui.main.BaseFragment;
 import com.openclassrooms.realestatemanager.presentation.utils.RecyclerViewItemClickListener;
 import com.picone.core.domain.entity.Property;
-import com.picone.core.domain.entity.PropertyFactory;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -43,11 +41,9 @@ public class PropertyListFragment extends BaseFragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         configureOnClickRecyclerView();
-        //mPropertyViewModel.setSelectedProperty_(new PropertyFactory());
         mPropertyViewModel.getSelectedProperty_.observe(getViewLifecycleOwner(), property -> {
-            if (property.property != null && property.property.getAddress()!=null) {
-                Log.i("TAG", "onViewCreated: "+property.property.getAddress());
-                //mPropertyViewModel.setAllPointOfInterestForProperty(property);
+            if (property.propertyInformation != null && property.propertyLocation.getAddress()!=null) {
+                Log.i("TAG", "onViewCreated: "+property.propertyLocation.getAddress());
                 mNavController.navigate(R.id.action_propertyListFragment_to_propertyDetailFragment);
             }
         });
@@ -66,9 +62,9 @@ public class PropertyListFragment extends BaseFragment {
     public void configureOnClickRecyclerView() {
         RecyclerViewItemClickListener.addTo(mBinding.fragmentPropertyListRecyclerview, R.layout.fragment_property_list)
                 .setOnItemClickListener((recyclerView, position, v) -> {
-                    List<PropertyFactory> allProperties = mPropertyViewModel.getAllProperties_.getValue();
+                    List<Property> allProperties = mPropertyViewModel.getAllProperties_.getValue();
                     assert allProperties != null;
-                    PropertyFactory property = allProperties.get(position);
+                    Property property = allProperties.get(position);
                     mPropertyViewModel.setSelectedProperty_(property);
                 });
     }

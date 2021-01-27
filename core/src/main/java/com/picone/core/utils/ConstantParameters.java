@@ -3,7 +3,7 @@ package com.picone.core.utils;
 import androidx.annotation.NonNull;
 
 import com.picone.core.domain.entity.Property;
-import com.picone.core.domain.entity.PropertyFactory;
+import com.picone.core.domain.entity.PropertyInformation;
 import com.picone.core.domain.entity.RealEstateAgent;
 
 import java.text.DateFormat;
@@ -16,7 +16,7 @@ import java.util.Locale;
 public class ConstantParameters {
 
     public static final String realEstateAgentTable = "real_estate_agent_table";
-    public static final String propertyTable = "property_table";
+    public static final String propertyInformationTable = "property_information_table";
     public static final String propertyPhotoTable = "property_photo_table";
     public static final String propertyLocationTable = "property_location_table";
     public static final String pointOfInterestTable = "property_point_of_interest_table";
@@ -48,10 +48,10 @@ public class ConstantParameters {
     }
 
     @NonNull
-    public static PropertyFactory PROPERTY_TO_ADD(@NonNull RealEstateAgent agent) {
-      PropertyFactory property = new PropertyFactory();
-      property.property = new Property();
-      property.property.setRealEstateAgentId(agent.getId());
+    public static Property PROPERTY_TO_ADD(@NonNull RealEstateAgent agent) {
+      Property property = new Property();
+      property.propertyInformation = new PropertyInformation();
+      property.propertyInformation.setRealEstateAgentId(agent.getId());
       return property;
     }
 

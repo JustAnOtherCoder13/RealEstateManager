@@ -34,7 +34,6 @@ import com.openclassrooms.realestatemanager.databinding.FragmentMapsBinding;
 import com.openclassrooms.realestatemanager.presentation.ui.main.BaseFragment;
 import com.picone.core.domain.entity.PointOfInterest;
 import com.picone.core.domain.entity.Property;
-import com.picone.core.domain.entity.PropertyFactory;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -150,13 +149,13 @@ public class MapsFragment extends BaseFragment implements GoogleMap.OnInfoWindow
 
     //----------------------------------MAPS MARKERS----------------------------------------------
 
-    private void initMarkersValue(@NonNull List<PropertyFactory> allProperties) {
+    private void initMarkersValue(@NonNull List<Property> allProperties) {
         mMap.clear();
         if (mMap != null) {
-            for (PropertyFactory propertyFactory : allProperties)
-                mMap.addMarker(mMarkerOptions.position(new LatLng(propertyFactory.propertyLocation.getLatitude(), propertyFactory.propertyLocation.getLongitude()))
-                        .title(String.valueOf(propertyFactory.property.getId()))
-                        .snippet(String.valueOf(propertyFactory.property.getAddress()))
+            for (Property property : allProperties)
+                mMap.addMarker(mMarkerOptions.position(new LatLng(property.propertyLocation.getLatitude(), property.propertyLocation.getLongitude()))
+                        .title(String.valueOf(property.propertyInformation.getId()))
+                        .snippet(String.valueOf(property.propertyLocation.getAddress()))
                         .icon(BitmapDescriptorFactory.fromBitmap(getBitmapFromVectorOrDrawable(requireContext(), R.drawable.ic_fragment_detail_location_24))));
 
 
@@ -176,7 +175,7 @@ public class MapsFragment extends BaseFragment implements GoogleMap.OnInfoWindow
         }
     }
 
-    private void placePointOfInterestMarkersForClickedProperty(@NonNull PropertyFactory property) {
+    private void placePointOfInterestMarkersForClickedProperty(@NonNull Property property) {
         removePointOfInterest();
         for (PointOfInterest pointOfInterest : property.pointOfInterests)
             createPointOfInterestMarker(pointOfInterest);
@@ -213,7 +212,7 @@ public class MapsFragment extends BaseFragment implements GoogleMap.OnInfoWindow
     }
 
     private boolean isPropertyMarker(@NonNull Marker marker) {
-        return getPropertyForId(marker.getTitle()).property.getAddress() != null;
+        return getPropertyForId(marker.getTitle()).propertyLocation.getAddress() != null;
     }
 
     private void removePointOfInterest() {

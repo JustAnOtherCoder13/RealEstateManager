@@ -9,6 +9,7 @@ import com.openclassrooms.realestatemanager.databinding.CustomBottomSheetPointOf
 import com.openclassrooms.realestatemanager.presentation.utils.customView.CustomBottomSheetRangeSlider;
 import com.picone.core.domain.entity.PointOfInterest;
 import com.picone.core.domain.entity.Property;
+import com.picone.core.domain.entity.PropertyInformation;
 import com.picone.core.domain.entity.PropertyPhoto;
 
 import java.util.ArrayList;
@@ -25,11 +26,11 @@ public class FilterHelper {
     private List<PropertyPhoto> allPropertiesPhotos = new ArrayList<>();
     private List<PointOfInterest> allPointsOfInterest = new ArrayList<>();
     private List<Property> propertiesTempValue;
-    private List<Property> filteredProperty;
+    private List<Property> filteredPropertyInformation;
 
 
-    public List<Property> getFilteredProperty() {
-        return filteredProperty;
+    public List<Property> getFilteredPropertyInformation() {
+        return filteredPropertyInformation;
     }
 
     public FilterHelper(BottomSheetFilterLayoutBinding bottomSheetFilterLayout) {
@@ -83,14 +84,14 @@ public class FilterHelper {
     }
 
     private void filterForLocation(List<Property> allProperties) {
-        filteredProperty = new ArrayList<>();
+        filteredPropertyInformation = new ArrayList<>();
         if (!bottomSheetFilterLayout.filterPropertyLocationSpinner.getText().trim().isEmpty()) {
             for (Property property : allProperties) {
-                if (property.getRegion().equalsIgnoreCase(bottomSheetFilterLayout.filterPropertyLocationSpinner.getText()))
-                    filteredProperty.add(property);
+                if (property.propertyLocation.getRegion().equalsIgnoreCase(bottomSheetFilterLayout.filterPropertyLocationSpinner.getText()))
+                    filteredPropertyInformation.add(property);
             }
         }
-        if (filteredProperty.isEmpty()) filteredProperty.addAll(allProperties);
+        if (filteredPropertyInformation.isEmpty()) filteredPropertyInformation.addAll(allProperties);
         filterForNumberOfPhoto();
     }
 
@@ -98,12 +99,12 @@ public class FilterHelper {
         propertiesTempValue = new ArrayList<>();
         if (!bottomSheetFilterLayout.filterPropertyNumberOfPhotoSpinner.getText().trim().isEmpty())
             // check property that don't match request
-            for (Property property : filteredProperty) {
-                if (property.getPropertyPhotos().size() < Integer.parseInt(bottomSheetFilterLayout.filterPropertyNumberOfPhotoSpinner.getText()))
+            for (Property property : filteredPropertyInformation) {
+                if (property.photos.size() < Integer.parseInt(bottomSheetFilterLayout.filterPropertyNumberOfPhotoSpinner.getText()))
                     propertiesTempValue.add(property);
             }
         //apply filter
-        if (!propertiesTempValue.isEmpty()) filteredProperty.removeAll(propertiesTempValue);
+        if (!propertiesTempValue.isEmpty()) filteredPropertyInformation.removeAll(propertiesTempValue);
         filterForPointOfInterest();
     }
 
@@ -130,26 +131,26 @@ public class FilterHelper {
     private void filterForOnMarketFrom() {
         propertiesTempValue = new ArrayList<>();
         if (!bottomSheetFilterLayout.bottomSheetOnMarketFrom.getDate().equalsIgnoreCase(bottomSheetFilterLayout.getRoot().getResources().getString(R.string.dd_mm_yyyy)))
-            for (Property property : filteredProperty) {
+            for (Property property : filteredPropertyInformation) {
                 //check if property don't match request
-                if (formatStringToDate(property.getEnterOnMarket())
+                if (formatStringToDate(property.propertyInformation.getEnterOnMarket())
                         .before(formatStringToDate(bottomSheetFilterLayout.bottomSheetOnMarketFrom.getDate()))) {
                     propertiesTempValue.add(property);
                 }
             }
         //apply filter
-        if (!propertiesTempValue.isEmpty()) filteredProperty.removeAll(propertiesTempValue);
+        if (!propertiesTempValue.isEmpty()) filteredPropertyInformation.removeAll(propertiesTempValue);
         filterForRangeSlider();
     }
 
     private void filterForRangeSlider() {
         propertiesTempValue = new ArrayList<>();
-        for (Property property : filteredProperty) {
-            filterForRangeSlider(bottomSheetFilterLayout.filterPropertyLocationPriceRangeSlider, property.getPrice(), property);
-            filterForRangeSlider(bottomSheetFilterLayout.filterPropertyLocationSurfaceRangerSlider, property.getPropertyArea(), property);
-            filterForRangeSlider(bottomSheetFilterLayout.filterPropertyLocationRoomRangerSlider, property.getNumberOfRooms(), property);
+        for (Property property : filteredPropertyInformation) {
+            filterForRangeSlider(bottomSheetFilterLayout.filterPropertyLocationPriceRangeSlider, property.propertyInformation.getPrice(), property);
+            filterForRangeSlider(bottomSheetFilterLayout.filterPropertyLocationSurfaceRangerSlider, property.propertyInformation.getPropertyArea(), property);
+            filterForRangeSlider(bottomSheetFilterLayout.filterPropertyLocationRoomRangerSlider, property.propertyInformation.getNumberOfRooms(), property);
         }
-        if (!propertiesTempValue.isEmpty()) filteredProperty.removeAll(propertiesTempValue);
+        if (!propertiesTempValue.isEmpty()) filteredPropertyInformation.removeAll(propertiesTempValue);
     }
 
     //--------------------------------------LIST HELPERS--------------------------------------------------------
@@ -203,16 +204,16 @@ public class FilterHelper {
         propertiesTempValue = new ArrayList<>();
         for (String requestPropertyType : requestPropertyType) {
             //check if property match request
-            for (Property property : filteredProperty) {
-                if (property.getPropertyType().equalsIgnoreCase(requestPropertyType) && !propertiesTempValue.contains(property)) {
+            for (Property property : filteredPropertyInformation) {
+                if (property.propertyInformation.getPropertyType().equalsIgnoreCase(requestPropertyType) && !propertiesTempValue.contains(property)) {
                     propertiesTempValue.add(property);
                 }
             }
 
         }
         //apply filter
-        filteredProperty.clear();
-        filteredProperty.addAll(propertiesTempValue);
+        filteredPropertyInformation.clear();
+        filteredPropertyInformation.addAll(propertiesTempValue);
     }
 
 
@@ -232,15 +233,15 @@ public class FilterHelper {
             else filterIfNotFirstType(type);
         }
         //apply final filtered value
-        filteredProperty.clear();
-        filteredProperty.addAll(propertiesTempValue);
+        filteredPropertyInformation.clear();
+        filteredPropertyInformation.addAll(propertiesTempValue);
 
     }
 
     private void filterForFirstType(int type) {
         //for first Point of interest type, add to value if match
-        for (Property property : filteredProperty)
-            for (PointOfInterest pointOfInterest : property.getPointOfInterests()) {
+        for (Property property : filteredPropertyInformation)
+            for (PointOfInterest pointOfInterest : property.pointOfInterests) {
                 if (pointOfInterest.getType().contains(requestPointsOfInterests.get(type))
                         && !propertiesTempValue.contains(property)) {
                     propertiesTempValue.add(property);
@@ -249,10 +250,10 @@ public class FilterHelper {
     }
 
     private void filterIfNotFirstType(int type) {
-        for (Property property : filteredProperty) {
+        for (Property property : filteredPropertyInformation) {
             boolean isFilteredPropertyHasRequestPointOfInterest = false;
             //for each property in filtered list check if at least one point of interest match request type
-            for (PointOfInterest pointOfInterest : property.getPointOfInterests()) {
+            for (PointOfInterest pointOfInterest : property.pointOfInterests) {
                 if (pointOfInterest.getType().contains(requestPointsOfInterests.get(type))
                 && propertiesTempValue.contains(property)) {
                     //temp value got properties that match past point of interest
