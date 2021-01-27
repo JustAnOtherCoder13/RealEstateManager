@@ -32,9 +32,12 @@ import com.picone.core.domain.interactors.property.pointOfInterest.GetAllPointOf
 import com.picone.core.utils.SchedulerProvider;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Locale;
 import java.util.Objects;
+
+import io.reactivex.Observable;
 
 import static com.picone.core.utils.ConstantParameters.MAPS_KEY;
 
@@ -159,7 +162,7 @@ public class PropertyViewModel extends BaseViewModel {
         selectedPropertyMutableLD.setValue(propertyInformation);
     }
 
-    public void setSelectedProperty_(Property property_){
+    public void setSelectedProperty_(Property property_) {
         selectedPropertyMutableLD_.setValue(property_);
     }
 
@@ -241,7 +244,7 @@ public class PropertyViewModel extends BaseViewModel {
 
     public void addProperty(Property property) {
         compositeDisposable.add(
-                addPropertyInteractor.addRoomProperty(property.propertyInformation)
+                addPropertyInteractor.addProperty(property.propertyInformation)
                         .subscribeOn(schedulerProvider.getIo())
                         .observeOn(schedulerProvider.getUi())
                         .doOnComplete(() -> completionStateMutableLD.postValue(CompletionState.ADD_PROPERTY_COMPLETE))
@@ -354,12 +357,13 @@ public class PropertyViewModel extends BaseViewModel {
     //___________________________________MAPS__________________________________
 
     public void setPropertyLocationForPropertyAddress(@NonNull Property property) {
-       // if (propertyInformation.getAddress() != null)
-            compositeDisposable.add(
-                    getPropertyLocationForAddressInteractor.getPropertyLocationForAddress(property, MAPS_KEY)
-                            .subscribeOn(schedulerProvider.getIo())
-                            .observeOn(schedulerProvider.getUi())
-                            .subscribe(propertyLocation -> locationForAddressMutableLD.setValue(propertyLocation), throwable -> Log.e("TAG", "setPropertyLocationForPropertyAddress: " + throwable)));
+        // if (propertyInformation.getAddress() != null)
+        compositeDisposable.add(
+                getPropertyLocationForAddressInteractor.getPropertyLocationForAddress(property, MAPS_KEY)
+                        .subscribeOn(schedulerProvider.getIo())
+                        .observeOn(schedulerProvider.getUi())
+                        .subscribe(propertyLocation ->
+                                locationForAddressMutableLD.setValue(propertyLocation), throwable -> Log.e("TAG", "setPropertyLocationForPropertyAddress: " + throwable)));
     }
 
     public void setNearBySearchForPropertyLocation(PropertyLocation propertyLocation) {

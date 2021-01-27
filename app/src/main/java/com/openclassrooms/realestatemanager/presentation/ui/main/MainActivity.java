@@ -101,7 +101,7 @@ public class MainActivity extends AppCompatActivity {
     private void setPhoneBackNavigation() {
         switch (mNavController.getCurrentDestination().getId()) {
             case R.id.addPropertyFragment:
-                mNavController.navigate(mPropertyViewModel.getSelectedProperty_.getValue().propertyLocation.getAddress()!=null?
+                mNavController.navigate(mPropertyViewModel.getSelectedProperty_.getValue().propertyLocation!=null?
                         R.id.propertyDetailFragment
                         :R.id.propertyListFragment);
                 break;
