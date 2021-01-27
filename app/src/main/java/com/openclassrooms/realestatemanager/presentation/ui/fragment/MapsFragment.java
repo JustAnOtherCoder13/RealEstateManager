@@ -155,8 +155,8 @@ public class MapsFragment extends BaseFragment implements GoogleMap.OnInfoWindow
         if (mMap != null) {
             for (PropertyFactory propertyFactory : allProperties)
                 mMap.addMarker(mMarkerOptions.position(new LatLng(propertyFactory.propertyLocation.getLatitude(), propertyFactory.propertyLocation.getLongitude()))
-                        .title(String.valueOf(propertyFactory.propertyLocation.getPropertyId()))
-                        .snippet(getPropertyForId(String.valueOf(propertyFactory.propertyLocation.getPropertyId())).property.getAddress())
+                        .title(String.valueOf(propertyFactory.property.getId()))
+                        .snippet(String.valueOf(propertyFactory.property.getAddress()))
                         .icon(BitmapDescriptorFactory.fromBitmap(getBitmapFromVectorOrDrawable(requireContext(), R.drawable.ic_fragment_detail_location_24))));
 
 

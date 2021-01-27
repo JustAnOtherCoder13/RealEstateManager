@@ -55,6 +55,7 @@ public class PhotoRecyclerViewAdapter extends RecyclerView.Adapter<PhotoRecycler
         }
         if (photo.getPhotoPath().equals(ADD_PHOTO)) {
             playLoader(false,holder.binding.propertyDetailItemLoader.animationView);
+            holder.binding.propertyDetailItemPlayLogo.setVisibility(View.GONE);
             holder.binding.propertyDetailItemPhoto.setImageResource(R.drawable.img_add_photo);
             holder.binding.propertyDetailItemPhotoDescription.setVisibility(View.GONE);
         } else {

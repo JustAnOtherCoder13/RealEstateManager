@@ -107,7 +107,7 @@ public class MainActivity extends AppCompatActivity {
     private void setPhoneBackNavigation() {
         switch (mNavController.getCurrentDestination().getId()) {
             case R.id.addPropertyFragment:
-                mNavController.navigate(mPropertyViewModel.getSelectedProperty.getValue().getAddress()!=null?
+                mNavController.navigate(mPropertyViewModel.getSelectedProperty_.getValue().property.getAddress()!=null?
                         R.id.propertyDetailFragment
                         :R.id.propertyListFragment);
                 break;
@@ -299,6 +299,7 @@ public class MainActivity extends AppCompatActivity {
             mBinding.topAppBar.resetFilterButton.setVisibility(View.GONE);
         });
 
+        //todo pass new properties
         mBinding.bottomSheetLayout.bottomSheetOkButton.setOnClickListener(v -> {
             filterHelper.filterProperties(mPropertyViewModel.getAllProperties.getValue());
             mPropertyViewModel.setFilteredProperty(filterHelper.getFilteredProperty());

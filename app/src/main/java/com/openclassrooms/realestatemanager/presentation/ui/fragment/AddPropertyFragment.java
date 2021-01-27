@@ -83,17 +83,17 @@ public class AddPropertyFragment extends BaseFragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        mPreviousSavedPropertyAddress = Objects.requireNonNull(mPropertyViewModel.getAllProperties.getValue()).get(mPropertyViewModel.getAllProperties.getValue().size() - 1).getAddress();
+        mPreviousSavedPropertyAddress = Objects.requireNonNull(mPropertyViewModel.getAllProperties_.getValue()).get(mPropertyViewModel.getAllProperties_.getValue().size() - 1).property.getAddress();
         mPropertyViewModel.isDataLoading.observe(getViewLifecycleOwner(), this::playLoader);
         initClickListener();
-        isNewPropertyToPersist = Objects.requireNonNull(mPropertyViewModel.getSelectedProperty_.getValue()).property.getAddress() == null;
+        isNewPropertyToPersist = Objects.requireNonNull(mPropertyViewModel.getSelectedProperty_.getValue()).property == null;
         initViewModel();
     }
 
     @Override
     public void onResume() {
         super.onResume();
-        isNewPropertyToPersist = Objects.requireNonNull(mPropertyViewModel.getSelectedProperty_.getValue()).property.getAddress() == null;
+        isNewPropertyToPersist = Objects.requireNonNull(mPropertyViewModel.getSelectedProperty_.getValue()).property == null;
         setSoldLayoutVisibility();
     }
 
@@ -135,10 +135,8 @@ public class AddPropertyFragment extends BaseFragment {
             mPropertyViewModel.getSelectedProperty_.observe(getViewLifecycleOwner(), propertyFactory -> {
                 propertyToUpdate = propertyFactory;
                 basePhotoList = propertyFactory.photos;
-
+                mAdapter.updatePhotos(mImageHelper.propertyPhotosWithAddButton(propertyFactory.photos));
             });
-            //mAdapter.updatePhotos(mImageHelper.propertyPhotosWithAddButton(propertyToUpdate.photos));
-            //mPropertyViewModel.setPropertyLocationForProperty(Objects.requireNonNull(mPropertyViewModel.getSelectedProperty.getValue()));
         }
         //else assign value to propertyToUpdate
         else
@@ -164,7 +162,6 @@ public class AddPropertyFragment extends BaseFragment {
             }
         });
         //assign value to base photoList to know if photo have changed before register
-
         mPropertyViewModel.getPhotosToDelete.observe(getViewLifecycleOwner(), photosToDelete ->
                 mBinding.addPropertyMediaLayout.detailCustomViewDeleteButton.setVisibility(photosToDelete.isEmpty() ? View.GONE : View.VISIBLE));
     }
@@ -366,40 +363,19 @@ public class AddPropertyFragment extends BaseFragment {
     }
 
     private void addNewPropertyAdditionalInformation() {
-        mPropertyViewModel.getAllProperties.observe(getViewLifecycleOwner(), properties -> {
-            if (isNewPropertyAddressNotEqualPreviousSavedPropertyAddress(properties.get(properties.size() - 1)))
-                mPropertyViewModel.setPropertyLocationForPropertyAddress(properties.get(properties.size() - 1));
+        mPropertyViewModel.getAllProperties_.observe(getViewLifecycleOwner(), properties -> {
+            if (isNewPropertyAddressNotEqualPreviousSavedPropertyAddress(properties.get(properties.size() - 1).property))
+                mPropertyViewModel.setPropertyLocationForPropertyAddress(properties.get(properties.size() - 1).property);
         });
 
         persistAllNewPhotos();
-
-       /* mPropertyViewModel.getLocationForAddress.observe(getViewLifecycleOwner(), propertyLocation -> {
-            if (isPropertyLocationNotEmptyObject(propertyLocation) && isNewPropertyAddressNotEqualPreviousSavedPropertyAddress(getPropertyForId(String.valueOf(propertyLocation.getPropertyId())))) {
-                Property property = getPropertyForId(String.valueOf(propertyLocation.getPropertyId()));
-                property.setRegion(propertyLocation.getRegion());
-                mPropertyViewModel.updateProperty(property);
-                mPropertyViewModel.addPropertyLocationForProperty(propertyLocation);
-                mPropertyViewModel.setNearBySearchForPropertyLocation(propertyLocation);
-            }
-        });*/
-
-        /*mPropertyViewModel.getMapsPointOfInterest.observe(getViewLifecycleOwner(), pointOfInterests -> {
-            if (!pointOfInterests.isEmpty() && isNewPropertyAddressNotEqualPreviousSavedPropertyAddress(getPropertyForId(String.valueOf(pointOfInterests.get(pointOfInterests.size() - 1).getPropertyId()))))
-                mPropertyViewModel.addPropertyPointOfInterest(pointOfInterests);
-        });*/
     }
 
     private void UpdatePropertyWhenAddressChange(PropertyFactory originalProperty) {
-        //mPropertyViewModel.setAllPointOfInterestForProperty(originalProperty);
-        //mPropertyViewModel.setPropertyLocationForProperty(originalProperty);
         PropertyFactory updatedProperty = updateKnownProperty(originalProperty);
-
-        // if (isNewPropertyLocationLatitudeNotEqualPropertyLocationLatitudeToReplace(originalProperty.propertyLocation)) {
         mPropertyViewModel.updateProperty(updatedProperty);
         mPropertyViewModel.updatePropertyLocation(updatedProperty.propertyLocation);
         mPropertyViewModel.updatePointOfInterest(updatedProperty.pointOfInterests);
-        //}
-
     }
 
     //___________________________________HELPERS_____________________________________________
@@ -413,15 +389,19 @@ public class AddPropertyFragment extends BaseFragment {
         else propertyPhoto.setPhotoPath(setTitleDialog.getVideoPath());
 
         propertyPhoto.setDescription(title);
-        propertyPhoto.setPropertyId(isNewPropertyToPersist ? Objects.requireNonNull(mPropertyViewModel.getAllProperties.getValue()).size() + 1
-                : Objects.requireNonNull(mPropertyViewModel.getSelectedProperty.getValue()).getId());
+        propertyPhoto.setPropertyId(isNewPropertyToPersist ? Objects.requireNonNull(mPropertyViewModel.getAllProperties_.getValue()).size() + 1
+                : Objects.requireNonNull(mPropertyViewModel.getSelectedProperty_.getValue()).property.getId());
         propertyToUpdate.photos.add(propertyPhoto);
-        //mAdapter.updatePhotos(mImageHelper.propertyPhotosWithAddButton(propertyToUpdate.getPropertyPhotos()));
+        mAdapter.updatePhotos(mImageHelper.propertyPhotosWithAddButton(propertyToUpdate.photos));
     }
 
     @NonNull
     private PropertyFactory updateProperty(@NonNull PropertyFactory originalProperty) {
         PropertyFactory property = new PropertyFactory();
+        property.property = new Property();
+        property.propertyLocation = new PropertyLocation();
+        property.pointOfInterests = new ArrayList<>();
+        property.photos = new ArrayList<>();
         property.propertyLocation.setRegion(originalProperty.propertyLocation.getRegion());
         property.property.setEnterOnMarket(getTodayDate());
         property.property.setId(originalProperty.property.getId());
