@@ -293,7 +293,6 @@ public class MainActivity extends AppCompatActivity {
             mBinding.topAppBar.resetFilterButton.setVisibility(View.GONE);
         });
 
-        //todo pass new properties
         mBinding.bottomSheetLayout.bottomSheetOkButton.setOnClickListener(v -> {
             filterHelper.filterProperties(mPropertyViewModel.getAllProperties.getValue());
             mPropertyViewModel.setFilteredProperty(filterHelper.getFilteredPropertyInformation());

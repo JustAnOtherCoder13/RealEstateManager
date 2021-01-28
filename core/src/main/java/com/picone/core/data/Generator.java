@@ -38,13 +38,13 @@ public abstract class Generator {
         return new ArrayList<>(POINT_OF_INTEREST);
     }
 
-    private static List<PropertyInformation> PROPERTIES = Arrays.asList(
+    private static List<PropertyInformation> PROPERTIES_INFORMATION = Arrays.asList(
             new PropertyInformation(1, 1,"cotage",500,15,560000,"First house description",6,3,false,"30/06/2020",""),
             new PropertyInformation(2, 1, "penthouse",200,7,450000,"Second house description",3,1,false,"15/10/2020","")
     );
 
-    public static List<PropertyInformation> generateProperties() {
-        return new ArrayList<>(PROPERTIES);
+    public static List<PropertyInformation> generatePropertiesInformation() {
+        return new ArrayList<>(PROPERTIES_INFORMATION);
     }
 
     private static List<PropertyLocation> PROPERTIES_LOCATION = Arrays.asList(

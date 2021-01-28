@@ -17,94 +17,84 @@ public class PropertyInformationViewModelUnitTest extends BaseUnitTest {
     public void testNotNull(){
         assertNotNull(propertyViewModel);
         assertTrue(propertyViewModel.getAllProperties.hasObservers());
-        assertTrue(propertyViewModel.getAllPointOfInterestForProperty.hasObservers());
-        assertTrue(propertyViewModel.getAllPropertyPhotosForProperty.hasObservers());
         assertNotNull(propertyViewModel.getAllProperties.getValue());
     }
 
     @Test
     public void getAllPropertiesShouldReturnGeneratedProperties(){
         assertEquals(2, Objects.requireNonNull(propertyViewModel.getAllProperties.getValue()).size());
-        assertEquals(Generator.generateProperties().get(0).getAddress(),propertyViewModel.getAllProperties.getValue().get(0).getAddress());
+        assertEquals(allProperties.get(0).propertyLocation.getAddress(),propertyViewModel.getAllProperties.getValue().get(0).propertyLocation.getAddress());
     }
 
     @Test
     public void addPropertyShouldUpdatePropertiesList(){
-        propertyViewModel.addProperty(propertyInformationToAdd);
+        propertyViewModel.addProperty(propertyToAdd);
         assertEquals(3, Objects.requireNonNull(propertyViewModel.getAllProperties.getValue()).size());
-        assertTrue(propertyViewModel.getAllProperties.getValue().contains(propertyInformationToAdd));
-        assertEquals(propertyInformationToAdd.getAddress(),propertyViewModel.getAllProperties.getValue().get(2).getAddress());
+        assertTrue(propertyViewModel.getAllProperties.getValue().contains(propertyToAdd));
+        assertEquals(propertyToAdd.propertyLocation.getAddress(),propertyViewModel.getAllProperties.getValue().get(2).propertyLocation.getAddress());
     }
 
-    @Test
+    /*@Test
     public void updatePropertyShouldUpdatePropertyValue(){
         firstPropertyInformationToUpdate.setAddress("my updated address");
         propertyViewModel.updatePropertyInformation(firstPropertyInformationToUpdate);
         assertEquals(Objects.requireNonNull(propertyViewModel.getAllProperties.getValue()).get(0).getAddress(), firstPropertyInformationToUpdate.getAddress());
-    }
+    }*/
 
-    @Test
-    public void getAllPhotoForPropertyIdShouldReturnPropertyRelatedPhotos(){
-        assertEquals(3, Objects.requireNonNull(propertyViewModel.getAllPropertyPhotosForProperty.getValue()).size());
-        assertEquals(propertyViewModel.getAllPropertyPhotosForProperty.getValue().get(0).getPropertyId()
-        ,propertyViewModel.getAllPropertyPhotosForProperty.getValue().get(1).getPropertyId());
-        assertEquals(propertyViewModel.getAllPropertyPhotosForProperty.getValue().get(1).getPropertyId()
-                ,propertyViewModel.getAllPropertyPhotosForProperty.getValue().get(2).getPropertyId());
-    }
 
     @Test
     public void addPhotoShouldUpdatePhotoList(){
         propertyViewModel.addPropertyPhoto(photoToAdd);
-        assertEquals(4, Objects.requireNonNull(propertyViewModel.getAllPropertyPhotosForProperty.getValue()).size());
-        assertTrue(propertyViewModel.getAllPropertyPhotosForProperty.getValue().contains(photoToAdd));
+        assertEquals(4, Objects.requireNonNull(propertyViewModel.getAllProperties.getValue()).get(0).photos.size());
+        assertTrue(propertyViewModel.getAllProperties.getValue().get(0).photos.contains(photoToAdd));
     }
 
     @Test
     public void deletePhotoShouldUpdatePhotoList(){
         propertyViewModel.deletePropertyPhoto(photoToDelete);
-        assertEquals(2, Objects.requireNonNull(propertyViewModel.getAllPropertyPhotosForProperty.getValue()).size());
-        assertFalse(propertyViewModel.getAllPropertyPhotosForProperty.getValue().contains(photoToDelete));
+        assertEquals(2, Objects.requireNonNull(propertyViewModel.getAllProperties.getValue()).get(0).photos.size());
+        assertFalse(propertyViewModel.getAllProperties.getValue().get(0).photos.contains(photoToDelete));
     }
 
     @Test
     public void getPointOfInterestForPropertyShouldReturnPropertyRelatedPoint(){
-        assertEquals(1, Objects.requireNonNull(propertyViewModel.getAllPointOfInterestForProperty.getValue()).size());
+        assertEquals(1, Objects.requireNonNull(propertyViewModel.getAllProperties.getValue()).get(0).pointOfInterests.size());
     }
 
     @Test
     public void addPointOfInterestShouldUpdatePointList(){
         propertyViewModel.addPropertyPointOfInterest(pointOfInterestsToAdd);
-        assertEquals(2, Objects.requireNonNull(propertyViewModel.getAllPointOfInterestForProperty.getValue()).size());
-        assertTrue(propertyViewModel.getAllPointOfInterestForProperty.getValue().contains(pointOfInterestToAdd));
+        assertEquals(2, Objects.requireNonNull(propertyViewModel.getAllProperties.getValue()).get(0).pointOfInterests.size());
+        assertTrue(propertyViewModel.getAllProperties.getValue().get(0).pointOfInterests.contains(pointOfInterestToAdd));
     }
 
-    @Test
+   /* @Test
     public void getPositionShouldReturnPropertyPosition(){
-        propertyViewModel.setPropertyLocationForProperty(Generator.generateProperties().get(0));
+        propertyViewModel.setPropertyLocationForProperty(Generator.generatePropertiesInformation().get(0));
         assertEquals(Generator.generatePropertyLocation().get(0).getLatitude(),
                 Objects.requireNonNull(propertyViewModel.getPropertyLocationForProperty.getValue()).getLatitude(), 0.0);
-    }
+    }*/
 
     @Test
     public void addPropertyPositionShouldAddNewPropertyLocation(){
         propertyViewModel.addPropertyLocationForProperty(propertyLocationToAdd);
-        propertyViewModel.setPropertyLocationForProperty(propertyInformationToAdd);
-        assertEquals(Objects.requireNonNull(propertyViewModel.getPropertyLocationForProperty.getValue()).getLatitude(), propertyLocationToAdd.getLatitude(), 0.0);
+        //propertyViewModel.setPropertyLocationForProperty(propertyInformationToAdd);
+        assertEquals(propertyViewModel.getAllProperties.getValue().get(0).propertyLocation.getLatitude(), propertyLocationToAdd.getLatitude(), 0.0);
     }
 
     @Test
     public void UpdatePropertyLocationShouldUpdateOriginalPropertyLocationValue(){
         propertyViewModel.addPropertyLocationForProperty(propertyLocationToAdd);
         propertyViewModel.updatePropertyLocation(updatedPropertyLocation);
-        propertyViewModel.setPropertyLocationForProperty(propertyInformationToAdd);
-        assertTrue(Objects.requireNonNull(propertyViewModel.getPropertyLocationForProperty.getValue()).getRegion().equalsIgnoreCase(updatedPropertyLocation.getRegion()));
+       // propertyViewModel.setPropertyLocationForProperty(propertyInformationToAdd);
+        assertTrue(Objects.requireNonNull(propertyViewModel.getAllProperties.getValue().get(2).propertyLocation.getRegion().equalsIgnoreCase(updatedPropertyLocation.getRegion())));
     }
 
     @Test
     public void UpdatePointOfInterestsShouldUpdateOriginalPointOfInterests(){
         propertyViewModel.updatePointOfInterest(updatedPointOfInterests);
-        assertEquals(1, Objects.requireNonNull(propertyViewModel.getAllPointOfInterestForProperty.getValue()).size());
-        assertTrue(propertyViewModel.getAllPointOfInterestForProperty.getValue().contains(newPointOfInterest));
+        assertEquals(1, propertyViewModel.getAllProperties.getValue().get(0).pointOfInterests.size());
+        assertTrue(propertyViewModel.getAllProperties.getValue().get(0).pointOfInterests.contains(newPointOfInterest));
     }
 
 }

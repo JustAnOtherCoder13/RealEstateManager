@@ -20,7 +20,7 @@ import com.picone.core.domain.entity.RealEstateAgent;
 import static com.picone.core.data.Generator.generateAgents;
 import static com.picone.core.data.Generator.generatePhotos;
 import static com.picone.core.data.Generator.generatePointOfInterests;
-import static com.picone.core.data.Generator.generateProperties;
+import static com.picone.core.data.Generator.generatePropertiesInformation;
 import static com.picone.core.data.Generator.generatePropertyLocation;
 import static com.picone.core.utils.ConstantParameters.pointOfInterestTable;
 import static com.picone.core.utils.ConstantParameters.propertyLocationTable;
@@ -74,18 +74,18 @@ public abstract class RealEstateManagerRoomDatabase extends RoomDatabase {
     private static void createProperties(SupportSQLiteDatabase db) {
         for (int i = 0; i < 2; i++) {
             ContentValues contentValues = new ContentValues();
-            contentValues.put("id", generateProperties().get(i).getId());
-            contentValues.put("realEstateAgentId", generateProperties().get(i).getRealEstateAgentId());
-            contentValues.put("propertyType", generateProperties().get(i).getPropertyType());
-            contentValues.put("propertyArea", generateProperties().get(i).getPropertyArea());
-            contentValues.put("numberOfRooms", generateProperties().get(i).getNumberOfRooms());
-            contentValues.put("price", generateProperties().get(i).getPrice());
-            contentValues.put("description", generateProperties().get(i).getDescription());
-            contentValues.put("numberOfBedrooms", generateProperties().get(i).getNumberOfBedrooms());
-            contentValues.put("numberOfBathrooms", generateProperties().get(i).getNumberOfBathrooms());
-            contentValues.put("isSold", generateProperties().get(i).isSold());
-            contentValues.put("enterOnMarket", generateProperties().get(i).getEnterOnMarket());
-            contentValues.put("soldFrom", generateProperties().get(i).getSoldFrom());
+            contentValues.put("id", generatePropertiesInformation().get(i).getId());
+            contentValues.put("realEstateAgentId", generatePropertiesInformation().get(i).getRealEstateAgentId());
+            contentValues.put("propertyType", generatePropertiesInformation().get(i).getPropertyType());
+            contentValues.put("propertyArea", generatePropertiesInformation().get(i).getPropertyArea());
+            contentValues.put("numberOfRooms", generatePropertiesInformation().get(i).getNumberOfRooms());
+            contentValues.put("price", generatePropertiesInformation().get(i).getPrice());
+            contentValues.put("description", generatePropertiesInformation().get(i).getDescription());
+            contentValues.put("numberOfBedrooms", generatePropertiesInformation().get(i).getNumberOfBedrooms());
+            contentValues.put("numberOfBathrooms", generatePropertiesInformation().get(i).getNumberOfBathrooms());
+            contentValues.put("isSold", generatePropertiesInformation().get(i).isSold());
+            contentValues.put("enterOnMarket", generatePropertiesInformation().get(i).getEnterOnMarket());
+            contentValues.put("soldFrom", generatePropertiesInformation().get(i).getSoldFrom());
 
             db.insert(propertyInformationTable, OnConflictStrategy.IGNORE, contentValues);
         }
