@@ -29,7 +29,7 @@ public class PropertyRepository {
         this.placeServiceDao = placeServiceDao;
     }
 
-    public Observable<List<PropertyInformation>> getAllProperties() {
+    public Observable<List<Property>> getAllProperties() {
         return propertyDao.getAllProperties();
     }
 

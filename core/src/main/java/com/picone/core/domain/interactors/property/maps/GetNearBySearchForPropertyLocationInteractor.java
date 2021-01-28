@@ -1,5 +1,7 @@
 package com.picone.core.domain.interactors.property.maps;
 
+import android.util.Log;
+
 import androidx.annotation.NonNull;
 
 import com.picone.core.data.property.PropertyRepository;
@@ -28,11 +30,11 @@ public class GetNearBySearchForPropertyLocationInteractor extends PropertyBaseIn
 
         pointOfInterests = new ArrayList<>();
         return propertyDataSource.getNearBySearchForPropertyLocation(propertyLocation, POINT_OF_INTEREST_TYPE.get(0), googleKey)
-                .flatMap(nearBySearch -> {
+                .switchMap(nearBySearch -> {
                     nearBySearchToPointOfInterest(nearBySearch, propertyLocation.getPropertyId());
                     return propertyDataSource.getNearBySearchForPropertyLocation(propertyLocation, POINT_OF_INTEREST_TYPE.get(1), googleKey);
                 })
-                .flatMap(nearBySearch -> {
+                .switchMap(nearBySearch -> {
                     nearBySearchToPointOfInterest(nearBySearch, propertyLocation.getPropertyId());
                     return propertyDataSource.getNearBySearchForPropertyLocation(propertyLocation, POINT_OF_INTEREST_TYPE.get(2), googleKey);
                 })
@@ -44,19 +46,7 @@ public class GetNearBySearchForPropertyLocationInteractor extends PropertyBaseIn
         if (!nearBySearch.getNearBySearchResults().isEmpty())
             for (NearBySearchResult nearBySearchResult : nearBySearch.getNearBySearchResults()) {
                 pointOfInterest = createPointOfInterest(propertyId, nearBySearchResult);
-                if (pointOfInterests.isEmpty()) pointOfInterests.add(pointOfInterest);
-                else {
-                    boolean isAlreadyKnown = true;
-                    for (PointOfInterest pointOfInterestForProperty : pointOfInterests) {
-                        isAlreadyKnown = true;
-                        if (pointOfInterestForProperty.getLatitude() == pointOfInterest.getLatitude()
-                                && pointOfInterest.getLongitude() == pointOfInterestForProperty.getLongitude()
-                                && pointOfInterest.getType().equalsIgnoreCase(pointOfInterestForProperty.getType()))
-                            break;
-                        else isAlreadyKnown = false;
-                    }
-                    if (!isAlreadyKnown) pointOfInterests.add(pointOfInterest);
-                }
+                 pointOfInterests.add(pointOfInterest);
             }
         return pointOfInterests;
     }

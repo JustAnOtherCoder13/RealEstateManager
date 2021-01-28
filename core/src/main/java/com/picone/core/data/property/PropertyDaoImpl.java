@@ -25,7 +25,7 @@ public class PropertyDaoImpl {
         mPropertyRoomDao = mRoomDatabase.propertyRoomDao();
     }
 
-    public Observable<List<PropertyInformation>> getAllProperties() {
+    public Observable<List<Property>> getAllProperties() {
         return mPropertyRoomDao.getAllProperties();
     }
 

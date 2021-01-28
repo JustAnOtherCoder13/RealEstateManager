@@ -22,7 +22,7 @@ import io.reactivex.Observable;
 public interface PropertyRoomDao {
 
     @Query("SELECT*FROM property_information_table")
-    Observable<List<PropertyInformation>> getAllProperties();
+    Observable<List<Property>> getAllProperties();
 
     @Transaction
     @Query("SELECT*FROM property_information_table WHERE id = :propertyId")

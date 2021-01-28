@@ -152,12 +152,12 @@ public class MapsFragment extends BaseFragment implements GoogleMap.OnInfoWindow
     private void initMarkersValue(@NonNull List<Property> allProperties) {
         mMap.clear();
         if (mMap != null) {
-            for (Property property : allProperties)
+            for (Property property : allProperties){
                 mMap.addMarker(mMarkerOptions.position(new LatLng(property.propertyLocation.getLatitude(), property.propertyLocation.getLongitude()))
                         .title(String.valueOf(property.propertyInformation.getId()))
                         .snippet(String.valueOf(property.propertyLocation.getAddress()))
                         .icon(BitmapDescriptorFactory.fromBitmap(getBitmapFromVectorOrDrawable(requireContext(), R.drawable.ic_fragment_detail_location_24))));
-
+            }
 
             mMap.setOnMarkerClickListener(marker -> {
                 if (!marker.isInfoWindowShown()) marker.showInfoWindow();

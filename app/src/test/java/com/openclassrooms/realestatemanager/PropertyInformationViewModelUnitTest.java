@@ -39,7 +39,7 @@ public class PropertyInformationViewModelUnitTest extends BaseUnitTest {
     @Test
     public void updatePropertyShouldUpdatePropertyValue(){
         firstPropertyInformationToUpdate.setAddress("my updated address");
-        propertyViewModel.updateProperty(firstPropertyInformationToUpdate);
+        propertyViewModel.updatePropertyInformation(firstPropertyInformationToUpdate);
         assertEquals(Objects.requireNonNull(propertyViewModel.getAllProperties.getValue()).get(0).getAddress(), firstPropertyInformationToUpdate.getAddress());
     }
 

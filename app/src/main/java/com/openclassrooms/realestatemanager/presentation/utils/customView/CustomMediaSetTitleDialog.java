@@ -2,6 +2,8 @@ package com.openclassrooms.realestatemanager.presentation.utils.customView;
 
 import android.app.Dialog;
 import android.content.Context;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
@@ -20,6 +22,8 @@ import com.bumptech.glide.request.transition.Transition;
 import com.openclassrooms.realestatemanager.R;
 import com.openclassrooms.realestatemanager.databinding.CustomDialogSetPhotoTitleBinding;
 import com.openclassrooms.realestatemanager.presentation.utils.PathUtil;
+
+import java.util.Objects;
 
 public class CustomMediaSetTitleDialog extends Dialog implements android.view.View.OnClickListener {
 
@@ -46,6 +50,7 @@ public class CustomMediaSetTitleDialog extends Dialog implements android.view.Vi
         description = mBinding.setPhotoDescriptionEditText;
         accept = mBinding.setPhotoOkButton;
         mBinding.setPhotoBackButton.setOnClickListener(this);
+        Objects.requireNonNull(getWindow()).setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
     }
 
     @Override
@@ -90,12 +95,13 @@ public class CustomMediaSetTitleDialog extends Dialog implements android.view.Vi
         if (description.getText() != null) return description.getText().toString();
         else return "";
     }
-    public void resetEditText(){
-        description.setText("");
-    }
 
     private void isPhoto(boolean isPhoto) {
         photo.setVisibility(isPhoto ? View.VISIBLE : View.GONE);
         video.setVisibility(isPhoto ? View.GONE : View.VISIBLE);
+    }
+
+    public void resetEditText() {
+        description.setText("");
     }
 }

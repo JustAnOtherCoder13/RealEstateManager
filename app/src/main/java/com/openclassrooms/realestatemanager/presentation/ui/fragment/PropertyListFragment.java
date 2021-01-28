@@ -42,10 +42,8 @@ public class PropertyListFragment extends BaseFragment {
         super.onViewCreated(view, savedInstanceState);
         configureOnClickRecyclerView();
         mPropertyViewModel.getSelectedProperty_.observe(getViewLifecycleOwner(), property -> {
-            if (property.propertyInformation != null && property.propertyLocation.getAddress()!=null) {
-                Log.i("TAG", "onViewCreated: "+property.propertyLocation.getAddress());
+            if (property.propertyInformation != null && property.propertyLocation.getAddress()!=null)
                 mNavController.navigate(R.id.action_propertyListFragment_to_propertyDetailFragment);
-            }
         });
     }
 

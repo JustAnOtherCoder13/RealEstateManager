@@ -2,7 +2,6 @@ package com.picone.core.domain.interactors.property.maps;
 
 import com.picone.core.data.property.PropertyRepository;
 import com.picone.core.domain.entity.Property;
-import com.picone.core.domain.entity.PropertyInformation;
 import com.picone.core.domain.entity.PropertyLocation;
 import com.picone.core.domain.entity.pojo.propertyLocation.PropertyLocationPojo;
 import com.picone.core.domain.interactors.property.PropertyBaseInteractor;
@@ -17,7 +16,8 @@ public class GetPropertyLocationForAddressInteractor extends PropertyBaseInterac
 
     public Observable<PropertyLocation> getPropertyLocationForAddress(Property property, String googleKey) {
         return propertyDataSource.getPropertyLocationForAddress(property.propertyLocation.getAddress(), googleKey)
-                .map(propertyLocationPojo -> propertyLocationPojoToPropertyLocationModel(propertyLocationPojo, property));
+                .map(propertyLocationPojo ->
+                        propertyLocationPojoToPropertyLocationModel(propertyLocationPojo, property));
     }
 
     private PropertyLocation propertyLocationPojoToPropertyLocationModel(PropertyLocationPojo propertyLocationPojo, Property property) {
