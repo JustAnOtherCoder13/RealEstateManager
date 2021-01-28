@@ -23,8 +23,6 @@ public class FilterHelper {
 
     private List<String> requestPointsOfInterests;
     private List<String> requestPropertyType;
-    private List<PropertyPhoto> allPropertiesPhotos = new ArrayList<>();
-    private List<PointOfInterest> allPointsOfInterest = new ArrayList<>();
     private List<Property> propertiesTempValue;
     private List<Property> filteredPropertyInformation;
 
@@ -154,14 +152,6 @@ public class FilterHelper {
     }
 
     //--------------------------------------LIST HELPERS--------------------------------------------------------
-
-    public void updateAllPropertyPhotos(@NonNull List<PropertyPhoto> photosForProperty) {
-        this.allPropertiesPhotos = photosForProperty;
-    }
-
-    public void updateAllPropertyPointOfInterest(@NonNull List<PointOfInterest> pointOfInterests) {
-        this.allPointsOfInterest = pointOfInterests;
-    }
 
     private void requestPointOfInterest() {
         String schoolStr = bottomSheetFilterLayout.getRoot().getResources().getString(R.string.school);

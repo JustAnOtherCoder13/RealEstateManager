@@ -55,7 +55,7 @@ public class PropertyDetailFragment extends BaseFragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        mPropertyViewModel.getSelectedProperty_.observe(getViewLifecycleOwner(), property -> {
+        mPropertyViewModel.getSelectedProperty.observe(getViewLifecycleOwner(), property -> {
             if (property.propertyInformation !=null){
              mBinding.fragmentDetailSoldTextView.setVisibility(property.propertyInformation.isSold()?View.VISIBLE:View.GONE);
                 setUpdateButtonCustomViewVisibility(!property.propertyInformation.isSold());

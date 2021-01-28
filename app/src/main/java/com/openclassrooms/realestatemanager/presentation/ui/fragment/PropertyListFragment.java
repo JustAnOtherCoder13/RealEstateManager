@@ -1,7 +1,6 @@
 package com.openclassrooms.realestatemanager.presentation.ui.fragment;
 
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -41,26 +40,26 @@ public class PropertyListFragment extends BaseFragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         configureOnClickRecyclerView();
-        mPropertyViewModel.getSelectedProperty_.observe(getViewLifecycleOwner(), property -> {
+        mPropertyViewModel.getSelectedProperty.observe(getViewLifecycleOwner(), property -> {
             if (property.propertyInformation != null && property.propertyLocation.getAddress()!=null)
                 mNavController.navigate(R.id.action_propertyListFragment_to_propertyDetailFragment);
         });
     }
 
     private void initRecyclerView() {
-        mPropertyViewModel.setAllPropertiesAndAllValues();
+        mPropertyViewModel.setAllProperties();
         PropertyRecyclerViewAdapter adapter = new PropertyRecyclerViewAdapter(new ArrayList<>(),requireContext());
         RecyclerView.LayoutManager linearLayout = new LinearLayoutManager(getContext());
         setCurrencySwitch(adapter);
         mBinding.fragmentPropertyListRecyclerview.setLayoutManager(linearLayout);
         mBinding.fragmentPropertyListRecyclerview.setAdapter(adapter);
-        mPropertyViewModel.getAllProperties_.observe(getViewLifecycleOwner(), adapter::updateProperties);
+        mPropertyViewModel.getAllProperties.observe(getViewLifecycleOwner(), adapter::updateProperties);
     }
 
     public void configureOnClickRecyclerView() {
         RecyclerViewItemClickListener.addTo(mBinding.fragmentPropertyListRecyclerview, R.layout.fragment_property_list)
                 .setOnItemClickListener((recyclerView, position, v) -> {
-                    List<Property> allProperties = mPropertyViewModel.getAllProperties_.getValue();
+                    List<Property> allProperties = mPropertyViewModel.getAllProperties.getValue();
                     assert allProperties != null;
                     Property property = allProperties.get(position);
                     mPropertyViewModel.setSelectedProperty_(property);

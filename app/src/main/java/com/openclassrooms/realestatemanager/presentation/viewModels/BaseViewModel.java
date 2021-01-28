@@ -45,26 +45,19 @@ public abstract class BaseViewModel extends ViewModel {
 
     protected GetAllPropertiesInteractor getAllPropertiesInteractor;
     protected GetAllPointOfInterestForPropertyIdInteractor getAllPointOfInterestForPropertyIdInteractor;
-    protected GetAllPointOfInterestsForAllPropertiesInteractor getAllPointOfInterestsForAllPropertiesInteractor;
-    protected GetAllPropertyPhotosForPropertyIdInteractor getAllPropertyPhotosForPropertyIdInteractor;
-    protected GetAllPhotosForAllPropertiesInteractor getAllPhotosForAllPropertiesInteractor;
     protected GetAllRegionsForAllPropertiesInteractor getAllRegionsForAllPropertiesInteractor;
     protected AddPropertyInteractor addPropertyInteractor;
     protected AddPropertyPointOfInterestInteractor addPropertyPointOfInterestInteractor;
     protected AddPropertyPhotoInteractor addPropertyPhotoInteractor;
     protected DeletePropertyPhotoInteractor deletePropertyPhotoInteractor;
     protected UpdatePropertyInteractor updatePropertyInteractor;
-    protected GetPropertyLocationInteractor getPropertyLocationInteractor;
     protected UpdatePropertyLocationInteractor updatePropertyLocationInteractor;
     protected DeletePointOfInterestInteractor deletePointOfInterestInteractor;
+    protected AddPropertyLocationInteractor addPropertyLocationInteractor;
 
     //------------------------PLACE INTERACTORS----------------------------
 
-    protected AddPropertyLocationInteractor addPropertyLocationInteractor;
     protected GetNearBySearchForPropertyLocationInteractor getNearBySearchForPropertyLocationInteractor;
-
-    //------------------------PLACES INTERACTORS----------------------------
-
     protected GetPropertyLocationForAddressInteractor getPropertyLocationForAddressInteractor;
 
     @Override

@@ -102,6 +102,7 @@
 
     <string name="no_internet_message">Network is not available, you\'ll not be able to download position or points of interests.\n \n   Please try again when internet is available</string>
     <string name="add_date_message">you have to enter a date if sold is set</string>
+    <string name="enter_description">You have to enter a description before accept.</string>
 
 
 </resources>

@@ -101,7 +101,7 @@ public class MainActivity extends AppCompatActivity {
     private void setPhoneBackNavigation() {
         switch (mNavController.getCurrentDestination().getId()) {
             case R.id.addPropertyFragment:
-                mNavController.navigate(mPropertyViewModel.getSelectedProperty_.getValue().propertyLocation!=null?
+                mNavController.navigate(mPropertyViewModel.getSelectedProperty.getValue().propertyLocation!=null?
                         R.id.propertyDetailFragment
                         :R.id.propertyListFragment);
                 break;
@@ -241,8 +241,8 @@ public class MainActivity extends AppCompatActivity {
         mNavController = Navigation.findNavController(this, R.id.nav_host_fragment);
         initPhoneOrTablet();
         mAgentViewModel.setAgent();
+        //mPropertyViewModel.setAllProperties();
         mPropertyViewModel.setAllProperties();
-        mPropertyViewModel.setAllPropertiesAndAllValues();
         filterHelper = new FilterHelper(mBinding.bottomSheetLayout);
         setBottomSheetButtonClickListener();
         initBottomSheetLocationFilter();
@@ -295,30 +295,21 @@ public class MainActivity extends AppCompatActivity {
 
         //todo pass new properties
         mBinding.bottomSheetLayout.bottomSheetOkButton.setOnClickListener(v -> {
-            filterHelper.filterProperties(mPropertyViewModel.getAllProperties_.getValue());
+            filterHelper.filterProperties(mPropertyViewModel.getAllProperties.getValue());
             mPropertyViewModel.setFilteredProperty(filterHelper.getFilteredPropertyInformation());
 
             mBinding.topAppBar.resetFilterButton.setVisibility(View.VISIBLE);
             mBottomSheetBehavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
             filterHelper.resetFilter();
             mBinding.topAppBar.resetFilterButton.setOnClickListener(v1 -> {
-                mPropertyViewModel.setAllProperties();
+                //mPropertyViewModel.setAllProperties();
                 mBinding.topAppBar.resetFilterButton.setVisibility(View.GONE);
             });
         });
     }
 
     private void initBottomSheetLocationFilter() {
-        mPropertyViewModel.setAllPointOfInterestForAllProperties();
-        mPropertyViewModel.setAllPhotoForAllProperties();
         mPropertyViewModel.setAllRegionForAllProperties();
-
-        mPropertyViewModel.getAllPhotosForAllProperties.observe(this,
-                filterHelper::updateAllPropertyPhotos);
-
-        mPropertyViewModel.getAllPointOfInterestForAllProperties.observe(this,
-                filterHelper::updateAllPropertyPointOfInterest);
-
         mPropertyViewModel.getKnownRegions.observe(this, regions ->
                 mBinding.bottomSheetLayout.filterPropertyLocationSpinner.setSpinnerAdapter(regions));
     }

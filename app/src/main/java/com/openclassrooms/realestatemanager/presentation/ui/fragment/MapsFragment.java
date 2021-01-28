@@ -76,7 +76,7 @@ public class MapsFragment extends BaseFragment implements GoogleMap.OnInfoWindow
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         initMapView(savedInstanceState);
-        mPropertyViewModel.setAllPropertiesAndAllValues();
+        mPropertyViewModel.setAllProperties();
     }
 
     @Override
@@ -85,7 +85,7 @@ public class MapsFragment extends BaseFragment implements GoogleMap.OnInfoWindow
         updateLocationUI();
         mMap.setOnInfoWindowClickListener(this);
         if (getView() != null)
-            mPropertyViewModel.getAllProperties_.observe(getViewLifecycleOwner(), this::initMarkersValue);
+            mPropertyViewModel.getAllProperties.observe(getViewLifecycleOwner(), this::initMarkersValue);
     }
 
     @Override

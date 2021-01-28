@@ -75,7 +75,7 @@ public abstract class BaseFragment extends Fragment {
 
     protected Property getPropertyForId(String propertyId) {
         Property propertyToReturn = new Property();
-        for (Property property : Objects.requireNonNull(mPropertyViewModel.getAllProperties_.getValue())) {
+        for (Property property : Objects.requireNonNull(mPropertyViewModel.getAllProperties.getValue())) {
             if (String.valueOf(property.propertyInformation.getId()).equalsIgnoreCase(propertyId))
                 propertyToReturn = property;
         }
