@@ -10,18 +10,14 @@ import com.picone.core.domain.interactors.property.GetAllPropertiesInteractor;
 import com.picone.core.domain.interactors.property.UpdatePropertyInteractor;
 import com.picone.core.domain.interactors.property.location.AddPropertyLocationInteractor;
 import com.picone.core.domain.interactors.property.location.GetAllRegionsForAllPropertiesInteractor;
-import com.picone.core.domain.interactors.property.location.GetPropertyLocationInteractor;
 import com.picone.core.domain.interactors.property.location.UpdatePropertyLocationInteractor;
 import com.picone.core.domain.interactors.property.maps.GetNearBySearchForPropertyLocationInteractor;
 import com.picone.core.domain.interactors.property.maps.GetPropertyLocationForAddressInteractor;
 import com.picone.core.domain.interactors.property.photo.AddPropertyPhotoInteractor;
 import com.picone.core.domain.interactors.property.photo.DeletePropertyPhotoInteractor;
-import com.picone.core.domain.interactors.property.photo.GetAllPhotosForAllPropertiesInteractor;
-import com.picone.core.domain.interactors.property.photo.GetAllPropertyPhotosForPropertyIdInteractor;
 import com.picone.core.domain.interactors.property.pointOfInterest.AddPropertyPointOfInterestInteractor;
 import com.picone.core.domain.interactors.property.pointOfInterest.DeletePointOfInterestInteractor;
 import com.picone.core.domain.interactors.property.pointOfInterest.GetAllPointOfInterestForPropertyIdInteractor;
-import com.picone.core.domain.interactors.property.pointOfInterest.GetAllPointOfInterestsForAllPropertiesInteractor;
 import com.picone.core.utils.SchedulerProvider;
 
 import javax.inject.Inject;

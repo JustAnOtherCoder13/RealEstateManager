@@ -21,56 +21,41 @@ import io.reactivex.Observable;
 @Dao
 public interface PropertyRoomDao {
 
+    @Transaction
     @Query("SELECT*FROM property_information_table")
     Observable<List<Property>> getAllProperties();
-
-    @Transaction
-    @Query("SELECT*FROM property_information_table WHERE id = :propertyId")
-    Observable<Property> getPropertyAndAllValues(int propertyId);
-
-    @Query("SELECT*FROM property_point_of_interest_table WHERE property_point_of_interest_table.propertyId = :propertyId")
-    Observable<List<PointOfInterest>> getAllPointOfInterestForPropertyId(int propertyId);
-
-    @Query("SELECT*FROM property_photo_table WHERE property_photo_table.propertyId = :propertyId")
-    Observable<List<PropertyPhoto>> getAllPhotosForPropertyId(int propertyId);
-
-    @Query("SELECT*FROM property_location_table WHERE property_location_table.propertyId = :propertyId")
-    Observable<PropertyLocation> getPropertyLocationForPropertyId(int propertyId);
-
-    @Query("SELECT*FROM property_point_of_interest_table")
-    Observable<List<PointOfInterest>> getAllPointsOfInterestForAllProperties();
-
-    @Query("SELECT*FROM property_photo_table")
-    Observable<List<PropertyPhoto>> getAllPhotosForAllProperties();
-
-    @Query("SELECT region FROM property_location_table")
-    Observable<List<String>> getAllRegionsForAllProperties();
 
     @Insert
     Completable addProperty(PropertyInformation propertyInformation);
 
-    @Insert
-    Completable addPropertyPointOfInterest(PointOfInterest pointOfInterest);
-
-    @Insert
-    Completable addPropertyPhoto(PropertyPhoto propertyPhoto);
-
-    @Insert
-    Completable addPropertyLocation(PropertyLocation propertyLocation);
-
-    @Delete
-    Completable deletePropertyPhoto(PropertyPhoto propertyPhoto);
-
-    @Query("DELETE FROM property_photo_table WHERE propertyId = :propertyId")
-    Completable deleteAllPhotoForProperty(int propertyId);
-
     @Update
     Completable updateProperty(PropertyInformation propertyInformation);
 
-    @Update
-    Completable updatePropertyLocation(PropertyLocation propertyLocation);
+    @Query("SELECT*FROM property_point_of_interest_table WHERE property_point_of_interest_table.propertyId = :propertyId")
+    Observable<List<PointOfInterest>> getAllPointOfInterestForPropertyId(int propertyId);
+
+    @Insert
+    Completable addPropertyPointOfInterest(PointOfInterest pointOfInterest);
 
     @Delete
     Completable deletePropertyPointOfInterest(PointOfInterest pointOfInterest);
 
+    @Query("SELECT*FROM property_location_table WHERE property_location_table.propertyId = :propertyId")
+    Observable<PropertyLocation> getPropertyLocationForPropertyId(int propertyId);
+
+    @Insert
+    Completable addPropertyLocation(PropertyLocation propertyLocation);
+
+    @Update
+    Completable updatePropertyLocation(PropertyLocation propertyLocation);
+
+    @Query("SELECT region FROM property_location_table")
+    Observable<List<String>> getAllRegionsForAllProperties();
+
+
+    @Insert
+    Completable addPropertyPhoto(PropertyPhoto propertyPhoto);
+
+    @Delete
+    Completable deletePropertyPhoto(PropertyPhoto propertyPhoto);
 }

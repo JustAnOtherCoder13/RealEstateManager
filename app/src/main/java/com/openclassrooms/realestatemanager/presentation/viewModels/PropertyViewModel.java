@@ -160,7 +160,6 @@ public class PropertyViewModel extends BaseViewModel {
 
     //___________________________________PROPERTY LOCATION__________________________________
 
-
     public void addPropertyLocationForProperty(PropertyLocation propertyLocation) {
         compositeDisposable.add(
                 addPropertyLocationInteractor.addPropertyLocation(propertyLocation)

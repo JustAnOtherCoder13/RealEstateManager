@@ -32,46 +32,44 @@ public class PropertyRepository {
     public Observable<List<Property>> getAllProperties() {
         return propertyDao.getAllProperties();
     }
-
-    public Observable<Property> getPropertyAndAllValues(int propertyId) {
-        return propertyDao.getPropertyAndAllValues(propertyId);
+    public Completable addProperty(PropertyInformation propertyInformation) {
+        return propertyDao.addProperty(propertyInformation);
     }
+    public Completable updateProperty(PropertyInformation propertyInformation) {
+        return propertyDao.updateProperty(propertyInformation);
+    }
+
 
     public Observable<List<PointOfInterest>> getAllPointOfInterestForPropertyId(int propertyId) {
         return propertyDao.getAllPointOfInterestForPropertyId(propertyId);
     }
-
-    public Observable<List<PropertyPhoto>> getAllPhotosForPropertyId(int propertyId) {
-        return propertyDao.getAllPhotosForPropertyId(propertyId);
+    public Completable addPropertyPointOfInterest(PointOfInterest pointOfInterest) {
+        return propertyDao.addPropertyPointOfInterest(pointOfInterest);
+    }
+    public Completable deletePropertyPointOfInterest(PointOfInterest pointOfInterest) {
+        return propertyDao.deletePropertyPointOfInterest(pointOfInterest);
     }
 
-    public Observable<List<PropertyPhoto>> getAllPhotosForAllProperties() {
-        return propertyDao.getAllPhotosForAllProperties();
-    }
 
+    public Observable<PropertyLocationPojo> getPropertyLocationForAddress(String address, String googleKey) {
+        return placeServiceDao.getPropertyLocationForAddress(address, googleKey);
+    }
+    public Observable<PropertyLocation> getPropertyLocationForPropertyId(int propertyId) {
+        return propertyDao.getPropertyLocationForPropertyId(propertyId);
+    }
+    public Completable addPropertyLocation(PropertyLocation propertyLocation) {
+        return propertyDao.addPropertyLocation(propertyLocation);
+    }
+    public Completable updatePropertyLocation(PropertyLocation propertyLocation) {
+        return propertyDao.updatePropertyLocation(propertyLocation);
+    }
+    public Observable<NearBySearch> getNearBySearchForPropertyLocation(@NonNull PropertyLocation propertyLocation, String type, String googleKey) {
+        return placeServiceDao.getNearBySearchForPropertyLocation(propertyLocation, type, googleKey);
+    }
     public Observable<List<String>> getAllRegionsForAllProperties(){
         return propertyDao.getAllRegionsForAllProperties();
     }
 
-    public Observable<PropertyLocation> getPropertyLocationForPropertyId(int propertyId) {
-        return propertyDao.getPropertyLocationForPropertyId(propertyId);
-    }
-
-    public Observable<List<PointOfInterest>> getAllPointsOfInterestForAllProperties() {
-        return propertyDao.getAllPointsOfInterestForAllProperties();
-    }
-
-    public Completable addPropertyLocation(PropertyLocation propertyLocation) {
-        return propertyDao.addPropertyLocation(propertyLocation);
-    }
-
-    public Completable addProperty(PropertyInformation propertyInformation) {
-        return propertyDao.addProperty(propertyInformation);
-    }
-
-    public Completable addPropertyPointOfInterest(PointOfInterest pointOfInterest) {
-        return propertyDao.addPropertyPointOfInterest(pointOfInterest);
-    }
 
     public Completable addPropertyPhoto(PropertyPhoto propertyPhoto) {
         return propertyDao.addPropertyPhoto(propertyPhoto);
@@ -79,29 +77,5 @@ public class PropertyRepository {
 
     public Completable deletePropertyPhoto(PropertyPhoto propertyPhoto) {
         return propertyDao.deletePropertyPhoto(propertyPhoto);
-    }
-
-    public Completable deleteAllPhotoForProperty(int propertyId){
-        return propertyDao.deleteAllPhotoForProperty(propertyId);
-    }
-
-    public Completable updateProperty(PropertyInformation propertyInformation) {
-        return propertyDao.updateProperty(propertyInformation);
-    }
-
-    public Completable updatePropertyLocation(PropertyLocation propertyLocation) {
-        return propertyDao.updatePropertyLocation(propertyLocation);
-    }
-
-    public Completable deletePropertyPointOfInterest(PointOfInterest pointOfInterest) {
-        return propertyDao.deletePropertyPointOfInterest(pointOfInterest);
-    }
-
-    public Observable<PropertyLocationPojo> getPropertyLocationForAddress(String address, String googleKey) {
-        return placeServiceDao.getPropertyLocationForAddress(address, googleKey);
-    }
-
-    public Observable<NearBySearch> getNearBySearchForPropertyLocation(@NonNull PropertyLocation propertyLocation, String type, String googleKey) {
-        return placeServiceDao.getNearBySearchForPropertyLocation(propertyLocation, type, googleKey);
     }
 }

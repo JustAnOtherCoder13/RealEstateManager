@@ -16,9 +16,4 @@ public class GetAllPropertiesInteractor extends PropertyBaseInteractor {
     public Observable<List<Property>> getAllProperties() {
         return propertyDataSource.getAllProperties();
     }
-
-//todo interactor
-    public Observable<Property> getProperty(int propertyId) {
-        return propertyDataSource.getPropertyAndAllValues(propertyId);
-    }
 }
