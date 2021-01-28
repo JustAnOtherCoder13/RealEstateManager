@@ -104,5 +104,10 @@
     <string name="add_date_message">you have to enter a date if sold is set</string>
     <string name="enter_description">You have to enter a description before accept.</string>
 
+    <string name="chanel_id">fcm_default_channel</string>
+    <string name="chanel_name">Message from Firebase</string>
+    <string name="intent_extra_name">message</string>
+
+
 
 </resources>

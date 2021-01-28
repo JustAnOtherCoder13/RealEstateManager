@@ -31,10 +31,9 @@ public class ConstantParameters {
     public static final int READ_PERMISSION_CODE = 103;
     public static final int WRITE_PERMISSION_CODE = 104;
     public static final int GALLERY_REQUEST_CODE = 105;
-    public static final String FILE_PROVIDER_AUTH = "com.openclassrooms.android.fileprovider";
 
-
-
+    public static final int NOTIFICATION_ID = 7;
+    public static final String NOTIFICATION_TAG = "REAL_ESTATE_MANAGER";
 
     public static String STATIC_MAP_SIZE = "140";
     public static String BASE_STATIC_MAP_URI = "https://maps.googleapis.com/maps/api/staticmap?";

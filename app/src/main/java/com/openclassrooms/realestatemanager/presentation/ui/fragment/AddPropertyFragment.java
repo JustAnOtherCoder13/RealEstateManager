@@ -44,6 +44,7 @@ import java.util.List;
 import java.util.Objects;
 
 import static android.app.Activity.RESULT_OK;
+import static com.openclassrooms.realestatemanager.presentation.utils.NotificationHelper.createNotification;
 import static com.openclassrooms.realestatemanager.presentation.utils.Utils.isInternetAvailable;
 import static com.openclassrooms.realestatemanager.presentation.viewModels.BaseViewModel.CompletionState.UPDATE_PROPERTY_COMPLETE;
 import static com.picone.core.utils.ConstantParameters.CAMERA_PERMISSION_CODE;
@@ -69,7 +70,6 @@ public class AddPropertyFragment extends BaseFragment {
     private PropertyViewModel mInnerPropertyViewModel;
 
 
-    //todo send notification when add or update ok
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -284,12 +284,13 @@ public class AddPropertyFragment extends BaseFragment {
     }
 
     //___________________________________HELPERS_____________________________________________
+
     private void updatePropertyAndNavigateUp() {
         mInnerPropertyViewModel.updatePropertyInformation(updateKnownProperty(mSelectedProperty));
         mInnerPropertyViewModel.getCompletionState.observe(getViewLifecycleOwner(), completionState -> {
             if (completionState.equals(UPDATE_PROPERTY_COMPLETE)) {
                 playLoader(false);
-                //mPropertyViewModel.setAllProperties();
+                createNotification(requireContext(), message("You have update property :\n"), "UPDATE PROPERTY");
                 mNavController.navigate(R.id.action_addPropertyFragment_to_propertyListFragment);
             }
         });
@@ -339,7 +340,12 @@ public class AddPropertyFragment extends BaseFragment {
                 case ADD_POINT_OF_INTEREST_COMPLETE:
                     if (Objects.requireNonNull(mNavController.getCurrentDestination()).getId() == R.id.addPropertyFragment) {
                         playLoader(false);
-                        //mPropertyViewModel.setAllProperties();
+                        if (isNewPropertyToPersist)
+                            createNotification(requireContext(),
+                                    message("You have add new property : \n"), "ADD PROPERTY");
+                        else
+                            createNotification(requireContext(),
+                                    message("You have updated property : \n"), "UPDATE PROPERTY");
                         mNavController.navigate(getResources().getBoolean(R.bool.phone_device) ?
                                 R.id.action_addPropertyFragment_to_propertyListFragment
                                 : R.id.mapsFragment);
@@ -347,6 +353,19 @@ public class AddPropertyFragment extends BaseFragment {
                     break;
             }
         });
+    }
+
+    private String message(String startMessage) {
+        return startMessage
+                .concat("id : ")
+                .concat(String.valueOf(mSelectedProperty.propertyInformation.getId()))
+                .concat("\naddress : ")
+                .concat(mSelectedProperty.propertyLocation.getAddress())
+                .concat("\nnumber of photo : ")
+                .concat(String.valueOf(mSelectedProperty.photos.size()))
+                .concat("\nnumber of points of interest")
+                .concat(String.valueOf(mSelectedProperty.pointOfInterests.size()));
+
     }
 
     private void UpdatePropertyWhenAddressChange(Property originalProperty) {

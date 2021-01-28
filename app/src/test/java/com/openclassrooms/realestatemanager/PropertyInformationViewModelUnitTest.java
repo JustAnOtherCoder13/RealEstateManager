@@ -1,7 +1,5 @@
 package com.openclassrooms.realestatemanager;
 
-import com.picone.core.data.Generator;
-
 import org.junit.Test;
 
 import java.util.Objects;
