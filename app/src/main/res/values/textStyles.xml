@@ -3,7 +3,7 @@
 
     <!-- ______________________________HEADERS_____________________________ -->
 
-    <style name="TextAppearance.RealEstateManagerStyles.Headline1" parent="TextAppearance.MaterialComponents.Headline4">
+    <style name="TextAppearance.RealEstateManagerStyles.Headline1" parent="TextAppearance.MaterialComponents.Headline1">
         <item name="fontFamily">@font/roboto_bold</item>
         <item name="android:fontFamily">@font/roboto_bold</item>
         <item name="android:textColor">@color/black</item>
@@ -12,7 +12,7 @@
         <item name="android:textSize">@dimen/headline1</item>
     </style>
 
-    <style name="TextAppearance.RealEstateManagerStyles.Headline2" parent="TextAppearance.MaterialComponents.Headline5">
+    <style name="TextAppearance.RealEstateManagerStyles.Headline2" parent="TextAppearance.MaterialComponents.Headline2">
         <item name="fontFamily">@font/roboto_bold</item>
         <item name="android:fontFamily">@font/roboto_bold</item>
         <item name="android:textSize">@dimen/headline2</item>

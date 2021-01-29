@@ -17,6 +17,7 @@
 
     <TextView
         android:id="@+id/custom_range_slider_start_value"
+        style="@style/body_style"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginBottom="@dimen/range_slider_value_margin_bottom"
@@ -26,6 +27,7 @@
 
     <TextView
         android:id="@+id/custom_range_slider_end_value"
+        style="@style/body_style"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         app:layout_constraintBottom_toBottomOf="@id/custom_range_slider_start_value"

@@ -17,6 +17,9 @@
    <dimen name="loader_size">130dp</dimen>
 
     <dimen name="button_corner">10dp</dimen>
+    <dimen name="dialog_corner">40dp</dimen>
+
+
 
     <!-- FRAGMENT DETAIL-->
     <dimen name="fragment_detail_additional_information_bottom_margin">15dp</dimen>

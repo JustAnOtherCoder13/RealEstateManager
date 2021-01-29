@@ -103,10 +103,6 @@
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/bottom_sheet_ok_button"
                 style="@style/bottom_sheet_ok_button"
-                android:layout_marginTop="@dimen/big_marge"
-                android:layout_marginBottom="@dimen/XL_marge"
-                android:layout_marginStart="@dimen/basic_marge"
-                android:layout_marginEnd="@dimen/basic_marge"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 app:layout_constraintBottom_toBottomOf="parent"
