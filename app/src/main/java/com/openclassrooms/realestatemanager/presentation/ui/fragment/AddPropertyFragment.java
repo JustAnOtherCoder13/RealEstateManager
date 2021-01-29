@@ -59,16 +59,15 @@ import static com.picone.core.utils.ConstantParameters.getTodayDate;
 public class AddPropertyFragment extends BaseFragment {
 
     private FragmentAddPropertyBinding mBinding;
-    private Property mSelectedProperty;
-
-    private List<PropertyPhoto> mPhotosToDelete = new ArrayList<>();
-    private boolean isNewPropertyToPersist;
-    private boolean isPhotoListHaveBeenChanged;
+    private PropertyViewModel mInnerPropertyViewModel;
     private PhotoRecyclerViewAdapter mAdapter;
     private ManageImageHelper mImageHelper;
     private CustomMediaSetTitleDialog mGetMediaDialog;
-    private PropertyViewModel mInnerPropertyViewModel;
 
+    private Property mSelectedProperty;
+    private List<PropertyPhoto> mPhotosToDelete = new ArrayList<>();
+    private boolean isNewPropertyToPersist;
+    private boolean isPhotoListHaveBeenChanged;
 
     @Nullable
     @Override
@@ -95,13 +94,6 @@ public class AddPropertyFragment extends BaseFragment {
         initViewModel();
         initClickListener();
         initPropertyTypeDropDownMenu();
-    }
-
-    //todo due to save state in vm?
-    @Override
-    public void onResume() {
-        super.onResume();
-        isNewPropertyToPersist = Objects.requireNonNull(mPropertyViewModel.getSelectedProperty.getValue()).propertyInformation == null;
     }
 
     @Override
@@ -336,19 +328,20 @@ public class AddPropertyFragment extends BaseFragment {
                     mInnerPropertyViewModel.setPropertyLocationForPropertyAddress(mSelectedProperty);
                     persistAllNewPhotos();
                     break;
-                //when point of interest complete, mean that add or update is finish
+                //when point of interest complete, mean that add or update when address change is finish
                 case ADD_POINT_OF_INTEREST_COMPLETE:
                     if (Objects.requireNonNull(mNavController.getCurrentDestination()).getId() == R.id.addPropertyFragment) {
                         playLoader(false);
                         if (isNewPropertyToPersist)
                             createNotification(requireContext(),
                                     message("You have add new property : \n"), "ADD PROPERTY");
-                        else
+                        else{
                             createNotification(requireContext(),
                                     message("You have updated property : \n"), "UPDATE PROPERTY");
-                        mNavController.navigate(getResources().getBoolean(R.bool.phone_device) ?
-                                R.id.action_addPropertyFragment_to_propertyListFragment
-                                : R.id.mapsFragment);
+                            mNavController.navigate(getResources().getBoolean(R.bool.phone_device) ?
+                                    R.id.action_addPropertyFragment_to_propertyListFragment
+                                    : R.id.action_addPropertyFragment_to_mapsFragment);
+                        }
                     }
                     break;
             }

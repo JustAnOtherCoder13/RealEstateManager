@@ -22,13 +22,15 @@ import static androidx.core.content.ContextCompat.getSystemService;
 
 public class Utils {
 
-    public static int convertDollarToEuro(int dollars){
-        return (int) Math.round(dollars * 0.812);
+    public static int convertDollarToEuro(int dollars) {
+        return (int) Math.round(dollars * 0.83);//update with actual exchange rate
     }
 
-    //todo convert dollar to euro and test
+    public static int convertEuroToDollar(int euro) {
+        return (int) Math.round(euro * 1.21);
+    }
 
-    public static boolean isGpsAvailable(@NonNull Context context){
+    public static boolean isGpsAvailable(@NonNull Context context) {
         LocationManager locationManager = (LocationManager) context.getSystemService(LOCATION_SERVICE);
         assert locationManager != null;
         return locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER);
@@ -36,7 +38,7 @@ public class Utils {
 
     //check for all network and return the first connected or null if internet not available
     @NonNull
-    public static Boolean isInternetAvailable(@NonNull Context context){
+    public static Boolean isInternetAvailable(@NonNull Context context) {
         ConnectivityManager connMgr = (ConnectivityManager)
                 context.getApplicationContext().getSystemService(Context.CONNECTIVITY_SERVICE);
         assert connMgr != null;
@@ -44,7 +46,7 @@ public class Utils {
         return (networkInfo != null && networkInfo.isConnected());
     }
 
-    public static Date formatStringToDate(String dateStr){
+    public static Date formatStringToDate(String dateStr) {
         Date date = new Date();
         try {
             date = new SimpleDateFormat("dd/MM/yyy", Locale.FRANCE).parse(dateStr);
@@ -53,4 +55,6 @@ public class Utils {
         }
         return date;
     }
+
+    //refactor getTodayDateMethod in core/utils/ConstantParameters.
 }

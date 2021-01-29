@@ -94,7 +94,6 @@ public class MapsFragment extends BaseFragment implements GoogleMap.OnInfoWindow
             mPropertyViewModel.setSelectedProperty_(getPropertyForId(marker.getTitle()));
             if (Objects.requireNonNull(mNavController.getCurrentDestination()).getId() == R.id.mapsFragment)
                 mNavController.navigate(R.id.action_mapsFragment_to_propertyDetailFragment);
-            else mNavController.navigate(R.id.propertyDetailFragment);
         }
     }
 
@@ -110,7 +109,6 @@ public class MapsFragment extends BaseFragment implements GoogleMap.OnInfoWindow
         }
     }
 
-    //todo remove cause already in main
     private void requestLocationPermission() {
         ActivityCompat.requestPermissions(this.requireActivity(),
                 new String[]{ACCESS_FINE_LOCATION},

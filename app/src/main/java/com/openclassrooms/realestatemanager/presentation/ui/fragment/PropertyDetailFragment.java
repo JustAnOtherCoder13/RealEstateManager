@@ -10,7 +10,6 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.navigation.Navigation;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.target.CustomTarget;
@@ -44,7 +43,6 @@ public class PropertyDetailFragment extends BaseFragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         mBinding = FragmentPropertyDetailBinding.inflate(inflater, container, false);
-        mNavController = Navigation.findNavController(requireActivity(), R.id.nav_host_fragment);
         setAppBarVisibility(false);
         initRecyclerView();
         setUpdateButtonIcon(true);

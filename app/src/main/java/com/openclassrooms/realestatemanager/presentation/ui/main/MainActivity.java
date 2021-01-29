@@ -86,10 +86,10 @@ public class MainActivity extends AppCompatActivity {
     private void setTabBackNavigation() {
         switch (Objects.requireNonNull(mNavController.getCurrentDestination()).getId()) {
             case R.id.addPropertyFragment:
-                mNavController.navigate(R.id.propertyDetailFragment);
+                mNavController.navigate(R.id.action_addPropertyFragment_to_propertyDetailFragment);
                 break;
             case R.id.propertyDetailFragment:
-                mNavController.navigate(R.id.mapsFragment);
+                mNavController.navigate(R.id.action_addPropertyFragment_to_mapsFragment);
                 break;
             case R.id.mapsFragment:
                 this.finish();
@@ -102,14 +102,14 @@ public class MainActivity extends AppCompatActivity {
         switch (mNavController.getCurrentDestination().getId()) {
             case R.id.addPropertyFragment:
                 mNavController.navigate(mPropertyViewModel.getSelectedProperty.getValue().propertyLocation!=null?
-                        R.id.propertyDetailFragment
-                        :R.id.propertyListFragment);
+                        R.id.action_addPropertyFragment_to_propertyDetailFragment
+                        :R.id.action_addPropertyFragment_to_propertyListFragment);
                 break;
             case R.id.propertyDetailFragment:
-                mNavController.navigate(R.id.propertyListFragment);
+                mNavController.navigate(R.id.action_propertyDetailFragment_to_propertyListFragment);
                 break;
             case R.id.propertyListFragment:
-                mNavController.navigate(R.id.mapsFragment);
+                mNavController.navigate(R.id.action_propertyListFragment_to_mapsFragment);
                 break;
             case R.id.mapsFragment:
                 this.finish();
@@ -241,7 +241,6 @@ public class MainActivity extends AppCompatActivity {
         mNavController = Navigation.findNavController(this, R.id.nav_host_fragment);
         initPhoneOrTablet();
         mAgentViewModel.setAgent();
-        //mPropertyViewModel.setAllProperties();
         mPropertyViewModel.setAllProperties();
         filterHelper = new FilterHelper(mBinding.bottomSheetLayout);
         setBottomSheetButtonClickListener();
@@ -301,7 +300,6 @@ public class MainActivity extends AppCompatActivity {
             mBottomSheetBehavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
             filterHelper.resetFilter();
             mBinding.topAppBar.resetFilterButton.setOnClickListener(v1 -> {
-                //mPropertyViewModel.setAllProperties();
                 mBinding.topAppBar.resetFilterButton.setVisibility(View.GONE);
             });
         });

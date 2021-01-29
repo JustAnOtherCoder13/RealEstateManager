@@ -3,9 +3,11 @@ package com.openclassrooms.realestatemanager.presentation.viewModels;
 import android.util.Log;
 
 import androidx.annotation.NonNull;
+import androidx.hilt.Assisted;
 import androidx.hilt.lifecycle.ViewModelInject;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
+import androidx.lifecycle.SavedStateHandle;
 
 import com.picone.core.domain.entity.PointOfInterest;
 import com.picone.core.domain.entity.Property;
@@ -37,6 +39,8 @@ import static com.openclassrooms.realestatemanager.presentation.viewModels.BaseV
 import static com.picone.core.utils.ConstantParameters.MAPS_KEY;
 
 public class PropertyViewModel extends BaseViewModel {
+
+    private final SavedStateHandle savedStateHandle;
 
     private MutableLiveData<List<PointOfInterest>> mapsPointOfInterestForPropertyMutableLD = new MutableLiveData<>();
     private MutableLiveData<CompletionState> completionStateMutableLD = new MutableLiveData<>(CompletionState.START_STATE);
@@ -73,6 +77,7 @@ public class PropertyViewModel extends BaseViewModel {
             , GetNearBySearchForPropertyLocationInteractor getNearBySearchForPropertyLocationInteractor
             , UpdatePropertyLocationInteractor updatePropertyLocationInteractor
             , DeletePointOfInterestInteractor deletePointOfInterestInteractor
+            , @Assisted SavedStateHandle savedStateHandle
             , SchedulerProvider schedulerProvider) {
         this.getAllPropertiesInteractor = getAllPropertiesInteractor;
         this.getAllPointOfInterestForPropertyIdInteractor = getAllPointOfInterestForPropertyIdInteractor;
@@ -88,6 +93,7 @@ public class PropertyViewModel extends BaseViewModel {
         this.updatePropertyLocationInteractor = updatePropertyLocationInteractor;
         this.deletePointOfInterestInteractor = deletePointOfInterestInteractor;
         this.schedulerProvider = schedulerProvider;
+        this.savedStateHandle = savedStateHandle;
     }
 
     //___________________________________SETTERS______________________________________
@@ -146,7 +152,8 @@ public class PropertyViewModel extends BaseViewModel {
                         .subscribeOn(schedulerProvider.getIo())
                         .observeOn(schedulerProvider.getUi())
                         .doOnComplete(() -> completionStateMutableLD.postValue(CompletionState.ADD_PROPERTY_COMPLETE))
-                        .subscribe(()->{}, throwable -> checkException()));
+                        .subscribe(() -> {
+                        }, throwable -> checkException()));
     }
 
     public void updatePropertyInformation(Property property) {
@@ -155,7 +162,8 @@ public class PropertyViewModel extends BaseViewModel {
                         .subscribeOn(schedulerProvider.getIo())
                         .observeOn(schedulerProvider.getUi())
                         .doOnComplete(() -> completionStateMutableLD.setValue(CompletionState.UPDATE_PROPERTY_COMPLETE))
-                        .subscribe(()-> {}, throwable -> checkException()));
+                        .subscribe(() -> {
+                        }, throwable -> checkException()));
     }
 
     //___________________________________PROPERTY LOCATION__________________________________
@@ -166,7 +174,8 @@ public class PropertyViewModel extends BaseViewModel {
                         .subscribeOn(schedulerProvider.getIo())
                         .observeOn(schedulerProvider.getUi())
                         .doOnComplete(() -> completionStateMutableLD.setValue(CompletionState.ADD_LOCATION_COMPLETE))
-                        .subscribe(() -> {}, throwable -> checkException()));
+                        .subscribe(() -> {
+                        }, throwable -> checkException()));
     }
 
     public void updatePropertyLocation(@NonNull PropertyLocation propertyLocation) {
@@ -185,7 +194,7 @@ public class PropertyViewModel extends BaseViewModel {
                 Observable.fromIterable(pointOfInterests)
                         .subscribeOn(schedulerProvider.getIo())
                         .flatMapCompletable(pointOfInterest -> addPropertyPointOfInterestInteractor.addPropertyPointOfInterest(pointOfInterest))
-                        .doOnComplete(()->completionStateMutableLD.postValue(ADD_POINT_OF_INTEREST_COMPLETE))
+                        .doOnComplete(() -> completionStateMutableLD.postValue(ADD_POINT_OF_INTEREST_COMPLETE))
                         .observeOn(schedulerProvider.getUi())
                         .subscribe(() -> {
                         }, throwable -> checkException()));
@@ -201,7 +210,7 @@ public class PropertyViewModel extends BaseViewModel {
                         .andThen(Observable.fromIterable(mapsPointOfInterest))
                         .flatMapCompletable(pointOfInterest ->
                                 addPropertyPointOfInterestInteractor.addPropertyPointOfInterest(pointOfInterest))
-                        .doOnComplete(()->completionStateMutableLD.postValue(ADD_POINT_OF_INTEREST_COMPLETE))
+                        .doOnComplete(() -> completionStateMutableLD.postValue(ADD_POINT_OF_INTEREST_COMPLETE))
                         .observeOn(schedulerProvider.getUi())
                         .subscribe(() -> {
                         }, throwable -> checkException())
@@ -215,7 +224,8 @@ public class PropertyViewModel extends BaseViewModel {
                 addPropertyPhotoInteractor.addRoomPropertyPhoto(propertyPhoto)
                         .subscribeOn(schedulerProvider.getIo())
                         .observeOn(schedulerProvider.getUi())
-                        .subscribe(() -> {}, throwable -> checkException()));
+                        .subscribe(() -> {
+                        }, throwable -> checkException()));
     }
 
     public void deletePropertyPhoto(@NonNull PropertyPhoto propertyPhoto) {
@@ -223,7 +233,8 @@ public class PropertyViewModel extends BaseViewModel {
                 deletePropertyPhotoInteractor.deleteRoomPropertyPhoto(propertyPhoto)
                         .subscribeOn(schedulerProvider.getIo())
                         .observeOn(schedulerProvider.getUi())
-                        .subscribe(() ->{}));
+                        .subscribe(() -> {
+                        }));
     }
 
     public void deleteSelectedPhotosForProperty(@NonNull List<PropertyPhoto> propertyPhotos) {
@@ -239,14 +250,14 @@ public class PropertyViewModel extends BaseViewModel {
     //___________________________________MAPS__________________________________
 
     public void setPropertyLocationForPropertyAddress(@NonNull Property property) {
-        if (property.propertyLocation!=null)
-        compositeDisposable.add(
-                getPropertyLocationForAddressInteractor.getPropertyLocationForAddress(property, MAPS_KEY)
-                        .subscribeOn(schedulerProvider.getIo())
-                        .observeOn(schedulerProvider.getUi())
-                        .subscribe(propertyLocation ->
-                                        locationForAddressMutableLD.setValue(propertyLocation)
-                                , throwable -> checkException()));
+        if (property.propertyLocation != null)
+            compositeDisposable.add(
+                    getPropertyLocationForAddressInteractor.getPropertyLocationForAddress(property, MAPS_KEY)
+                            .subscribeOn(schedulerProvider.getIo())
+                            .observeOn(schedulerProvider.getUi())
+                            .subscribe(propertyLocation ->
+                                            locationForAddressMutableLD.setValue(propertyLocation)
+                                    , throwable -> checkException()));
         else locationForAddressMutableLD.setValue(new PropertyLocation());
     }
 
