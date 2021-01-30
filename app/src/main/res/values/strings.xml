@@ -108,6 +108,14 @@
     <string name="chanel_name">Message from Firebase</string>
     <string name="intent_extra_name">message</string>
 
+    <string name="notification_add_start_message">You have add new property : \n</string>
+    <string name="notification_add_message_title">ADD PROPERTY</string>
+    <string name="notification_update_start_message">You have updated property : \n</string>
+    <string name="notification_update_message_title">UPDATE PROPERTY</string>
+    <string name="notification_id">id : </string>
+    <string name="notification_address">\naddress : </string>
+    <string name="notification_number_of_photos">\nnumber of photo : </string>
+    <string name="notification_number_of_point_of_interst">\nnumber of points of interest</string>
 
 
 </resources>

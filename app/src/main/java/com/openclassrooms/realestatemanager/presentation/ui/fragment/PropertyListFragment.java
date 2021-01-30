@@ -26,6 +26,7 @@ public class PropertyListFragment extends BaseFragment {
 
     private FragmentPropertyListBinding mBinding;
     private PropertyRecyclerViewAdapter adapter;
+
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -41,14 +42,16 @@ public class PropertyListFragment extends BaseFragment {
         super.onViewCreated(view, savedInstanceState);
         configureOnClickRecyclerView();
         mPropertyViewModel.getSelectedProperty.observe(getViewLifecycleOwner(), property -> {
-            if (property.propertyInformation != null && property.propertyLocation.getAddress()!=null)
+            if (property.propertyInformation != null && property.propertyLocation.getAddress() != null && getResources().getBoolean(R.bool.phone_device))
                 mNavController.navigate(R.id.action_propertyListFragment_to_propertyDetailFragment);
+            else if (property.propertyInformation != null && property.propertyLocation.getAddress() != null && !getResources().getBoolean(R.bool.phone_device))
+                mNavController.navigate(R.id.propertyDetailFragment);
         });
     }
 
     private void initRecyclerView() {
         mPropertyViewModel.setAllProperties();
-        PropertyRecyclerViewAdapter adapter = new PropertyRecyclerViewAdapter(new ArrayList<>(),requireContext());
+        PropertyRecyclerViewAdapter adapter = new PropertyRecyclerViewAdapter(new ArrayList<>(), requireContext());
         RecyclerView.LayoutManager linearLayout = new LinearLayoutManager(getContext());
         setCurrencySwitch(adapter);
         mBinding.fragmentPropertyListRecyclerview.setLayoutManager(linearLayout);

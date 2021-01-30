@@ -146,21 +146,23 @@ public class PropertyViewModel extends BaseViewModel {
     }
     //___________________________________PROPERTY__________________________________
 
-    public void addProperty(Property property) {
+    public void addProperty(@NonNull Property property) {
         compositeDisposable.add(
                 addPropertyInteractor.addProperty(property.propertyInformation)
                         .subscribeOn(schedulerProvider.getIo())
                         .observeOn(schedulerProvider.getUi())
-                        .doOnComplete(() -> completionStateMutableLD.postValue(CompletionState.ADD_PROPERTY_COMPLETE))
+                        .doOnSubscribe( __ -> isDataLoadingMutableLD.postValue(true))
+                        .doAfterTerminate(() -> completionStateMutableLD.postValue(CompletionState.ADD_PROPERTY_COMPLETE))
                         .subscribe(() -> {
                         }, throwable -> checkException()));
     }
 
-    public void updatePropertyInformation(Property property) {
+    public void updatePropertyInformation(@NonNull Property property) {
         compositeDisposable.add(
                 updatePropertyInteractor.updateProperty(property.propertyInformation)
                         .subscribeOn(schedulerProvider.getIo())
                         .observeOn(schedulerProvider.getUi())
+                        .doOnSubscribe( __ -> isDataLoadingMutableLD.postValue(true))
                         .doOnComplete(() -> completionStateMutableLD.setValue(CompletionState.UPDATE_PROPERTY_COMPLETE))
                         .subscribe(() -> {
                         }, throwable -> checkException()));
@@ -195,6 +197,7 @@ public class PropertyViewModel extends BaseViewModel {
                         .subscribeOn(schedulerProvider.getIo())
                         .flatMapCompletable(pointOfInterest -> addPropertyPointOfInterestInteractor.addPropertyPointOfInterest(pointOfInterest))
                         .doOnComplete(() -> completionStateMutableLD.postValue(ADD_POINT_OF_INTEREST_COMPLETE))
+                        .doOnTerminate(()->isDataLoadingMutableLD.postValue(false))
                         .observeOn(schedulerProvider.getUi())
                         .subscribe(() -> {
                         }, throwable -> checkException()));
@@ -211,6 +214,7 @@ public class PropertyViewModel extends BaseViewModel {
                         .flatMapCompletable(pointOfInterest ->
                                 addPropertyPointOfInterestInteractor.addPropertyPointOfInterest(pointOfInterest))
                         .doOnComplete(() -> completionStateMutableLD.postValue(ADD_POINT_OF_INTEREST_COMPLETE))
+                        .doOnTerminate(()->isDataLoadingMutableLD.postValue(false))
                         .observeOn(schedulerProvider.getUi())
                         .subscribe(() -> {
                         }, throwable -> checkException())

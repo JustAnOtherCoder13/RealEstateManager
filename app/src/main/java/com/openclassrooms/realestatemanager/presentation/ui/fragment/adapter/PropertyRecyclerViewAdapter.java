@@ -30,6 +30,7 @@ import java.util.Locale;
 
 import static com.openclassrooms.realestatemanager.presentation.utils.ManageImageHelper.playLoader;
 import static com.openclassrooms.realestatemanager.presentation.utils.Utils.convertDollarToEuro;
+import static com.openclassrooms.realestatemanager.presentation.utils.Utils.formatWithSpace;
 
 public class PropertyRecyclerViewAdapter extends RecyclerView.Adapter<PropertyRecyclerViewAdapter.ViewHolder> {
 
@@ -41,10 +42,11 @@ public class PropertyRecyclerViewAdapter extends RecyclerView.Adapter<PropertyRe
     private Locale locale;
 
 
-    public void updateLocale(Locale locale){
+    public void updateLocale(Locale locale) {
         this.locale = locale;
         notifyDataSetChanged();
     }
+
     public PropertyRecyclerViewAdapter(List<Property> mProperties, Context context) {
         this.mProperties = mProperties;
         this.context = context;
@@ -61,12 +63,12 @@ public class PropertyRecyclerViewAdapter extends RecyclerView.Adapter<PropertyRe
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-        if (locale==null)locale=Locale.US;
+        if (locale == null) locale = Locale.US;
         currency = Currency.getInstance(locale);
         mItems.add(holder.itemView);
         final Property property = mProperties.get(position);
         if (!property.photos.isEmpty())
-        setPropertyPhoto(holder,property.photos.get(0));
+            setPropertyPhoto(holder, property.photos.get(0));
         holder.binding.propertyItemPrice.setText(convertedPrice(property.propertyInformation));
         holder.binding.propertyItemTown.setText(property.propertyLocation.getRegion());
         holder.binding.propertyItemType.setText(property.propertyInformation.getPropertyType());
@@ -87,9 +89,9 @@ public class PropertyRecyclerViewAdapter extends RecyclerView.Adapter<PropertyRe
                 textView.setTextColor(context.getResources().getColor(R.color.custom_pink));
                 holder.itemView.setBackgroundColor(Color.TRANSPARENT);
             }*/
-        holder.binding.propertyItemSold.setVisibility(property.propertyInformation.getSoldFrom().trim().isEmpty()?
+        holder.binding.propertyItemSold.setVisibility(property.propertyInformation.getSoldFrom().trim().isEmpty() ?
                 View.GONE
-                :View.VISIBLE);
+                : View.VISIBLE);
     }
 
     @Override
@@ -107,12 +109,11 @@ public class PropertyRecyclerViewAdapter extends RecyclerView.Adapter<PropertyRe
         }
     }
 
-    public String convertedPrice(PropertyInformation propertyInformation){
+    public String convertedPrice(PropertyInformation propertyInformation) {
         int price;
-        if (locale==Locale.US){
+        if (locale == Locale.US) {
             price = propertyInformation.getPrice();
-        }
-        else price = convertDollarToEuro(propertyInformation.getPrice());
+        } else price = convertDollarToEuro(propertyInformation.getPrice());
 
         return formatWithSpace().format(price).concat(" ").concat(currency.getSymbol(locale));
     }
@@ -135,13 +136,13 @@ public class PropertyRecyclerViewAdapter extends RecyclerView.Adapter<PropertyRe
                     @Override
                     public void onLoadStarted(@Nullable Drawable placeholder) {
                         super.onLoadStarted(placeholder);
-                        playLoader(true,holder.binding.propertyDetailItemLoader.animationView);
+                        playLoader(true, holder.binding.propertyDetailItemLoader.animationView);
                     }
 
                     @Override
                     public void onResourceReady(@NonNull Drawable resource, @Nullable Transition<? super Drawable> transition) {
                         holder.binding.propertyItemPhoto.setImageDrawable(resource);
-                        playLoader(false,holder.binding.propertyDetailItemLoader.animationView);
+                        playLoader(false, holder.binding.propertyDetailItemLoader.animationView);
                     }
 
                     @Override
@@ -150,15 +151,7 @@ public class PropertyRecyclerViewAdapter extends RecyclerView.Adapter<PropertyRe
                 });
     }
 
-    @NonNull
-    private DecimalFormat formatWithSpace(){
-        DecimalFormatSymbols symbols = new DecimalFormatSymbols();
-        symbols.setGroupingSeparator(' ');
-        DecimalFormat df = new DecimalFormat();
-        df.setDecimalFormatSymbols(symbols);
-        df.setGroupingSize(3);
-        return df;
-    }
+
 
 
 }

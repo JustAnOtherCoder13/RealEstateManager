@@ -2,7 +2,6 @@
 
     <bool name="phone_device">true</bool>
 
-    <!--todo use error color?-->
     <style name="AppTheme" parent="Theme.MaterialComponents.Light.NoActionBar">
         <!--COLORS-->
         <item name="colorPrimary">@color/custom_blue</item>
@@ -33,6 +32,7 @@
 
     <style name="AppBottomNavigation" parent="Widget.MaterialComponents.BottomNavigationView.Colored" />
 
+    <!--todo no sens perhaps edit text?-->
     <style name="TextView" parent="Widget.MaterialComponents.TextView">
         <item name="android:textAppearance">?attr/textAppearanceHeadline1</item>
         <!--todo why bold not pass from text appearance?-->
@@ -41,6 +41,7 @@
     </style>
 
     <!--COMMON STYLES-->
+    <!-- todo no text and margin?-->
     <style name="back_button">
         <item name="android:text">@string/back</item>
         <item name="android:layout_marginEnd">@dimen/big_marge</item>
@@ -98,14 +99,13 @@
         <item name="android:text">@string/sold</item>
     </style>
 
+    <!-- not too much style color font text appearance -->
     <style name="fragment_add_property_sold_date" parent="body_style">
         <item name="android:layout_marginEnd">@dimen/big_marge</item>
         <item name="android:inputType">date</item>
         <item name="android:layout_marginBottom">@dimen/basic_marge</item>
         <item name="android:visibility">gone</item>
         <item name="android:textColor">@color/custom_grey</item>
-        <item name="android:textAppearance">@style/TextAppearance.RealEstateManagerStyles.Body1
-        </item>
     </style>
 
     <style name="fragment_add_property_description_title">

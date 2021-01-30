@@ -69,6 +69,8 @@ public class AddPropertyFragment extends BaseFragment {
     private boolean isNewPropertyToPersist;
     private boolean isPhotoListHaveBeenChanged;
 
+    //todo manage save/update button
+
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -232,6 +234,7 @@ public class AddPropertyFragment extends BaseFragment {
             hideSoftKeyboard(requireView());
             if (!mGetMediaDialog.getText().trim().isEmpty()) {
                 createPropertyPhoto(mGetMediaDialog.getText(), isPhoto);
+                mGetMediaDialog.resetEditText();
                 mGetMediaDialog.dismiss();
             } else
                 Toast.makeText(requireContext(), R.string.enter_description, Toast.LENGTH_LONG).show();
@@ -331,17 +334,17 @@ public class AddPropertyFragment extends BaseFragment {
                 //when point of interest complete, mean that add or update when address change is finish
                 case ADD_POINT_OF_INTEREST_COMPLETE:
                     if (Objects.requireNonNull(mNavController.getCurrentDestination()).getId() == R.id.addPropertyFragment) {
-                        playLoader(false);
+                        //playLoader(false);
                         if (isNewPropertyToPersist)
                             createNotification(requireContext(),
-                                    message("You have add new property : \n"), "ADD PROPERTY");
-                        else{
+                                    message(getString(R.string.notification_add_start_message)), getString(R.string.notification_add_message_title));
+                        else {
                             createNotification(requireContext(),
-                                    message("You have updated property : \n"), "UPDATE PROPERTY");
-                            mNavController.navigate(getResources().getBoolean(R.bool.phone_device) ?
-                                    R.id.action_addPropertyFragment_to_propertyListFragment
-                                    : R.id.action_addPropertyFragment_to_mapsFragment);
-                        }
+                                    message(getString(R.string.notification_update_start_message)), getString(R.string.notification_update_message_title));}
+
+                        mNavController.navigate(getResources().getBoolean(R.bool.phone_device) ?
+                                R.id.action_addPropertyFragment_to_propertyListFragment
+                                : R.id.action_addPropertyFragment_to_mapsFragment);
                     }
                     break;
             }
@@ -350,13 +353,13 @@ public class AddPropertyFragment extends BaseFragment {
 
     private String message(String startMessage) {
         return startMessage
-                .concat("id : ")
+                .concat(getString(R.string.notification_id))
                 .concat(String.valueOf(mSelectedProperty.propertyInformation.getId()))
-                .concat("\naddress : ")
+                .concat(getString(R.string.notification_address))
                 .concat(mSelectedProperty.propertyLocation.getAddress())
-                .concat("\nnumber of photo : ")
+                .concat(getString(R.string.notification_number_of_photos))
                 .concat(String.valueOf(mSelectedProperty.photos.size()))
-                .concat("\nnumber of points of interest")
+                .concat(getString(R.string.notification_number_of_point_of_interst))
                 .concat(String.valueOf(mSelectedProperty.pointOfInterests.size()));
 
     }

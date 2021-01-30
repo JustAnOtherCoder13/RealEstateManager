@@ -2,8 +2,11 @@ package com.openclassrooms.realestatemanager.presentation.utils.customView;
 
 import android.content.Context;
 import android.content.res.TypedArray;
+import android.text.Editable;
 import android.text.InputType;
+import android.text.TextWatcher;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -13,6 +16,8 @@ import androidx.annotation.Nullable;
 import androidx.constraintlayout.widget.ConstraintLayout;
 
 import com.openclassrooms.realestatemanager.R;
+
+import static com.openclassrooms.realestatemanager.presentation.utils.Utils.formatWithSpace;
 
 public class AddPropertyInformationCustomView extends ConstraintLayout {
 
@@ -36,6 +41,7 @@ public class AddPropertyInformationCustomView extends ConstraintLayout {
         mAddPropertyInformationEditText.setInputType(attributes.getInt(R.styleable.AddPropertyInformationCustomView_android_inputType, InputType.TYPE_CLASS_NUMBER));
         mAddPropertyInformationEditText.setSingleLine(attributes.getBoolean(R.styleable.AddPropertyInformationCustomView_android_singleLine, true));
         mAddPropertyInformationEditText.setLines(attributes.getInt(R.styleable.AddPropertyInformationCustomView_android_lines, 1));
+
         attributes.recycle();
     }
 

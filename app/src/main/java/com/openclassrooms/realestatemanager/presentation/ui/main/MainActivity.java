@@ -42,6 +42,7 @@ import static com.picone.core.utils.ConstantParameters.LOCATION_PERMISSION_CODE;
 import static com.picone.core.utils.ConstantParameters.READ_PERMISSION_CODE;
 import static com.picone.core.utils.ConstantParameters.WRITE_PERMISSION_CODE;
 
+
 @ActivityScoped
 @AndroidEntryPoint
 public class MainActivity extends AppCompatActivity {
@@ -89,7 +90,7 @@ public class MainActivity extends AppCompatActivity {
                 mNavController.navigate(R.id.action_addPropertyFragment_to_propertyDetailFragment);
                 break;
             case R.id.propertyDetailFragment:
-                mNavController.navigate(R.id.action_addPropertyFragment_to_mapsFragment);
+                mNavController.navigate(R.id.action_propertyDetailFragment_to_mapsFragment);
                 break;
             case R.id.mapsFragment:
                 this.finish();
@@ -166,8 +167,8 @@ public class MainActivity extends AppCompatActivity {
             setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
             //initRecyclerView();
             //configureOnClickRecyclerView();
-            mBinding.currencySwitch.setOnClickListener(v -> {
-                adapter.updateLocale(mBinding.currencySwitch.isChecked() ?
+            mBinding.topAppBar.currencySwitch.setOnClickListener(v -> {
+                adapter.updateLocale(mBinding.topAppBar.currencySwitch.isChecked() ?
                         Locale.FRANCE
                         : Locale.US);
             });
@@ -176,8 +177,8 @@ public class MainActivity extends AppCompatActivity {
 
     protected void setTopAppBarCurrencySwitch(@NonNull PropertyRecyclerViewAdapter adapter) {
         mBinding.topAppBar.currencySwitch.setOnClickListener(v -> {
-            assert mBinding.currencySwitch != null;
-            mPropertyViewModel.setLocale(mBinding.currencySwitch.isChecked() ?
+            assert mBinding.topAppBar.currencySwitch != null;
+            mPropertyViewModel.setLocale(mBinding.topAppBar.currencySwitch.isChecked() ?
                     Locale.FRANCE
                     : Locale.US);
         });

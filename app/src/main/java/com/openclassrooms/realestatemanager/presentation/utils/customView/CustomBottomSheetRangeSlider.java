@@ -16,6 +16,8 @@ import com.openclassrooms.realestatemanager.R;
 import java.util.ArrayList;
 import java.util.List;
 
+import static com.openclassrooms.realestatemanager.presentation.utils.Utils.formatWithSpace;
+
 public class CustomBottomSheetRangeSlider extends ConstraintLayout {
 
     private Context context;
@@ -50,14 +52,14 @@ public class CustomBottomSheetRangeSlider extends ConstraintLayout {
         rangeSlider.addOnSliderTouchListener(new RangeSlider.OnSliderTouchListener() {
             @Override
             public void onStartTrackingTouch(@NonNull RangeSlider slider) {
-                rangeSlider.addOnChangeListener((slider1, value, fromUser) -> startValue.setText(String.valueOf(slider.getValues().get(0).intValue())));
-                rangeSlider.addOnChangeListener((slider1, value, fromUser) -> endValue.setText(String.valueOf(slider.getValues().get(1).intValue())));
+                rangeSlider.addOnChangeListener((slider1, value, fromUser) -> startValue.setText(formatWithSpace().format(slider.getValues().get(0).intValue())));
+                rangeSlider.addOnChangeListener((slider1, value, fromUser) -> endValue.setText(formatWithSpace().format(slider.getValues().get(1).intValue())));
             }
 
             @Override
             public void onStopTrackingTouch(@NonNull RangeSlider slider) {
-                rangeSlider.addOnChangeListener((slider1, value, fromUser) -> startValue.setText(String.valueOf(slider.getValues().get(0).intValue())));
-                rangeSlider.addOnChangeListener((slider1, value, fromUser) -> endValue.setText(String.valueOf(slider.getValues().get(1).intValue())));
+                rangeSlider.addOnChangeListener((slider1, value, fromUser) -> startValue.setText(formatWithSpace().format(slider.getValues().get(0).intValue())));
+                rangeSlider.addOnChangeListener((slider1, value, fromUser) -> endValue.setText(formatWithSpace().format(slider.getValues().get(1).intValue())));
             }
         });
     }
@@ -72,8 +74,8 @@ public class CustomBottomSheetRangeSlider extends ConstraintLayout {
         values.add(valueTo);
         rangeSlider.setValues(values);
         rangeSlider.setStepSize(stepSize);
-        startValue.setText(String.valueOf(startValueInt));
-        endValue.setText(String.valueOf(endValueInt));
+        startValue.setText(formatWithSpace().format(startValueInt));
+        endValue.setText(formatWithSpace().format(endValueInt));
     }
 
     public float getStartValue(){return Float.parseFloat(startValue.getText().toString());}

@@ -8,6 +8,8 @@ import android.net.wifi.WifiManager;
 
 import androidx.annotation.NonNull;
 
+import java.text.DecimalFormat;
+import java.text.DecimalFormatSymbols;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -54,6 +56,16 @@ public class Utils {
             e.printStackTrace();
         }
         return date;
+    }
+
+    @NonNull
+    public static DecimalFormat formatWithSpace() {
+        DecimalFormatSymbols symbols = new DecimalFormatSymbols();
+        symbols.setGroupingSeparator(' ');
+        DecimalFormat df = new DecimalFormat();
+        df.setDecimalFormatSymbols(symbols);
+        df.setGroupingSize(3);
+        return df;
     }
 
     //refactor getTodayDateMethod in core/utils/ConstantParameters.

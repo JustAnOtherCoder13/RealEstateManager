@@ -6,27 +6,16 @@
     android:layout_height="match_parent">
 
 
-
-    <androidx.recyclerview.widget.RecyclerView
+    <androidx.fragment.app.FragmentContainerView
+        android:name="com.openclassrooms.realestatemanager.presentation.ui.fragment.PropertyListFragment"
         android:id="@+id/fragment_property_list_recyclerview"
         android:layout_width="wrap_content"
         android:layout_height="0dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@id/nav_host_fragment"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/currency_switch" />
-
-    <com.google.android.material.switchmaterial.SwitchMaterial
-        android:layout_height="wrap_content"
-        android:layout_width="0dp"
-        android:layout_marginEnd="@dimen/basic_marge"
-        android:id="@+id/currency_switch"
         app:layout_constraintTop_toBottomOf="@id/top_app_bar"
-        app:layout_constraintBottom_toTopOf="@id/fragment_property_list_recyclerview"
-        app:layout_constraintStart_toStartOf="@id/fragment_property_list_recyclerview"
-        app:layout_constraintEnd_toEndOf="@id/fragment_property_list_recyclerview"
-        style="@style/currency_switch_style" />
-
+        />
 
     <fragment
         android:id="@+id/nav_host_fragment"
@@ -65,7 +54,6 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="@id/nav_host_fragment"
         app:layout_constraintTop_toTopOf="parent" />
-
 
     <com.openclassrooms.realestatemanager.presentation.utils.customView.TopAppBarCustomView
         android:id="@+id/top_app_bar"
