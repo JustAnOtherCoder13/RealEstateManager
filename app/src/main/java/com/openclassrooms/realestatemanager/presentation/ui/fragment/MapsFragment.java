@@ -31,6 +31,7 @@ import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.openclassrooms.realestatemanager.R;
 import com.openclassrooms.realestatemanager.databinding.FragmentMapsBinding;
+import com.openclassrooms.realestatemanager.presentation.ui.fragment.adapter.PropertyRecyclerViewAdapter;
 import com.openclassrooms.realestatemanager.presentation.ui.main.BaseFragment;
 import com.picone.core.domain.entity.PointOfInterest;
 import com.picone.core.domain.entity.Property;
@@ -54,6 +55,7 @@ public class MapsFragment extends BaseFragment implements GoogleMap.OnInfoWindow
     private MarkerOptions mMarkerOptions = new MarkerOptions();
     private List<Marker> mPointOfInterestMarkers = new ArrayList<>();
     private Marker mMarkerToAdd;
+    private PropertyRecyclerViewAdapter mAdapter;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -91,7 +93,7 @@ public class MapsFragment extends BaseFragment implements GoogleMap.OnInfoWindow
     @Override
     public void onInfoWindowClick(@NonNull Marker marker) {
         if (isPropertyMarker(marker)) {
-            mPropertyViewModel.setSelectedProperty_(getPropertyForId(marker.getTitle()));
+            mPropertyViewModel.setSelectedProperty(getPropertyForId(marker.getTitle()));
             if (Objects.requireNonNull(mNavController.getCurrentDestination()).getId() == R.id.mapsFragment)
                 mNavController.navigate(R.id.action_mapsFragment_to_propertyDetailFragment);
         }

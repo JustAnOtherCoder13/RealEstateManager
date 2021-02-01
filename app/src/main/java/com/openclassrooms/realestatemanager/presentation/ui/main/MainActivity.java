@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.pm.ActivityInfo;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.ImageButton;
@@ -77,7 +78,7 @@ public class MainActivity extends AppCompatActivity {
             mBottomSheetBehavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
         //reset selected property if not on add or detail fragment
         if (Objects.requireNonNull(mNavController.getCurrentDestination()).getId() != R.id.addPropertyFragment)
-            mPropertyViewModel.setSelectedProperty_(new Property());
+            mPropertyViewModel.setSelectedProperty(new Property());
         //set back press nav
         if (mNavController.getCurrentDestination() != null && isPhone) setPhoneBackNavigation();
         else if (mNavController.getCurrentDestination() != null && !isPhone) setTabBackNavigation();
@@ -87,7 +88,10 @@ public class MainActivity extends AppCompatActivity {
     private void setTabBackNavigation() {
         switch (Objects.requireNonNull(mNavController.getCurrentDestination()).getId()) {
             case R.id.addPropertyFragment:
+                if (mPropertyViewModel.getSelectedProperty.getValue()!=null
+                && mPropertyViewModel.getSelectedProperty.getValue().propertyInformation!=null)
                 mNavController.navigate(R.id.action_addPropertyFragment_to_propertyDetailFragment);
+                else mNavController.navigate(R.id.action_addPropertyFragment_to_mapsFragment);
                 break;
             case R.id.propertyDetailFragment:
                 mNavController.navigate(R.id.action_propertyDetailFragment_to_mapsFragment);
@@ -337,6 +341,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     protected void setSaveButtonClickListener(View.OnClickListener clickListener) {
+        mUpdateButton.setEnabled(true);
         mUpdateButton.setOnClickListener(clickListener);
     }
 

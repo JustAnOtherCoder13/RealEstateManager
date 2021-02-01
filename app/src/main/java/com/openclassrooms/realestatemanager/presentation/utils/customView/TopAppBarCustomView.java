@@ -16,6 +16,7 @@ import com.google.android.material.switchmaterial.SwitchMaterial;
 import com.openclassrooms.realestatemanager.R;
 import com.openclassrooms.realestatemanager.presentation.ui.main.MainActivity;
 import com.openclassrooms.realestatemanager.presentation.viewModels.PropertyViewModel;
+import com.picone.core.domain.entity.Property;
 
 import java.util.Objects;
 
@@ -75,7 +76,6 @@ public class TopAppBarCustomView extends ConstraintLayout {
     }
 
     private void resetPropertyValues() {
-        //propertyViewModel.setSelectedProperty_(new Property());
-        //propertyViewModel.setPropertyLocationForProperty(new PropertyInformation());
+        propertyViewModel.setSelectedProperty(new Property());
     }
 }

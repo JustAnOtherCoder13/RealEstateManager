@@ -106,8 +106,8 @@ public class PropertyViewModel extends BaseViewModel {
         allPropertiesMutableLD.setValue(filteredProperties);
     }
 
-    public void setSelectedProperty_(Property property_) {
-        selectedPropertyMutableLD.setValue(property_);
+    public void setSelectedProperty(Property property) {
+        selectedPropertyMutableLD.setValue(property);
     }
 
     public void setPhotosToDelete(List<PropertyPhoto> photosToDelete) {

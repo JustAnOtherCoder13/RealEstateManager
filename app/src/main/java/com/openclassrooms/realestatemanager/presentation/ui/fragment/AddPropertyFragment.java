@@ -69,8 +69,6 @@ public class AddPropertyFragment extends BaseFragment {
     private boolean isNewPropertyToPersist;
     private boolean isPhotoListHaveBeenChanged;
 
-    //todo manage save/update button
-
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -79,6 +77,7 @@ public class AddPropertyFragment extends BaseFragment {
         mImageHelper = new ManageImageHelper(requireContext());
         mGetMediaDialog = new CustomMediaSetTitleDialog(requireContext());
         mInnerPropertyViewModel = new ViewModelProvider(this).get(PropertyViewModel.class);
+        mUpdateButton.setEnabled(true);
         setAppBarVisibility(false);
         setUpdateButtonIcon(false);
         return mBinding.getRoot();
@@ -249,6 +248,7 @@ public class AddPropertyFragment extends BaseFragment {
     }
 
     private void initAddButtonClick() {
+        mUpdateButton.setEnabled(false);
         hideSoftKeyboard(mBinding.addPropertyInformationLayout.getRoot());
         // observers
         addAdditionalInformationOrNavigateUp();
@@ -276,6 +276,7 @@ public class AddPropertyFragment extends BaseFragment {
             return;
         }
         Toast.makeText(requireContext(), R.string.information_not_filled, Toast.LENGTH_SHORT).show();
+        mUpdateButton.setEnabled(true);
     }
 
     //___________________________________HELPERS_____________________________________________

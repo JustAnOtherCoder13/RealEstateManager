@@ -3,6 +3,7 @@ package com.openclassrooms.realestatemanager.presentation.ui.fragment.adapter;
 import android.content.Context;
 import android.graphics.Color;
 import android.graphics.drawable.Drawable;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -21,8 +22,6 @@ import com.picone.core.domain.entity.Property;
 import com.picone.core.domain.entity.PropertyInformation;
 import com.picone.core.domain.entity.PropertyPhoto;
 
-import java.text.DecimalFormat;
-import java.text.DecimalFormatSymbols;
 import java.util.ArrayList;
 import java.util.Currency;
 import java.util.List;
@@ -36,7 +35,7 @@ public class PropertyRecyclerViewAdapter extends RecyclerView.Adapter<PropertyRe
 
     private List<Property> mProperties;
     private List<View> mItems = new ArrayList<>();
-    private PropertyInformation selectedPropertyInformation;
+    private Property selectedProperty;
     private Currency currency;
     private Context context;
     private Locale locale;
@@ -44,6 +43,11 @@ public class PropertyRecyclerViewAdapter extends RecyclerView.Adapter<PropertyRe
 
     public void updateLocale(Locale locale) {
         this.locale = locale;
+        notifyDataSetChanged();
+    }
+
+    public void updateSelectedProperty(Property selectedProperty) {
+        this.selectedProperty = selectedProperty;
         notifyDataSetChanged();
     }
 
@@ -74,9 +78,9 @@ public class PropertyRecyclerViewAdapter extends RecyclerView.Adapter<PropertyRe
         holder.binding.propertyItemType.setText(property.propertyInformation.getPropertyType());
         TextView textView = holder.itemView.findViewById(R.id.property_item_price);
 
-        //todo review for tab
-        /*if (selectedPropertyInformation != null)
-            if (this.selectedPropertyInformation.getId() == property.propertyInformation.getId()) {
+        if (selectedProperty.propertyInformation != null) {
+
+            if (this.selectedProperty.propertyInformation.getId() == property.propertyInformation.getId()) {
                 //reset all views
                 for (View item : mItems) {
                     TextView itemYTextView = item.findViewById(R.id.property_item_price);
@@ -85,10 +89,12 @@ public class PropertyRecyclerViewAdapter extends RecyclerView.Adapter<PropertyRe
                 }
                 holder.itemView.setBackgroundColor(context.getResources().getColor(R.color.custom_pink));
                 textView.setTextColor(context.getResources().getColor(R.color.white));
-            } else if (selectedPropertyInformation.getAddress() == null) {
-                textView.setTextColor(context.getResources().getColor(R.color.custom_pink));
-                holder.itemView.setBackgroundColor(Color.TRANSPARENT);
-            }*/
+            }
+        } else {
+            Log.e("TAG", "onBindViewHolder: ");
+            textView.setTextColor(context.getResources().getColor(R.color.custom_pink));
+            holder.itemView.setBackgroundColor(Color.TRANSPARENT);
+        }
         holder.binding.propertyItemSold.setVisibility(property.propertyInformation.getSoldFrom().trim().isEmpty() ?
                 View.GONE
                 : View.VISIBLE);
@@ -123,10 +129,6 @@ public class PropertyRecyclerViewAdapter extends RecyclerView.Adapter<PropertyRe
         notifyDataSetChanged();
     }
 
-    public void updateSelectedProperty(PropertyInformation propertyInformation) {
-        this.selectedPropertyInformation = propertyInformation;
-        notifyDataSetChanged();
-    }
 
     private void setPropertyPhoto(@NonNull PropertyRecyclerViewAdapter.ViewHolder holder, @NonNull PropertyPhoto photo) {
         Glide.with(holder.binding.propertyItemPhoto.getContext())
@@ -150,8 +152,6 @@ public class PropertyRecyclerViewAdapter extends RecyclerView.Adapter<PropertyRe
                     }
                 });
     }
-
-
 
 
 }
