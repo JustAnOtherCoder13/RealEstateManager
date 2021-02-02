@@ -11,16 +11,24 @@
         <item name="colorOnSurface">@color/custom_blue_light</item>
         <item name="fontFamily">@font/roboto_regular</item>
 
-        <item name="textAppearanceHeadline1">@style/TextAppearance.RealEstateManagerStyles.Headline1</item>
-        <item name="textAppearanceHeadline2">@style/TextAppearance.RealEstateManagerStyles.Headline2</item>
-        <item name="textAppearanceSubtitle1">@style/TextAppearance.RealEstateManagerStyles.Subtitle1</item>
-        <item name="textAppearanceBody1">@style/TextAppearance.RealEstateManagerStyles.Body1</item>
+        <item name="textAppearanceHeadline1">
+            @style/TextAppearance.RealEstateManagerStyles.Headline1
+        </item>
+        <item name="textAppearanceHeadline2">
+            @style/TextAppearance.RealEstateManagerStyles.Headline2
+        </item>
+        <item name="textAppearanceSubtitle1">
+            @style/TextAppearance.RealEstateManagerStyles.Subtitle1
+        </item>
+        <item name="textAppearanceBody1">
+            @style/TextAppearance.RealEstateManagerStyles.Body1
+        </item>
 
         <!--COMPONENT-->
         <item name="shapeAppearanceSmallComponent">@style/AppShapeAppearance.SmallComponent</item>
         <item name="bottomNavigationStyle">@style/AppBottomNavigation</item>
-        <item name="materialAlertDialogTheme">@style/ThemeOverlay.MaterialComponents.Dialog.Alert</item>
-        <item name="android:textViewStyle">@style/TextView</item>
+        <item name="materialAlertDialogTheme">@style/ThemeOverlay.MaterialComponents.Dialog.Alert
+        </item>
     </style>
 
     <!--BASE STYLES-->
@@ -32,36 +40,10 @@
 
     <style name="AppBottomNavigation" parent="Widget.MaterialComponents.BottomNavigationView.Colored" />
 
-    <!--todo no sens perhaps edit text?-->
-    <style name="TextView" parent="Widget.MaterialComponents.TextView">
-        <item name="android:textAppearance">?attr/textAppearanceHeadline1</item>
-        <!--todo why bold not pass from text appearance?-->
-        <item name="android:textStyle">bold</item>
-        <item name="android:paddingStart">@dimen/little_marge</item>
-    </style>
-
-    <!--COMMON STYLES-->
-    <!-- todo no text and margin?-->
-    <style name="back_button">
-        <item name="android:text">@string/back</item>
-        <item name="android:layout_marginEnd">@dimen/big_marge</item>
-    </style>
-
-    <style name="ok_button">
-        <item name="android:text">@string/ok</item>
-    </style>
-
-    <style name="subtitle_style" >
-        <item name="android:textAppearance">?attr/textAppearanceSubtitle1</item>
-    </style>
-
-    <style name="body_style">
-        <item name="android:textAppearance">?attr/textAppearanceBody1</item>
-    </style>
-
     <style name="CheckedTextView">
         <item name="android:textAlignment">center</item>
         <item name="android:textAppearance">?attr/textAppearanceBody1</item>
+        <item name="android:paddingTop">7dp</item>
     </style>
 
     <style name="fragmentWithNavStyle">
@@ -69,97 +51,9 @@
         <item name="android:layout_marginBottom">?attr/actionBarSize</item>
     </style>
 
-    <!-- DetailFragment-->
-    <style name="fragment_property_detail_title">
-        <item name="android:text">@string/description</item>
-    </style>
-
-    <style name="fragment_property_detail_description" parent="body_style">
-        <item name="android:maxLines">8</item>
-        <item name="android:text">@string/description_text</item>
-    </style>
-
-    <style name="fragment_property_detail_media">
-        <item name="android:text">@string/media</item>
-        <item name="android:layout_marginStart">@dimen/big_marge</item>
-    </style>
-
-    <!-- AddPropertyInformation fragment -->
-    <style name="fragment_property_information_title">
-        <item name="android:text">@string/information</item>
-        <item name="android:layout_marginBottom">@dimen/basic_marge</item>
-    </style>
-
-    <style name="fragment_add_property_information_type" parent="subtitle_style">
-        <item name="android:text">@string/property_type</item>
-        <item name="android:paddingBottom">@dimen/little_marge</item>
-    </style>
-
-    <style name="fragment_add_property_sold_title">
-        <item name="android:text">@string/sold</item>
-    </style>
-
-    <!-- not too much style color font text appearance -->
-    <style name="fragment_add_property_sold_date" parent="body_style">
-        <item name="android:layout_marginEnd">@dimen/big_marge</item>
-        <item name="android:inputType">date</item>
-        <item name="android:layout_marginBottom">@dimen/basic_marge</item>
-        <item name="android:visibility">gone</item>
-        <item name="android:textColor">@color/custom_grey</item>
-    </style>
-
-    <style name="fragment_add_property_description_title">
-        <item name="android:layout_marginStart">@dimen/basic_marge</item>
-        <item name="android:text">@string/description</item>
-    </style>
-
-    <style name="add_property_description_edit_text">
-        <item name="android:layout_marginStart">@dimen/little_marge</item>
-        <item name="android:layout_marginEnd">@dimen/little_marge</item>
-    </style>
-
-    <style name="property_detail_delete_button_style">
-        <item name="android:visibility">gone</item>
-        <item name="android:layout_marginEnd">@dimen/little_marge</item>
-        <item name="android:paddingStart">@dimen/little_marge</item>
-        <item name="android:paddingEnd">@dimen/little_marge</item>
-        <item name="android:background">@drawable/custom_round_primary</item>
-        <item name="srcCompat">@drawable/ic_fragment_add_property_media_delete_24</item>
-    </style>
-
-    <style name="property_detail_delete_check_box">
-        <item name="android:layout_marginStart">@dimen/little_marge</item>
-        <item name="android:visibility">gone</item>
-    </style>
-
-    <!--__________________________________RECYCLER VIEW__________________________________-->
-
-    <style name="recycler_view_property_list_item_type">
-        <item name="android:text">@string/property_type</item>
-    </style>
-
-    <style name="recycler_view_property_list_item_town" parent="subtitle_style">
-        <item name="android:text">@string/town</item>
-    </style>
-
-    <style name="recycler_view_property_list_item_price">
-        <item name="android:text">@string/price</item>
-        <item name="android:textColor">@color/custom_pink</item>
-        <item name="android:layout_marginStart">0dp</item>
-        <item name="android:paddingBottom">0dp</item>
-    </style>
-
-    <style name="recycler_view_photo_description" parent="body_style">
-        <item name="android:text">@string/description</item>
-        <item name="android:paddingBottom">@dimen/basic_marge</item>
-        <item name="android:paddingTop">@dimen/basic_marge</item>
-        <item name="android:paddingEnd">0dp</item>
+    <style name="MediaControllerCheckedTextView" parent="CheckedTextView">
         <item name="android:textColor">@color/white</item>
-        <item name="android:background">@color/black</item>
-        <item name="android:alpha">0.6</item>
     </style>
-
-    <!--__________________________________TOP BAR__________________________________-->
 
     <style name="TopAppBarIconImageButton">
         <item name="android:background">@android:color/transparent</item>
@@ -167,287 +61,18 @@
         <item name="android:paddingEnd">@dimen/basic_marge</item>
     </style>
 
-    <style name="TopBarFilterIconImageButton" parent="TopAppBarIconImageButton">
-        <item name="srcCompat">@drawable/ic_top_bar_filter_list</item>
-    </style>
-
-    <style name="TopBarAddIconImageButton" parent="TopAppBarIconImageButton">
-        <item name="srcCompat">@drawable/ic_top_bar_add</item>
-    </style>
-
-    <style name="TopBarResetFilterIconImageButton" parent="TopAppBarIconImageButton">
-        <item name="srcCompat">@drawable/ic_top_bar_reset_filter</item>
-        <item name="android:visibility">gone</item>
-    </style>
-
-    <style name="top_bar_title" parent="subtitle_style">
-        <item name="android:text">@string/app_name</item>
-        <item name="android:textColor">@color/white</item>
-        <item name="android:textStyle">bold</item>
-    </style>
-
-    <style name="Widget.FragmentAddPropertySoldCheckBox" parent="Widget.MaterialComponents.CompoundButton.CheckBox">
-        <item name="android:layout_marginStart">@dimen/big_marge</item>
-        <item name="android:layout_marginEnd">@dimen/big_marge</item>
-    </style>
-
     <style name="basicSeparatorStyle">
         <item name="android:layout_marginStart">@dimen/big_marge</item>
         <item name="android:layout_marginEnd">@dimen/big_marge</item>
         <item name="android:background">@color/custom_blue</item>
-        <item name="layout_constraintBottom_toBottomOf">parent</item>
-        <item name="layout_constraintStart_toStartOf">parent</item>
-        <item name="layout_constraintEnd_toEndOf">parent</item>
         <item name="android:layout_marginTop">@dimen/basic_marge</item>
     </style>
 
-    <!--__________________________________ UPDATE LAYOUT__________________________________-->
-
-    <style name="updateButtonFrameLayout">
-        <item name="android:layout_height">24dp</item>
-        <item name="android:background">@color/custom_blue</item>
-    </style>
-
-    <style name="updateButtonImageButton">
-        <item name="srcCompat">@drawable/ic_custom_view_update_24</item>
-    </style>
-
-    <!--__________________________________CUSTOM VIEW__________________________________-->
-
-    <style name="customViewIconStyle">
-        <item name="android:paddingEnd">@dimen/basic_marge</item>
-        <item name="android:color">@color/black</item>
-    </style>
-
-    <style name="customViewTextStyle" parent="body_style">
-        <item name="android:background">@color/white</item>
-    </style>
-
-    <style name="add_property_information_custom_view_area_and_bedroom">
-        <item name="android:layout_marginTop">@dimen/basic_marge</item>
-    </style>
-
-    <style name="add_property_information_custom_view_location">
-        <item name="android:layout_marginStart">@dimen/basic_marge</item>
-        <item name="android:layout_marginTop">@dimen/basic_marge</item>
-        <item name="android:inputType">textMultiLine</item>
-        <item name="android:lines">6</item>
-        <item name="android:maxWidth">@dimen/add_property_information_layout_location_max_width
-        </item>
-        <item name="android:singleLine">false</item>
-    </style>
-
-    <style name="add_property_information_custom_view_bathrooms">
-        <item name="android:layout_marginEnd">@dimen/basic_marge</item>
-        <item name="android:layout_marginTop">@dimen/basic_marge</item>
-    </style>
-
-    <style name="Widget.add_property_information_custom_view_property_type" parent="Widget.MaterialComponents.TextInputLayout.FilledBox.ExposedDropdownMenu">
-        <item name="android:layout_marginBottom">@dimen/basic_marge</item>
-    </style>
-
-    <style name="property_detail_information_custom_view_location">
-        <item name="android:inputType">textMultiLine</item>
-        <item name="android:lines">6</item>
-        <item name="android:maxWidth">@dimen/add_property_information_layout_location_max_width
-        </item>
-        <item name="android:singleLine">false</item>
-    </style>
-
-    <style name="property_detail_custom_view_margin_bottom">
-        <item name="android:layout_marginBottom">@dimen/basic_marge</item>
-    </style>
-
-    <style name="property_detail_custom_view_area" parent="property_detail_custom_view_margin_bottom">
-        <item name="android:layout_marginTop">@dimen/basic_marge</item>
-    </style>
-
-    <!--__________________________________CUSTOM ALERT DIALOG__________________________________-->
-
-    <style name="custom_alert_dialog_base_style">
-        <item name="android:background">@drawable/custom_dialog_shape</item>
-        <item name="android:padding">@dimen/basic_marge</item>
-    </style>
-
-    <style name="custom_alert_dialog_set_title_media_container">
-        <item name="android:layout_width">@dimen/accept_media_view_size</item>
-        <item name="android:layout_height">@dimen/accept_media_view_size</item>
-    </style>
-
-    <style name="custom_alert_dialog_button_base_style" parent="subtitle_style">
-        <item name="android:textColor">@color/white</item>
-    </style>
-
-    <style name="custom_alert_dialog_set_title_edit_text" parent="subtitle_style">
-        <item name="android:alpha">0.6</item>
+    <style name="custom_alert_dialog_set_title_edit_text">
         <item name="android:background">@color/black</item>
-        <item name="android:paddingTop">@dimen/big_marge</item>
-        <item name="android:textAlignment">center</item>
         <item name="android:textColor">@color/white</item>
         <item name="android:textColorHint">@color/white</item>
     </style>
 
-    <style name="custom_alert_dialog_checked_text_view_gallery" parent="CheckedTextView">
-        <item name="android:drawableTop">@drawable/ic_custom_dialog_gallery</item>
-        <item name="android:text">@string/gallery</item>
-    </style>
-
-    <style name="custom_alert_dialog_checked_text_view_photo_camera" parent="CheckedTextView">
-        <item name="android:drawableTop">@drawable/ic_custom_dialog_photo_camera</item>
-        <item name="android:text">@string/photo</item>
-    </style>
-
-    <style name="custom_alert_dialog_checked_text_view_video_camera" parent="CheckedTextView">
-        <item name="android:drawableTop">@drawable/ic_custom_dialog_video_camera</item>
-        <item name="android:text">@string/video</item>
-    </style>
-
-    <style name="custom_media_controller_checked_text_view" parent="CheckedTextView">
-        <item name="android:textColor">@color/white</item>
-        <item name="android:paddingTop">7dp</item>
-    </style>
-
-    <style name="custom_media_controller_checked_text_view_back" parent="CheckedTextView" >
-        <item name="android:drawableTop">@drawable/ic_custom_media_controller_arrow_back_24</item>
-        <item name="android:text">@string/back</item>
-    </style>
-
-    <style name="custom_media_controller_checked_text_view_play" parent="CheckedTextView">
-        <item name="android:drawableTop">@drawable/ic_custom_media_controller_play</item>
-        <item name="android:text">@string/play</item>
-    </style>
-
-    <style name="custom_media_controller_checked_text_view_pause" parent="CheckedTextView">
-        <item name="android:drawableTop">@drawable/ic_custom_media_controller_pause</item>
-        <item name="android:text">@string/pause</item>
-    </style>
-
-    <style name="custom_media_controller">
-        <item name="android:background">@color/custom_blue</item>
-        <item name="android:paddingStart">@dimen/big_marge</item>
-        <item name="android:paddingEnd">@dimen/big_marge</item>
-    </style>
-
-    <!--__________________________________BOTTOM SHEET__________________________________-->
-
-    <style name="bottom_sheet">
-        <item name="android:background">@drawable/custom_dialog_shape</item>
-        <item name="android:paddingBottom">?attr/actionBarSize</item>
-        <item name="behavior_hideable">true</item>
-        <item name="behavior_peekHeight">0dp</item>
-        <item name="layout_behavior">com.google.android.material.bottomsheet.BottomSheetBehavior
-        </item>
-    </style>
-
-    <style name="bottom_sheet_location_title" parent="subtitle_style">
-        <item name="android:layout_marginStart">@dimen/basic_marge</item>
-        <item name="android:paddingTop">@dimen/basic_marge</item>
-        <item name="android:text">@string/propertyLocation</item>
-    </style>
-
-    <style name="bottom_sheet_location" parent="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu">
-        <item name="android:layout_marginStart">@dimen/basic_marge</item>
-        <item name="android:layout_marginEnd">@dimen/XL_marge</item>
-        <item name="boxStrokeColor">@color/custom_blue</item>
-        <item name="boxStrokeWidth">2dp</item>
-    </style>
-
-    <style name="bottom_sheet_location_text_view">
-        <item name="android:layout_marginTop">@dimen/big_marge</item>
-        <item name="android:layout_marginBottom">@dimen/big_marge</item>
-        <item name="android:enabled">true</item>
-    </style>
-
-    <style name="bottom_sheet_property_type_layout_include">
-        <item name="android:layout_marginStart">@dimen/basic_marge</item>
-        <item name="android:layout_marginEnd">@dimen/basic_marge</item>
-    </style>
-
-    <style name="property_type_title" parent="subtitle_style">
-        <item name="android:layout_marginStart">@dimen/basic_marge</item>
-        <item name="android:layout_marginBottom">@dimen/basic_marge</item>
-        <item name="android:text">@string/property_type</item>
-    </style>
-
-    <style name="bottom_sheet_date_picker_title" parent="subtitle_style">
-        <item name="android:layout_marginTop">@dimen/basic_marge</item>
-    </style>
-
-    <style name="bottom_sheet_date_picker_edit_text" parent="body_style">
-        <item name="android:layout_marginStart">@dimen/basic_marge</item>
-        <item name="android:textColor">@color/custom_grey</item>
-        <item name="android:text">@string/dd_mm_yyyy</item>
-    </style>
-
-    <style name="bottom_sheet_date_picker_icon">
-        <item name="android:layout_marginStart">@dimen/basic_marge</item>
-        <item name="android:background">@drawable/custom_round_primary</item>
-        <item name="android:padding">@dimen/basic_marge</item>
-        <item name="srcCompat">@drawable/ic_bottom_sheet_date_picker</item>
-    </style>
-
-    <style name="point_of_interest_title" parent="subtitle_style">
-        <item name="android:layout_marginStart">@dimen/basic_marge</item>
-        <item name="android:layout_marginBottom">@dimen/basic_marge</item>
-        <item name="android:text">@string/point_of_interest</item>
-    </style>
-
-    <style name="Widget.range_slider_tooltip" parent="Widget.MaterialComponents.Tooltip">
-        <item name="android:background">@color/custom_blue</item>
-        <item name="android:textColor">@color/white</item>
-        <item name="android:textAppearance">@style/TextAppearance.RealEstateManagerStyles.Body1
-        </item>
-    </style>
-
-    <style name="bottom_sheet_close_button_frame_layout">
-        <item name="android:layout_marginStart">@dimen/bottom_sheet_outline_size</item>
-        <item name="android:layout_marginTop">@dimen/bottom_sheet_outline_size</item>
-        <item name="android:layout_marginEnd">@dimen/bottom_sheet_outline_size</item>
-        <item name="android:background">@drawable/custom_bottom_sheet_top_bar</item>
-    </style>
-
-    <style name="bottom_sheet_ok_button" parent="ok_button">
-        <item name="android:layout_marginTop">@dimen/big_marge</item>
-        <item name="android:layout_marginBottom">@dimen/XL_marge</item>
-        <item name="android:layout_marginStart">@dimen/basic_marge</item>
-        <item name="android:layout_marginEnd">@dimen/basic_marge</item>
-    </style>
-
-    <style name="bottom_sheet_close_button">
-        <item name="android:layout_marginTop">@dimen/bottom_sheet_outline_size</item>
-        <item name="srcCompat">@drawable/ic_bottom_sheet_close</item>
-        <item name="android:background">@drawable/custom_round_primary</item>
-    </style>
-
-    <style name="recyclerview_list_photo_item">
-        <item name="android:scaleType">centerCrop</item>
-    </style>
-
-    <style name="currency_switch_style" parent="subtitle_style">
-        <item name="android:textOn">@string/euro</item>
-        <item name="android:textOff">@string/dollar</item>
-        <item name="android:thumb">@drawable/currency_thumb</item>
-        <item name="showText">true</item>
-        <item name="track">@drawable/currency_track</item>
-        <item name="useMaterialThemeColors">false</item>
-    </style>
-
-    <style name="static_maps_size">
-        <item name="android:padding">2dp</item>
-        <item name="android:background">?attr/colorControlNormal</item>
-    </style>
-
-    <style name="property_item_sold">
-        <item name="android:background">@color/custom_pink_dark</item>
-        <item name="android:textAppearance">
-            @style/TextAppearance.RealEstateManagerStyles.Headline1
-        </item>
-        <item name="android:textColor">@color/white</item>
-        <item name="android:textAlignment">center</item>
-        <item name="android:alpha">0.7</item>
-        <item name="android:paddingTop">@dimen/little_marge</item>
-        <item name="android:paddingBottom">@dimen/little_marge</item>
-        <item name="android:visibility">gone</item>
-    </style>
 
 </resources>

@@ -7,49 +7,61 @@
 
     <ImageButton
         android:id="@+id/top_bar_filter_icon"
-        style="@style/TopBarFilterIconImageButton"
+        style="@style/TopAppBarIconImageButton"
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
         android:contentDescription="@string/menu_icon"
+        android:src="@drawable/ic_top_bar_filter_list"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
         android:id="@+id/top_app_bar_title"
-        style="@style/top_bar_title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:text="@string/app_name"
+        android:textAppearance="?attr/textAppearanceSubtitle1"
+        android:textColor="?attr/colorOnPrimary"
+        android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toEndOf="@id/top_bar_filter_icon"
         app:layout_constraintTop_toTopOf="parent" />
 
     <com.google.android.material.switchmaterial.SwitchMaterial
-        android:layout_height="wrap_content"
-        android:layout_width="0dp"
-        android:layout_marginStart="@dimen/basic_marge"
         android:id="@+id/currency_switch"
-        app:layout_constraintTop_toTopOf="parent"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/basic_marge"
+        android:textOff="@string/dollar"
+        android:textOn="@string/euro"
+        android:thumb="@drawable/currency_thumb"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toEndOf="@id/top_app_bar_title"
-        style="@style/currency_switch_style" />
+        app:layout_constraintTop_toTopOf="parent"
+        app:showText="true"
+        app:track="@drawable/currency_track"
+        app:useMaterialThemeColors="false" />
 
     <ImageButton
         android:id="@+id/top_reset_filter_property"
-        style="@style/TopBarResetFilterIconImageButton"
+        style="@style/TopAppBarIconImageButton"
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
         android:contentDescription="@string/reset_filter"
+        android:src="@drawable/ic_top_bar_reset_filter"
+        android:visibility="gone"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@id/top_bar_add_property"
         app:layout_constraintTop_toTopOf="parent" />
 
     <ImageButton
         android:id="@+id/top_bar_add_property"
-        style="@style/TopBarAddIconImageButton"
+        style="@style/TopAppBarIconImageButton"
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
         android:contentDescription="@string/add_property_icon"
+        android:src="@drawable/ic_top_bar_add"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent" />

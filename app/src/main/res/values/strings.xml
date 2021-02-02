@@ -30,7 +30,7 @@
     <string name="price">Price ($)</string>
     <string name="description">Description</string>
     <string name="media">Media</string>
-    <string name="surface">Surface</string>
+    <string name="surface">Surface (Sq m)</string>
     <string name="description_text">Description text</string>
     <string name="sold">Sold</string>
     <string name="propertyLocation">Location</string>

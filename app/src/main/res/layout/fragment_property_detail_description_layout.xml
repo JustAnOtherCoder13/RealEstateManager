@@ -7,9 +7,11 @@
 
     <TextView
         android:id="@+id/detail_media_description_layout_title"
-        style="@style/fragment_property_detail_title"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/basic_marge"
+        android:text="@string/description"
+        android:textAppearance="?attr/textAppearanceHeadline1"
         app:layout_constraintBottom_toTopOf="@id/detail_media_description_layout_text"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -17,9 +19,11 @@
 
     <TextView
         android:id="@+id/detail_media_description_layout_text"
-        style="@style/fragment_property_detail_description"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:maxLines="8"
+        android:text="@string/description_text"
+        android:textAppearance="?attr/textAppearanceBody1"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/detail_media_description_layout_title"

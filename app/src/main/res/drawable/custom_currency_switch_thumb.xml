@@ -4,9 +4,9 @@
     android:shape="oval">
     <solid android:color="@color/white" />
     <size
-        android:width="30dp"
-        android:height="30dp" />
+        android:width="@dimen/custom_view_corner_radius"
+        android:height="@dimen/custom_view_corner_radius" />
     <stroke
-        android:width="2dp"
+        android:width="@dimen/switch_stroke_width"
         android:color="@color/custom_pink_dark" />
 </shape>

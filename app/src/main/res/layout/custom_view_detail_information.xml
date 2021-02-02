@@ -7,16 +7,18 @@
 
     <ImageView
         android:id="@+id/detail_information_custom_view_icon"
-        style="@style/customViewIconStyle"
+        android:paddingEnd="@dimen/big_marge"
+        android:color="@color/black"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:contentDescription="@string/icon"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@id/detail_information_custom_view_title" />
+        app:layout_constraintTop_toTopOf="@id/detail_information_custom_view_title"
+        tool:ignore="RtlSymmetry" />
 
     <TextView
         android:id="@+id/detail_information_custom_view_title"
-        style="@style/subtitle_style"
+        android:textAppearance="?attr/textAppearanceSubtitle1"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         app:layout_constraintStart_toEndOf="@id/detail_information_custom_view_icon"
@@ -25,7 +27,8 @@
 
     <TextView
         android:id="@+id/detail_information_custom_view_value"
-        style="@style/customViewTextStyle"
+        android:background="?attr/colorOnPrimary"
+        android:textAppearance="?attr/textAppearanceBody1"
         android:layout_width="@dimen/custom_view_add_property_information_edit_text_size"
         android:layout_height="wrap_content"
         app:layout_constraintStart_toEndOf="@id/detail_information_custom_view_icon"
