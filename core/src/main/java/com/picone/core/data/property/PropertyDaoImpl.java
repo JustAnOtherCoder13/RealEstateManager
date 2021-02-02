@@ -7,7 +7,7 @@ import com.picone.core.domain.entity.PointOfInterest;
 import com.picone.core.domain.entity.Property;
 import com.picone.core.domain.entity.PropertyInformation;
 import com.picone.core.domain.entity.PropertyLocation;
-import com.picone.core.domain.entity.PropertyPhoto;
+import com.picone.core.domain.entity.PropertyMedia;
 
 import java.util.List;
 
@@ -75,11 +75,11 @@ public class PropertyDaoImpl implements PropertyRoomDao {
 
 
     @Override
-    public Completable addPropertyPhoto(PropertyPhoto propertyPhoto) {
-        return mPropertyRoomDao.addPropertyPhoto(propertyPhoto);
+    public Completable addPropertyPhoto(PropertyMedia propertyMedia) {
+        return mPropertyRoomDao.addPropertyPhoto(propertyMedia);
     }
     @Override
-    public Completable deletePropertyPhoto(PropertyPhoto propertyPhoto) {
-        return mPropertyRoomDao.deletePropertyPhoto(propertyPhoto);
+    public Completable deletePropertyPhoto(PropertyMedia propertyMedia) {
+        return mPropertyRoomDao.deletePropertyPhoto(propertyMedia);
     }
 }

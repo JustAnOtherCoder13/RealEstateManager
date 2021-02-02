@@ -23,16 +23,14 @@ import static com.picone.core.utils.ConstantParameters.GALLERY_REQUEST_CODE;
 
 public class CustomMediaDialog extends Dialog implements android.view.View.OnClickListener {
 
-    private CheckedTextView gallery;
-    private CheckedTextView photo;
-    private CheckedTextView video;
-    private Button okButton;
-    private int intentRequestCode;
-    private Context context;
+    private CheckedTextView mGallery, mPhoto, mVideo;
+    private Button mOkButton;
+    private int mIntentRequestCode;
+    private Context mContext;
 
-    public CustomMediaDialog(@NonNull Context context) {
-        super(context);
-        this.context = context;
+    public CustomMediaDialog(@NonNull Context mContext) {
+        super(mContext);
+        this.mContext = mContext;
     }
 
     @Override
@@ -42,32 +40,31 @@ public class CustomMediaDialog extends Dialog implements android.view.View.OnCli
         setContentView(mBinding.getRoot());
         Objects.requireNonNull(this.getWindow()).setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
 
-        gallery = mBinding.customDialogGalleryButton;
-        photo = mBinding.customDialogPhotoButton;
-        video = mBinding.customDialogVideoButton;
-        okButton = mBinding.customDialogGoButton;
-        gallery.setOnClickListener(this);
-        photo.setOnClickListener(this);
-        video.setOnClickListener(this);
+        mGallery = mBinding.customDialogGalleryButton;
+        mPhoto = mBinding.customDialogPhotoButton;
+        mVideo = mBinding.customDialogVideoButton;
+        mOkButton = mBinding.customDialogGoButton;
+        mGallery.setOnClickListener(this);
+        mPhoto.setOnClickListener(this);
+        mVideo.setOnClickListener(this);
         mBinding.customDialogBackButton.setOnClickListener(this);
-        okButton.setEnabled(false);
+        mOkButton.setEnabled(false);
     }
 
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
-
             case R.id.custom_dialog_gallery_button:
-                manageMediaChecked(gallery, photo, video);
-                intentRequestCode = GALLERY_REQUEST_CODE;
+                manageCheckedMedia(mGallery, mPhoto, mVideo);
+                mIntentRequestCode = GALLERY_REQUEST_CODE;
                 break;
             case R.id.custom_dialog_photo_button:
-                manageMediaChecked(photo, gallery, video);
-                intentRequestCode = CAMERA_PHOTO_INTENT_REQUEST_CODE;
+                manageCheckedMedia(mPhoto, mGallery, mVideo);
+                mIntentRequestCode = CAMERA_PHOTO_INTENT_REQUEST_CODE;
                 break;
             case R.id.custom_dialog_video_button:
-                manageMediaChecked(video, gallery, photo);
-                intentRequestCode = CAMERA_VIDEO_INTENT_REQUEST_CODE;
+                manageCheckedMedia(mVideo, mGallery, mPhoto);
+                mIntentRequestCode = CAMERA_VIDEO_INTENT_REQUEST_CODE;
                 break;
             case R.id.custom_dialog_back_button:
                 dismiss();
@@ -76,25 +73,25 @@ public class CustomMediaDialog extends Dialog implements android.view.View.OnCli
     }
 
     public void okButtonSetOnClickListener(View.OnClickListener onClickListener) {
-        okButton.setOnClickListener(onClickListener);
+        mOkButton.setOnClickListener(onClickListener);
     }
 
     public int getIntentRequestCode() {
-        return intentRequestCode;
+        return mIntentRequestCode;
     }
 
     //--------------------------- HELPER -----------------------------
 
     private void setIconStyle(@NonNull CheckedTextView icon) {
         icon.setBackground(icon.isChecked() ?
-                ResourcesCompat.getDrawable(context.getResources(), R.drawable.custom_round_primary, null)
+                ResourcesCompat.getDrawable(mContext.getResources(), R.drawable.custom_round_primary, null)
                 : null);
         icon.setTextColor(icon.isChecked() ?
-                context.getResources().getColor(R.color.white)
-                : context.getResources().getColor(R.color.black));
+                mContext.getResources().getColor(R.color.white)
+                : mContext.getResources().getColor(R.color.black));
     }
 
-    private void manageMediaChecked(@NonNull CheckedTextView clickedIcon, @NonNull CheckedTextView secondIcon, CheckedTextView thirdIcon) {
+    private void manageCheckedMedia(@NonNull CheckedTextView clickedIcon, @NonNull CheckedTextView secondIcon, CheckedTextView thirdIcon) {
         clickedIcon.setChecked(!clickedIcon.isChecked());
         if (secondIcon.isChecked() && clickedIcon.isChecked())
             secondIcon.setChecked(false);
@@ -103,6 +100,6 @@ public class CustomMediaDialog extends Dialog implements android.view.View.OnCli
         setIconStyle(clickedIcon);
         setIconStyle(secondIcon);
         setIconStyle(thirdIcon);
-        okButton.setEnabled(clickedIcon.isChecked() || secondIcon.isChecked() || thirdIcon.isChecked());
+        mOkButton.setEnabled(clickedIcon.isChecked() || secondIcon.isChecked() || thirdIcon.isChecked());
     }
 }

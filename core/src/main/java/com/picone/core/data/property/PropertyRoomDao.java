@@ -11,7 +11,7 @@ import com.picone.core.domain.entity.PointOfInterest;
 import com.picone.core.domain.entity.Property;
 import com.picone.core.domain.entity.PropertyInformation;
 import com.picone.core.domain.entity.PropertyLocation;
-import com.picone.core.domain.entity.PropertyPhoto;
+import com.picone.core.domain.entity.PropertyMedia;
 
 import java.util.List;
 
@@ -54,8 +54,8 @@ public interface PropertyRoomDao {
 
 
     @Insert
-    Completable addPropertyPhoto(PropertyPhoto propertyPhoto);
+    Completable addPropertyPhoto(PropertyMedia propertyMedia);
 
     @Delete
-    Completable deletePropertyPhoto(PropertyPhoto propertyPhoto);
+    Completable deletePropertyPhoto(PropertyMedia propertyMedia);
 }

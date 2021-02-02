@@ -1,7 +1,7 @@
 package com.picone.core.domain.interactors.property.photo;
 
 import com.picone.core.data.property.PropertyRepository;
-import com.picone.core.domain.entity.PropertyPhoto;
+import com.picone.core.domain.entity.PropertyMedia;
 import com.picone.core.domain.interactors.property.PropertyBaseInteractor;
 
 import java.util.List;
@@ -15,12 +15,12 @@ public class DeletePropertyPhotoInteractor extends PropertyBaseInteractor {
         super(propertyDataSource);
     }
 
-    public Completable deleteRoomPropertyPhoto(PropertyPhoto propertyPhoto) {
-        return propertyDataSource.deletePropertyPhoto(propertyPhoto);
+    public Completable deleteRoomPropertyPhoto(PropertyMedia propertyMedia) {
+        return propertyDataSource.deletePropertyPhoto(propertyMedia);
     }
 
 
-    public Completable deleteSelectedPhotoForProperty(List<PropertyPhoto> photoToDelete) {
+    public Completable deleteSelectedPhotoForProperty(List<PropertyMedia> photoToDelete) {
         return Observable.fromIterable(photoToDelete)
                 .flatMapCompletable(propertyPhoto -> propertyDataSource.deletePropertyPhoto(propertyPhoto));
     }

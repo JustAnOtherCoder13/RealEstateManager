@@ -31,7 +31,6 @@ import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.openclassrooms.realestatemanager.R;
 import com.openclassrooms.realestatemanager.databinding.FragmentMapsBinding;
-import com.openclassrooms.realestatemanager.presentation.ui.fragment.adapter.PropertyRecyclerViewAdapter;
 import com.openclassrooms.realestatemanager.presentation.ui.main.BaseFragment;
 import com.picone.core.domain.entity.PointOfInterest;
 import com.picone.core.domain.entity.Property;
@@ -55,7 +54,6 @@ public class MapsFragment extends BaseFragment implements GoogleMap.OnInfoWindow
     private MarkerOptions mMarkerOptions = new MarkerOptions();
     private List<Marker> mPointOfInterestMarkers = new ArrayList<>();
     private Marker mMarkerToAdd;
-    private PropertyRecyclerViewAdapter mAdapter;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -87,7 +85,7 @@ public class MapsFragment extends BaseFragment implements GoogleMap.OnInfoWindow
         updateLocationUI();
         mMap.setOnInfoWindowClickListener(this);
         if (getView() != null)
-            mPropertyViewModel.getAllProperties.observe(getViewLifecycleOwner(), this::initMarkersValue);
+            mPropertyViewModel.getAllProperties.observe(getViewLifecycleOwner(), this::initPropertiesMarkers);
     }
 
     @Override
@@ -149,10 +147,10 @@ public class MapsFragment extends BaseFragment implements GoogleMap.OnInfoWindow
 
     //----------------------------------MAPS MARKERS----------------------------------------------
 
-    private void initMarkersValue(@NonNull List<Property> allProperties) {
+    private void initPropertiesMarkers(@NonNull List<Property> allProperties) {
         mMap.clear();
         if (mMap != null) {
-            for (Property property : allProperties){
+            for (Property property : allProperties) {
                 mMap.addMarker(mMarkerOptions.position(new LatLng(property.propertyLocation.getLatitude(), property.propertyLocation.getLongitude()))
                         .title(String.valueOf(property.propertyInformation.getId()))
                         .snippet(String.valueOf(property.propertyLocation.getAddress()))

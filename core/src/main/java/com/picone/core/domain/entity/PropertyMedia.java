@@ -11,7 +11,7 @@ import static com.picone.core.utils.ConstantParameters.propertyPhotoTable;
 @Entity(tableName = propertyPhotoTable, foreignKeys = @ForeignKey(entity = PropertyInformation.class,
         parentColumns = "id",
         childColumns = "propertyId"))
-public class PropertyPhoto {
+public class PropertyMedia {
 
     @PrimaryKey(autoGenerate = true)
     private int id;
@@ -20,7 +20,7 @@ public class PropertyPhoto {
     @ColumnInfo(index = true)
     private int propertyId;
 
-    public PropertyPhoto(int id, String photoPath, String description, int propertyId) {
+    public PropertyMedia(int id, String photoPath, String description, int propertyId) {
         this.id = id;
         this.photoPath = photoPath;
         this.description = description;
@@ -28,7 +28,7 @@ public class PropertyPhoto {
     }
 
     @Ignore
-    public PropertyPhoto() {
+    public PropertyMedia() {
     }
 
     public int getId() {

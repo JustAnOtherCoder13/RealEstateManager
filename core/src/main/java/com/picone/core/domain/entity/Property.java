@@ -16,8 +16,8 @@ public class Property {
     @Relation(parentColumn = "id",entityColumn = "propertyId",entity = PointOfInterest.class)
     public List<PointOfInterest> pointOfInterests;
 
-    @Relation(parentColumn = "id", entityColumn = "propertyId", entity = PropertyPhoto.class)
-    public List<PropertyPhoto> photos;
+    @Relation(parentColumn = "id", entityColumn = "propertyId", entity = PropertyMedia.class)
+    public List<PropertyMedia> photos;
 
     @Relation(parentColumn = "id",entityColumn = "propertyId",entity = PropertyLocation.class)
     public PropertyLocation propertyLocation;

@@ -3,7 +3,7 @@ package com.picone.core.data;
 import com.picone.core.domain.entity.PointOfInterest;
 import com.picone.core.domain.entity.PropertyInformation;
 import com.picone.core.domain.entity.PropertyLocation;
-import com.picone.core.domain.entity.PropertyPhoto;
+import com.picone.core.domain.entity.PropertyMedia;
 import com.picone.core.domain.entity.RealEstateAgent;
 
 import java.util.ArrayList;
@@ -16,14 +16,14 @@ public abstract class Generator {
         return new RealEstateAgent(1, "Manager1 address", "Frank", "Manager1Avatar");
     }
 
-    private static List<PropertyPhoto> PHOTOS = Arrays.asList(
-            new PropertyPhoto(1, "Photo1", "Living Room", 1),
-            new PropertyPhoto(2, "Photo2", "Bedroom", 1),
-            new PropertyPhoto(3, "Photo3", "Kitchen",1),
-            new PropertyPhoto(4, "Photo4", "Front face",2)
+    private static List<PropertyMedia> PHOTOS = Arrays.asList(
+            new PropertyMedia(1, "Photo1", "Living Room", 1),
+            new PropertyMedia(2, "Photo2", "Bedroom", 1),
+            new PropertyMedia(3, "Photo3", "Kitchen",1),
+            new PropertyMedia(4, "Photo4", "Front face",2)
     );
 
-    public static List<PropertyPhoto> generatePhotos() {
+    public static List<PropertyMedia> generatePhotos() {
         return new ArrayList<>(PHOTOS);
     }
 

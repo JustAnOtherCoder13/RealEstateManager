@@ -10,9 +10,11 @@ import android.os.Build;
 import androidx.core.content.ContextCompat;
 import androidx.core.graphics.drawable.DrawableCompat;
 
+import com.openclassrooms.realestatemanager.R;
+
 public class BitmapConverterUtil {
 
-    public static <T> Bitmap getBitmapFromVectorOrDrawable(Context context, T resToConvert){
+    public static <T> Bitmap getBitmapFromVectorOrDrawable(Context context, T resToConvert) {
         Bitmap bitmap;
 
         if (resToConvert instanceof BitmapDrawable) {
@@ -30,9 +32,7 @@ public class BitmapConverterUtil {
             bitmapDrawable.setBounds(0, 0, canvas.getWidth(), canvas.getHeight());
             bitmapDrawable.draw(canvas);
             return bitmap;
-        }
-
-        else if(resToConvert instanceof Integer){
+        } else if (resToConvert instanceof Integer) {
 
             int resourceId = (Integer) resToConvert;
             Drawable drawable = ContextCompat.getDrawable(context, resourceId);
@@ -47,8 +47,7 @@ public class BitmapConverterUtil {
             drawable.draw(canvas);
 
             return bitmap;
-        }
-
-        else return null;
+        } else
+            throw new IllegalArgumentException(context.getString(R.string.bitmap_converter_warning_message));
     }
 }

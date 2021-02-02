@@ -6,7 +6,7 @@ import com.picone.core.domain.entity.PointOfInterest;
 import com.picone.core.domain.entity.Property;
 import com.picone.core.domain.entity.PropertyInformation;
 import com.picone.core.domain.entity.PropertyLocation;
-import com.picone.core.domain.entity.PropertyPhoto;
+import com.picone.core.domain.entity.PropertyMedia;
 import com.picone.core.domain.entity.pojo.nearBySearch.NearBySearch;
 import com.picone.core.domain.entity.pojo.propertyLocation.PropertyLocationPojo;
 
@@ -71,11 +71,11 @@ public class PropertyRepository {
     }
 
 
-    public Completable addPropertyPhoto(PropertyPhoto propertyPhoto) {
-        return propertyDao.addPropertyPhoto(propertyPhoto);
+    public Completable addPropertyPhoto(PropertyMedia propertyMedia) {
+        return propertyDao.addPropertyPhoto(propertyMedia);
     }
 
-    public Completable deletePropertyPhoto(PropertyPhoto propertyPhoto) {
-        return propertyDao.deletePropertyPhoto(propertyPhoto);
+    public Completable deletePropertyPhoto(PropertyMedia propertyMedia) {
+        return propertyDao.deletePropertyPhoto(propertyMedia);
     }
 }

@@ -1,6 +1,5 @@
 package com.openclassrooms.realestatemanager.presentation.utils;
 
-import android.annotation.SuppressLint;
 import android.content.ContentUris;
 import android.content.Context;
 import android.database.Cursor;
@@ -18,7 +17,6 @@ import java.net.URLConnection;
 
 public class PathUtil {
 
-    @SuppressLint("NewApi")
     @Nullable
     public static String getPath(Context context, Uri uri) {
         final boolean needToCheckUri = Build.VERSION.SDK_INT >= 19;
@@ -74,11 +72,6 @@ public class PathUtil {
     public static boolean isImageFileFromPath(String path) {
         String mimeType = URLConnection.guessContentTypeFromName(path);
         return mimeType != null && mimeType.startsWith("image");
-    }
-
-    public static boolean isVideoFileFromPath(String path) {
-        String mimeType = URLConnection.guessContentTypeFromName(path);
-        return mimeType != null && mimeType.startsWith("video");
     }
 
     /**

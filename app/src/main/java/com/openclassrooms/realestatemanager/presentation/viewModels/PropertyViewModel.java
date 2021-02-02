@@ -12,7 +12,7 @@ import androidx.lifecycle.SavedStateHandle;
 import com.picone.core.domain.entity.PointOfInterest;
 import com.picone.core.domain.entity.Property;
 import com.picone.core.domain.entity.PropertyLocation;
-import com.picone.core.domain.entity.PropertyPhoto;
+import com.picone.core.domain.entity.PropertyMedia;
 import com.picone.core.domain.interactors.property.AddPropertyInteractor;
 import com.picone.core.domain.interactors.property.GetAllPropertiesInteractor;
 import com.picone.core.domain.interactors.property.UpdatePropertyInteractor;
@@ -40,6 +40,8 @@ import static com.picone.core.utils.ConstantParameters.MAPS_KEY;
 
 public class PropertyViewModel extends BaseViewModel {
 
+    @SuppressWarnings({"FieldCanBeLocal", "unused"})
+    //needed to save viewModel state with hilt injection
     private final SavedStateHandle savedStateHandle;
 
     private MutableLiveData<List<PointOfInterest>> mapsPointOfInterestForPropertyMutableLD = new MutableLiveData<>();
@@ -47,7 +49,7 @@ public class PropertyViewModel extends BaseViewModel {
     private MutableLiveData<List<Property>> allPropertiesMutableLD = new MutableLiveData<>();
     private MutableLiveData<List<PointOfInterest>> storedPointOfInterestForPropertyMutableLD = new MutableLiveData<>(new ArrayList<>());
     private MutableLiveData<Property> selectedPropertyMutableLD = new MutableLiveData<>(new Property());
-    private MutableLiveData<List<PropertyPhoto>> photosToDeleteMutableLD = new MutableLiveData<>();
+    private MutableLiveData<List<PropertyMedia>> photosToDeleteMutableLD = new MutableLiveData<>();
     private MutableLiveData<PropertyLocation> locationForAddressMutableLD = new MutableLiveData<>();
     private MutableLiveData<Boolean> isDataLoadingMutableLD = new MutableLiveData<>();
     private MutableLiveData<List<String>> knownRegionsMutableLD = new MutableLiveData<>(new ArrayList<>());
@@ -59,7 +61,7 @@ public class PropertyViewModel extends BaseViewModel {
     public LiveData<CompletionState> getCompletionState = completionStateMutableLD;
     public LiveData<List<Property>> getAllProperties = allPropertiesMutableLD;
     public LiveData<Property> getSelectedProperty = selectedPropertyMutableLD;
-    public LiveData<List<PropertyPhoto>> getPhotosToDelete = photosToDeleteMutableLD;
+    public LiveData<List<PropertyMedia>> getPhotosToDelete = photosToDeleteMutableLD;
     public LiveData<PropertyLocation> getLocationForAddress = locationForAddressMutableLD;
     public LiveData<Boolean> isDataLoading = isDataLoadingMutableLD;
 
@@ -110,7 +112,7 @@ public class PropertyViewModel extends BaseViewModel {
         selectedPropertyMutableLD.setValue(property);
     }
 
-    public void setPhotosToDelete(List<PropertyPhoto> photosToDelete) {
+    public void setPhotosToDelete(List<PropertyMedia> photosToDelete) {
         photosToDeleteMutableLD.postValue(photosToDelete);
     }
 
@@ -151,7 +153,7 @@ public class PropertyViewModel extends BaseViewModel {
                 addPropertyInteractor.addProperty(property.propertyInformation)
                         .subscribeOn(schedulerProvider.getIo())
                         .observeOn(schedulerProvider.getUi())
-                        .doOnSubscribe( __ -> isDataLoadingMutableLD.postValue(true))
+                        .doOnSubscribe(__ -> isDataLoadingMutableLD.postValue(true))
                         .doAfterTerminate(() -> completionStateMutableLD.postValue(CompletionState.ADD_PROPERTY_COMPLETE))
                         .subscribe(() -> {
                         }, throwable -> checkException()));
@@ -162,7 +164,7 @@ public class PropertyViewModel extends BaseViewModel {
                 updatePropertyInteractor.updateProperty(property.propertyInformation)
                         .subscribeOn(schedulerProvider.getIo())
                         .observeOn(schedulerProvider.getUi())
-                        .doOnSubscribe( __ -> isDataLoadingMutableLD.postValue(true))
+                        .doOnSubscribe(__ -> isDataLoadingMutableLD.postValue(true))
                         .doOnComplete(() -> completionStateMutableLD.setValue(CompletionState.UPDATE_PROPERTY_COMPLETE))
                         .subscribe(() -> {
                         }, throwable -> checkException()));
@@ -197,7 +199,7 @@ public class PropertyViewModel extends BaseViewModel {
                         .subscribeOn(schedulerProvider.getIo())
                         .flatMapCompletable(pointOfInterest -> addPropertyPointOfInterestInteractor.addPropertyPointOfInterest(pointOfInterest))
                         .doOnComplete(() -> completionStateMutableLD.postValue(ADD_POINT_OF_INTEREST_COMPLETE))
-                        .doOnTerminate(()->isDataLoadingMutableLD.postValue(false))
+                        .doOnTerminate(() -> isDataLoadingMutableLD.postValue(false))
                         .observeOn(schedulerProvider.getUi())
                         .subscribe(() -> {
                         }, throwable -> checkException()));
@@ -214,7 +216,7 @@ public class PropertyViewModel extends BaseViewModel {
                         .flatMapCompletable(pointOfInterest ->
                                 addPropertyPointOfInterestInteractor.addPropertyPointOfInterest(pointOfInterest))
                         .doOnComplete(() -> completionStateMutableLD.postValue(ADD_POINT_OF_INTEREST_COMPLETE))
-                        .doOnTerminate(()->isDataLoadingMutableLD.postValue(false))
+                        .doOnTerminate(() -> isDataLoadingMutableLD.postValue(false))
                         .observeOn(schedulerProvider.getUi())
                         .subscribe(() -> {
                         }, throwable -> checkException())
@@ -223,27 +225,27 @@ public class PropertyViewModel extends BaseViewModel {
 
     //___________________________________PROPERTY PHOTO__________________________________
 
-    public void addPropertyPhoto(PropertyPhoto propertyPhoto) {
+    public void addPropertyPhoto(PropertyMedia propertyMedia) {
         compositeDisposable.add(
-                addPropertyPhotoInteractor.addRoomPropertyPhoto(propertyPhoto)
+                addPropertyPhotoInteractor.addRoomPropertyPhoto(propertyMedia)
                         .subscribeOn(schedulerProvider.getIo())
                         .observeOn(schedulerProvider.getUi())
                         .subscribe(() -> {
                         }, throwable -> checkException()));
     }
 
-    public void deletePropertyPhoto(@NonNull PropertyPhoto propertyPhoto) {
+    public void deletePropertyPhoto(@NonNull PropertyMedia propertyMedia) {
         compositeDisposable.add(
-                deletePropertyPhotoInteractor.deleteRoomPropertyPhoto(propertyPhoto)
+                deletePropertyPhotoInteractor.deleteRoomPropertyPhoto(propertyMedia)
                         .subscribeOn(schedulerProvider.getIo())
                         .observeOn(schedulerProvider.getUi())
                         .subscribe(() -> {
                         }));
     }
 
-    public void deleteSelectedPhotosForProperty(@NonNull List<PropertyPhoto> propertyPhotos) {
+    public void deleteSelectedPhotosForProperty(@NonNull List<PropertyMedia> propertyMedia) {
         compositeDisposable.add(
-                deletePropertyPhotoInteractor.deleteSelectedPhotoForProperty(propertyPhotos)
+                deletePropertyPhotoInteractor.deleteSelectedPhotoForProperty(propertyMedia)
                         .subscribeOn(schedulerProvider.getIo())
                         .observeOn(schedulerProvider.getUi())
                         .subscribe(() -> {

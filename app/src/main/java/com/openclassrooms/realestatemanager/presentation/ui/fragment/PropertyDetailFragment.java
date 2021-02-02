@@ -37,7 +37,7 @@ import static com.picone.core.utils.ConstantParameters.STATIC_MAP_SIZE;
 public class PropertyDetailFragment extends BaseFragment {
 
     private FragmentPropertyDetailBinding mBinding;
-    private PhotoRecyclerViewAdapter adapter;
+    private PhotoRecyclerViewAdapter mAdapter;
 
     @Nullable
     @Override
@@ -54,12 +54,12 @@ public class PropertyDetailFragment extends BaseFragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         mPropertyViewModel.getSelectedProperty.observe(getViewLifecycleOwner(), property -> {
-            if (property.propertyInformation !=null){
-             mBinding.fragmentDetailSoldTextView.setVisibility(property.propertyInformation.isSold()?View.VISIBLE:View.GONE);
+            if (property.propertyInformation != null) {
+                mBinding.fragmentDetailSoldTextView.setVisibility(property.propertyInformation.isSold() ? View.VISIBLE : View.GONE);
                 setUpdateButtonCustomViewVisibility(!property.propertyInformation.isSold());
-                if (property.propertyInformation.getSoldFrom()!=null)
+                if (property.propertyInformation.getSoldFrom() != null)
                     mBinding.fragmentDetailSoldTextView.setText(getString(R.string.is_sold_from).concat(property.propertyInformation.getSoldFrom()));
-                adapter.updatePhotos(property.photos);
+                mAdapter.updatePhotos(property.photos);
                 initClickOnMedia(property);
                 initValue(mBinding.fragmentDetailInformationLayout,
                         Objects.requireNonNull(property),
@@ -69,13 +69,13 @@ public class PropertyDetailFragment extends BaseFragment {
     }
 
     private void initRecyclerView() {
-        adapter = new PhotoRecyclerViewAdapter(new ArrayList<>());
-        adapter.isPhotoHaveBeenDeleted(false);
-        mBinding.fragmentDetailMediaLayout.detailCustomViewRecyclerView.setAdapter(adapter);
+        mAdapter = new PhotoRecyclerViewAdapter(new ArrayList<>());
+        mAdapter.isPhotoHaveBeenDeleted(false);
+        mBinding.fragmentDetailMediaLayout.detailCustomViewRecyclerView.setAdapter(mAdapter);
     }
 
     private void initValue(@NonNull FragmentPropertyDetailInformationBinding detailInformationLayout, @NonNull Property property, @NonNull TextView descriptionTextView) {
-        setTextForCustomView(detailInformationLayout.fragmentDetailAreaCustomView, String.valueOf(property.propertyInformation.getPropertyArea()).concat(" ").concat("sq m"));
+        setTextForCustomView(detailInformationLayout.fragmentDetailAreaCustomView, String.valueOf(property.propertyInformation.getPropertyArea()).concat(" ").concat(getString(R.string.square_meter)));
         setTextForCustomView(detailInformationLayout.fragmentDetailLocationCustomView, property.propertyLocation.getAddress());
         setTextForCustomView(detailInformationLayout.fragmentDetailNumbersOfRoomsCustomView, String.valueOf(property.propertyInformation.getNumberOfRooms()));
         setTextForCustomView(detailInformationLayout.fragmentDetailNumbersOfBedroomsCustomView, String.valueOf(property.propertyInformation.getNumberOfBedrooms()));

@@ -18,22 +18,21 @@
 
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/bottom_sheet_spinner_property_location"
+        style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox.ExposedDropdownMenu"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="@dimen/basic_marge"
         android:layout_marginEnd="@dimen/XL_marge"
-        app:boxStrokeColor="?attr/colorPrimary"
-        app:boxStrokeWidth="2dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/bottom_sheet_spinner_title">
 
         <AutoCompleteTextView
             android:id="@+id/bottom_sheet_spinner_text_view"
-            android:layout_marginTop="@dimen/big_marge"
-            android:layout_marginBottom="@dimen/big_marge"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/big_marge"
+            android:layout_marginBottom="@dimen/big_marge"
             android:enabled="false"
             tools:ignore="LabelFor" />
 

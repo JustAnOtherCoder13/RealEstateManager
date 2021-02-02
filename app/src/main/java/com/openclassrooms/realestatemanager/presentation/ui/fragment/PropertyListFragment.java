@@ -1,7 +1,6 @@
 package com.openclassrooms.realestatemanager.presentation.ui.fragment;
 
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -26,7 +25,7 @@ import java.util.List;
 public class PropertyListFragment extends BaseFragment {
 
     private FragmentPropertyListBinding mBinding;
-    private PropertyRecyclerViewAdapter adapter;
+    private PropertyRecyclerViewAdapter mAdapter;
 
     @Nullable
     @Override
@@ -43,8 +42,7 @@ public class PropertyListFragment extends BaseFragment {
         super.onViewCreated(view, savedInstanceState);
         configureOnClickRecyclerView();
         mPropertyViewModel.getSelectedProperty.observe(getViewLifecycleOwner(), property -> {
-            Log.d("TAG", "onViewCreated: "+property.propertyInformation);
-            adapter.updateSelectedProperty(property);
+            mAdapter.updateSelectedProperty(property);
             if (property.propertyInformation != null && property.propertyLocation.getAddress() != null && getResources().getBoolean(R.bool.phone_device))
                 mNavController.navigate(R.id.action_propertyListFragment_to_propertyDetailFragment);
             else if (property.propertyInformation != null && property.propertyLocation.getAddress() != null && !getResources().getBoolean(R.bool.phone_device))
@@ -54,12 +52,12 @@ public class PropertyListFragment extends BaseFragment {
 
     private void initRecyclerView() {
         mPropertyViewModel.setAllProperties();
-         adapter = new PropertyRecyclerViewAdapter(new ArrayList<>(), requireContext());
+         mAdapter = new PropertyRecyclerViewAdapter(new ArrayList<>(), requireContext());
         RecyclerView.LayoutManager linearLayout = new LinearLayoutManager(getContext());
-        setCurrencySwitch(adapter);
+        setCurrencySwitch(mAdapter);
         mBinding.fragmentPropertyListRecyclerview.setLayoutManager(linearLayout);
-        mBinding.fragmentPropertyListRecyclerview.setAdapter(adapter);
-        mPropertyViewModel.getAllProperties.observe(getViewLifecycleOwner(), adapter::updateProperties);
+        mBinding.fragmentPropertyListRecyclerview.setAdapter(mAdapter);
+        mPropertyViewModel.getAllProperties.observe(getViewLifecycleOwner(), mAdapter::updateProperties);
     }
 
     public void configureOnClickRecyclerView() {
@@ -71,6 +69,4 @@ public class PropertyListFragment extends BaseFragment {
                     mPropertyViewModel.setSelectedProperty(property);
                 });
     }
-
-
 }

@@ -27,17 +27,17 @@ import java.util.Objects;
 
 public class CustomMediaSetTitleDialog extends Dialog implements android.view.View.OnClickListener {
 
-    private Context context;
-    private ImageView photo;
-    private VideoView video;
-    private EditText description;
-    private Button accept;
+    private Context mContext;
+    private ImageView mPhoto;
+    private VideoView mVideo;
+    private EditText mDescription;
+    private Button mAccept;
     private String mVideoPath;
 
 
-    public CustomMediaSetTitleDialog(@NonNull Context context) {
-        super(context);
-        this.context = context;
+    public CustomMediaSetTitleDialog(@NonNull Context mContext) {
+        super(mContext);
+        this.mContext = mContext;
     }
 
     @Override
@@ -45,10 +45,10 @@ public class CustomMediaSetTitleDialog extends Dialog implements android.view.Vi
         super.onCreate(savedInstanceState);
         CustomDialogSetPhotoTitleBinding mBinding = CustomDialogSetPhotoTitleBinding.inflate(getLayoutInflater());
         setContentView(mBinding.getRoot());
-        photo = mBinding.setPhotoTitleImageView;
-        video = mBinding.setPhotoTitleVideoView;
-        description = mBinding.setPhotoDescriptionEditText;
-        accept = mBinding.setPhotoOkButton;
+        mPhoto = mBinding.setPhotoTitleImageView;
+        mVideo = mBinding.setPhotoTitleVideoView;
+        mDescription = mBinding.setPhotoDescriptionEditText;
+        mAccept = mBinding.setPhotoOkButton;
         mBinding.setPhotoBackButton.setOnClickListener(this);
         Objects.requireNonNull(getWindow()).setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
     }
@@ -59,18 +59,18 @@ public class CustomMediaSetTitleDialog extends Dialog implements android.view.Vi
     }
 
     public void setAcceptOnClickListener(View.OnClickListener onClickListener) {
-        accept.setOnClickListener(onClickListener);
+        mAccept.setOnClickListener(onClickListener);
     }
 
     public void setPhoto(String photoPath) {
         isPhoto(true);
-        Glide.with(context)
+        Glide.with(mContext)
                 .load(photoPath)
                 .centerCrop()
                 .into(new CustomTarget<Drawable>() {
                     @Override
                     public void onResourceReady(@NonNull Drawable resource, @Nullable Transition<? super Drawable> transition) {
-                        photo.setImageDrawable(resource);
+                        mPhoto.setImageDrawable(resource);
                     }
 
                     @Override
@@ -81,27 +81,27 @@ public class CustomMediaSetTitleDialog extends Dialog implements android.view.Vi
 
     public void setVideo(Uri videoPath) {
         isPhoto(false);
-        video.setVideoURI(videoPath);
-        mVideoPath = PathUtil.getPath(context, videoPath);
-        video.start();
+        mVideo.setVideoURI(videoPath);
+        mVideoPath = PathUtil.getPath(mContext, videoPath);
+        mVideo.start();
     }
 
     public String getVideoPath() {
         return mVideoPath;
     }
 
-
     public String getText() {
-        if (description.getText() != null) return description.getText().toString();
+        if (mDescription.getText() != null) return mDescription.getText().toString();
         else return "";
     }
 
-    private void isPhoto(boolean isPhoto) {
-        photo.setVisibility(isPhoto ? View.VISIBLE : View.GONE);
-        video.setVisibility(isPhoto ? View.GONE : View.VISIBLE);
+    public void resetEditText() {
+        mDescription.setText("");
     }
 
-    public void resetEditText() {
-        description.setText("");
+    private void isPhoto(boolean isPhoto) {
+        mPhoto.setVisibility(isPhoto ? View.VISIBLE : View.GONE);
+        mVideo.setVisibility(isPhoto ? View.GONE : View.VISIBLE);
     }
+
 }

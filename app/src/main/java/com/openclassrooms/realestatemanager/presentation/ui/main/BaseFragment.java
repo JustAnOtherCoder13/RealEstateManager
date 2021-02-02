@@ -10,7 +10,6 @@ import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.NavController;
 
 import com.openclassrooms.realestatemanager.presentation.ui.fragment.adapter.PropertyRecyclerViewAdapter;
-import com.openclassrooms.realestatemanager.presentation.utils.customView.TopAppBarCustomView;
 import com.openclassrooms.realestatemanager.presentation.viewModels.AgentViewModel;
 import com.openclassrooms.realestatemanager.presentation.viewModels.PropertyViewModel;
 import com.picone.core.domain.entity.Property;
@@ -30,47 +29,47 @@ public abstract class BaseFragment extends Fragment {
     protected AgentViewModel mAgentViewModel;
     protected PropertyViewModel mPropertyViewModel;
     protected NavController mNavController;
-    protected TopAppBarCustomView topAppBar;
-
-    private MainActivity mainActivity;
     protected ImageButton mUpdateButton;
+
+    private MainActivity mMainActivity;
+
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        mainActivity = (MainActivity) getActivity();
-        assert mainActivity != null;
-        mUpdateButton = mainActivity.mUpdateButton;
+        mMainActivity = (MainActivity) getActivity();
+        assert mMainActivity != null;
+        mUpdateButton = mMainActivity.mUpdateButton;
         mAgentViewModel = new ViewModelProvider(requireActivity()).get(AgentViewModel.class);
         mPropertyViewModel = new ViewModelProvider(requireActivity()).get(PropertyViewModel.class);
     }
 
     protected void setCurrencySwitch(PropertyRecyclerViewAdapter adapter){
-        mainActivity.setTopAppBarCurrencySwitch(adapter);
+        mMainActivity.setTopAppBarCurrencySwitch(adapter);
     }
 
     protected void setAppBarVisibility(boolean isVisible) {
-        mainActivity.setMenuVisibility(isVisible);
+        mMainActivity.setMenuVisibility(isVisible);
     }
 
     protected void setUpdateButtonIcon(boolean isForUpdate) {
-        mainActivity.initUpdateButton(isForUpdate);
+        mMainActivity.initUpdateButton(isForUpdate);
     }
 
     protected void setUpdateButtonCustomViewVisibility(boolean isVisible){
-        mainActivity.setUpdateButtonCustomViewVisibility(isVisible);
+        mMainActivity.setUpdateButtonCustomViewVisibility(isVisible);
     }
 
     protected void setSaveButtonOnClickListener(View.OnClickListener clickListener){
-        mainActivity.setSaveButtonClickListener(clickListener);
+        mMainActivity.setSaveButtonClickListener(clickListener);
     }
 
     protected void hideSoftKeyboard(View view) {
-        mainActivity.hideSoftKeyboard(view);
+        mMainActivity.hideSoftKeyboard(view);
     }
 
     protected void playLoader(boolean isVisible) {
-        mainActivity.playLoader(isVisible);
+        mMainActivity.playLoader(isVisible);
     }
 
     protected Property getPropertyForId(String propertyId) {
@@ -85,13 +84,13 @@ public abstract class BaseFragment extends Fragment {
     protected boolean isPermissionGrantedForRequestCode(int requestCode) {
         switch (requestCode) {
             case LOCATION_PERMISSION_CODE:
-                return mainActivity.isLocationPermissionGranted;
+                return mMainActivity.mIsLocationPermissionGranted;
             case CAMERA_PERMISSION_CODE:
-                return mainActivity.isCameraPermissionGranted;
+                return mMainActivity.mIsCameraPermissionGranted;
             case READ_PERMISSION_CODE:
-                return mainActivity.isReadPermissionGranted;
+                return mMainActivity.mIsReadPermissionGranted;
             case WRITE_PERMISSION_CODE:
-                return mainActivity.isWritePermissionGranted;
+                return mMainActivity.mIsWritePermissionGranted;
             default:
                 return false;
         }

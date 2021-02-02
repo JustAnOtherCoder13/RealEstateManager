@@ -15,7 +15,7 @@ import static com.picone.core.utils.ConstantParameters.NOTIFICATION_TAG;
 
 public class NotificationHelper {
 
-    public static void createNotification(Context context, String message,String title) {
+    public static void createNotification(Context context, String message, String title) {
         NotificationCompat.Builder notificationBuilder =
                 new NotificationCompat.Builder(context, context.getResources().getString(R.string.chanel_id))
                         .setSmallIcon(R.drawable.ic_launcher_foreground)

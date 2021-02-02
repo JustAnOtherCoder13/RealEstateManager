@@ -1,13 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
-    android:paddingStart="@dimen/basic_marge"
-    android:paddingEnd="@dimen/little_marge">
+    android:paddingStart="@dimen/little_marge"
+    tools:ignore="RtlSymmetry">
 
     <ImageView
-        android:id="@+id/property_detail_item_photo"
+        android:id="@+id/property_detail_item_media"
         android:layout_width="@dimen/thumbnail_size"
         android:layout_height="@dimen/thumbnail_size"
         android:contentDescription="@string/property_detail_item_photo"
@@ -23,14 +24,14 @@
         android:layout_height="wrap_content"
         android:contentDescription="@string/play_logo_if_video"
         android:visibility="gone"
-        app:layout_constraintBottom_toBottomOf="@id/property_detail_item_photo"
-        app:layout_constraintEnd_toEndOf="@id/property_detail_item_photo"
-        app:layout_constraintStart_toStartOf="@id/property_detail_item_photo"
-        app:layout_constraintTop_toTopOf="@id/property_detail_item_photo"
+        app:layout_constraintBottom_toBottomOf="@id/property_detail_item_media"
+        app:layout_constraintEnd_toEndOf="@id/property_detail_item_media"
+        app:layout_constraintStart_toStartOf="@id/property_detail_item_media"
+        app:layout_constraintTop_toTopOf="@id/property_detail_item_media"
         app:srcCompat="@drawable/ic_custom_media_controler_play_unchecked_24" />
 
     <TextView
-        android:id="@+id/property_detail_item_photo_description"
+        android:id="@+id/property_detail_item_media_description"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:alpha="0.6"
@@ -41,7 +42,7 @@
         android:paddingBottom="@dimen/basic_marge"
         android:text="@string/description"
         android:textColor="?attr/colorOnPrimary"
-        app:layout_constraintBottom_toBottomOf="@id/property_detail_item_photo"
+        app:layout_constraintBottom_toBottomOf="@id/property_detail_item_media"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
 
@@ -52,9 +53,9 @@
         android:layout_marginStart="@dimen/little_marge"
         android:clickable="false"
         android:visibility="gone"
-        app:layout_constraintBottom_toBottomOf="@id/property_detail_item_photo_description"
+        app:layout_constraintBottom_toBottomOf="@id/property_detail_item_media_description"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@id/property_detail_item_photo_description" />
+        app:layout_constraintTop_toTopOf="@id/property_detail_item_media_description" />
 
     <include
         android:id="@+id/property_detail_item_loader"

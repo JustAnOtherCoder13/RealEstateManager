@@ -4,7 +4,6 @@ import android.content.Context;
 import android.location.LocationManager;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
-import android.net.wifi.WifiManager;
 
 import androidx.annotation.NonNull;
 
@@ -16,7 +15,6 @@ import java.util.Date;
 import java.util.Locale;
 
 import static android.content.Context.LOCATION_SERVICE;
-import static androidx.core.content.ContextCompat.getSystemService;
 
 /**
  * Created by Philippe on 21/02/2018.

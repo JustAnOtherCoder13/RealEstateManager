@@ -7,7 +7,7 @@
 
     <ImageView
         android:id="@+id/add_property_information_custom_view_icon"
-        android:paddingEnd="@dimen/big_marge"
+        android:paddingEnd="@dimen/basic_marge"
         android:color="@color/black"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
