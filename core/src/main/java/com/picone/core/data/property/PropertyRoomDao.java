@@ -54,8 +54,8 @@ public interface PropertyRoomDao {
 
 
     @Insert
-    Completable addPropertyPhoto(PropertyMedia propertyMedia);
+    Completable addPropertyMedia(PropertyMedia propertyMedia);
 
     @Delete
-    Completable deletePropertyPhoto(PropertyMedia propertyMedia);
+    Completable deletePropertyMedia(PropertyMedia propertyMedia);
 }

@@ -15,13 +15,14 @@ import java.util.Locale;
 
 public class ConstantParameters {
 
+    //------------------------------- ENTITY TABLE NAME ----------------------
     public static final String realEstateAgentTable = "real_estate_agent_table";
     public static final String propertyInformationTable = "property_information_table";
     public static final String propertyPhotoTable = "property_photo_table";
     public static final String propertyLocationTable = "property_location_table";
     public static final String pointOfInterestTable = "property_point_of_interest_table";
 
-    public static String MAPS_KEY;
+    //------------------------------- REQUEST CODE ----------------------
     public static final int LOCATION_PERMISSION_CODE = 13700;
     public static final int MAPS_CAMERA_LARGE_ZOOM = 9;
     public static final int MAPS_CAMERA_NEAR_ZOOM = 15;
@@ -34,35 +35,30 @@ public class ConstantParameters {
 
     public static final int NOTIFICATION_ID = 7;
     public static final String NOTIFICATION_TAG = "REAL_ESTATE_MANAGER";
-
+    public static final String RADIUS = "400";
     public static String STATIC_MAP_SIZE = "140";
     public static String BASE_STATIC_MAP_URI = "https://maps.googleapis.com/maps/api/staticmap?";
+    public static String MAPS_KEY;
+    public static String ADD_PHOTO = "AddPhoto";
 
-    public static final String RADIUS = "400";
 
     @NonNull
-    public static String getTodayDate(){
+    public static String getTodayDate() {
         DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy", Locale.FRANCE);
         return dateFormat.format(new Date());
     }
 
     @NonNull
     public static Property PROPERTY_TO_ADD(@NonNull RealEstateAgent agent) {
-      Property property = new Property();
-      property.propertyInformation = new PropertyInformation();
-      property.propertyInformation.setRealEstateAgentId(agent.getId());
-      return property;
+        Property property = new Property();
+        property.propertyInformation = new PropertyInformation();
+        property.propertyInformation.setRealEstateAgentId(agent.getId());
+        return property;
     }
-
-    public static String ADD_PHOTO = "AddPhoto";
 
     public static final List<String> POINT_OF_INTEREST_TYPE = Arrays.asList(
             "school",
             "supermarket",
             "restaurant"
     );
-
-
-
-
 }

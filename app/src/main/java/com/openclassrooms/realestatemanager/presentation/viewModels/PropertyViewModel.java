@@ -21,8 +21,8 @@ import com.picone.core.domain.interactors.property.location.GetAllRegionsForAllP
 import com.picone.core.domain.interactors.property.location.UpdatePropertyLocationInteractor;
 import com.picone.core.domain.interactors.property.maps.GetNearBySearchForPropertyLocationInteractor;
 import com.picone.core.domain.interactors.property.maps.GetPropertyLocationForAddressInteractor;
-import com.picone.core.domain.interactors.property.photo.AddPropertyPhotoInteractor;
-import com.picone.core.domain.interactors.property.photo.DeletePropertyPhotoInteractor;
+import com.picone.core.domain.interactors.property.media.AddPropertyMediaInteractor;
+import com.picone.core.domain.interactors.property.media.DeletePropertyMediaInteractor;
 import com.picone.core.domain.interactors.property.pointOfInterest.AddPropertyPointOfInterestInteractor;
 import com.picone.core.domain.interactors.property.pointOfInterest.DeletePointOfInterestInteractor;
 import com.picone.core.domain.interactors.property.pointOfInterest.GetAllPointOfInterestForPropertyIdInteractor;
@@ -71,8 +71,8 @@ public class PropertyViewModel extends BaseViewModel {
             , GetAllRegionsForAllPropertiesInteractor getAllRegionsForAllPropertiesInteractor
             , AddPropertyInteractor addPropertyInteractor
             , AddPropertyPointOfInterestInteractor addPropertyPointOfInterestInteractor
-            , AddPropertyPhotoInteractor addPropertyPhotoInteractor
-            , DeletePropertyPhotoInteractor deletePropertyPhotoInteractor
+            , AddPropertyMediaInteractor addPropertyMediaInteractor
+            , DeletePropertyMediaInteractor deletePropertyMediaInteractor
             , UpdatePropertyInteractor updatePropertyInteractor
             , AddPropertyLocationInteractor addPropertyLocationInteractor
             , GetPropertyLocationForAddressInteractor getPropertyLocationForAddressInteractor
@@ -86,8 +86,8 @@ public class PropertyViewModel extends BaseViewModel {
         this.getAllRegionsForAllPropertiesInteractor = getAllRegionsForAllPropertiesInteractor;
         this.addPropertyInteractor = addPropertyInteractor;
         this.addPropertyPointOfInterestInteractor = addPropertyPointOfInterestInteractor;
-        this.addPropertyPhotoInteractor = addPropertyPhotoInteractor;
-        this.deletePropertyPhotoInteractor = deletePropertyPhotoInteractor;
+        this.addPropertyMediaInteractor = addPropertyMediaInteractor;
+        this.deletePropertyMediaInteractor = deletePropertyMediaInteractor;
         this.updatePropertyInteractor = updatePropertyInteractor;
         this.addPropertyLocationInteractor = addPropertyLocationInteractor;
         this.getPropertyLocationForAddressInteractor = getPropertyLocationForAddressInteractor;
@@ -227,7 +227,7 @@ public class PropertyViewModel extends BaseViewModel {
 
     public void addPropertyPhoto(PropertyMedia propertyMedia) {
         compositeDisposable.add(
-                addPropertyPhotoInteractor.addRoomPropertyPhoto(propertyMedia)
+                addPropertyMediaInteractor.addPropertyMedia(propertyMedia)
                         .subscribeOn(schedulerProvider.getIo())
                         .observeOn(schedulerProvider.getUi())
                         .subscribe(() -> {
@@ -236,7 +236,7 @@ public class PropertyViewModel extends BaseViewModel {
 
     public void deletePropertyPhoto(@NonNull PropertyMedia propertyMedia) {
         compositeDisposable.add(
-                deletePropertyPhotoInteractor.deleteRoomPropertyPhoto(propertyMedia)
+                deletePropertyMediaInteractor.deletePropertyMedia(propertyMedia)
                         .subscribeOn(schedulerProvider.getIo())
                         .observeOn(schedulerProvider.getUi())
                         .subscribe(() -> {
@@ -245,7 +245,7 @@ public class PropertyViewModel extends BaseViewModel {
 
     public void deleteSelectedPhotosForProperty(@NonNull List<PropertyMedia> propertyMedia) {
         compositeDisposable.add(
-                deletePropertyPhotoInteractor.deleteSelectedPhotoForProperty(propertyMedia)
+                deletePropertyMediaInteractor.deleteSelectedMediaForProperty(propertyMedia)
                         .subscribeOn(schedulerProvider.getIo())
                         .observeOn(schedulerProvider.getUi())
                         .subscribe(() -> {

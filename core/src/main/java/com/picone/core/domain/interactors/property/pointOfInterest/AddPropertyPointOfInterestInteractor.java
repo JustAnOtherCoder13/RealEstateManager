@@ -15,5 +15,4 @@ public class AddPropertyPointOfInterestInteractor extends PropertyBaseInteractor
     public Completable addPropertyPointOfInterest(PointOfInterest pointOfInterest) {
         return propertyDataSource.addPropertyPointOfInterest(pointOfInterest);
     }
-
 }

@@ -14,8 +14,8 @@ import com.picone.core.domain.interactors.property.location.GetAllRegionsForAllP
 import com.picone.core.domain.interactors.property.location.UpdatePropertyLocationInteractor;
 import com.picone.core.domain.interactors.property.maps.GetNearBySearchForPropertyLocationInteractor;
 import com.picone.core.domain.interactors.property.maps.GetPropertyLocationForAddressInteractor;
-import com.picone.core.domain.interactors.property.photo.AddPropertyPhotoInteractor;
-import com.picone.core.domain.interactors.property.photo.DeletePropertyPhotoInteractor;
+import com.picone.core.domain.interactors.property.media.AddPropertyMediaInteractor;
+import com.picone.core.domain.interactors.property.media.DeletePropertyMediaInteractor;
 import com.picone.core.domain.interactors.property.pointOfInterest.AddPropertyPointOfInterestInteractor;
 import com.picone.core.domain.interactors.property.pointOfInterest.DeletePointOfInterestInteractor;
 import com.picone.core.domain.interactors.property.pointOfInterest.GetAllPointOfInterestForPropertyIdInteractor;
@@ -44,8 +44,8 @@ public abstract class BaseViewModel extends ViewModel {
     protected GetAllRegionsForAllPropertiesInteractor getAllRegionsForAllPropertiesInteractor;
     protected AddPropertyInteractor addPropertyInteractor;
     protected AddPropertyPointOfInterestInteractor addPropertyPointOfInterestInteractor;
-    protected AddPropertyPhotoInteractor addPropertyPhotoInteractor;
-    protected DeletePropertyPhotoInteractor deletePropertyPhotoInteractor;
+    protected AddPropertyMediaInteractor addPropertyMediaInteractor;
+    protected DeletePropertyMediaInteractor deletePropertyMediaInteractor;
     protected UpdatePropertyInteractor updatePropertyInteractor;
     protected UpdatePropertyLocationInteractor updatePropertyLocationInteractor;
     protected DeletePointOfInterestInteractor deletePointOfInterestInteractor;

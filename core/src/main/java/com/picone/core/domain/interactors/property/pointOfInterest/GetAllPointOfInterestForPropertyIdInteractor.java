@@ -14,7 +14,7 @@ public class GetAllPointOfInterestForPropertyIdInteractor extends PropertyBaseIn
         super(propertyDataSource);
     }
 
-    public Observable<List<PointOfInterest>> getAllPointOfInterestForPropertyId(int propertyId){
+    public Observable<List<PointOfInterest>> getAllPointOfInterestForPropertyId(int propertyId) {
         return propertyDataSource.getAllPointOfInterestForPropertyId(propertyId);
     }
 }

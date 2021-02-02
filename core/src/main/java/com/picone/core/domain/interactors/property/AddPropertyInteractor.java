@@ -11,7 +11,7 @@ public class AddPropertyInteractor extends PropertyBaseInteractor {
         super(propertyDataSource);
     }
 
-    public Completable addProperty(PropertyInformation propertyInformation){
+    public Completable addProperty(PropertyInformation propertyInformation) {
         return propertyDataSource.addProperty(propertyInformation);
     }
 }

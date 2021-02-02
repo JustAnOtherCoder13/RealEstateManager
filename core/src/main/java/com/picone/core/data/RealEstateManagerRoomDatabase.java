@@ -23,9 +23,9 @@ import static com.picone.core.data.Generator.generatePointOfInterests;
 import static com.picone.core.data.Generator.generatePropertiesInformation;
 import static com.picone.core.data.Generator.generatePropertyLocation;
 import static com.picone.core.utils.ConstantParameters.pointOfInterestTable;
+import static com.picone.core.utils.ConstantParameters.propertyInformationTable;
 import static com.picone.core.utils.ConstantParameters.propertyLocationTable;
 import static com.picone.core.utils.ConstantParameters.propertyPhotoTable;
-import static com.picone.core.utils.ConstantParameters.propertyInformationTable;
 import static com.picone.core.utils.ConstantParameters.realEstateAgentTable;
 
 @androidx.room.Database(entities = {PropertyInformation.class, RealEstateAgent.class, PointOfInterest.class, PropertyMedia.class, PropertyLocation.class}, version = 1, exportSchema = false)
@@ -61,13 +61,13 @@ public abstract class RealEstateManagerRoomDatabase extends RoomDatabase {
 
     private static void createManagers(@NonNull SupportSQLiteDatabase db) {
 
-            ContentValues contentValues = new ContentValues();
-            contentValues.put("id", generateAgents().getId());
-            contentValues.put("address", generateAgents().getAddress());
-            contentValues.put("name", generateAgents().getName());
-            contentValues.put("avatar", generateAgents().getAvatar());
+        ContentValues contentValues = new ContentValues();
+        contentValues.put("id", generateAgents().getId());
+        contentValues.put("address", generateAgents().getAddress());
+        contentValues.put("name", generateAgents().getName());
+        contentValues.put("avatar", generateAgents().getAvatar());
 
-            db.insert(realEstateAgentTable, OnConflictStrategy.IGNORE, contentValues);
+        db.insert(realEstateAgentTable, OnConflictStrategy.IGNORE, contentValues);
 
     }
 
@@ -118,8 +118,8 @@ public abstract class RealEstateManagerRoomDatabase extends RoomDatabase {
         }
     }
 
-    private static void createPropertiesLocation(SupportSQLiteDatabase db){
-        for (int i = 0; i<2; i++){
+    private static void createPropertiesLocation(SupportSQLiteDatabase db) {
+        for (int i = 0; i < 2; i++) {
             ContentValues contentValues = new ContentValues();
             contentValues.put("id", generatePropertyLocation().get(i).getId());
             contentValues.put("latitude", generatePropertyLocation().get(i).getLatitude());

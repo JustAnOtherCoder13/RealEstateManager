@@ -1,5 +1,7 @@
 package com.picone.core.data.property;
 
+import androidx.annotation.NonNull;
+
 import com.picone.core.data.service.RetrofitClient;
 import com.picone.core.domain.entity.PropertyLocation;
 import com.picone.core.domain.entity.pojo.nearBySearch.NearBySearch;
@@ -24,7 +26,7 @@ public class PlaceServiceDaoImpl {
         return retrofitClient.googlePlaceService().getLocationForAddress(address, googleKey);
     }
 
-    public Observable<NearBySearch> getNearBySearchForPropertyLocation(PropertyLocation propertyLocation, String type, String googleKey) {
+    public Observable<NearBySearch> getNearBySearchForPropertyLocation(@NonNull PropertyLocation propertyLocation, String type, String googleKey) {
         return retrofitClient.googlePlaceService().getNearBySearch(propertyLocation.getLatitude() + "," + propertyLocation.getLongitude(), RADIUS, type, googleKey);
     }
 }

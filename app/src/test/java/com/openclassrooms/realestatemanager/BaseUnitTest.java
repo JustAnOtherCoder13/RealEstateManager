@@ -24,8 +24,8 @@ import com.picone.core.domain.interactors.property.location.GetAllRegionsForAllP
 import com.picone.core.domain.interactors.property.location.UpdatePropertyLocationInteractor;
 import com.picone.core.domain.interactors.property.maps.GetNearBySearchForPropertyLocationInteractor;
 import com.picone.core.domain.interactors.property.maps.GetPropertyLocationForAddressInteractor;
-import com.picone.core.domain.interactors.property.photo.AddPropertyPhotoInteractor;
-import com.picone.core.domain.interactors.property.photo.DeletePropertyPhotoInteractor;
+import com.picone.core.domain.interactors.property.media.AddPropertyMediaInteractor;
+import com.picone.core.domain.interactors.property.media.DeletePropertyMediaInteractor;
 import com.picone.core.domain.interactors.property.pointOfInterest.AddPropertyPointOfInterestInteractor;
 import com.picone.core.domain.interactors.property.pointOfInterest.DeletePointOfInterestInteractor;
 import com.picone.core.domain.interactors.property.pointOfInterest.GetAllPointOfInterestForPropertyIdInteractor;
@@ -87,9 +87,9 @@ public abstract class BaseUnitTest {
     @InjectMocks
     GetAllPointOfInterestForPropertyIdInteractor getAllPointOfInterestForPropertyIdInteractor;
     @InjectMocks
-    AddPropertyPhotoInteractor addPropertyPhotoInteractor;
+    AddPropertyMediaInteractor addPropertyMediaInteractor;
     @InjectMocks
-    DeletePropertyPhotoInteractor deletePropertyPhotoInteractor;
+    DeletePropertyMediaInteractor deletePropertyMediaInteractor;
     @InjectMocks
     AddPropertyLocationInteractor addPropertyLocationInteractor;
     @InjectMocks
@@ -152,7 +152,7 @@ public abstract class BaseUnitTest {
         updatedPropertyLocation.setRegion("new region");
 
         //initViewModels
-        propertyViewModel = new PropertyViewModel(getAllPropertiesInteractor, getAllPointOfInterestForPropertyIdInteractor, getAllRegionsForAllPropertiesInteractor, addPropertyInteractor, addPropertyPointOfInterestInteractor, addPropertyPhotoInteractor, deletePropertyPhotoInteractor, updatePropertyInteractor, addPropertyLocationInteractor, getPropertyLocationForAddressInteractor, getNearBySearchForPropertyLocationInteractor, updatePropertyLocationInteractor, deletePointOfInterestInteractor,savedStateHandle, schedulerProvider);
+        propertyViewModel = new PropertyViewModel(getAllPropertiesInteractor, getAllPointOfInterestForPropertyIdInteractor, getAllRegionsForAllPropertiesInteractor, addPropertyInteractor, addPropertyPointOfInterestInteractor, addPropertyMediaInteractor, deletePropertyMediaInteractor, updatePropertyInteractor, addPropertyLocationInteractor, getPropertyLocationForAddressInteractor, getNearBySearchForPropertyLocationInteractor, updatePropertyLocationInteractor, deletePointOfInterestInteractor,savedStateHandle, schedulerProvider);
         agentViewModel = new AgentViewModel(getAgentInteractor, schedulerProvider);
 
         //initObserver

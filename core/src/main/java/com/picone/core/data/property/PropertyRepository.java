@@ -71,11 +71,10 @@ public class PropertyRepository {
     }
 
 
-    public Completable addPropertyPhoto(PropertyMedia propertyMedia) {
-        return propertyDao.addPropertyPhoto(propertyMedia);
+    public Completable addPropertyMedia(PropertyMedia propertyMedia) {
+        return propertyDao.addPropertyMedia(propertyMedia);
     }
-
-    public Completable deletePropertyPhoto(PropertyMedia propertyMedia) {
-        return propertyDao.deletePropertyPhoto(propertyMedia);
+    public Completable deletePropertyMedia(PropertyMedia propertyMedia) {
+        return propertyDao.deletePropertyMedia(propertyMedia);
     }
 }

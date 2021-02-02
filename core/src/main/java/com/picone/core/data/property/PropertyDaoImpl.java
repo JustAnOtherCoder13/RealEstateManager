@@ -75,11 +75,11 @@ public class PropertyDaoImpl implements PropertyRoomDao {
 
 
     @Override
-    public Completable addPropertyPhoto(PropertyMedia propertyMedia) {
-        return mPropertyRoomDao.addPropertyPhoto(propertyMedia);
+    public Completable addPropertyMedia(PropertyMedia propertyMedia) {
+        return mPropertyRoomDao.addPropertyMedia(propertyMedia);
     }
     @Override
-    public Completable deletePropertyPhoto(PropertyMedia propertyMedia) {
-        return mPropertyRoomDao.deletePropertyPhoto(propertyMedia);
+    public Completable deletePropertyMedia(PropertyMedia propertyMedia) {
+        return mPropertyRoomDao.deletePropertyMedia(propertyMedia);
     }
 }

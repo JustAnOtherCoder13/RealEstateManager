@@ -1,7 +1,5 @@
 package com.picone.core.domain.interactors.property.maps;
 
-import android.util.Log;
-
 import androidx.annotation.NonNull;
 
 import com.picone.core.data.property.PropertyRepository;
@@ -20,15 +18,14 @@ import static com.picone.core.utils.ConstantParameters.POINT_OF_INTEREST_TYPE;
 
 public class GetNearBySearchForPropertyLocationInteractor extends PropertyBaseInteractor {
 
-    private List<PointOfInterest> pointOfInterests = new ArrayList<>();
+    private List<PointOfInterest> mPointOfInterests = new ArrayList<>();
 
     public GetNearBySearchForPropertyLocationInteractor(PropertyRepository propertyDataSource) {
         super(propertyDataSource);
     }
 
     public Observable<List<PointOfInterest>> getNearBySearchForPropertyLocation(@NonNull PropertyLocation propertyLocation, String googleKey) {
-
-        pointOfInterests = new ArrayList<>();
+        mPointOfInterests = new ArrayList<>();
         return propertyDataSource.getNearBySearchForPropertyLocation(propertyLocation, POINT_OF_INTEREST_TYPE.get(0), googleKey)
                 .switchMap(nearBySearch -> {
                     nearBySearchToPointOfInterest(nearBySearch, propertyLocation.getPropertyId());
@@ -46,9 +43,9 @@ public class GetNearBySearchForPropertyLocationInteractor extends PropertyBaseIn
         if (!nearBySearch.getNearBySearchResults().isEmpty())
             for (NearBySearchResult nearBySearchResult : nearBySearch.getNearBySearchResults()) {
                 pointOfInterest = createPointOfInterest(propertyId, nearBySearchResult);
-                 pointOfInterests.add(pointOfInterest);
+                mPointOfInterests.add(pointOfInterest);
             }
-        return pointOfInterests;
+        return mPointOfInterests;
     }
 
 
