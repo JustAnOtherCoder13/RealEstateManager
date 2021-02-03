@@ -25,6 +25,7 @@ import java.util.List;
 public class PropertyListFragment extends BaseFragment {
 
     private FragmentPropertyListBinding mBinding;
+    private PropertyRecyclerViewAdapter mAdapter;
 
     @Nullable
     @Override
@@ -40,23 +41,23 @@ public class PropertyListFragment extends BaseFragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         configureOnClickRecyclerView();
-        mPropertyViewModel.setFirstPhotoForAllProperties();
-
         mPropertyViewModel.getSelectedProperty.observe(getViewLifecycleOwner(), property -> {
-            if (property.getAddress() != null) {
-                mPropertyViewModel.setAllPointOfInterestForProperty(property);
+            mAdapter.updateSelectedProperty(property);
+            if (property.propertyInformation != null && property.propertyLocation.getAddress() != null && getResources().getBoolean(R.bool.phone_device))
                 mNavController.navigate(R.id.action_propertyListFragment_to_propertyDetailFragment);
-            }
+            else if (property.propertyInformation != null && property.propertyLocation.getAddress() != null && !getResources().getBoolean(R.bool.phone_device))
+                mNavController.navigate(R.id.propertyDetailFragment);
         });
     }
 
     private void initRecyclerView() {
-        PropertyRecyclerViewAdapter adapter = new PropertyRecyclerViewAdapter(new ArrayList<>());
+        mPropertyViewModel.setAllProperties();
+         mAdapter = new PropertyRecyclerViewAdapter(new ArrayList<>(), requireContext());
         RecyclerView.LayoutManager linearLayout = new LinearLayoutManager(getContext());
+        setCurrencySwitch(mAdapter);
         mBinding.fragmentPropertyListRecyclerview.setLayoutManager(linearLayout);
-        mBinding.fragmentPropertyListRecyclerview.setAdapter(adapter);
-        mPropertyViewModel.getAllProperties.observe(getViewLifecycleOwner(), adapter::updateProperties);
-        mPropertyViewModel.getFirstPhotoOfAllProperties.observe(getViewLifecycleOwner(), adapter::updatePhotos);
+        mBinding.fragmentPropertyListRecyclerview.setAdapter(mAdapter);
+        mPropertyViewModel.getAllProperties.observe(getViewLifecycleOwner(), mAdapter::updateProperties);
     }
 
     public void configureOnClickRecyclerView() {

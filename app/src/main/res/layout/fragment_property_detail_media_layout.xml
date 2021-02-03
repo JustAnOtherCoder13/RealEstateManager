@@ -6,9 +6,11 @@
 
     <TextView
         android:id="@+id/detail_custom_view_title"
-        style="@style/fragment_property_detail_media"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/basic_marge"
+        android:text="@string/media"
+        android:textAppearance="?attr/textAppearanceHeadline1"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -16,11 +18,16 @@
         android:id="@+id/detail_custom_view_delete_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        style="@style/property_detail_delete_button_style"
-        app:layout_constraintTop_toTopOf="@+id/detail_custom_view_title"
+        android:layout_marginEnd="@dimen/little_marge"
+        android:background="@drawable/custom_round_primary"
+        android:contentDescription="@string/delete_button"
+        android:paddingStart="@dimen/little_marge"
+        android:paddingEnd="@dimen/little_marge"
+        android:visibility="gone"
         app:layout_constraintBottom_toBottomOf="@id/detail_custom_view_title"
         app:layout_constraintEnd_toEndOf="parent"
-       android:contentDescription="@string/delete_button" />
+        app:layout_constraintTop_toTopOf="@+id/detail_custom_view_title"
+        app:srcCompat="@drawable/ic_fragment_add_property_media_delete_24" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/detail_custom_view_recycler_view"

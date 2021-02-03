@@ -3,25 +3,25 @@
 
     <!-- ______________________________HEADERS_____________________________ -->
 
-    <style name="TextAppearance.RealEstateManagerStyles.Headline1" parent="TextAppearance.MaterialComponents.Headline4">
+    <style name="TextAppearance.RealEstateManagerStyles.Headline1" parent="TextAppearance.MaterialComponents.Headline1">
         <item name="fontFamily">@font/roboto_bold</item>
         <item name="android:fontFamily">@font/roboto_bold</item>
         <item name="android:textColor">@color/black</item>
         <item name="android:paddingBottom">@dimen/basic_marge</item>
         <item name="android:layout_marginStart">@dimen/basic_marge</item>
-        <item name="android:textSize">30sp</item>
+        <item name="android:textSize">@dimen/headline1</item>
     </style>
 
-    <style name="TextAppearance.RealEstateManagerStyles.Headline2" parent="TextAppearance.MaterialComponents.Headline5">
+    <style name="TextAppearance.RealEstateManagerStyles.Headline2" parent="TextAppearance.MaterialComponents.Headline2">
         <item name="fontFamily">@font/roboto_bold</item>
         <item name="android:fontFamily">@font/roboto_bold</item>
-        <item name="android:textSize">19sp</item>
+        <item name="android:textSize">@dimen/headline2</item>
     </style>
 
     <style name="TextAppearance.RealEstateManagerStyles.Subtitle1" parent="TextAppearance.MaterialComponents.Subtitle1">
         <item name="fontFamily">@font/roboto_bold</item>
         <item name="android:fontFamily">@font/roboto_regular</item>
-        <item name="android:textSize">17sp</item>
+        <item name="android:textSize">@dimen/subtitle1</item>
         <item name="paddingStart">@dimen/little_marge</item>
     </style>
 
@@ -30,7 +30,7 @@
     <style name="TextAppearance.RealEstateManagerStyles.Body1" parent="TextAppearance.MaterialComponents.Body1">
         <item name="fontFamily">@font/roboto_regular</item>
         <item name="android:fontFamily">@font/roboto_regular</item>
-        <item name="android:textSize">14sp</item>
+        <item name="android:textSize">@dimen/body1</item>
     </style>
 
 </resources>

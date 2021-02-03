@@ -1,26 +1,40 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    style="@style/custom_media_controller"
+    android:paddingStart="@dimen/big_marge"
+    android:paddingEnd="@dimen/big_marge"
+    android:background="?attr/colorPrimary"
     android:layout_width="match_parent"
     android:layout_height="?attr/actionBarSize">
 
     <CheckedTextView
         android:id="@+id/custom_media_controller_back_button"
-        style="@style/custom_media_controller_checked_text_view_back"
+        android:drawableTop="@drawable/ic_custom_media_controller_arrow_back_24"
+        android:text="@string/back"
+        style="@style/MediaControllerCheckedTextView"
+        android:layout_width="?attr/actionBarSize"
+        android:layout_height="?attr/actionBarSize"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
     <CheckedTextView
         android:id="@+id/custom_media_controller_play_button"
-        style="@style/custom_media_controller_checked_text_view_play"
+        android:drawableTop="@drawable/ic_custom_media_controller_play"
+        android:text="@string/play"
+        style="@style/MediaControllerCheckedTextView"
+        android:layout_width="?attr/actionBarSize"
+        android:layout_height="?attr/actionBarSize"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
     <CheckedTextView
         android:id="@+id/custom_media_controller_pause_button"
-        style="@style/custom_media_controller_checked_text_view_pause"
+        android:drawableTop="@drawable/ic_custom_media_controller_pause"
+        android:text="@string/pause"
+        style="@style/MediaControllerCheckedTextView"
+        android:layout_width="?attr/actionBarSize"
+        android:layout_height="?attr/actionBarSize"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 

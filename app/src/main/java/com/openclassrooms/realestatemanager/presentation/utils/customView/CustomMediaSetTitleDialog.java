@@ -2,6 +2,8 @@ package com.openclassrooms.realestatemanager.presentation.utils.customView;
 
 import android.app.Dialog;
 import android.content.Context;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
@@ -21,19 +23,21 @@ import com.openclassrooms.realestatemanager.R;
 import com.openclassrooms.realestatemanager.databinding.CustomDialogSetPhotoTitleBinding;
 import com.openclassrooms.realestatemanager.presentation.utils.PathUtil;
 
+import java.util.Objects;
+
 public class CustomMediaSetTitleDialog extends Dialog implements android.view.View.OnClickListener {
 
-    private Context context;
-    private ImageView photo;
-    private VideoView video;
-    private EditText description;
-    private Button accept;
+    private Context mContext;
+    private ImageView mPhoto;
+    private VideoView mVideo;
+    private EditText mDescription;
+    private Button mAccept;
     private String mVideoPath;
 
 
-    public CustomMediaSetTitleDialog(@NonNull Context context) {
-        super(context);
-        this.context = context;
+    public CustomMediaSetTitleDialog(@NonNull Context mContext) {
+        super(mContext);
+        this.mContext = mContext;
     }
 
     @Override
@@ -41,11 +45,12 @@ public class CustomMediaSetTitleDialog extends Dialog implements android.view.Vi
         super.onCreate(savedInstanceState);
         CustomDialogSetPhotoTitleBinding mBinding = CustomDialogSetPhotoTitleBinding.inflate(getLayoutInflater());
         setContentView(mBinding.getRoot());
-        photo = mBinding.setPhotoTitleImageView;
-        video = mBinding.setPhotoTitleVideoView;
-        description = mBinding.setPhotoDescriptionEditText;
-        accept = mBinding.setPhotoOkButton;
+        mPhoto = mBinding.setPhotoTitleImageView;
+        mVideo = mBinding.setPhotoTitleVideoView;
+        mDescription = mBinding.setPhotoDescriptionEditText;
+        mAccept = mBinding.setPhotoOkButton;
         mBinding.setPhotoBackButton.setOnClickListener(this);
+        Objects.requireNonNull(getWindow()).setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
     }
 
     @Override
@@ -54,18 +59,18 @@ public class CustomMediaSetTitleDialog extends Dialog implements android.view.Vi
     }
 
     public void setAcceptOnClickListener(View.OnClickListener onClickListener) {
-        accept.setOnClickListener(onClickListener);
+        mAccept.setOnClickListener(onClickListener);
     }
 
     public void setPhoto(String photoPath) {
         isPhoto(true);
-        Glide.with(context)
+        Glide.with(mContext)
                 .load(photoPath)
                 .centerCrop()
                 .into(new CustomTarget<Drawable>() {
                     @Override
                     public void onResourceReady(@NonNull Drawable resource, @Nullable Transition<? super Drawable> transition) {
-                        photo.setImageDrawable(resource);
+                        mPhoto.setImageDrawable(resource);
                     }
 
                     @Override
@@ -76,25 +81,27 @@ public class CustomMediaSetTitleDialog extends Dialog implements android.view.Vi
 
     public void setVideo(Uri videoPath) {
         isPhoto(false);
-        video.setVideoURI(videoPath);
-        mVideoPath = PathUtil.getPath(context, videoPath);
-        //TODO change
-        description.setText(R.string.app_name);
-        video.start();
+        mVideo.setVideoURI(videoPath);
+        mVideoPath = PathUtil.getPath(mContext, videoPath);
+        mVideo.start();
     }
 
     public String getVideoPath() {
         return mVideoPath;
     }
 
-
     public String getText() {
-        if (description.getText() != null) return description.getText().toString();
-        else return " ";
+        if (mDescription.getText() != null) return mDescription.getText().toString();
+        else return "";
+    }
+
+    public void resetEditText() {
+        mDescription.setText("");
     }
 
     private void isPhoto(boolean isPhoto) {
-        photo.setVisibility(isPhoto ? View.VISIBLE : View.GONE);
-        video.setVisibility(isPhoto ? View.GONE : View.VISIBLE);
+        mPhoto.setVisibility(isPhoto ? View.VISIBLE : View.GONE);
+        mVideo.setVisibility(isPhoto ? View.GONE : View.VISIBLE);
     }
+
 }

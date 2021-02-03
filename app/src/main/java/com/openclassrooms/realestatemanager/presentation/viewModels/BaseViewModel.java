@@ -1,5 +1,6 @@
 package com.openclassrooms.realestatemanager.presentation.viewModels;
 
+import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
@@ -10,18 +11,14 @@ import com.picone.core.domain.interactors.property.GetAllPropertiesInteractor;
 import com.picone.core.domain.interactors.property.UpdatePropertyInteractor;
 import com.picone.core.domain.interactors.property.location.AddPropertyLocationInteractor;
 import com.picone.core.domain.interactors.property.location.GetAllRegionsForAllPropertiesInteractor;
-import com.picone.core.domain.interactors.property.location.GetPropertyLocationInteractor;
 import com.picone.core.domain.interactors.property.location.UpdatePropertyLocationInteractor;
 import com.picone.core.domain.interactors.property.maps.GetNearBySearchForPropertyLocationInteractor;
 import com.picone.core.domain.interactors.property.maps.GetPropertyLocationForAddressInteractor;
-import com.picone.core.domain.interactors.property.photo.AddPropertyPhotoInteractor;
-import com.picone.core.domain.interactors.property.photo.DeletePropertyPhotoInteractor;
-import com.picone.core.domain.interactors.property.photo.GetAllPhotosForAllPropertiesInteractor;
-import com.picone.core.domain.interactors.property.photo.GetAllPropertyPhotosForPropertyIdInteractor;
+import com.picone.core.domain.interactors.property.media.AddPropertyMediaInteractor;
+import com.picone.core.domain.interactors.property.media.DeletePropertyMediaInteractor;
 import com.picone.core.domain.interactors.property.pointOfInterest.AddPropertyPointOfInterestInteractor;
 import com.picone.core.domain.interactors.property.pointOfInterest.DeletePointOfInterestInteractor;
 import com.picone.core.domain.interactors.property.pointOfInterest.GetAllPointOfInterestForPropertyIdInteractor;
-import com.picone.core.domain.interactors.property.pointOfInterest.GetAllPointOfInterestsForAllPropertiesInteractor;
 import com.picone.core.utils.SchedulerProvider;
 
 import javax.inject.Inject;
@@ -32,11 +29,10 @@ public abstract class BaseViewModel extends ViewModel {
 
     @Inject
     protected SchedulerProvider schedulerProvider;
-
-
     protected CompositeDisposable compositeDisposable = new CompositeDisposable();
     protected MutableLiveData<ErrorHandler> errorState = new MutableLiveData<>(ErrorHandler.NO_ERROR);
 
+    public LiveData<ErrorHandler> getErrorState = errorState;
     //------------------------REAL ESTATE AGENT INTERACTORS----------------------------
 
     protected GetAgentInteractor getAgentInteractor;
@@ -45,26 +41,19 @@ public abstract class BaseViewModel extends ViewModel {
 
     protected GetAllPropertiesInteractor getAllPropertiesInteractor;
     protected GetAllPointOfInterestForPropertyIdInteractor getAllPointOfInterestForPropertyIdInteractor;
-    protected GetAllPointOfInterestsForAllPropertiesInteractor getAllPointOfInterestsForAllPropertiesInteractor;
-    protected GetAllPropertyPhotosForPropertyIdInteractor getAllPropertyPhotosForPropertyIdInteractor;
-    protected GetAllPhotosForAllPropertiesInteractor getAllPhotosForAllPropertiesInteractor;
     protected GetAllRegionsForAllPropertiesInteractor getAllRegionsForAllPropertiesInteractor;
     protected AddPropertyInteractor addPropertyInteractor;
     protected AddPropertyPointOfInterestInteractor addPropertyPointOfInterestInteractor;
-    protected AddPropertyPhotoInteractor addPropertyPhotoInteractor;
-    protected DeletePropertyPhotoInteractor deletePropertyPhotoInteractor;
+    protected AddPropertyMediaInteractor addPropertyMediaInteractor;
+    protected DeletePropertyMediaInteractor deletePropertyMediaInteractor;
     protected UpdatePropertyInteractor updatePropertyInteractor;
-    protected GetPropertyLocationInteractor getPropertyLocationInteractor;
     protected UpdatePropertyLocationInteractor updatePropertyLocationInteractor;
     protected DeletePointOfInterestInteractor deletePointOfInterestInteractor;
+    protected AddPropertyLocationInteractor addPropertyLocationInteractor;
 
     //------------------------PLACE INTERACTORS----------------------------
 
-    protected AddPropertyLocationInteractor addPropertyLocationInteractor;
     protected GetNearBySearchForPropertyLocationInteractor getNearBySearchForPropertyLocationInteractor;
-
-    //------------------------PLACES INTERACTORS----------------------------
-
     protected GetPropertyLocationForAddressInteractor getPropertyLocationForAddressInteractor;
 
     @Override

@@ -1,7 +1,6 @@
 <resources>
     <string name="app_name">Real Estate Manager</string>
 
-
     <string name="on_error">An error have occurred, please check your parameters and try again</string>
 
     <!-- ______________________BOTTOM NAV__________________ -->
@@ -10,15 +9,15 @@
 
     <!-- ______________________TOP BAR__________________ -->
     <string name="menu_icon">Menu icon</string>
-    <string name="update_property_icon">update property icon</string>
-    <string name="add_property_icon">add property icon</string>
+    <string name="update_property_icon">update propertyInformation icon</string>
+    <string name="add_property_icon">add propertyInformation icon</string>
 
     <!-- ______________________CONTENT DESCRIPTION__________________ -->
-    <string name="property_item_photo">property item photo</string>
-    <string name="property_detail_item_photo">property detail item photo</string>
+    <string name="property_item_photo">propertyInformation item photo</string>
+    <string name="property_detail_item_photo">propertyInformation detail item photo</string>
     <string name="location_maps_view">propertyLocation maps view</string>
     <string name="icon">Icon</string>
-    <string name="update_property_button">update property button</string>
+    <string name="update_property_button">update propertyInformation button</string>
     <string name="delete_button">delete button</string>
     <string name="full_screen_image">full screen image</string>
     <string name="photo_set_on_set_title_dialog">photo set on set title dialog</string>
@@ -27,10 +26,10 @@
     <!-- ______________________TEXT VIEW__________________ -->
     <string name="property_type">Property Type</string>
     <string name="town">Town</string>
-    <string name="price">Price</string>
+    <string name="price">Price ($)</string>
     <string name="description">Description</string>
     <string name="media">Media</string>
-    <string name="surface">Surface</string>
+    <string name="surface">Surface (m²)</string>
     <string name="description_text">Description text</string>
     <string name="sold">Sold</string>
     <string name="propertyLocation">Location</string>
@@ -46,7 +45,6 @@
     <!-- ______________________MAPS FRAGMENT_________________ -->
     <string name="exception">Exception: %s</string>
 
-
     <!--_______________________PROPERTY TYPE___________________ -->
     <string-array name="property_type">
         <item>HOUSE</item>
@@ -55,19 +53,14 @@
         <item>PENTHOUSE</item>
     </string-array>
 
-    <!--_______________________REGION UNDER RESPONSIBILITY___________________ -->
-
-    <string name="BOUCHES_DU_RHONE">Bouches-du-rhône</string>
-    <string name="VAR">Var</string>
-    <string name="VAUCLUSE">Vaucluse</string>
-
-
     <!--_______________________WARNING___________________ -->
 
     <string name="gps_warning_message">GPS is Disabled in your device, enable it to be located</string>
     <string name="information_not_filled">Please, fill all \"Information\" values and at least one photo before register</string>
     <string name="no_camera_warning">You have no camera on your phone, so you can\'t use camera button to add pictures. You could always add pictures from your image folder.</string>
-
+    <string name="no_internet_message">Network is not available, you\'ll not be able to download position or points of interests.\n \n   Please try again when internet is available</string>
+    <string name="add_date_message">you have to enter a date if sold is set</string>
+    <string name="enter_description">You have to enter a description before accept.</string>
 
     <!--_______________________CUSTOM ALERT DIALOG___________________ -->
 
@@ -92,6 +85,30 @@
     <string name="supermarket">supermarket</string>
     <string name="close_filter_button">close filter button</string>
     <string name="reset_filter">reset filter</string>
+    <string name="contextual_add_or_update_button">contextual add or update button</string>
+
+    <string name="euro">€</string>
+    <string name="dollar">$</string>
+    <string name="play_logo_if_video">play logo if video</string>
+    <string name="is_sold_from">Is sold from : </string>
+
+
+
+
+    <string name="chanel_id">default_channel</string>
+    <string name="chanel_name">Message from RealEstateManager</string>
+    <string name="intent_extra_name">message</string>
+
+    <string name="notification_add_start_message">You have add new property : \n</string>
+    <string name="notification_add_message_title">ADD PROPERTY</string>
+    <string name="notification_update_start_message">You have updated property : \n</string>
+    <string name="notification_update_message_title">UPDATE PROPERTY</string>
+    <string name="notification_id">id : </string>
+    <string name="notification_address">\naddress : </string>
+    <string name="notification_number_of_photos">\nnumber of photo : </string>
+    <string name="notification_number_of_point_of_interst">\nnumber of points of interest</string>
+    <string name="square_meter">m²</string>
+    <string name="bitmap_converter_warning_message">Parameter must be an instance of BitmapDrawable or a vector drawable resource</string>
 
 
 </resources>

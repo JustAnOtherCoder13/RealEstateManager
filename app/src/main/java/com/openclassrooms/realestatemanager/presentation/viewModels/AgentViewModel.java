@@ -12,20 +12,20 @@ public class AgentViewModel extends BaseViewModel {
 
     private MutableLiveData<RealEstateAgent> AgentMutableLD = new MutableLiveData<>();
 
-    public LiveData <RealEstateAgent> getAgent = AgentMutableLD;
+    public LiveData<RealEstateAgent> getAgent = AgentMutableLD;
 
     @ViewModelInject
     public AgentViewModel(GetAgentInteractor getAgentInteractor
-    , SchedulerProvider schedulerProvider){
+            , SchedulerProvider schedulerProvider) {
         this.getAgentInteractor = getAgentInteractor;
-        this.schedulerProvider =schedulerProvider;
+        this.schedulerProvider = schedulerProvider;
     }
 
-    public void setAgent(){
+    public void setAgent() {
         compositeDisposable.add(
-        getAgentInteractor.getAgent()
-                .subscribeOn(schedulerProvider.getIo())
-                .observeOn(schedulerProvider.getUi())
-                .subscribe(realEstateAgents -> AgentMutableLD.postValue(realEstateAgents)));
+                getAgentInteractor.getAgent()
+                        .subscribeOn(schedulerProvider.getIo())
+                        .observeOn(schedulerProvider.getUi())
+                        .subscribe(realEstateAgents -> AgentMutableLD.postValue(realEstateAgents)));
     }
 }

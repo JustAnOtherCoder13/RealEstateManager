@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
+    <!-- MARGE-->
     <dimen name="little_marge">5dp</dimen>
     <dimen name="basic_marge">15dp</dimen>
     <dimen name="big_marge">30dp</dimen>
@@ -8,26 +9,43 @@
     <dimen name="XXL_marge">100dp</dimen>
     <dimen name="XXXL_marge">150dp</dimen>
 
-    <dimen name="separator_height">2dp</dimen>
+    <!-- TEXT-->
+    <dimen name="headline1">30sp</dimen>
+    <dimen name="headline2">19sp</dimen>
+    <dimen name="subtitle1">17sp</dimen>
+    <dimen name="body1">14sp</dimen>
 
+    <!-- APP STYLE SIZE-->
+    <dimen name="button_corner">10dp</dimen>
+    <dimen name="dialog_corner">40dp</dimen>
+
+    <!-- COMPONENT STATIC SIZE-->
     <dimen name="thumbnail_size">150dp</dimen>
     <dimen name="accept_media_view_size">300dp</dimen>
     <dimen name="static_map_size">140dp</dimen>
-
-   <dimen name="loader_size">130dp</dimen>
-
-    <dimen name="button_corner">10dp</dimen>
-
-    <!-- FRAGMENT DETAIL-->
-    <dimen name="fragment_detail_additional_information_bottom_margin">15dp</dimen>
-
+    <dimen name="loader_size">130dp</dimen>
     <dimen name="custom_view_add_property_information_edit_text_size">90dp</dimen>
-
     <dimen name="add_property_information_layout_location_max_width">130dp</dimen>
 
+    <!-- SEPARATOR-->
+    <dimen name="separator_height">2dp</dimen>
+    <dimen name="shadow_width">5dp</dimen>
+    <dimen name="vertical_separator_width">1dp</dimen>
 
-    <dimen name="range_slider_value_margin_bottom">40dp</dimen>
-    <dimen name="bottom_sheet_outline_size">3dp</dimen>
+    <!-- DRAWABLE -->
+    <dimen name="bottom_sheet_stroke_size">3dp</dimen>
     <dimen name="bottom_sheet_close_button_frame_size">30dp</dimen>
+    <dimen name="update_button_frame_size">24dp</dimen>
+    <dimen name="min_width_for_property_list_recycler_view">300dp</dimen>
+    <dimen name="custom_view_corner_radius">30dp</dimen>
+    <dimen name="custom_switch_track_height">20dp</dimen>
+    <dimen name="custom_switch_track_stroke_width">1dp</dimen>
+    <dimen name="custom_dialog_shape_stroke_width">4dp</dimen>
+    <dimen name="custom_round_primary_size">40dp</dimen>
+    <dimen name="switch_stroke_width">4dp</dimen>
+
+    <!-- OTHERS-->
+    <dimen name="fragment_detail_additional_information_bottom_margin">15dp</dimen>
+    <dimen name="range_slider_value_margin_bottom">40dp</dimen>
 
 </resources>

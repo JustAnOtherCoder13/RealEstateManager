@@ -6,10 +6,13 @@
     android:layout_height="match_parent"
     tools:context="com.openclassrooms.realestatemanager.presentation.ui.fragment.PropertyListFragment">
 
+
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/fragment_property_list_recyclerview"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="0dp"
+        android:minWidth="@dimen/min_width_for_property_list_recycler_view"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />

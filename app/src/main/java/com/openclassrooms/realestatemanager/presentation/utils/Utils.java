@@ -2,10 +2,13 @@ package com.openclassrooms.realestatemanager.presentation.utils;
 
 import android.content.Context;
 import android.location.LocationManager;
-import android.net.wifi.WifiManager;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 
 import androidx.annotation.NonNull;
 
+import java.text.DecimalFormat;
+import java.text.DecimalFormatSymbols;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -19,27 +22,31 @@ import static android.content.Context.LOCATION_SERVICE;
 
 public class Utils {
 
-
-    public static int convertDollarToEuro(int dollars){
-        return (int) Math.round(dollars * 0.812);
+    public static int convertDollarToEuro(int dollars) {
+        return (int) Math.round(dollars * 0.83);//update with actual exchange rate
     }
 
+    public static int convertEuroToDollar(int euro) {
+        return (int) Math.round(euro * 1.21);
+    }
 
-    public static boolean isGpsAvailable(@NonNull Context context){
+    public static boolean isGpsAvailable(@NonNull Context context) {
         LocationManager locationManager = (LocationManager) context.getSystemService(LOCATION_SERVICE);
         assert locationManager != null;
         return locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER);
     }
 
-
+    //check for all network and return the first connected or null if internet not available
     @NonNull
-    public static Boolean isInternetAvailable(@NonNull Context context){
-        WifiManager wifi = (WifiManager)context.getApplicationContext().getSystemService(Context.WIFI_SERVICE);
-        assert wifi != null;
-        return wifi.isWifiEnabled();
+    public static Boolean isInternetAvailable(@NonNull Context context) {
+        ConnectivityManager connMgr = (ConnectivityManager)
+                context.getApplicationContext().getSystemService(Context.CONNECTIVITY_SERVICE);
+        assert connMgr != null;
+        NetworkInfo networkInfo = connMgr.getActiveNetworkInfo();
+        return (networkInfo != null && networkInfo.isConnected());
     }
 
-    public static Date formatStringToDate(String dateStr){
+    public static Date formatStringToDate(String dateStr) {
         Date date = new Date();
         try {
             date = new SimpleDateFormat("dd/MM/yyy", Locale.FRANCE).parse(dateStr);
@@ -48,4 +55,16 @@ public class Utils {
         }
         return date;
     }
+
+    @NonNull
+    public static DecimalFormat formatWithSpace() {
+        DecimalFormatSymbols symbols = new DecimalFormatSymbols();
+        symbols.setGroupingSeparator(' ');
+        DecimalFormat df = new DecimalFormat();
+        df.setDecimalFormatSymbols(symbols);
+        df.setGroupingSize(3);
+        return df;
+    }
+
+    //refactor getTodayDateMethod in core/utils/ConstantParameters.
 }

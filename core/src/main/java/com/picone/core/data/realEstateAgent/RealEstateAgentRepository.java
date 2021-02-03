@@ -15,7 +15,7 @@ public class RealEstateAgentRepository {
         this.realEstateManagerDao = realEstateManagerDao;
     }
 
-    public Observable<RealEstateAgent> getAgent(){
+    public Observable<RealEstateAgent> getAgent() {
         return realEstateManagerDao.getAgent();
     }
 }

@@ -9,74 +9,81 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.constraintlayout.widget.ConstraintLayout;
 
-import com.google.android.material.slider.LabelFormatter;
 import com.google.android.material.slider.RangeSlider;
 import com.openclassrooms.realestatemanager.R;
 
 import java.util.ArrayList;
 import java.util.List;
 
+import static com.openclassrooms.realestatemanager.presentation.utils.Utils.formatWithSpace;
+
 public class CustomBottomSheetRangeSlider extends ConstraintLayout {
 
-    private Context context;
-    private TextView title;
-    private RangeSlider rangeSlider;
-    private TextView startValue;
-    private TextView endValue;
+    private Context mContext;
+    private RangeSlider mRangeSlider;
+    private TextView mStartValue;
+    private TextView mEndValue;
 
-    public CustomBottomSheetRangeSlider(@NonNull Context context, @Nullable AttributeSet attrs) {
-        super(context, attrs);
-        this.context = context;
-        TypedArray attributes = context.obtainStyledAttributes(attrs, R.styleable.CustomBottomSheetRangeSlider);
+    public CustomBottomSheetRangeSlider(@NonNull Context mContext, @Nullable AttributeSet attrs) {
+        super(mContext, attrs);
+        this.mContext = mContext;
+        TypedArray attributes = mContext.obtainStyledAttributes(attrs, R.styleable.CustomBottomSheetRangeSlider);
         initView(attributes);
     }
 
-
     private void initView(@Nullable TypedArray attributes) {
-        inflate(context, R.layout.custom_bottom_sheet_range_slider, this);
+        inflate(mContext, R.layout.custom_bottom_sheet_range_slider, this);
 
-        title = findViewById(R.id.custom_range_slider_title);
-        rangeSlider = findViewById(R.id.custom_range_slider);
-        startValue = findViewById(R.id.custom_range_slider_start_value);
-        endValue = findViewById(R.id.custom_range_slider_end_value);
-
+        TextView title = findViewById(R.id.custom_range_slider_title);
+        mRangeSlider = findViewById(R.id.custom_range_slider);
+        mStartValue = findViewById(R.id.custom_range_slider_start_value);
+        mEndValue = findViewById(R.id.custom_range_slider_end_value);
         setRangeSliderTouchListener();
-
-        rangeSlider.setLabelBehavior(LabelFormatter.LABEL_FLOATING);
         assert attributes != null;
         title.setText(attributes.getText(R.styleable.CustomBottomSheetRangeSlider_title));
         attributes.recycle();
     }
 
     private void setRangeSliderTouchListener() {
-        rangeSlider.addOnSliderTouchListener(new RangeSlider.OnSliderTouchListener() {
+        mRangeSlider.addOnSliderTouchListener(new RangeSlider.OnSliderTouchListener() {
             @Override
             public void onStartTrackingTouch(@NonNull RangeSlider slider) {
-                rangeSlider.addOnChangeListener((slider1, value, fromUser) -> startValue.setText(String.valueOf(slider.getValues().get(0).intValue())));
-                rangeSlider.addOnChangeListener((slider1, value, fromUser) -> endValue.setText(String.valueOf(slider.getValues().get(1).intValue())));
+                mRangeSlider.addOnChangeListener((slider1, value, fromUser) ->
+                        mStartValue.setText(formatWithSpace().format(slider.getValues().get(0).intValue())));
+                mRangeSlider.addOnChangeListener((slider1, value, fromUser) ->
+                        mEndValue.setText(formatWithSpace().format(slider.getValues().get(1).intValue())));
             }
 
             @Override
             public void onStopTrackingTouch(@NonNull RangeSlider slider) {
-                rangeSlider.addOnChangeListener((slider1, value, fromUser) -> startValue.setText(String.valueOf(slider.getValues().get(0).intValue())));
-                rangeSlider.addOnChangeListener((slider1, value, fromUser) -> endValue.setText(String.valueOf(slider.getValues().get(1).intValue())));
+                mRangeSlider.addOnChangeListener((slider1, value, fromUser) ->
+                        mStartValue.setText(formatWithSpace().format(slider.getValues().get(0).intValue())));
+                mRangeSlider.addOnChangeListener((slider1, value, fromUser) ->
+                        mEndValue.setText(formatWithSpace().format(slider.getValues().get(1).intValue())));
             }
         });
     }
 
     public void setRangeSliderValue(float valueFrom, float valueTo, float stepSize) {
-        rangeSlider.setValueFrom(valueFrom);
-        rangeSlider.setValueTo(valueTo);
+        int startValueInt = (int) valueFrom;
+        int endValueInt = (int) valueTo;
+        mRangeSlider.setValueFrom(startValueInt);
+        mRangeSlider.setValueTo(endValueInt);
         List<Float> values = new ArrayList<>();
         values.add(valueFrom);
         values.add(valueTo);
-        rangeSlider.setValues(values);
-        rangeSlider.setStepSize(stepSize);
-        startValue.setText(String.valueOf(valueFrom));
-        endValue.setText(String.valueOf(valueTo));
+        mRangeSlider.setValues(values);
+        mRangeSlider.setStepSize(stepSize);
+        mStartValue.setText(formatWithSpace().format(startValueInt));
+        mEndValue.setText(formatWithSpace().format(endValueInt));
     }
 
-    public float getStartValue(){return Float.parseFloat(startValue.getText().toString());}
-    public float getEndValue(){return Float.parseFloat(endValue.getText().toString());}
+    public float getStartValue() {
+        return Float.parseFloat(mStartValue.getText().toString());
+    }
+
+    public float getEndValue() {
+        return Float.parseFloat(mEndValue.getText().toString());
+    }
 
 }

@@ -5,12 +5,14 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Environment;
 import android.provider.MediaStore;
+import android.view.View;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.core.content.FileProvider;
 
-import com.picone.core.domain.entity.PropertyPhoto;
+import com.airbnb.lottie.LottieAnimationView;
+import com.picone.core.domain.entity.PropertyMedia;
 
 import java.io.File;
 import java.io.IOException;
@@ -78,11 +80,22 @@ public class ManageImageHelper {
     }
 
     @NonNull
-    public List<PropertyPhoto> propertyPhotosWithAddButton(List<PropertyPhoto> propertyPhotos) {
-        List<PropertyPhoto> photos = new ArrayList<>();
-        PropertyPhoto propertyPhoto = new PropertyPhoto(0, ADD_PHOTO, "", 0);
-        photos.add(propertyPhoto);
-        photos.addAll(propertyPhotos);
+    public List<PropertyMedia> propertyPhotosWithAddButton(List<PropertyMedia> medias) {
+        List<PropertyMedia> photos = new ArrayList<>();
+        PropertyMedia propertyMedia = new PropertyMedia(0, ADD_PHOTO, "", 0);
+        photos.add(propertyMedia);
+        photos.addAll(medias);
         return photos;
+    }
+
+    //to use in both adapter
+    public static void playLoader(boolean isVisible, LottieAnimationView animationView) {
+        if (isVisible) {
+            animationView.setVisibility(View.VISIBLE);
+            animationView.playAnimation();
+        } else {
+            animationView.pauseAnimation();
+            animationView.setVisibility(View.GONE);
+        }
     }
 }

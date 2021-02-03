@@ -16,6 +16,7 @@ import androidx.annotation.Nullable;
 import androidx.core.content.res.ResourcesCompat;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.RequestOptions;
 import com.bumptech.glide.request.target.CustomTarget;
 import com.bumptech.glide.request.transition.Transition;
 import com.openclassrooms.realestatemanager.R;
@@ -26,18 +27,17 @@ import java.util.Objects;
 
 public class CustomMediaFullScreenDialog extends Dialog implements android.view.View.OnClickListener {
 
-    private Context context;
-    private ImageView photo;
-    private VideoView video;
-    private String mediaPath;
-    private CheckedTextView play;
-    private CheckedTextView pause;
-    private int stopPosition = 0;
+    private Context mContext;
+    private ImageView mPhoto;
+    private VideoView mVideo;
+    private String mMediaPath;
+    private CheckedTextView mPlay, mPause;
+    private int mStopPosition = 0;
 
-    public CustomMediaFullScreenDialog(@NonNull Context context, String mediaPath) {
-        super(context);
-        this.context = context;
-        this.mediaPath = mediaPath;
+    public CustomMediaFullScreenDialog(@NonNull Context mContext, String mMediaPath) {
+        super(mContext);
+        this.mContext = mContext;
+        this.mMediaPath = mMediaPath;
     }
 
     @Override
@@ -47,23 +47,28 @@ public class CustomMediaFullScreenDialog extends Dialog implements android.view.
         setContentView(mBinding.getRoot());
         Objects.requireNonNull(this.getWindow()).setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
 
-        photo = mBinding.fullScreenImage;
-        video = mBinding.fullScreenVideo;
-        play = mBinding.customMediaControler.customMediaControllerPlayButton;
-        pause = mBinding.customMediaControler.customMediaControllerPauseButton;
+        mPhoto = mBinding.fullScreenImage;
+        mVideo = mBinding.fullScreenVideo;
+        mPlay = mBinding.customMediaControler.customMediaControllerPlayButton;
+        mPause = mBinding.customMediaControler.customMediaControllerPauseButton;
         mBinding.customMediaControler.customMediaControllerBackButton.setOnClickListener(this);
-        play.setOnClickListener(this);
-        pause.setOnClickListener(this);
+        mPlay.setOnClickListener(this);
+        mPause.setOnClickListener(this);
 
-        switchPhotoOrVideoVisibility(PathUtil.isImageFileFromPath(mediaPath));
-        if (PathUtil.isImageFileFromPath(mediaPath))
-            Glide.with(photo)
-                    .load(mediaPath)
+        initMedia();
+    }
+
+    private void initMedia() {
+        switchPhotoOrVideoVisibility(PathUtil.isImageFileFromPath(mMediaPath));
+        if (PathUtil.isImageFileFromPath(mMediaPath))
+            Glide.with(mPhoto)
+                    .load(mMediaPath)
+                    .apply(new RequestOptions().override(800))
                     .centerCrop()
                     .into(new CustomTarget<Drawable>() {
                         @Override
                         public void onResourceReady(@NonNull Drawable resource, @Nullable Transition<? super Drawable> transition) {
-                            photo.setImageDrawable(resource);
+                            mPhoto.setImageDrawable(resource);
                         }
 
                         @Override
@@ -71,27 +76,27 @@ public class CustomMediaFullScreenDialog extends Dialog implements android.view.
                         }
                     });
 
-        else video.setVideoPath(mediaPath);
+        else mVideo.setVideoPath(mMediaPath);
     }
 
     @Override
     public void onClick(View v) {
+        //init media controls
         switch (v.getId()) {
-
             case R.id.custom_media_controller_play_button:
                 managePlayButton();
-                if (stopPosition > 0) {
-                    video.setVideoPath(mediaPath);
-                    video.seekTo(stopPosition);
-                    stopPosition = 0;
+                if (mStopPosition > 0) {
+                    mVideo.setVideoPath(mMediaPath);
+                    mVideo.seekTo(mStopPosition);
+                    mStopPosition = 0;
                 }
-                video.start();
+                mVideo.start();
                 break;
 
             case R.id.custom_media_controller_pause_button:
                 managePlayButton();
-                stopPosition = video.getCurrentPosition();
-                video.suspend();
+                mStopPosition = mVideo.getCurrentPosition();
+                mVideo.suspend();
                 break;
 
             case R.id.custom_media_controller_back_button:
@@ -103,26 +108,26 @@ public class CustomMediaFullScreenDialog extends Dialog implements android.view.
     //------------------------ HELPER -----------------------------
 
     private void switchPhotoOrVideoVisibility(boolean isPhoto) {
-        photo.setVisibility(isPhoto ? View.VISIBLE : View.GONE);
-        play.setVisibility(isPhoto ? View.GONE : View.VISIBLE);
-        pause.setVisibility(isPhoto ? View.GONE : View.VISIBLE);
-        video.setVisibility(isPhoto ? View.GONE : View.VISIBLE);
+        mPhoto.setVisibility(isPhoto ? View.VISIBLE : View.GONE);
+        mPlay.setVisibility(isPhoto ? View.GONE : View.VISIBLE);
+        mPause.setVisibility(isPhoto ? View.GONE : View.VISIBLE);
+        mVideo.setVisibility(isPhoto ? View.GONE : View.VISIBLE);
     }
 
     private void managePlayButton() {
-        play.setChecked(!video.isPlaying());
-        pause.setChecked(video.isPlaying());
-        setIconStyle(play);
-        setIconStyle(pause);
+        mPlay.setChecked(!mVideo.isPlaying());
+        mPause.setChecked(mVideo.isPlaying());
+        setIconStyle(mPlay);
+        setIconStyle(mPause);
     }
 
     private void setIconStyle(@NonNull CheckedTextView icon) {
         icon.setBackground(icon.isChecked() ?
-                ResourcesCompat.getDrawable(context.getResources(), R.drawable.custom_round_white, null)
+                ResourcesCompat.getDrawable(mContext.getResources(), R.drawable.custom_round_white, null)
                 : null
         );
         icon.setTextColor(icon.isChecked() ?
-                context.getResources().getColor(R.color.black)
-                : context.getResources().getColor(R.color.white));
+                mContext.getResources().getColor(R.color.black)
+                : mContext.getResources().getColor(R.color.white));
     }
 }

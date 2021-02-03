@@ -15,4 +15,4 @@ public class AddPropertyLocationInteractor extends PropertyBaseInteractor {
     public Completable addPropertyLocation(PropertyLocation propertyLocation) {
         return propertyDataSource.addPropertyLocation(propertyLocation);
     }
-    }
+}

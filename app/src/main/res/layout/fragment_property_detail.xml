@@ -3,12 +3,29 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:paddingBottom="24dp"
+    android:paddingBottom="@dimen/update_button_frame_size"
     tools:context="com.openclassrooms.realestatemanager.presentation.ui.fragment.PropertyDetailFragment">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
+
+        <TextView
+            android:id="@+id/fragment_detail_sold_text_view"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="?attr/colorAccent"
+            android:paddingTop="@dimen/little_marge"
+            android:paddingBottom="@dimen/little_marge"
+            android:text="@string/sold"
+            android:textAlignment="center"
+            android:textAppearance="?attr/textAppearanceHeadline2"
+            android:textColor="?attr/colorOnPrimary"
+            android:visibility="gone"
+            app:layout_constraintBottom_toTopOf="@id/fragment_detail_media_layout"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
         <include
             android:id="@+id/fragment_detail_media_layout"
@@ -19,12 +36,12 @@
             app:layout_constraintBottom_toTopOf="@id/fragment_detail_description_layout"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toBottomOf="@id/fragment_detail_sold_text_view" />
 
         <FrameLayout
             style="@style/basicSeparatorStyle"
             android:layout_width="match_parent"
-            android:layout_height="2dp"
+            android:layout_height="@dimen/separator_height"
             app:layout_constraintBottom_toTopOf="@id/fragment_detail_description_layout"
             app:layout_constraintTop_toBottomOf="@id/fragment_detail_media_layout" />
 
@@ -42,7 +59,7 @@
         <FrameLayout
             style="@style/basicSeparatorStyle"
             android:layout_width="match_parent"
-            android:layout_height="2dp"
+            android:layout_height="@dimen/separator_height"
             app:layout_constraintBottom_toTopOf="@id/fragment_detail_information_layout"
             app:layout_constraintTop_toBottomOf="@id/fragment_detail_description_layout" />
 
@@ -57,5 +74,6 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/fragment_detail_description_layout" />
+
     </androidx.constraintlayout.widget.ConstraintLayout>
 </ScrollView>

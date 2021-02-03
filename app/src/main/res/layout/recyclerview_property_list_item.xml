@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
 
@@ -10,46 +11,76 @@
         android:layout_height="@dimen/thumbnail_size"
         android:contentDescription="@string/property_item_photo"
         android:scaleType="centerCrop"
-        android:src="@drawable/img_contemporary_styled_house"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@id/property_item_type"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
-        android:id="@+id/property_item_type"
-        style="@style/recycler_view_property_list_item_type"
+        android:id="@+id/property_item_sold"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:alpha="0.7"
+        android:background="@color/custom_pink_dark"
+        android:paddingTop="@dimen/little_marge"
+        android:paddingBottom="@dimen/little_marge"
+        android:text="@string/sold"
+        android:textAlignment="center"
+        android:textColor="?attr/colorOnPrimary"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="@id/property_item_photo"
+        app:layout_constraintEnd_toEndOf="@id/property_item_photo"
+        app:layout_constraintStart_toStartOf="@id/property_item_photo" />
+
+    <TextView
+        android:id="@+id/property_item_type"
+        android:text="@string/property_type"
+        android:textAppearance="?attr/textAppearanceHeadline1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:lines="1"
+        android:paddingEnd="@dimen/little_marge"
+        android:layout_marginStart="@dimen/little_marge"
+        android:textAlignment="textStart"
         app:layout_constraintBottom_toTopOf="@id/property_item_town"
-        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@id/property_item_photo"
-        app:layout_constraintTop_toTopOf="@id/property_item_photo" />
+        app:layout_constraintTop_toTopOf="@id/property_item_photo"
+        tools:ignore="RtlSymmetry" />
 
     <TextView
         android:id="@+id/property_item_town"
-        style="@style/recycler_view_property_list_item_town"
+        android:text="@string/town"
+        android:textAppearance="?attr/textAppearanceSubtitle1"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         app:layout_constraintBottom_toTopOf="@id/property_item_price"
-        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="@id/property_item_type"
         app:layout_constraintTop_toBottomOf="@id/property_item_type" />
 
     <TextView
         android:id="@+id/property_item_price"
-        style="@style/recycler_view_property_list_item_price"
-        android:layout_width="0dp"
+        android:text="@string/price"
+        android:textAppearance="?attr/textAppearanceHeadline1"
+        android:textColor="?attr/colorAccent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         app:layout_constraintBottom_toBottomOf="@id/property_item_photo"
-        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="@id/property_item_type"
         app:layout_constraintTop_toBottomOf="@id/property_item_town" />
 
+    <include
+        android:id="@+id/property_detail_item_loader"
+        layout="@layout/loader_layout"
+        android:layout_width="@dimen/thumbnail_size"
+        android:layout_height="@dimen/thumbnail_size"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="@id/property_item_photo"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
     <FrameLayout
         android:layout_width="0dp"
-        android:layout_height="1dp"
-        android:background="@color/quantum_grey"
+        android:layout_height="@dimen/vertical_separator_width"
+        android:background="@color/custom_grey"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@id/property_item_photo" />

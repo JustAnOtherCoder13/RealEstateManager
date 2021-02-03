@@ -14,88 +14,94 @@ import com.bumptech.glide.request.target.CustomTarget;
 import com.bumptech.glide.request.transition.Transition;
 import com.openclassrooms.realestatemanager.R;
 import com.openclassrooms.realestatemanager.databinding.RecyclerviewPropertyDetailItemBinding;
-import com.picone.core.domain.entity.PropertyPhoto;
+import com.picone.core.domain.entity.PropertyMedia;
 
 import java.util.List;
 
+import static com.openclassrooms.realestatemanager.presentation.utils.ManageImageHelper.playLoader;
 import static com.openclassrooms.realestatemanager.presentation.utils.PathUtil.isImageFileFromPath;
-import static com.openclassrooms.realestatemanager.presentation.utils.PathUtil.isVideoFileFromPath;
 import static com.picone.core.utils.ConstantParameters.ADD_PHOTO;
 
 public class PhotoRecyclerViewAdapter extends RecyclerView.Adapter<PhotoRecyclerViewAdapter.ViewHolder> {
 
-    private List<PropertyPhoto> mPhotos;
-    private boolean isPhotoHaveBeenDeleted;
+    private List<PropertyMedia> mMedias;
+    private boolean mIsPhotoHaveBeenDeleted;
 
-    public PhotoRecyclerViewAdapter(List<PropertyPhoto> mPhotos) {
-        this.mPhotos = mPhotos;
+    public PhotoRecyclerViewAdapter(List<PropertyMedia> mMedias) {
+        this.mMedias = mMedias;
     }
 
     @NonNull
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         RecyclerviewPropertyDetailItemBinding binding = RecyclerviewPropertyDetailItemBinding.inflate(LayoutInflater.from(parent.getContext()), parent, false);
+        binding.propertyDetailItemLoader.animationView.setAnimation(R.raw.loader);
         return new ViewHolder(binding);
     }
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-        PropertyPhoto photo = mPhotos.get(position);
-        if (isPhotoHaveBeenDeleted) {
+        PropertyMedia media = mMedias.get(position);
+        //show play logo if is video
+        holder.binding.propertyDetailItemPlayLogo.setVisibility(isImageFileFromPath(media.getPhotoPath()) ?
+                View.GONE
+                : View.VISIBLE);
+        //if media have been deleted reset media checkbox
+        if (mIsPhotoHaveBeenDeleted) {
             holder.binding.propertyDetailItemCheckBox.setChecked(false);
             holder.binding.propertyDetailItemCheckBox.setVisibility(View.GONE);
         }
-        if (photo.getPhotoPath().equals(ADD_PHOTO)) {
-            holder.binding.propertyDetailItemPhoto.setImageResource(R.drawable.img_add_photo);
-            holder.binding.propertyDetailItemPhotoDescription.setVisibility(View.GONE);
-            holder.binding.propertyDetailItemVideo.setVisibility(View.GONE);
-        } else {
-            switchPhotoOrVideoVisibility(isImageFileFromPath(photo.getPhotoPath()), holder);
-            if (isImageFileFromPath(photo.getPhotoPath()))
-                setPropertyPhoto(holder, photo);
-            else if (isVideoFileFromPath(photo.getPhotoPath()))
-                setPropertyVideo(holder, photo);
-                //TODO just for mock, remove before "soutenance"
-            else switchPhotoOrVideoVisibility(true, holder);
-            holder.binding.propertyDetailItemPhotoDescription.setVisibility(View.VISIBLE);
-            holder.binding.propertyDetailItemPhotoDescription.setText(photo.getDescription());
+        //if ADD_PHOTO init add view
+        if (media.getPhotoPath().equals(ADD_PHOTO)) {
+            playLoader(false,holder.binding.propertyDetailItemLoader.animationView);
+            holder.binding.propertyDetailItemPlayLogo.setVisibility(View.GONE);
+            holder.binding.propertyDetailItemMedia.setImageResource(R.drawable.img_add_photo);
+            holder.binding.propertyDetailItemMediaDescription.setVisibility(View.GONE);
+        } else {//else init view with media
+            setPropertyMedia(holder, media);
+            holder.binding.propertyDetailItemMediaDescription.setVisibility(View.VISIBLE);
+            holder.binding.propertyDetailItemMediaDescription.setText(media.getDescription());
         }
     }
 
     @Override
     public int getItemCount() {
-        return mPhotos.size();
+        return mMedias.size();
     }
-
     static class ViewHolder extends RecyclerView.ViewHolder {
-
         RecyclerviewPropertyDetailItemBinding binding;
-
         public ViewHolder(@NonNull RecyclerviewPropertyDetailItemBinding binding) {
             super(binding.getRoot());
             this.binding = binding;
         }
     }
 
-    public void updatePhotos(List<PropertyPhoto> updatedPhotos) {
-        this.mPhotos = updatedPhotos;
+    public void updatePhotos(List<PropertyMedia> updatedPhotos) {
+        this.mMedias = updatedPhotos;
         notifyDataSetChanged();
     }
 
     public void isPhotoHaveBeenDeleted(boolean isPhotoHaveBeenDeleted) {
-        this.isPhotoHaveBeenDeleted = isPhotoHaveBeenDeleted;
+        this.mIsPhotoHaveBeenDeleted = isPhotoHaveBeenDeleted;
     }
 
     //---------------------- HELPER -----------------------------------
 
-    private void setPropertyPhoto(@NonNull ViewHolder holder, @NonNull PropertyPhoto photo) {
-        Glide.with(holder.binding.propertyDetailItemPhoto.getContext())
-                .load(photo.getPhotoPath())
+    private void setPropertyMedia(@NonNull ViewHolder holder, @NonNull PropertyMedia media) {
+        Glide.with(holder.binding.propertyDetailItemMedia.getContext())
+                .load(media.getPhotoPath())
                 .centerCrop()
                 .into(new CustomTarget<Drawable>() {
                     @Override
+                    public void onLoadStarted(@Nullable Drawable placeholder) {
+                        super.onLoadStarted(placeholder);
+                        playLoader(true,holder.binding.propertyDetailItemLoader.animationView);
+                    }
+
+                    @Override
                     public void onResourceReady(@NonNull Drawable resource, @Nullable Transition<? super Drawable> transition) {
-                        holder.binding.propertyDetailItemPhoto.setImageDrawable(resource);
+                        holder.binding.propertyDetailItemMedia.setImageDrawable(resource);
+                        playLoader(false,holder.binding.propertyDetailItemLoader.animationView);
                     }
 
                     @Override
@@ -103,14 +109,4 @@ public class PhotoRecyclerViewAdapter extends RecyclerView.Adapter<PhotoRecycler
                     }
                 });
     }
-
-    private void setPropertyVideo(@NonNull ViewHolder holder, @NonNull PropertyPhoto photo) {
-        holder.binding.propertyDetailItemVideo.setVideoPath(photo.getPhotoPath());
-    }
-
-    private void switchPhotoOrVideoVisibility(boolean isPhoto, @NonNull ViewHolder holder) {
-        holder.binding.propertyDetailItemPhoto.setVisibility(isPhoto ? View.VISIBLE : View.GONE);
-        holder.binding.propertyDetailItemVideo.setVisibility(isPhoto ? View.GONE : View.VISIBLE);
-    }
-
 }

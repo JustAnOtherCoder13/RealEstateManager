@@ -13,7 +13,8 @@
         android:id="@+id/fragment_detail_area_custom_view"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        style="@style/property_detail_custom_view_area"
+        android:layout_marginTop="@dimen/basic_marge"
+        android:layout_marginBottom="@dimen/basic_marge"
         app:icon="@drawable/ic_fragment_detail_area_24"
         app:layout_constraintBottom_toTopOf="@id/fragment_detail_numbers_of_rooms_custom_view"
         app:layout_constraintStart_toStartOf="parent"
@@ -22,9 +23,9 @@
 
     <com.openclassrooms.realestatemanager.presentation.utils.customView.DetailInformationCustomView
         android:id="@+id/fragment_detail_numbers_of_rooms_custom_view"
-        style="@style/property_detail_custom_view_margin_bottom"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:layout_marginBottom="@dimen/basic_marge"
         app:icon="@drawable/ic_fragment_detail_home_24"
         app:layout_constraintBottom_toTopOf="@id/fragment_detail_numbers_of_bathrooms_custom_view"
         app:layout_constraintStart_toStartOf="parent"
@@ -33,9 +34,9 @@
 
     <com.openclassrooms.realestatemanager.presentation.utils.customView.DetailInformationCustomView
         android:id="@+id/fragment_detail_numbers_of_bathrooms_custom_view"
-        style="@style/property_detail_custom_view_margin_bottom"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:layout_marginBottom="@dimen/basic_marge"
         app:icon="@drawable/ic_fragment_detail_bathroom_24"
         app:layout_constraintBottom_toTopOf="@id/fragment_detail_numbers_of_bedrooms_custom_view"
         app:layout_constraintStart_toStartOf="parent"
@@ -44,9 +45,9 @@
 
     <com.openclassrooms.realestatemanager.presentation.utils.customView.DetailInformationCustomView
         android:id="@+id/fragment_detail_numbers_of_bedrooms_custom_view"
-        style="@style/property_detail_custom_view_margin_bottom"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:layout_marginBottom="@dimen/basic_marge"
         app:icon="@drawable/ic_fragment_detail_bedroom_24"
         app:layout_constraintBottom_toTopOf="@id/fragment_detail_location_custom_view"
         app:layout_constraintStart_toStartOf="parent"
@@ -55,20 +56,36 @@
 
     <com.openclassrooms.realestatemanager.presentation.utils.customView.DetailInformationCustomView
         android:id="@+id/fragment_detail_location_custom_view"
-        style="@style/property_detail_information_custom_view_location"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/basic_marge"
+        android:inputType="textMultiLine"
+        android:lines="8"
+        android:maxWidth="@dimen/add_property_information_layout_location_max_width"
+        android:singleLine="false"
         app:icon="@drawable/ic_location_on_24"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/fragment_detail_numbers_of_bedrooms_custom_view" />
+        app:layout_constraintTop_toBottomOf="@id/fragment_detail_numbers_of_bedrooms_custom_view"
+        app:title="@string/propertyLocation" />
+
+    <FrameLayout
+        android:layout_width="@dimen/static_map_size"
+        android:layout_height="@dimen/static_map_size"
+        android:layout_marginTop="@dimen/little_marge"
+        android:layout_marginEnd="@dimen/little_marge"
+        android:alpha="0.1"
+        android:background="@color/black"
+        app:layout_constraintEnd_toEndOf="@id/fragment_detail_maps_view"
+        app:layout_constraintTop_toTopOf="@id/fragment_detail_maps_view" />
 
     <ImageView
         android:id="@+id/fragment_detail_maps_view"
         android:layout_width="@dimen/static_map_size"
         android:layout_height="@dimen/static_map_size"
-        android:background="@color/custom_pink_light"
+        android:background="?attr/colorControlNormal"
         android:contentDescription="@string/location_maps_view"
+        android:padding="@dimen/separator_height"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@id/fragment_detail_numbers_of_bedrooms_custom_view"

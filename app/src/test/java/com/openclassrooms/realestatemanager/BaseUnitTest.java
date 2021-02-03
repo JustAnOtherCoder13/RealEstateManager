@@ -2,6 +2,7 @@ package com.openclassrooms.realestatemanager;
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule;
 import androidx.lifecycle.Observer;
+import androidx.lifecycle.SavedStateHandle;
 
 import com.openclassrooms.realestatemanager.presentation.viewModels.AgentViewModel;
 import com.openclassrooms.realestatemanager.presentation.viewModels.PropertyViewModel;
@@ -10,8 +11,9 @@ import com.picone.core.data.property.PropertyRepository;
 import com.picone.core.data.realEstateAgent.RealEstateAgentRepository;
 import com.picone.core.domain.entity.PointOfInterest;
 import com.picone.core.domain.entity.Property;
+import com.picone.core.domain.entity.PropertyInformation;
 import com.picone.core.domain.entity.PropertyLocation;
-import com.picone.core.domain.entity.PropertyPhoto;
+import com.picone.core.domain.entity.PropertyMedia;
 import com.picone.core.domain.entity.RealEstateAgent;
 import com.picone.core.domain.interactors.agent.GetAgentInteractor;
 import com.picone.core.domain.interactors.property.AddPropertyInteractor;
@@ -19,18 +21,14 @@ import com.picone.core.domain.interactors.property.GetAllPropertiesInteractor;
 import com.picone.core.domain.interactors.property.UpdatePropertyInteractor;
 import com.picone.core.domain.interactors.property.location.AddPropertyLocationInteractor;
 import com.picone.core.domain.interactors.property.location.GetAllRegionsForAllPropertiesInteractor;
-import com.picone.core.domain.interactors.property.location.GetPropertyLocationInteractor;
 import com.picone.core.domain.interactors.property.location.UpdatePropertyLocationInteractor;
 import com.picone.core.domain.interactors.property.maps.GetNearBySearchForPropertyLocationInteractor;
 import com.picone.core.domain.interactors.property.maps.GetPropertyLocationForAddressInteractor;
-import com.picone.core.domain.interactors.property.photo.AddPropertyPhotoInteractor;
-import com.picone.core.domain.interactors.property.photo.DeletePropertyPhotoInteractor;
-import com.picone.core.domain.interactors.property.photo.GetAllPhotosForAllPropertiesInteractor;
-import com.picone.core.domain.interactors.property.photo.GetAllPropertyPhotosForPropertyIdInteractor;
+import com.picone.core.domain.interactors.property.media.AddPropertyMediaInteractor;
+import com.picone.core.domain.interactors.property.media.DeletePropertyMediaInteractor;
 import com.picone.core.domain.interactors.property.pointOfInterest.AddPropertyPointOfInterestInteractor;
 import com.picone.core.domain.interactors.property.pointOfInterest.DeletePointOfInterestInteractor;
 import com.picone.core.domain.interactors.property.pointOfInterest.GetAllPointOfInterestForPropertyIdInteractor;
-import com.picone.core.domain.interactors.property.pointOfInterest.GetAllPointOfInterestsForAllPropertiesInteractor;
 import com.picone.core.utils.SchedulerProvider;
 
 import org.junit.Before;
@@ -55,20 +53,22 @@ public abstract class BaseUnitTest {
     @Rule
     public InstantTaskExecutorRule instantTaskExecutorRule = new InstantTaskExecutorRule();
 
-    final int propertyId = Generator.generateProperties().get(0).getId();
+    final int propertyId = Generator.generatePropertiesInformation().get(0).getId();
 
-    Property propertyToAdd = new Property(3,2,"property3Adress","zone","House",120,6,350000,"description",2,1,false,"0","0");
-    Property firstPropertyToUpdate = Generator.generateProperties().get(0);
-    List<PropertyPhoto> photoForPropertyId = new ArrayList<>();
-    PropertyPhoto photoToAdd = new PropertyPhoto(5,"newPhoto","newDescription",1);
-    PropertyPhoto photoToDelete = Generator.generatePhotos().get(1);
+    PropertyInformation propertyInformationToAdd = new PropertyInformation(3, 2, "House", 120, 6, 350000, "description", 2, 1, false, "0", "0");
+    PropertyInformation firstPropertyInformationToUpdate = Generator.generatePropertiesInformation().get(0);
+    Property propertyToAdd = new Property();
+    List<PropertyMedia> photoForPropertyId = new ArrayList<>();
+    PropertyMedia photoToAdd = new PropertyMedia(5, "newPhoto", "newDescription", 1);
+    PropertyMedia photoToDelete = Generator.generatePhotos().get(1);
     List<PointOfInterest> pointOfInterestForPropertyId = new ArrayList<>();
-    PointOfInterest pointOfInterestToAdd = new PointOfInterest(5,1,"school",0.0,0.0,"school","icon");
-    PointOfInterest newPointOfInterest = new PointOfInterest(1,1,"restaurant",0.0,0.0,"restaurant","icon");
+    PointOfInterest pointOfInterestToAdd = new PointOfInterest(5, 1, "school", 0.0, 0.0, "school", "icon");
+    PointOfInterest newPointOfInterest = new PointOfInterest(1, 1, "restaurant", 0.0, 0.0, "restaurant", "icon");
     List<PointOfInterest> pointOfInterestsToAdd = new ArrayList<>();
     List<PointOfInterest> updatedPointOfInterests = new ArrayList<>();
+    List<Property> allProperties = new ArrayList<>();
 
-    PropertyLocation propertyLocationToAdd = new PropertyLocation(3,42.543732,5.036950,"region",propertyToAdd.getId());
+    PropertyLocation propertyLocationToAdd = new PropertyLocation(3, 42.543732, 5.036950, "property3Adress", "region", propertyInformationToAdd.getId());
     PropertyLocation updatedPropertyLocation = propertyLocationToAdd;
     SchedulerProvider schedulerProvider = new SchedulerProvider(Schedulers.trampoline(), Schedulers.trampoline());
 
@@ -87,13 +87,9 @@ public abstract class BaseUnitTest {
     @InjectMocks
     GetAllPointOfInterestForPropertyIdInteractor getAllPointOfInterestForPropertyIdInteractor;
     @InjectMocks
-    AddPropertyPhotoInteractor addPropertyPhotoInteractor;
+    AddPropertyMediaInteractor addPropertyMediaInteractor;
     @InjectMocks
-    DeletePropertyPhotoInteractor deletePropertyPhotoInteractor;
-    @InjectMocks
-    GetAllPropertyPhotosForPropertyIdInteractor getAllPropertyPhotosForPropertyIdInteractor;
-    @InjectMocks
-    GetPropertyLocationInteractor getPropertyLocationInteractor;
+    DeletePropertyMediaInteractor deletePropertyMediaInteractor;
     @InjectMocks
     AddPropertyLocationInteractor addPropertyLocationInteractor;
     @InjectMocks
@@ -105,11 +101,9 @@ public abstract class BaseUnitTest {
     @InjectMocks
     DeletePointOfInterestInteractor deletePointOfInterestInteractor;
     @InjectMocks
-    GetAllPointOfInterestsForAllPropertiesInteractor getAllPointOfInterestsForAllPropertiesInteractor;
-    @InjectMocks
-    GetAllPhotosForAllPropertiesInteractor getAllPhotosForAllPropertiesInteractor;
-    @InjectMocks
     GetAllRegionsForAllPropertiesInteractor getAllRegionsForAllPropertiesInteractor;
+    @Mock
+    SavedStateHandle savedStateHandle;
 
     //mock realEstateAgentViewModel
     AgentViewModel agentViewModel;
@@ -122,20 +116,34 @@ public abstract class BaseUnitTest {
     @Mock
     Observer<List<Property>> propertyObserver;
     @Mock
-    Observer<List<PointOfInterest>> pointOfInterestObserver;
-    @Mock
-    Observer<List<PropertyPhoto>> photoObserver;
-    @Mock
     Observer<RealEstateAgent> agentObserver;
-    @Mock
-    Observer<PropertyLocation> locationObserver;
 
     @Before
-    public void setup(){
+    public void setup() {
         MockitoAnnotations.initMocks(this);
 
-        for (int i = 0; i<3;i++)
-        photoForPropertyId.add(Generator.generatePhotos().get(i));
+        for (int i = 0; i < 3; i++)
+            photoForPropertyId.add(Generator.generatePhotos().get(i));
+
+        for (int i = 0; i < Generator.generatePropertiesInformation().size(); i++) {
+            Property property = new Property();
+            property.propertyInformation = Generator.generatePropertiesInformation().get(i);
+            property.propertyLocation = Generator.generatePropertyLocation().get(i);
+            property.photos = new ArrayList<>();
+            property.pointOfInterests = new ArrayList<>();
+            for (PropertyMedia propertyMedia : Generator.generatePhotos())
+                if (propertyMedia.getPropertyId() == property.propertyInformation.getId())
+                    property.photos.add(propertyMedia);
+            for (PointOfInterest pointOfInterest : Generator.generatePointOfInterests())
+                if (pointOfInterest.getPropertyId() == property.propertyInformation.getId())
+                    property.pointOfInterests.add(pointOfInterest);
+
+            allProperties.add(property);
+        }
+
+        propertyToAdd.propertyInformation = propertyInformationToAdd;
+        propertyToAdd.propertyLocation = propertyLocationToAdd;
+        propertyToAdd.pointOfInterests = pointOfInterestsToAdd;
 
         pointOfInterestForPropertyId.add(Generator.generatePointOfInterests().get(0));
         pointOfInterestsToAdd.add(pointOfInterestToAdd);
@@ -144,48 +152,34 @@ public abstract class BaseUnitTest {
         updatedPropertyLocation.setRegion("new region");
 
         //initViewModels
-        propertyViewModel = new PropertyViewModel(getAllPropertiesInteractor, getAllPointOfInterestForPropertyIdInteractor,getAllPointOfInterestsForAllPropertiesInteractor, getAllPropertyPhotosForPropertyIdInteractor,getAllPhotosForAllPropertiesInteractor, getAllRegionsForAllPropertiesInteractor, addPropertyInteractor, addPropertyPointOfInterestInteractor, addPropertyPhotoInteractor, deletePropertyPhotoInteractor, updatePropertyInteractor,getPropertyLocationInteractor,addPropertyLocationInteractor,getPropertyLocationForAddressInteractor, getNearBySearchForPropertyLocationInteractor,updatePropertyLocationInteractor,deletePointOfInterestInteractor,schedulerProvider);
-        agentViewModel = new AgentViewModel(getAgentInteractor,schedulerProvider);
+        propertyViewModel = new PropertyViewModel(getAllPropertiesInteractor, getAllPointOfInterestForPropertyIdInteractor, getAllRegionsForAllPropertiesInteractor, addPropertyInteractor, addPropertyPointOfInterestInteractor, addPropertyMediaInteractor, deletePropertyMediaInteractor, updatePropertyInteractor, addPropertyLocationInteractor, getPropertyLocationForAddressInteractor, getNearBySearchForPropertyLocationInteractor, updatePropertyLocationInteractor, deletePointOfInterestInteractor,savedStateHandle, schedulerProvider);
+        agentViewModel = new AgentViewModel(getAgentInteractor, schedulerProvider);
 
         //initObserver
         propertyViewModel.getAllProperties.observeForever(propertyObserver);
-        propertyViewModel.getAllPointOfInterestForProperty.observeForever(pointOfInterestObserver);
-        propertyViewModel.getAllPropertyPhotosForProperty.observeForever(photoObserver);
-        propertyViewModel.getPropertyLocationForProperty.observeForever(locationObserver);
 
         agentViewModel.getAgent.observeForever(agentObserver);
 
         //stub return
         when(propertyRepository.getAllProperties())
-                .thenReturn(Observable.create(emitter -> emitter.onNext(Generator.generateProperties())));
-        when(propertyRepository.addProperty(propertyToAdd))
+                .thenReturn(Observable.create(emitter -> emitter.onNext(allProperties)));
+        when(propertyRepository.addProperty(propertyInformationToAdd))
                 .thenReturn(Completable.create
                         (emitter -> Objects.requireNonNull(propertyViewModel.getAllProperties.getValue()).add(propertyToAdd)));
-        when(propertyRepository.updateProperty(firstPropertyToUpdate))
+        when(propertyRepository.updateProperty(firstPropertyInformationToUpdate))
                 .thenReturn(Completable.create(CompletableEmitter::onComplete));
-
-        when(propertyRepository.getAllPhotosForPropertyId(propertyId))
-                .thenReturn(Observable.create(emitter -> emitter.onNext(photoForPropertyId) ));
-        when(propertyRepository.deletePropertyPhoto(photoToDelete))
-                .thenReturn(Completable.create(emitter -> Objects.requireNonNull(propertyViewModel.getAllPropertyPhotosForProperty.getValue()).remove(photoToDelete)));
-        when(propertyRepository.addPropertyPhoto(photoToAdd))
-                .thenReturn(Completable.create(emitter -> Objects.requireNonNull(propertyViewModel.getAllPropertyPhotosForProperty.getValue()).add(photoToAdd)));
 
         when(propertyRepository.getAllPointOfInterestForPropertyId(propertyId))
                 .thenReturn(Observable.create(emitter -> emitter.onNext(pointOfInterestForPropertyId)));
-        when(propertyRepository.addPropertyPointOfInterest(pointOfInterestToAdd))
-                .thenReturn(Completable.create(emitter -> Objects.requireNonNull(propertyViewModel.getAllPointOfInterestForProperty.getValue()).add(pointOfInterestToAdd)));
         when(propertyRepository.deletePropertyPointOfInterest(Generator.generatePointOfInterests().get(0)))
                 .thenReturn(Completable.create(CompletableEmitter::onComplete));
         when(propertyRepository.deletePropertyPointOfInterest(pointOfInterestToAdd))
                 .thenReturn(Completable.create(CompletableEmitter::onComplete));
-        when(propertyRepository.addPropertyPointOfInterest(newPointOfInterest))
-                .thenReturn(Completable.create(emitter -> Objects.requireNonNull(propertyViewModel.getAllPointOfInterestForProperty.getValue()).add(newPointOfInterest)));
 
 
         when(propertyRepository.getPropertyLocationForPropertyId(propertyId))
                 .thenReturn(Observable.create(emitter -> emitter.onNext(Generator.generatePropertyLocation().get(0))));
-        when(propertyRepository.getPropertyLocationForPropertyId(propertyToAdd.getId()))
+        when(propertyRepository.getPropertyLocationForPropertyId(propertyInformationToAdd.getId()))
                 .thenReturn(Observable.create(emitter -> emitter.onNext(propertyLocationToAdd)));
         when(propertyRepository.addPropertyLocation(propertyLocationToAdd))
                 .thenReturn(Completable.create(CompletableEmitter::onComplete));
@@ -196,8 +190,7 @@ public abstract class BaseUnitTest {
                 .thenReturn(Observable.create(emitter -> emitter.onNext(Generator.generateAgents())));
         //set initial values
         propertyViewModel.setAllProperties();
-        propertyViewModel.setAllPhotosForProperty(Generator.generateProperties().get(0));
-        propertyViewModel.setAllPointOfInterestForProperty(Generator.generateProperties().get(0));
+        propertyViewModel.setAllPointOfInterestForProperty(allProperties.get(0));
 
         agentViewModel.setAgent();
     }

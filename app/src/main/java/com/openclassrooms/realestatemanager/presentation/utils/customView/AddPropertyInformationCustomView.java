@@ -36,6 +36,7 @@ public class AddPropertyInformationCustomView extends ConstraintLayout {
         mAddPropertyInformationEditText.setInputType(attributes.getInt(R.styleable.AddPropertyInformationCustomView_android_inputType, InputType.TYPE_CLASS_NUMBER));
         mAddPropertyInformationEditText.setSingleLine(attributes.getBoolean(R.styleable.AddPropertyInformationCustomView_android_singleLine, true));
         mAddPropertyInformationEditText.setLines(attributes.getInt(R.styleable.AddPropertyInformationCustomView_android_lines, 1));
+
         attributes.recycle();
     }
 
@@ -50,7 +51,7 @@ public class AddPropertyInformationCustomView extends ConstraintLayout {
     }
 
     @NonNull
-    public  Boolean isEditTextEmpty() {
+    public Boolean isEditTextEmpty() {
         return mAddPropertyInformationEditText.getText().toString().trim().isEmpty();
     }
 }

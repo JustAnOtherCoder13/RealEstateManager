@@ -6,28 +6,36 @@
 
     <TextView
         android:id="@+id/add_property_sold_title"
-        style="@style/fragment_add_property_sold_title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/basic_marge"
+        android:text="@string/sold"
+        android:textAppearance="?attr/textAppearanceHeadline1"
         app:layout_constraintBottom_toBottomOf="@id/add_property_sold_checkbox"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="@id/add_property_sold_checkbox" />
 
     <com.google.android.material.checkbox.MaterialCheckBox
         android:id="@+id/add_property_sold_checkbox"
-        style="@style/Widget.FragmentAddPropertySoldCheckBox"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/big_marge"
+        android:layout_marginEnd="@dimen/big_marge"
         app:layout_constraintStart_toEndOf="@id/add_property_sold_title"
         app:layout_constraintTop_toTopOf="parent" />
 
     <EditText
         android:id="@+id/add_property_sold_edit_text"
-        style="@style/fragment_add_property_sold_date"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:layout_marginEnd="@dimen/big_marge"
+        android:layout_marginBottom="@dimen/basic_marge"
         android:autofillHints="@string/dd_mm_yyyy"
         android:hint="@string/dd_mm_yyyy"
+        android:inputType="date"
+        android:textAppearance="?attr/textAppearanceBody1"
+        android:textColor="@color/custom_grey"
+        android:visibility="gone"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@id/add_property_sold_checkbox"
         app:layout_constraintTop_toTopOf="parent" />

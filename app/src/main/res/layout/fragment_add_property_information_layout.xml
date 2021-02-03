@@ -7,28 +7,34 @@
 
     <TextView
         android:id="@+id/add_property_information_title"
-        style="@style/fragment_property_information_title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/basic_marge"
+        android:layout_marginBottom="@dimen/basic_marge"
+        android:text="@string/information"
+        android:textAppearance="?attr/textAppearanceHeadline1"
         app:layout_constraintBottom_toTopOf="@id/add_property_information_type_title"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
         android:id="@+id/add_property_information_type_title"
-        style="@style/fragment_add_property_information_type"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:paddingBottom="@dimen/little_marge"
+        android:text="@string/property_type"
+        android:textAppearance="?attr/textAppearanceSubtitle1"
         app:layout_constraintBottom_toTopOf="@id/add_property_information_type"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/add_property_information_title" />
 
     <com.google.android.material.textfield.TextInputLayout
+        style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox.ExposedDropdownMenu"
         android:id="@+id/add_property_information_type"
-        style="@style/Widget.add_property_information_custom_view_property_type"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginBottom="@dimen/basic_marge"
         app:layout_constraintBottom_toTopOf="@id/add_property_information_price"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -55,9 +61,9 @@
 
     <com.openclassrooms.realestatemanager.presentation.utils.customView.AddPropertyInformationCustomView
         android:id="@+id/add_property_information_area"
-        style="@style/add_property_information_custom_view_area_and_bedroom"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/basic_marge"
         app:icon="@drawable/ic_fragment_detail_area_24"
         app:layout_constraintStart_toStartOf="@id/add_property_information_address"
         app:layout_constraintTop_toBottomOf="@id/add_property_information_price"
@@ -65,9 +71,14 @@
 
     <com.openclassrooms.realestatemanager.presentation.utils.customView.AddPropertyInformationCustomView
         android:id="@+id/add_property_information_address"
-        style="@style/add_property_information_custom_view_location"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/basic_marge"
+        android:layout_marginTop="@dimen/basic_marge"
+        android:inputType="textMultiLine"
+        android:lines="8"
+        android:maxWidth="@dimen/add_property_information_layout_location_max_width"
+        android:singleLine="false"
         app:icon="@drawable/ic_location_on_24"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/add_property_information_area"
@@ -84,9 +95,10 @@
 
     <com.openclassrooms.realestatemanager.presentation.utils.customView.AddPropertyInformationCustomView
         android:id="@+id/add_property_information_number_of_bathrooms"
-        style="@style/add_property_information_custom_view_bathrooms"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/basic_marge"
+        android:layout_marginEnd="@dimen/basic_marge"
         app:icon="@drawable/ic_fragment_detail_bathroom_24"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@id/add_property_information_number_of_rooms"
@@ -94,9 +106,9 @@
 
     <com.openclassrooms.realestatemanager.presentation.utils.customView.AddPropertyInformationCustomView
         android:id="@+id/add_property_information_number_of_bedrooms"
-        style="@style/add_property_information_custom_view_area_and_bedroom"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/basic_marge"
         app:icon="@drawable/ic_fragment_detail_bedroom_24"
         app:layout_constraintStart_toStartOf="@id/add_property_information_number_of_bathrooms"
         app:layout_constraintTop_toBottomOf="@id/add_property_information_number_of_bathrooms"

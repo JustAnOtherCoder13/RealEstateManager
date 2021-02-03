@@ -1,5 +1,7 @@
 package com.picone.core.domain.interactors.property.maps;
 
+import androidx.annotation.NonNull;
+
 import com.picone.core.data.property.PropertyRepository;
 import com.picone.core.domain.entity.Property;
 import com.picone.core.domain.entity.PropertyLocation;
@@ -14,21 +16,25 @@ public class GetPropertyLocationForAddressInteractor extends PropertyBaseInterac
         super(propertyDataSource);
     }
 
-    public Observable<PropertyLocation> getPropertyLocationForAddress(Property property, String googleKey) {
-        return propertyDataSource.getPropertyLocationForAddress(property.getAddress(), googleKey)
-                .map(propertyLocationPojo -> propertyLocationPojoToPropertyLocationModel(propertyLocationPojo, property));
+    public Observable<PropertyLocation> getPropertyLocationForAddress(@NonNull Property property, String googleKey) {
+        return propertyDataSource.getPropertyLocationForAddress(property.propertyLocation.getAddress(), googleKey)
+                .map(propertyLocationPojo ->
+                        propertyLocationPojoToPropertyLocationModel(propertyLocationPojo, property));
     }
 
-    private PropertyLocation propertyLocationPojoToPropertyLocationModel(PropertyLocationPojo propertyLocationPojo, Property property) {
+    private PropertyLocation propertyLocationPojoToPropertyLocationModel(@NonNull PropertyLocationPojo propertyLocationPojo, Property property) {
+        PropertyLocation propertyLocation = new PropertyLocation();
         if (propertyLocationPojo.getPropertyResults() != null
                 && !propertyLocationPojo.getPropertyResults().isEmpty())
-            return new PropertyLocation(
-                    property.getId(),
+            propertyLocation = new PropertyLocation(
+                    property.propertyInformation.getId(),
                     propertyLocationPojo.getPropertyResults().get(0).getPropertyGeometry().getPropertyLocation().getLat(),
                     propertyLocationPojo.getPropertyResults().get(0).getPropertyGeometry().getPropertyLocation().getLng(),
+                    propertyLocationPojo.getPropertyResults().get(0).getFormattedAddress(),
                     propertyLocationPojo.getPropertyResults().get(0).getAddressComponents().get(2).getShortName(),
-                    property.getId()
+                    property.propertyInformation.getId()
             );
-        else return new PropertyLocation();
+        property.propertyLocation=propertyLocation;
+        return propertyLocation;
     }
 }

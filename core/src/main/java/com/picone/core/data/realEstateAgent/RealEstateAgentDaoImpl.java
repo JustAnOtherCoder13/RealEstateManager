@@ -1,6 +1,6 @@
 package com.picone.core.data.realEstateAgent;
 
-import android.annotation.SuppressLint;
+import androidx.annotation.NonNull;
 
 import com.picone.core.data.RealEstateManagerRoomDatabase;
 import com.picone.core.domain.entity.RealEstateAgent;
@@ -16,13 +16,12 @@ public class RealEstateAgentDaoImpl {
     protected RealEstateManagerRoomDatabase mRoomDatabase;
     private RealEstateAgentRoomDao mRealEstateAgentRoomDao;
 
-    public RealEstateAgentDaoImpl(RealEstateManagerRoomDatabase mRoomDatabase) {
+    public RealEstateAgentDaoImpl(@NonNull RealEstateManagerRoomDatabase mRoomDatabase) {
         this.mRoomDatabase = mRoomDatabase;
         this.mRealEstateAgentRoomDao = mRoomDatabase.realEstateManagerRoomDao();
     }
 
-    @SuppressLint("CheckResult")
-    public Observable<RealEstateAgent> getAgent(){
+    public Observable<RealEstateAgent> getAgent() {
         return mRealEstateAgentRoomDao.getAgent();
     }
 

@@ -16,18 +16,14 @@ import com.picone.core.domain.interactors.property.GetAllPropertiesInteractor;
 import com.picone.core.domain.interactors.property.UpdatePropertyInteractor;
 import com.picone.core.domain.interactors.property.location.AddPropertyLocationInteractor;
 import com.picone.core.domain.interactors.property.location.GetAllRegionsForAllPropertiesInteractor;
-import com.picone.core.domain.interactors.property.location.GetPropertyLocationInteractor;
 import com.picone.core.domain.interactors.property.location.UpdatePropertyLocationInteractor;
 import com.picone.core.domain.interactors.property.maps.GetNearBySearchForPropertyLocationInteractor;
 import com.picone.core.domain.interactors.property.maps.GetPropertyLocationForAddressInteractor;
-import com.picone.core.domain.interactors.property.photo.AddPropertyPhotoInteractor;
-import com.picone.core.domain.interactors.property.photo.DeletePropertyPhotoInteractor;
-import com.picone.core.domain.interactors.property.photo.GetAllPhotosForAllPropertiesInteractor;
-import com.picone.core.domain.interactors.property.photo.GetAllPropertyPhotosForPropertyIdInteractor;
+import com.picone.core.domain.interactors.property.media.AddPropertyMediaInteractor;
+import com.picone.core.domain.interactors.property.media.DeletePropertyMediaInteractor;
 import com.picone.core.domain.interactors.property.pointOfInterest.AddPropertyPointOfInterestInteractor;
 import com.picone.core.domain.interactors.property.pointOfInterest.DeletePointOfInterestInteractor;
 import com.picone.core.domain.interactors.property.pointOfInterest.GetAllPointOfInterestForPropertyIdInteractor;
-import com.picone.core.domain.interactors.property.pointOfInterest.GetAllPointOfInterestsForAllPropertiesInteractor;
 
 import javax.inject.Singleton;
 
@@ -106,11 +102,6 @@ public final class coreModule {
     }
 
     @Provides
-    static GetAllPropertyPhotosForPropertyIdInteractor provideGetAllPropertyPhotosForPropertyId(@ApplicationContext Context context) {
-        return new GetAllPropertyPhotosForPropertyIdInteractor(providePropertyDataSource(context));
-    }
-
-    @Provides
     static AddPropertyInteractor provideAddRoomProperty(@ApplicationContext Context context) {
         return new AddPropertyInteractor(providePropertyDataSource(context));
     }
@@ -121,23 +112,13 @@ public final class coreModule {
     }
 
     @Provides
-    static GetAllPointOfInterestsForAllPropertiesInteractor provideGetAllPointOfInterestForAllProperties(@ApplicationContext Context context){
-        return new GetAllPointOfInterestsForAllPropertiesInteractor(providePropertyDataSource(context));
+    static AddPropertyMediaInteractor provideAddRoomPropertyPhoto(@ApplicationContext Context context) {
+        return new AddPropertyMediaInteractor(providePropertyDataSource(context));
     }
 
     @Provides
-    static AddPropertyPhotoInteractor provideAddRoomPropertyPhoto(@ApplicationContext Context context) {
-        return new AddPropertyPhotoInteractor(providePropertyDataSource(context));
-    }
-
-    @Provides
-    static DeletePropertyPhotoInteractor provideDeleteRoomPropertyPhoto(@ApplicationContext Context context) {
-        return new DeletePropertyPhotoInteractor(providePropertyDataSource(context));
-    }
-
-    @Provides
-    static GetAllPhotosForAllPropertiesInteractor provideGetAllPhotosForAllProperties(@ApplicationContext Context context){
-        return new GetAllPhotosForAllPropertiesInteractor(providePropertyDataSource(context));
+    static DeletePropertyMediaInteractor provideDeleteRoomPropertyPhoto(@ApplicationContext Context context) {
+        return new DeletePropertyMediaInteractor(providePropertyDataSource(context));
     }
 
     @Provides
@@ -148,11 +129,6 @@ public final class coreModule {
     @Provides
     static GetAllRegionsForAllPropertiesInteractor provideGetAllRegionForAllProperties(@ApplicationContext Context context){
         return new GetAllRegionsForAllPropertiesInteractor(providePropertyDataSource(context));
-    }
-
-    @Provides
-    static GetPropertyLocationInteractor provideGetPropertyLocation(@ApplicationContext Context context) {
-        return new GetPropertyLocationInteractor(providePropertyDataSource(context));
     }
 
     @Provides

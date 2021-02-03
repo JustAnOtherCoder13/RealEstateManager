@@ -17,7 +17,7 @@ import java.util.List;
 
 public class CustomBottomSheetSpinner extends ConstraintLayout {
 
-    private AutoCompleteTextView autoCompleteTextView;
+    private AutoCompleteTextView mAutoCompleteTextView;
 
     public CustomBottomSheetSpinner(@NonNull Context context, @Nullable AttributeSet attrs) {
         super(context, attrs);
@@ -28,7 +28,7 @@ public class CustomBottomSheetSpinner extends ConstraintLayout {
     private void initView(@NonNull TypedArray attributes) {
         inflate(getContext(), R.layout.custom_bottom_sheet_spiner, this);
         TextView title = findViewById(R.id.bottom_sheet_spinner_title);
-        autoCompleteTextView = findViewById(R.id.bottom_sheet_spinner_text_view);
+        mAutoCompleteTextView = findViewById(R.id.bottom_sheet_spinner_text_view);
         title.setText(attributes.getText(R.styleable.CustomBottomSheetSpinner_title));
     }
 
@@ -40,10 +40,10 @@ public class CustomBottomSheetSpinner extends ConstraintLayout {
     }
 
     public String getText() {
-        return autoCompleteTextView.getText().toString();
+        return mAutoCompleteTextView.getText().toString();
     }
 
-    public void resetText(){
-        autoCompleteTextView.setText("");
+    public void resetText() {
+        mAutoCompleteTextView.setText("");
     }
 }

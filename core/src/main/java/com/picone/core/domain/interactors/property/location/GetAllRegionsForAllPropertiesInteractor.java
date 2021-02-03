@@ -18,10 +18,10 @@ public class GetAllRegionsForAllPropertiesInteractor extends PropertyBaseInterac
 
     public Observable<List<String>> getAllRegionsForAllProperties() {
         return propertyDataSource.getAllRegionsForAllProperties()
-                .map(this::removeMultipleSameValues);
+                .map(this::removeUnnecessaryValues);
     }
 
-    public List<String> removeMultipleSameValues(@NonNull List<String> allRegions) {
+    public List<String> removeUnnecessaryValues(@NonNull List<String> allRegions) {
         List<String> regionToPass = new ArrayList<>();
         for (String knownRegion : allRegions)
             if (!regionToPass.contains(knownRegion))

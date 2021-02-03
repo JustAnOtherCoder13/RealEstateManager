@@ -41,8 +41,16 @@
             app:popExitAnim="@anim/fragment_close_exit"
             />
         <action
-            android:id="@+id/action_addPropertyFragment_to_propertyDetailFragment"
-            app:destination="@id/propertyDetailFragment"
+            android:id="@+id/action_propertyDetailFragment_to_propertyListFragment"
+            app:destination="@id/propertyListFragment"
+            app:enterAnim="@anim/fragment_open_enter"
+            app:exitAnim="@anim/fragment_close_exit"
+            app:popEnterAnim="@anim/fragment_open_enter"
+            app:popExitAnim="@anim/fragment_close_exit"
+            />
+        <action
+            android:id="@+id/action_propertyDetailFragment_to_mapsFragment"
+            app:destination="@id/mapsFragment"
             app:enterAnim="@anim/fragment_open_enter"
             app:exitAnim="@anim/fragment_close_exit"
             app:popEnterAnim="@anim/fragment_open_enter"
@@ -63,6 +71,23 @@
             app:popEnterAnim="@anim/fragment_open_enter"
             app:popExitAnim="@anim/fragment_close_exit"
             />
+        <action
+            android:id="@+id/action_addPropertyFragment_to_mapsFragment"
+            app:destination="@id/mapsFragment"
+            app:enterAnim="@anim/fragment_open_enter"
+            app:exitAnim="@anim/fragment_close_exit"
+            app:popEnterAnim="@anim/fragment_open_enter"
+            app:popExitAnim="@anim/fragment_close_exit"
+            />
+        <action
+            android:id="@+id/action_addPropertyFragment_to_propertyDetailFragment"
+            app:destination="@id/propertyDetailFragment"
+            app:enterAnim="@anim/fragment_open_enter"
+            app:exitAnim="@anim/fragment_close_exit"
+            app:popEnterAnim="@anim/fragment_open_enter"
+            app:popExitAnim="@anim/fragment_close_exit"
+            />
+
     </fragment>
     <fragment
         android:id="@+id/propertyListFragment"
@@ -79,6 +104,14 @@
         <action
             android:id="@+id/action_propertyListFragment_to_addPropertyFragment"
             app:destination="@id/addPropertyFragment"
+            app:enterAnim="@anim/fragment_open_enter"
+            app:exitAnim="@anim/fragment_close_exit"
+            app:popEnterAnim="@anim/fragment_open_enter"
+            app:popExitAnim="@anim/fragment_close_exit"
+            />
+        <action
+            android:id="@+id/action_propertyListFragment_to_mapsFragment"
+            app:destination="@id/mapsFragment"
             app:enterAnim="@anim/fragment_open_enter"
             app:exitAnim="@anim/fragment_close_exit"
             app:popEnterAnim="@anim/fragment_open_enter"

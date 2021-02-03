@@ -5,7 +5,8 @@
     android:layout_height="match_parent">
 
     <FrameLayout
-        style="@style/updateButtonFrameLayout"
+        android:layout_height="@dimen/update_button_frame_size"
+        android:background="?attr/colorPrimary"
         android:layout_width="match_parent"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"

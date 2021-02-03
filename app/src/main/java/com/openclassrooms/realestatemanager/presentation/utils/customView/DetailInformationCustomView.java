@@ -26,7 +26,7 @@ public class DetailInformationCustomView extends ConstraintLayout {
         ImageView detailInformationIcon = findViewById(R.id.detail_information_custom_view_icon);
         TextView detailInformationTitle = findViewById(R.id.detail_information_custom_view_title);
 
-        TypedArray attributes = getContext().obtainStyledAttributes(attrs,R.styleable.DetailInformationCustomView);
+        TypedArray attributes = getContext().obtainStyledAttributes(attrs, R.styleable.DetailInformationCustomView);
 
         detailInformationIcon.setImageDrawable(attributes.getDrawable(R.styleable.DetailInformationCustomView_icon));
         detailInformationTitle.setText(attributes.getText(R.styleable.DetailInformationCustomView_title));

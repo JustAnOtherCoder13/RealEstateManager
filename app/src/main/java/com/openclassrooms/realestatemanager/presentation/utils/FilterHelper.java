@@ -1,19 +1,14 @@
 package com.openclassrooms.realestatemanager.presentation.utils;
 
-import android.content.Context;
-
 import androidx.annotation.NonNull;
 
 import com.openclassrooms.realestatemanager.R;
-import com.openclassrooms.realestatemanager.databinding.ActivityMainBinding;
 import com.openclassrooms.realestatemanager.databinding.BottomSheetFilterLayoutBinding;
 import com.openclassrooms.realestatemanager.databinding.BottomSheetPropertyTypeLayoutBinding;
 import com.openclassrooms.realestatemanager.databinding.CustomBottomSheetPointOfInterestLayoutBinding;
-import com.openclassrooms.realestatemanager.presentation.ui.main.MainActivity;
 import com.openclassrooms.realestatemanager.presentation.utils.customView.CustomBottomSheetRangeSlider;
 import com.picone.core.domain.entity.PointOfInterest;
 import com.picone.core.domain.entity.Property;
-import com.picone.core.domain.entity.PropertyPhoto;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -26,14 +21,12 @@ public class FilterHelper {
 
     private List<String> requestPointsOfInterests;
     private List<String> requestPropertyType;
-    private List<PropertyPhoto> allPropertiesPhotos = new ArrayList<>();
-    private List<PointOfInterest> allPointsOfInterest = new ArrayList<>();
-    private List<Property> filteredValues;
-    private List<Property> filteredProperty;
+    private List<Property> propertiesTempValue;
+    private List<Property> filteredPropertyInformation;
 
 
-    public List<Property> getFilteredProperty() {
-        return filteredProperty;
+    public List<Property> getFilteredPropertyInformation() {
+        return filteredPropertyInformation;
     }
 
     public FilterHelper(BottomSheetFilterLayoutBinding bottomSheetFilterLayout) {
@@ -84,95 +77,83 @@ public class FilterHelper {
         requestPointOfInterest();
         requestPropertyType();
         filterForLocation(allProperties);
-        filteredValues = new ArrayList<>();
     }
 
     private void filterForLocation(List<Property> allProperties) {
-        filteredProperty = new ArrayList<>();
+        filteredPropertyInformation = new ArrayList<>();
         if (!bottomSheetFilterLayout.filterPropertyLocationSpinner.getText().trim().isEmpty()) {
             for (Property property : allProperties) {
-                if (property.getRegion().equalsIgnoreCase(bottomSheetFilterLayout.filterPropertyLocationSpinner.getText()))
-                    filteredProperty.add(property);
+                if (property.propertyLocation.getRegion().equalsIgnoreCase(bottomSheetFilterLayout.filterPropertyLocationSpinner.getText()))
+                    filteredPropertyInformation.add(property);
             }
         }
-        if (filteredProperty.isEmpty()) filteredProperty.addAll(allProperties);
+        if (filteredPropertyInformation.isEmpty())
+            filteredPropertyInformation.addAll(allProperties);
         filterForNumberOfPhoto();
     }
 
     private void filterForNumberOfPhoto() {
-        filteredValues = new ArrayList<>();
+        propertiesTempValue = new ArrayList<>();
         if (!bottomSheetFilterLayout.filterPropertyNumberOfPhotoSpinner.getText().trim().isEmpty())
-            for (Property property : filteredProperty) {
-                // count photo corresponding to property
-                int numberOfPhotosForProperty = 0;
-                for (PropertyPhoto propertyPhoto : allPropertiesPhotos) {
-                    if (property.getId() == propertyPhoto.getPropertyId()) {
-                        numberOfPhotosForProperty++;
-                    }
-                }
-                //add them to a list if don't match filter
-                if (numberOfPhotosForProperty < Integer.parseInt(bottomSheetFilterLayout.filterPropertyNumberOfPhotoSpinner.getText()))
-                    filteredValues.add(property);
+            // check property that don't match request
+            for (Property property : filteredPropertyInformation) {
+                if (property.photos.size() < Integer.parseInt(bottomSheetFilterLayout.filterPropertyNumberOfPhotoSpinner.getText()))
+                    propertiesTempValue.add(property);
             }
         //apply filter
-        if (!filteredValues.isEmpty()) filteredProperty.removeAll(filteredValues);
+        if (!propertiesTempValue.isEmpty())
+            filteredPropertyInformation.removeAll(propertiesTempValue);
         filterForPointOfInterest();
     }
 
     private void filterForPointOfInterest() {
-        filteredValues = new ArrayList<>();
-        if (bottomSheetFilterLayout.bottomSheetPointOfInterestInclude.schoolCheckBox.checkBox.isChecked()
-                || bottomSheetFilterLayout.bottomSheetPointOfInterestInclude.restaurantCheckBox.checkBox.isChecked()
-                || bottomSheetFilterLayout.bottomSheetPointOfInterestInclude.supermarketCheckBox.checkBox.isChecked()) {
+        propertiesTempValue = new ArrayList<>();
+        if (bottomSheetFilterLayout.bottomSheetPointOfInterestInclude.schoolCheckBox.mCheckBox.isChecked()
+                || bottomSheetFilterLayout.bottomSheetPointOfInterestInclude.restaurantCheckBox.mCheckBox.isChecked()
+                || bottomSheetFilterLayout.bottomSheetPointOfInterestInclude.supermarketCheckBox.mCheckBox.isChecked()) {
             filterForPointOfInterestType();
         }
         filterForPropertyType();
     }
 
     private void filterForPropertyType() {
-        if (bottomSheetFilterLayout.bottomSheetPropertyTypeLayoutInclude.houseCheckBox.checkBox.isChecked()
-                || bottomSheetFilterLayout.bottomSheetPropertyTypeLayoutInclude.penthouseCheckBox.checkBox.isChecked()
-                || bottomSheetFilterLayout.bottomSheetPropertyTypeLayoutInclude.flatCheckBox.checkBox.isChecked()
-                || bottomSheetFilterLayout.bottomSheetPropertyTypeLayoutInclude.duplexCheckBox.checkBox.isChecked())
+        if (bottomSheetFilterLayout.bottomSheetPropertyTypeLayoutInclude.houseCheckBox.mCheckBox.isChecked()
+                || bottomSheetFilterLayout.bottomSheetPropertyTypeLayoutInclude.penthouseCheckBox.mCheckBox.isChecked()
+                || bottomSheetFilterLayout.bottomSheetPropertyTypeLayoutInclude.flatCheckBox.mCheckBox.isChecked()
+                || bottomSheetFilterLayout.bottomSheetPropertyTypeLayoutInclude.duplexCheckBox.mCheckBox.isChecked())
             filterForType();
 
         filterForOnMarketFrom();
     }
 
     private void filterForOnMarketFrom() {
-        filteredValues = new ArrayList<>();
+        propertiesTempValue = new ArrayList<>();
         if (!bottomSheetFilterLayout.bottomSheetOnMarketFrom.getDate().equalsIgnoreCase(bottomSheetFilterLayout.getRoot().getResources().getString(R.string.dd_mm_yyyy)))
-            for (Property property : filteredProperty) {
+            for (Property property : filteredPropertyInformation) {
                 //check if property don't match request
-                if (formatStringToDate(property.getEnterOnMarket())
+                if (formatStringToDate(property.propertyInformation.getEnterOnMarket())
                         .before(formatStringToDate(bottomSheetFilterLayout.bottomSheetOnMarketFrom.getDate()))) {
-                    filteredValues.add(property);
+                    propertiesTempValue.add(property);
                 }
             }
         //apply filter
-        if (!filteredValues.isEmpty()) filteredProperty.removeAll(filteredValues);
+        if (!propertiesTempValue.isEmpty())
+            filteredPropertyInformation.removeAll(propertiesTempValue);
         filterForRangeSlider();
     }
 
     private void filterForRangeSlider() {
-        filteredValues = new ArrayList<>();
-        for (Property property : filteredProperty) {
-            filterForRangeSlider(bottomSheetFilterLayout.filterPropertyLocationPriceRangeSlider, property.getPrice(), property);
-            filterForRangeSlider(bottomSheetFilterLayout.filterPropertyLocationSurfaceRangerSlider, property.getPropertyArea(), property);
-            filterForRangeSlider(bottomSheetFilterLayout.filterPropertyLocationRoomRangerSlider, property.getNumberOfRooms(), property);
+        propertiesTempValue = new ArrayList<>();
+        for (Property property : filteredPropertyInformation) {
+            filterForRangeSlider(bottomSheetFilterLayout.filterPropertyLocationPriceRangeSlider, property.propertyInformation.getPrice(), property);
+            filterForRangeSlider(bottomSheetFilterLayout.filterPropertyLocationSurfaceRangerSlider, property.propertyInformation.getPropertyArea(), property);
+            filterForRangeSlider(bottomSheetFilterLayout.filterPropertyLocationRoomRangerSlider, property.propertyInformation.getNumberOfRooms(), property);
         }
-        if (!filteredValues.isEmpty()) filteredProperty.removeAll(filteredValues);
+        if (!propertiesTempValue.isEmpty())
+            filteredPropertyInformation.removeAll(propertiesTempValue);
     }
 
     //--------------------------------------LIST HELPERS--------------------------------------------------------
-
-    public void updateAllPropertyPhotos(@NonNull List<PropertyPhoto> photosForProperty) {
-        this.allPropertiesPhotos = photosForProperty;
-    }
-
-    public void updateAllPropertyPointOfInterest(@NonNull List<PointOfInterest> pointOfInterests) {
-        this.allPointsOfInterest = pointOfInterests;
-    }
 
     private void requestPointOfInterest() {
         String schoolStr = bottomSheetFilterLayout.getRoot().getResources().getString(R.string.school);
@@ -183,11 +164,11 @@ public class FilterHelper {
         CustomBottomSheetPointOfInterestLayoutBinding pointOfInterestBinding =
                 bottomSheetFilterLayout.bottomSheetPointOfInterestInclude;
 
-        if (pointOfInterestBinding.schoolCheckBox.checkBox.isChecked() && !requestPointsOfInterests.contains(schoolStr))
+        if (pointOfInterestBinding.schoolCheckBox.mCheckBox.isChecked() && !requestPointsOfInterests.contains(schoolStr))
             requestPointsOfInterests.add(schoolStr);
-        if (pointOfInterestBinding.restaurantCheckBox.checkBox.isChecked() && !requestPointsOfInterests.contains(restaurantStr))
+        if (pointOfInterestBinding.restaurantCheckBox.mCheckBox.isChecked() && !requestPointsOfInterests.contains(restaurantStr))
             requestPointsOfInterests.add(restaurantStr);
-        if (pointOfInterestBinding.supermarketCheckBox.checkBox.isChecked() && !requestPointsOfInterests.contains(supermarketStr))
+        if (pointOfInterestBinding.supermarketCheckBox.mCheckBox.isChecked() && !requestPointsOfInterests.contains(supermarketStr))
             requestPointsOfInterests.add(supermarketStr);
     }
 
@@ -199,92 +180,95 @@ public class FilterHelper {
         String penthouseStr = bottomSheetFilterLayout.getRoot().getResources().getString(R.string.penthouse);
 
         BottomSheetPropertyTypeLayoutBinding propertyTypeBinding = bottomSheetFilterLayout.bottomSheetPropertyTypeLayoutInclude;
-        if (propertyTypeBinding.houseCheckBox.checkBox.isChecked() && !requestPropertyType.contains(houseStr))
+        if (propertyTypeBinding.houseCheckBox.mCheckBox.isChecked() && !requestPropertyType.contains(houseStr))
             requestPropertyType.add(houseStr);
-        if (propertyTypeBinding.flatCheckBox.checkBox.isChecked() && !requestPropertyType.contains(flatStr))
+        if (propertyTypeBinding.flatCheckBox.mCheckBox.isChecked() && !requestPropertyType.contains(flatStr))
             requestPropertyType.add(flatStr);
-        if (propertyTypeBinding.duplexCheckBox.checkBox.isChecked() && !requestPropertyType.contains(duplexStr))
+        if (propertyTypeBinding.duplexCheckBox.mCheckBox.isChecked() && !requestPropertyType.contains(duplexStr))
             requestPropertyType.add(duplexStr);
-        if (propertyTypeBinding.penthouseCheckBox.checkBox.isChecked() && !requestPropertyType.contains(penthouseStr))
+        if (propertyTypeBinding.penthouseCheckBox.mCheckBox.isChecked() && !requestPropertyType.contains(penthouseStr))
             requestPropertyType.add(penthouseStr);
     }
 
     //--------------------------------------FILTER HELPERS--------------------------------------------------------
 
     private void filterForType() {
-        filteredValues = new ArrayList<>();
+        propertiesTempValue = new ArrayList<>();
         for (String requestPropertyType : requestPropertyType) {
             //check if property match request
-            for (Property property : filteredProperty) {
-                if (property.getPropertyType().equalsIgnoreCase(requestPropertyType) && !filteredValues.contains(property)) {
-                    filteredValues.add(property);
+            for (Property property : filteredPropertyInformation) {
+                if (property.propertyInformation.getPropertyType().equalsIgnoreCase(requestPropertyType) && !propertiesTempValue.contains(property)) {
+                    propertiesTempValue.add(property);
                 }
             }
 
         }
         //apply filter
-        filteredProperty.clear();
-        filteredProperty.addAll(filteredValues);
+        filteredPropertyInformation.clear();
+        filteredPropertyInformation.addAll(propertiesTempValue);
     }
 
 
     private void filterForRangeSlider(@NonNull CustomBottomSheetRangeSlider rangeSlider, float valueToCompare, Property property) {
         if (valueToCompare < rangeSlider.getStartValue()
                 || valueToCompare > rangeSlider.getEndValue())
-            filteredValues.add(property);
+            propertiesTempValue.add(property);
     }
 
     private void filterForPointOfInterestType() {
         for (int type = 0; type < requestPointsOfInterests.size(); type++) {
-            if (filteredValues.isEmpty() && type == 0) filterForFirstType(type);
-            else if (filteredValues.isEmpty() && type > 1) break;
+            // if no value in tempValue and on 1st request type
+            if (propertiesTempValue.isEmpty() && type == 0) filterForFirstType(type);
+                // if no value in temp value and not first type, means that no property match first type, so break to return empty list
+            else if (propertiesTempValue.isEmpty() && type > 1) break;
+                //else apply filter for following type
             else filterIfNotFirstType(type);
         }
-        filteredProperty.clear();
-        filteredProperty.addAll(filteredValues);
+        //apply final filtered value
+        filteredPropertyInformation.clear();
+        filteredPropertyInformation.addAll(propertiesTempValue);
 
     }
 
     private void filterForFirstType(int type) {
-        for (Property property : filteredProperty)
-            for (PointOfInterest pointOfInterest : allPointsOfInterest) {
+        //for first Point of interest type, add to value if match
+        for (Property property : filteredPropertyInformation)
+            for (PointOfInterest pointOfInterest : property.pointOfInterests) {
                 if (pointOfInterest.getType().contains(requestPointsOfInterests.get(type))
-                        && property.getId() == pointOfInterest.getPropertyId()
-                        && !filteredValues.contains(property)) {
-                    filteredValues.add(property);
+                        && !propertiesTempValue.contains(property)) {
+                    propertiesTempValue.add(property);
                 }
             }
     }
 
     private void filterIfNotFirstType(int type) {
-        for (Property property : filteredProperty) {
+        for (Property property : filteredPropertyInformation) {
             boolean isFilteredPropertyHasRequestPointOfInterest = false;
-            //for each property check if at least one point of interest match request type
-            for (PointOfInterest pointOfInterest : allPointsOfInterest) {
+            //for each property in filtered list check if at least one point of interest match request type
+            for (PointOfInterest pointOfInterest : property.pointOfInterests) {
                 if (pointOfInterest.getType().contains(requestPointsOfInterests.get(type))
-                        && property.getId() == pointOfInterest.getPropertyId())
-                    //filtered values have values as it's not first type to apply filter
-                    //if property is already known and match request it's ok
-                    if (filteredValues.contains(property)) {
-                        isFilteredPropertyHasRequestPointOfInterest = true;
-                        break;
-                    }
+                        && propertiesTempValue.contains(property)) {
+                    //temp value got properties that match past point of interest
+                    //if match actual type and is in list, means that match all request type
+                    isFilteredPropertyHasRequestPointOfInterest = true;
+                    break;
+                }
             }
-            //else that means that property match first type but not this type, so remove from value
+            //else that means that property match first type but not actual type, so remove from value
             if (!isFilteredPropertyHasRequestPointOfInterest)
-                filteredValues.remove(property);
+                propertiesTempValue.remove(property);
         }
     }
 
     public void resetFilter() {
         initRangeSliderValues();
-        bottomSheetFilterLayout.bottomSheetPointOfInterestInclude.supermarketCheckBox.checkBox.setChecked(false);
-        bottomSheetFilterLayout.bottomSheetPointOfInterestInclude.schoolCheckBox.checkBox.setChecked(false);
-        bottomSheetFilterLayout.bottomSheetPointOfInterestInclude.restaurantCheckBox.checkBox.setChecked(false);
-        bottomSheetFilterLayout.bottomSheetPropertyTypeLayoutInclude.duplexCheckBox.checkBox.setChecked(false);
-        bottomSheetFilterLayout.bottomSheetPropertyTypeLayoutInclude.houseCheckBox.checkBox.setChecked(false);
-        bottomSheetFilterLayout.bottomSheetPropertyTypeLayoutInclude.penthouseCheckBox.checkBox.setChecked(false);
-        bottomSheetFilterLayout.bottomSheetPropertyTypeLayoutInclude.flatCheckBox.checkBox.setChecked(false);
+        bottomSheetFilterLayout.bottomSheetPointOfInterestInclude.supermarketCheckBox.mCheckBox.setChecked(false);
+        bottomSheetFilterLayout.bottomSheetPointOfInterestInclude.schoolCheckBox.mCheckBox.setChecked(false);
+        bottomSheetFilterLayout.bottomSheetPointOfInterestInclude.restaurantCheckBox.mCheckBox.setChecked(false);
+        bottomSheetFilterLayout.bottomSheetPropertyTypeLayoutInclude.duplexCheckBox.mCheckBox.setChecked(false);
+        bottomSheetFilterLayout.bottomSheetPropertyTypeLayoutInclude.houseCheckBox.mCheckBox.setChecked(false);
+        bottomSheetFilterLayout.bottomSheetPropertyTypeLayoutInclude.penthouseCheckBox.mCheckBox.setChecked(false);
+        bottomSheetFilterLayout.bottomSheetPropertyTypeLayoutInclude.flatCheckBox.mCheckBox.setChecked(false);
         bottomSheetFilterLayout.bottomSheetOnMarketFrom.resetDate();
         bottomSheetFilterLayout.filterPropertyLocationSpinner.resetText();
         bottomSheetFilterLayout.filterPropertyNumberOfPhotoSpinner.resetText();
