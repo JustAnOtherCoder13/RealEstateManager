@@ -1,5 +1,7 @@
 package com.picone.core.utils;
 
+import android.net.Uri;
+
 import androidx.annotation.NonNull;
 
 import com.picone.core.domain.entity.Property;
@@ -32,6 +34,11 @@ public class ConstantParameters {
     public static final int READ_PERMISSION_CODE = 103;
     public static final int WRITE_PERMISSION_CODE = 104;
     public static final int GALLERY_REQUEST_CODE = 105;
+
+    //------------------------------- CONTENT PROVIDER ----------------------
+    private static final String AUTHORITY = "com.openclassrooms.realestatemanager.provider";
+    private static final String TABLE_NAME = PropertyInformation.class.getSimpleName();
+    public static final Uri URI_ITEM = Uri.parse("content://" + AUTHORITY + "/" + TABLE_NAME);
 
     public static final int NOTIFICATION_ID = 7;
     public static final String NOTIFICATION_TAG = "REAL_ESTATE_MANAGER";

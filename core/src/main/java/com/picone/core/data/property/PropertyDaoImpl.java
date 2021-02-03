@@ -1,5 +1,7 @@
 package com.picone.core.data.property;
 
+import android.database.Cursor;
+
 import androidx.annotation.NonNull;
 
 import com.picone.core.data.RealEstateManagerRoomDatabase;
@@ -32,6 +34,22 @@ public class PropertyDaoImpl implements PropertyRoomDao {
     public Observable<List<Property>> getAllProperties() {
         return mPropertyRoomDao.getAllProperties();
     }
+
+    @Override
+    public Cursor getPropertiesWithCursor(int propertyId) {
+        return mPropertyRoomDao.getPropertiesWithCursor(propertyId);
+    }
+
+    @Override
+    public Cursor getAllPropertiesInformationWithCursor() {
+        return mPropertyRoomDao.getAllPropertiesInformationWithCursor();
+    }
+
+    @Override
+    public Cursor getLocationWithCursor(int propertyId) {
+        return mPropertyRoomDao.getLocationWithCursor(propertyId);
+    }
+
     @Override
     public Completable addProperty(PropertyInformation propertyInformation) {
         return mPropertyRoomDao.addProperty(propertyInformation);
