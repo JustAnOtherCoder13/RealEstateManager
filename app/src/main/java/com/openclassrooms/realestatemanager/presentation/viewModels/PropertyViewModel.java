@@ -1,7 +1,5 @@
 package com.openclassrooms.realestatemanager.presentation.viewModels;
 
-import android.util.Log;
-
 import androidx.annotation.NonNull;
 import androidx.hilt.Assisted;
 import androidx.hilt.lifecycle.ViewModelInject;
@@ -148,7 +146,6 @@ public class PropertyViewModel extends BaseViewModel {
     }
     //___________________________________PROPERTY__________________________________
 
-    //todo update allProperties
     public void addProperty(@NonNull Property property) {
         compositeDisposable.add(
                 addPropertyInteractor.addProperty(property.propertyInformation)
@@ -189,7 +186,7 @@ public class PropertyViewModel extends BaseViewModel {
                         .subscribeOn(schedulerProvider.getIo())
                         .observeOn(schedulerProvider.getUi())
                         .andThen(getAllPropertiesInteractor.getAllProperties())
-                        .subscribe(properties -> selectedPropertyMutableLD.postValue(new Property()), throwable -> Log.e("TAG", "updatePropertyLocation: " + throwable)));
+                        .subscribe(properties -> selectedPropertyMutableLD.postValue(new Property()), throwable -> checkException()));
 
     }
     //___________________________________PROPERTY POINT OF INTEREST__________________________________

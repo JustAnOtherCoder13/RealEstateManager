@@ -49,6 +49,8 @@ public class CustomBottomSheetRangeSlider extends ConstraintLayout {
             @Override
             public void onStartTrackingTouch(@NonNull RangeSlider slider) {
                 slider.addOnChangeListener((slider1, value, fromUser) -> {
+                    mStartFloatValue = slider.getValues().get(0).intValue();
+                    mEndFloatValue = slider.getValues().get(1).intValue();
                     mStartValue.setText(formatWithSpace().format(slider.getValues().get(0).intValue()));
                     mEndValue.setText(formatWithSpace().format(slider.getValues().get(1).intValue()));
                 });
@@ -57,8 +59,6 @@ public class CustomBottomSheetRangeSlider extends ConstraintLayout {
             @Override
             public void onStopTrackingTouch(@NonNull RangeSlider slider) {
                 slider.addOnChangeListener((slider1, value, fromUser) -> {
-                    mStartFloatValue = slider.getValues().get(0).intValue();
-                    mEndFloatValue = slider.getValues().get(1).intValue();
                     mStartValue.setText(formatWithSpace().format(slider.getValues().get(0).intValue()));
                     mEndValue.setText(formatWithSpace().format(slider.getValues().get(1).intValue()));
 

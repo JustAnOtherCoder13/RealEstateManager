@@ -29,7 +29,6 @@ public abstract class BaseFragment extends Fragment {
     protected AgentViewModel mAgentViewModel;
     protected PropertyViewModel mPropertyViewModel;
     protected NavController mNavController;
-    protected ImageButton mUpdateButton;
 
     private MainActivity mMainActivity;
 
@@ -39,7 +38,6 @@ public abstract class BaseFragment extends Fragment {
         super.onCreate(savedInstanceState);
         mMainActivity = (MainActivity) getActivity();
         assert mMainActivity != null;
-        mUpdateButton = mMainActivity.mUpdateButton;
         mAgentViewModel = new ViewModelProvider(requireActivity()).get(AgentViewModel.class);
         mPropertyViewModel = new ViewModelProvider(requireActivity()).get(PropertyViewModel.class);
     }
@@ -63,7 +61,6 @@ public abstract class BaseFragment extends Fragment {
     protected void setSaveButtonOnClickListener(View.OnClickListener clickListener){
         mMainActivity.setSaveButtonClickListener(clickListener);
     }
-    //todo enable update button always
 
     protected void hideSoftKeyboard(View view) {
         mMainActivity.hideSoftKeyboard(view);
@@ -74,12 +71,7 @@ public abstract class BaseFragment extends Fragment {
     }
 
     protected Property getPropertyForId(String propertyId) {
-        Property propertyToReturn = new Property();
-        for (Property property : Objects.requireNonNull(mPropertyViewModel.getAllProperties.getValue())) {
-            if (String.valueOf(property.propertyInformation.getId()).equalsIgnoreCase(propertyId))
-                propertyToReturn = property;
-        }
-        return propertyToReturn;
+        return mMainActivity.getPropertyForId(propertyId);
     }
 
     protected boolean isPermissionGrantedForRequestCode(int requestCode) {

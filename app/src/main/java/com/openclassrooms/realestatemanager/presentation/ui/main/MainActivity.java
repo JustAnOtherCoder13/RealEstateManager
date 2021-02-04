@@ -52,8 +52,8 @@ public class MainActivity extends AppCompatActivity {
     private NavController mNavController;
     private FilterHelper mFilterHelper;
     private BottomSheetBehavior<ConstraintLayout> mBottomSheetBehavior;
+    private ImageButton mUpdateButton;
 
-    protected ImageButton mUpdateButton;
     protected ImageButton mAddButton;
     protected LottieAnimationView mLoader;
     protected boolean mIsCameraPermissionGranted, mIsLocationPermissionGranted, mIsReadPermissionGranted, mIsWritePermissionGranted, mIsPhone;
@@ -81,6 +81,9 @@ public class MainActivity extends AppCompatActivity {
         //reset selected property if not on add or detail fragment
         if (Objects.requireNonNull(mNavController.getCurrentDestination()).getId() != R.id.addPropertyFragment)
             mPropertyViewModel.setSelectedProperty(new Property());
+        if (Objects.requireNonNull(mNavController.getCurrentDestination()).getId()==R.id.addPropertyFragment){
+            mPropertyViewModel.setAllProperties();
+}
         //set back press nav
         if (mNavController.getCurrentDestination() != null && mIsPhone)
             setPhoneBackNavigation();
@@ -125,6 +128,10 @@ public class MainActivity extends AppCompatActivity {
         mNavController = Navigation.findNavController(this, R.id.nav_host_fragment);
         agentViewModel.setAgent();
         mPropertyViewModel.setAllProperties();
+        mPropertyViewModel.getAllProperties.observe(this,properties -> {
+            if (mPropertyViewModel.getSelectedProperty.getValue()!=null && mPropertyViewModel.getSelectedProperty.getValue().propertyInformation!=null)
+            mPropertyViewModel.setSelectedProperty(getPropertyForId(String.valueOf(mPropertyViewModel.getSelectedProperty.getValue().propertyInformation.getId())));
+        });
         mPropertyViewModel.getErrorState.observe(this, errorHandler -> {
             if (errorHandler.equals(ErrorHandler.ON_ERROR)) {
                 Toast.makeText(this, ErrorHandler.ON_ERROR.label, Toast.LENGTH_LONG).show();
@@ -139,7 +146,6 @@ public class MainActivity extends AppCompatActivity {
     @SuppressWarnings("ConstantConditions")//can't be null on phone
     private void initView() {
         if (getResources().getBoolean(R.bool.phone_device)) {
-            setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
             NavigationUI.setupWithNavController(mBinding.bottomNavBar, mNavController);
         } else {
             setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
@@ -158,8 +164,7 @@ public class MainActivity extends AppCompatActivity {
         mPropertyViewModel.getLocale.observe(this, adapter::updateLocale);
     }
 
-    //todo update property mutable on add
-    //todo reload only price on recycler when change locale
+    //todo review filter "no filter"
     private void setBottomSheetButtonClickListener() {
 
         mBinding.bottomSheetLayout.bottomSheetCloseButton.setOnClickListener(v -> {
@@ -175,7 +180,7 @@ public class MainActivity extends AppCompatActivity {
                 Toast.makeText(this, "No property match your request.", Toast.LENGTH_SHORT).show();
                 return;
             }
-            else if (mFilterHelper.getFilteredProperties().containsAll(Objects.requireNonNull(mPropertyViewModel.getAllProperties.getValue()))){
+            else if (!mFilterHelper.getIsAnyFilterSelected()){
                 Toast.makeText(this, "No filter selected.", Toast.LENGTH_SHORT).show();
                 return;
             }
@@ -276,6 +281,15 @@ public class MainActivity extends AppCompatActivity {
         mLoader.setVisibility(isVisible ? View.VISIBLE : View.GONE);
         if (isVisible) mLoader.playAnimation();
         else mLoader.pauseAnimation();
+    }
+
+    protected Property getPropertyForId(String propertyId) {
+        Property propertyToReturn = new Property();
+        for (Property property : Objects.requireNonNull(mPropertyViewModel.getAllProperties.getValue())) {
+            if (String.valueOf(property.propertyInformation.getId()).equalsIgnoreCase(propertyId))
+                propertyToReturn = property;
+        }
+        return propertyToReturn;
     }
 
     //-------------------------- PERMISSIONS --------------------------------

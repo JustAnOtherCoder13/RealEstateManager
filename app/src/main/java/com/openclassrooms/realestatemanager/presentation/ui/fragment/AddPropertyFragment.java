@@ -77,7 +77,6 @@ public class AddPropertyFragment extends BaseFragment {
         mImageHelper = new ManageImageHelper(requireContext());
         mGetMediaDialog = new CustomMediaSetTitleDialog(requireContext());
         mInnerPropertyViewModel = new ViewModelProvider(this).get(PropertyViewModel.class);
-        mUpdateButton.setEnabled(true);
         setAppBarVisibility(false);
         setUpdateButtonIcon(false);
         return mBinding.getRoot();
@@ -95,6 +94,13 @@ public class AddPropertyFragment extends BaseFragment {
         initViewModel();
         initClickListener();
         initPropertyTypeDropDownMenu();
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        mIsNewPropertyToPersist = Objects.requireNonNull(mPropertyViewModel.getSelectedProperty.getValue()).propertyInformation == null;
+        initViewModel();
     }
 
     @Override
@@ -121,6 +127,7 @@ public class AddPropertyFragment extends BaseFragment {
                     initGetMediaDialog(true, data);
                 }
                 playLoader(false);
+
                 break;
         }
     }
@@ -250,7 +257,6 @@ public class AddPropertyFragment extends BaseFragment {
     }
 
     private void initAddButtonClick() {
-        mUpdateButton.setEnabled(false);
         hideSoftKeyboard(mBinding.addPropertyInformationLayout.getRoot());
         // observers
         addAdditionalInformationOrNavigateUp();
@@ -278,7 +284,6 @@ public class AddPropertyFragment extends BaseFragment {
             return;
         }
         Toast.makeText(requireContext(), R.string.information_not_filled, Toast.LENGTH_SHORT).show();
-        mUpdateButton.setEnabled(true);
     }
 
     //___________________________________METHODS FOR SOLID APPROACH_____________________________________________
@@ -340,9 +345,11 @@ public class AddPropertyFragment extends BaseFragment {
                 // is finish
                 case ADD_POINT_OF_INTEREST_COMPLETE:
                     if (Objects.requireNonNull(mNavController.getCurrentDestination()).getId() == R.id.addPropertyFragment) {
-                        if (mIsNewPropertyToPersist)
+                        if (mIsNewPropertyToPersist){
+                            mPropertyViewModel.setAllProperties();
                             createNotification(requireContext(),
                                     message(getString(R.string.notification_add_start_message)), getString(R.string.notification_add_message_title));
+                        }
                         else {
                             createNotification(requireContext(),
                                     message(getString(R.string.notification_update_start_message)), getString(R.string.notification_update_message_title));}

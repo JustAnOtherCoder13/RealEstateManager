@@ -28,10 +28,15 @@ public class FilterHelper {
     private List<String> mRequestPropertyType;
     private List<Property> mPropertiesTempValue;
     private List<Property> mFilteredProperties;
+    private boolean mIsAnyFilterSelected;
 
 
     public List<Property> getFilteredProperties() {
         return mFilteredProperties;
+    }
+
+    public boolean getIsAnyFilterSelected() {
+        return mIsAnyFilterSelected;
     }
 
     public FilterHelper(BottomSheetFilterLayoutBinding mBottomSheetFilterLayout) {
@@ -81,12 +86,14 @@ public class FilterHelper {
     public void filterProperties(List<Property> allProperties) {
         requestPointOfInterest();
         requestPropertyType();
+        mIsAnyFilterSelected = false;
         filterForLocation(allProperties);
     }
 
     private void filterForLocation(List<Property> allProperties) {
         mFilteredProperties = new ArrayList<>();
         if (!mBottomSheetFilterLayout.filterPropertyLocationSpinner.getText().trim().isEmpty()) {
+            mIsAnyFilterSelected = true;
             for (Property property : allProperties) {
                 if (property.propertyLocation.getRegion().equalsIgnoreCase(mBottomSheetFilterLayout.filterPropertyLocationSpinner.getText()))
                     mFilteredProperties.add(property);
@@ -100,12 +107,14 @@ public class FilterHelper {
 
     private void filterForNumberOfPhoto() {
         mPropertiesTempValue = new ArrayList<>();
-        if (!mBottomSheetFilterLayout.filterPropertyNumberOfPhotoSpinner.getText().trim().isEmpty())
+        if (!mBottomSheetFilterLayout.filterPropertyNumberOfPhotoSpinner.getText().trim().isEmpty()) {
+           mIsAnyFilterSelected =true;
             // check property that don't match request
             for (Property property : mFilteredProperties) {
                 if (property.photos.size() < Integer.parseInt(mBottomSheetFilterLayout.filterPropertyNumberOfPhotoSpinner.getText()))
                     mPropertiesTempValue.add(property);
             }
+        }
         //apply filter
         if (!mPropertiesTempValue.isEmpty())
             mFilteredProperties.removeAll(mPropertiesTempValue);
@@ -117,6 +126,7 @@ public class FilterHelper {
         if (mBottomSheetFilterLayout.bottomSheetPointOfInterestInclude.schoolCheckBox.mCheckBox.isChecked()
                 || mBottomSheetFilterLayout.bottomSheetPointOfInterestInclude.restaurantCheckBox.mCheckBox.isChecked()
                 || mBottomSheetFilterLayout.bottomSheetPointOfInterestInclude.supermarketCheckBox.mCheckBox.isChecked()) {
+            mIsAnyFilterSelected =true;
             filterForPointOfInterestType();
         }
         filterForPropertyType();
@@ -126,14 +136,17 @@ public class FilterHelper {
         if (mBottomSheetFilterLayout.bottomSheetPropertyTypeLayoutInclude.houseCheckBox.mCheckBox.isChecked()
                 || mBottomSheetFilterLayout.bottomSheetPropertyTypeLayoutInclude.penthouseCheckBox.mCheckBox.isChecked()
                 || mBottomSheetFilterLayout.bottomSheetPropertyTypeLayoutInclude.flatCheckBox.mCheckBox.isChecked()
-                || mBottomSheetFilterLayout.bottomSheetPropertyTypeLayoutInclude.duplexCheckBox.mCheckBox.isChecked())
+                || mBottomSheetFilterLayout.bottomSheetPropertyTypeLayoutInclude.duplexCheckBox.mCheckBox.isChecked()){
+            mIsAnyFilterSelected =true;
             filterForType();
+        }
         filterForOnMarketFrom();
     }
 
     private void filterForOnMarketFrom() {
         mPropertiesTempValue = new ArrayList<>();
-        if (!mBottomSheetFilterLayout.bottomSheetOnMarketFrom.getDate().equalsIgnoreCase(mBottomSheetFilterLayout.getRoot().getResources().getString(R.string.dd_mm_yyyy)))
+        if (!mBottomSheetFilterLayout.bottomSheetOnMarketFrom.getDate().equalsIgnoreCase(mBottomSheetFilterLayout.getRoot().getResources().getString(R.string.dd_mm_yyyy))){
+            mIsAnyFilterSelected =true;
             for (Property property : mFilteredProperties) {
                 //check if property don't match request
                 if (formatStringToDate(property.propertyInformation.getEnterOnMarket())
@@ -141,6 +154,7 @@ public class FilterHelper {
                     mPropertiesTempValue.add(property);
                 }
             }
+        }
         //apply filter
         if (!mPropertiesTempValue.isEmpty())
             mFilteredProperties.removeAll(mPropertiesTempValue);
@@ -149,14 +163,15 @@ public class FilterHelper {
 
     private void filterForRangeSlider() {
         mPropertiesTempValue = new ArrayList<>();
-        if (mBottomSheetFilterLayout.filterPropertyLocationPriceRangeSlider.getStartValue()==MIN_PRICE
-        &&mBottomSheetFilterLayout.filterPropertyLocationPriceRangeSlider.getEndValue()==MAX_PRICE
-        &&mBottomSheetFilterLayout.filterPropertyLocationSurfaceRangerSlider.getStartValue()==MIN_SURFACE
-        &&mBottomSheetFilterLayout.filterPropertyLocationSurfaceRangerSlider.getEndValue()==MAX_SURFACE
-        &&mBottomSheetFilterLayout.filterPropertyLocationRoomRangerSlider.getStartValue()==MIN_ROOM
-        &&mBottomSheetFilterLayout.filterPropertyLocationRoomRangerSlider.getEndValue()==MAX_ROOM)
+        if (mBottomSheetFilterLayout.filterPropertyLocationPriceRangeSlider.getStartValue() == MIN_PRICE
+                && mBottomSheetFilterLayout.filterPropertyLocationPriceRangeSlider.getEndValue() == MAX_PRICE
+                && mBottomSheetFilterLayout.filterPropertyLocationSurfaceRangerSlider.getStartValue() == MIN_SURFACE
+                && mBottomSheetFilterLayout.filterPropertyLocationSurfaceRangerSlider.getEndValue() == MAX_SURFACE
+                && mBottomSheetFilterLayout.filterPropertyLocationRoomRangerSlider.getStartValue() == MIN_ROOM
+                && mBottomSheetFilterLayout.filterPropertyLocationRoomRangerSlider.getEndValue() == MAX_ROOM)
             return;
 
+        mIsAnyFilterSelected =true;
         for (Property property : mFilteredProperties) {
             filterForRangeSlider(mBottomSheetFilterLayout.filterPropertyLocationPriceRangeSlider, property.propertyInformation.getPrice(), property);
             filterForRangeSlider(mBottomSheetFilterLayout.filterPropertyLocationSurfaceRangerSlider, property.propertyInformation.getPropertyArea(), property);
