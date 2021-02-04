@@ -125,7 +125,7 @@ public class MainActivity extends AppCompatActivity {
         mNavController = Navigation.findNavController(this, R.id.nav_host_fragment);
         agentViewModel.setAgent();
         mPropertyViewModel.setAllProperties();
-        mPropertyViewModel.getErrorState.observe(this,errorHandler -> {
+        mPropertyViewModel.getErrorState.observe(this, errorHandler -> {
             if (errorHandler.equals(ErrorHandler.ON_ERROR)) {
                 Toast.makeText(this, ErrorHandler.ON_ERROR.label, Toast.LENGTH_LONG).show();
                 playLoader(false);
@@ -158,6 +158,8 @@ public class MainActivity extends AppCompatActivity {
         mPropertyViewModel.getLocale.observe(this, adapter::updateLocale);
     }
 
+    //todo update property mutable on add
+    //todo reload only price on recycler when change locale
     private void setBottomSheetButtonClickListener() {
 
         mBinding.bottomSheetLayout.bottomSheetCloseButton.setOnClickListener(v -> {
@@ -167,13 +169,25 @@ public class MainActivity extends AppCompatActivity {
 
         mBinding.bottomSheetLayout.bottomSheetOkButton.setOnClickListener(v -> {
             mFilterHelper.filterProperties(mPropertyViewModel.getAllProperties.getValue());
-            mPropertyViewModel.setFilteredProperty(mFilterHelper.getFilteredPropertyInformation());
+            mFilterHelper.resetBottomSheetValues();
 
-            mBinding.topAppBar.mResetFilterButton.setVisibility(View.VISIBLE);
+            if (mFilterHelper.getFilteredProperties().isEmpty()){
+                Toast.makeText(this, "No property match your request.", Toast.LENGTH_SHORT).show();
+                return;
+            }
+            else if (mFilterHelper.getFilteredProperties().containsAll(Objects.requireNonNull(mPropertyViewModel.getAllProperties.getValue()))){
+                Toast.makeText(this, "No filter selected.", Toast.LENGTH_SHORT).show();
+                return;
+            }
+
+            mPropertyViewModel.setFilteredProperty(mFilterHelper.getFilteredProperties());
             mBottomSheetBehavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
-            mFilterHelper.resetFilter();
-            mBinding.topAppBar.mResetFilterButton.setOnClickListener(v1 ->
-                    mBinding.topAppBar.mResetFilterButton.setVisibility(View.GONE));
+            mBinding.topAppBar.mResetFilterButton.setVisibility(View.VISIBLE);
+            mBinding.topAppBar.mResetFilterButton.setOnClickListener(v1 -> {
+                mPropertyViewModel.setAllProperties();
+                mBinding.topAppBar.mResetFilterButton.setVisibility(View.GONE);
+            });
+
         });
     }
 
@@ -189,9 +203,9 @@ public class MainActivity extends AppCompatActivity {
         switch (Objects.requireNonNull(mNavController.getCurrentDestination()).getId()) {
             case R.id.addPropertyFragment:
                 mNavController.navigate(Objects.requireNonNull
-                        (mPropertyViewModel.getSelectedProperty.getValue()).propertyInformation!=null ?
+                        (mPropertyViewModel.getSelectedProperty.getValue()).propertyInformation != null ?
                         R.id.action_addPropertyFragment_to_propertyDetailFragment
-                        :R.id.action_addPropertyFragment_to_mapsFragment);
+                        : R.id.action_addPropertyFragment_to_mapsFragment);
                 break;
             case R.id.propertyDetailFragment:
                 mNavController.navigate(R.id.action_propertyDetailFragment_to_mapsFragment);
@@ -205,9 +219,9 @@ public class MainActivity extends AppCompatActivity {
     private void setPhoneBackNavigation() {
         switch (mNavController.getCurrentDestination().getId()) {
             case R.id.addPropertyFragment:
-                mNavController.navigate(mPropertyViewModel.getSelectedProperty.getValue().propertyLocation!=null?
+                mNavController.navigate(mPropertyViewModel.getSelectedProperty.getValue().propertyLocation != null ?
                         R.id.action_addPropertyFragment_to_propertyDetailFragment
-                        :R.id.action_addPropertyFragment_to_propertyListFragment);
+                        : R.id.action_addPropertyFragment_to_propertyListFragment);
                 break;
             case R.id.propertyDetailFragment:
                 mNavController.navigate(R.id.action_propertyDetailFragment_to_propertyListFragment);
@@ -232,8 +246,8 @@ public class MainActivity extends AppCompatActivity {
         mBinding.updateButtonCustomView.setVisibility(isVisible ? View.GONE : View.VISIBLE);
     }
 
-    protected void setUpdateButtonCustomViewVisibility(boolean isVisible){
-        mBinding.updateButtonCustomView.setVisibility(isVisible?View.VISIBLE:View.GONE);
+    protected void setUpdateButtonCustomViewVisibility(boolean isVisible) {
+        mBinding.updateButtonCustomView.setVisibility(isVisible ? View.VISIBLE : View.GONE);
     }
 
     protected void initUpdateButton(boolean isForUpdate) {
@@ -311,7 +325,9 @@ public class MainActivity extends AppCompatActivity {
                 != PackageManager.PERMISSION_GRANTED)
             ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, WRITE_PERMISSION_CODE);
 
-        else { mIsWritePermissionGranted = true; }
+        else {
+            mIsWritePermissionGranted = true;
+        }
     }
 
     //-----------------------------HELPERS------------------------------------

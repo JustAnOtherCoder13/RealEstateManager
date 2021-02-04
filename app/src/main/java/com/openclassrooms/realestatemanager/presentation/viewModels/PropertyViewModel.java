@@ -148,6 +148,7 @@ public class PropertyViewModel extends BaseViewModel {
     }
     //___________________________________PROPERTY__________________________________
 
+    //todo update allProperties
     public void addProperty(@NonNull Property property) {
         compositeDisposable.add(
                 addPropertyInteractor.addProperty(property.propertyInformation)

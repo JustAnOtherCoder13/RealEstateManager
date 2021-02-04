@@ -63,6 +63,7 @@ public abstract class BaseFragment extends Fragment {
     protected void setSaveButtonOnClickListener(View.OnClickListener clickListener){
         mMainActivity.setSaveButtonClickListener(clickListener);
     }
+    //todo enable update button always
 
     protected void hideSoftKeyboard(View view) {
         mMainActivity.hideSoftKeyboard(view);

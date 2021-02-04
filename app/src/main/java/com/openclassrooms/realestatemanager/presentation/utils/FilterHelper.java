@@ -14,6 +14,12 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static com.openclassrooms.realestatemanager.presentation.utils.Utils.formatStringToDate;
+import static com.picone.core.utils.ConstantParameters.MAX_PRICE;
+import static com.picone.core.utils.ConstantParameters.MAX_ROOM;
+import static com.picone.core.utils.ConstantParameters.MAX_SURFACE;
+import static com.picone.core.utils.ConstantParameters.MIN_PRICE;
+import static com.picone.core.utils.ConstantParameters.MIN_ROOM;
+import static com.picone.core.utils.ConstantParameters.MIN_SURFACE;
 
 public class FilterHelper {
 
@@ -21,11 +27,11 @@ public class FilterHelper {
     private List<String> mRequestPointsOfInterests;
     private List<String> mRequestPropertyType;
     private List<Property> mPropertiesTempValue;
-    private List<Property> mFilteredPropertyInformation;
+    private List<Property> mFilteredProperties;
 
 
-    public List<Property> getFilteredPropertyInformation() {
-        return mFilteredPropertyInformation;
+    public List<Property> getFilteredProperties() {
+        return mFilteredProperties;
     }
 
     public FilterHelper(BottomSheetFilterLayoutBinding mBottomSheetFilterLayout) {
@@ -45,27 +51,27 @@ public class FilterHelper {
         mBottomSheetFilterLayout.filterPropertyLocationPriceRangeSlider
                 .setRangeSliderValue(
                         //Min price selectable
-                        100000
+                        MIN_PRICE
                         //Max price selectable
-                        , 1000000
+                        , MAX_PRICE
                         //step
-                        , (float) (1000000 - 100000) / 10000);
+                        , (float) (MAX_PRICE - MIN_PRICE) / 10000);
 
         mBottomSheetFilterLayout.filterPropertyLocationSurfaceRangerSlider
                 .setRangeSliderValue(
                         //Min area selectable
-                        100,
+                        MIN_SURFACE,
                         //Max area selectable
-                        1000,
+                        MAX_SURFACE,
                         //step
-                        (float) (1000 - 100) / 10);
+                        (float) (MAX_SURFACE - MIN_SURFACE) / 10);
 
         mBottomSheetFilterLayout.filterPropertyLocationRoomRangerSlider
                 .setRangeSliderValue(
                         //Min room
-                        5,
+                        MIN_ROOM,
                         //Max room
-                        20,
+                        MAX_ROOM,
                         //step
                         1);
     }
@@ -79,15 +85,16 @@ public class FilterHelper {
     }
 
     private void filterForLocation(List<Property> allProperties) {
-        mFilteredPropertyInformation = new ArrayList<>();
+        mFilteredProperties = new ArrayList<>();
         if (!mBottomSheetFilterLayout.filterPropertyLocationSpinner.getText().trim().isEmpty()) {
             for (Property property : allProperties) {
                 if (property.propertyLocation.getRegion().equalsIgnoreCase(mBottomSheetFilterLayout.filterPropertyLocationSpinner.getText()))
-                    mFilteredPropertyInformation.add(property);
+                    mFilteredProperties.add(property);
             }
         }
-        if (mFilteredPropertyInformation.isEmpty())
-            mFilteredPropertyInformation.addAll(allProperties);
+        //as only known regions is in spinner, if mFilteredPropertyInformation is empty mean that no region selected
+        if (mFilteredProperties.isEmpty())
+            mFilteredProperties.addAll(allProperties);
         filterForNumberOfPhoto();
     }
 
@@ -95,13 +102,13 @@ public class FilterHelper {
         mPropertiesTempValue = new ArrayList<>();
         if (!mBottomSheetFilterLayout.filterPropertyNumberOfPhotoSpinner.getText().trim().isEmpty())
             // check property that don't match request
-            for (Property property : mFilteredPropertyInformation) {
+            for (Property property : mFilteredProperties) {
                 if (property.photos.size() < Integer.parseInt(mBottomSheetFilterLayout.filterPropertyNumberOfPhotoSpinner.getText()))
                     mPropertiesTempValue.add(property);
             }
         //apply filter
         if (!mPropertiesTempValue.isEmpty())
-            mFilteredPropertyInformation.removeAll(mPropertiesTempValue);
+            mFilteredProperties.removeAll(mPropertiesTempValue);
         filterForPointOfInterest();
     }
 
@@ -121,14 +128,13 @@ public class FilterHelper {
                 || mBottomSheetFilterLayout.bottomSheetPropertyTypeLayoutInclude.flatCheckBox.mCheckBox.isChecked()
                 || mBottomSheetFilterLayout.bottomSheetPropertyTypeLayoutInclude.duplexCheckBox.mCheckBox.isChecked())
             filterForType();
-
         filterForOnMarketFrom();
     }
 
     private void filterForOnMarketFrom() {
         mPropertiesTempValue = new ArrayList<>();
         if (!mBottomSheetFilterLayout.bottomSheetOnMarketFrom.getDate().equalsIgnoreCase(mBottomSheetFilterLayout.getRoot().getResources().getString(R.string.dd_mm_yyyy)))
-            for (Property property : mFilteredPropertyInformation) {
+            for (Property property : mFilteredProperties) {
                 //check if property don't match request
                 if (formatStringToDate(property.propertyInformation.getEnterOnMarket())
                         .before(formatStringToDate(mBottomSheetFilterLayout.bottomSheetOnMarketFrom.getDate()))) {
@@ -137,19 +143,27 @@ public class FilterHelper {
             }
         //apply filter
         if (!mPropertiesTempValue.isEmpty())
-            mFilteredPropertyInformation.removeAll(mPropertiesTempValue);
+            mFilteredProperties.removeAll(mPropertiesTempValue);
         filterForRangeSlider();
     }
 
     private void filterForRangeSlider() {
         mPropertiesTempValue = new ArrayList<>();
-        for (Property property : mFilteredPropertyInformation) {
+        if (mBottomSheetFilterLayout.filterPropertyLocationPriceRangeSlider.getStartValue()==MIN_PRICE
+        &&mBottomSheetFilterLayout.filterPropertyLocationPriceRangeSlider.getEndValue()==MAX_PRICE
+        &&mBottomSheetFilterLayout.filterPropertyLocationSurfaceRangerSlider.getStartValue()==MIN_SURFACE
+        &&mBottomSheetFilterLayout.filterPropertyLocationSurfaceRangerSlider.getEndValue()==MAX_SURFACE
+        &&mBottomSheetFilterLayout.filterPropertyLocationRoomRangerSlider.getStartValue()==MIN_ROOM
+        &&mBottomSheetFilterLayout.filterPropertyLocationRoomRangerSlider.getEndValue()==MAX_ROOM)
+            return;
+
+        for (Property property : mFilteredProperties) {
             filterForRangeSlider(mBottomSheetFilterLayout.filterPropertyLocationPriceRangeSlider, property.propertyInformation.getPrice(), property);
             filterForRangeSlider(mBottomSheetFilterLayout.filterPropertyLocationSurfaceRangerSlider, property.propertyInformation.getPropertyArea(), property);
             filterForRangeSlider(mBottomSheetFilterLayout.filterPropertyLocationRoomRangerSlider, property.propertyInformation.getNumberOfRooms(), property);
         }
         if (!mPropertiesTempValue.isEmpty())
-            mFilteredPropertyInformation.removeAll(mPropertiesTempValue);
+            mFilteredProperties.removeAll(mPropertiesTempValue);
     }
 
     //--------------------------------------LIST HELPERS--------------------------------------------------------
@@ -195,7 +209,7 @@ public class FilterHelper {
         mPropertiesTempValue = new ArrayList<>();
         for (String requestPropertyType : mRequestPropertyType) {
             //check if property match request
-            for (Property property : mFilteredPropertyInformation) {
+            for (Property property : mFilteredProperties) {
                 if (property.propertyInformation.getPropertyType().equalsIgnoreCase(requestPropertyType) && !mPropertiesTempValue.contains(property)) {
                     mPropertiesTempValue.add(property);
                 }
@@ -203,8 +217,8 @@ public class FilterHelper {
 
         }
         //apply filter
-        mFilteredPropertyInformation.clear();
-        mFilteredPropertyInformation.addAll(mPropertiesTempValue);
+        mFilteredProperties.clear();
+        mFilteredProperties.addAll(mPropertiesTempValue);
     }
 
 
@@ -224,14 +238,14 @@ public class FilterHelper {
             else filterIfNotFirstType(type);
         }
         //apply final filtered value
-        mFilteredPropertyInformation.clear();
-        mFilteredPropertyInformation.addAll(mPropertiesTempValue);
+        mFilteredProperties.clear();
+        mFilteredProperties.addAll(mPropertiesTempValue);
 
     }
 
     private void filterForFirstType(int type) {
         //for first Point of interest type, add to value if match
-        for (Property property : mFilteredPropertyInformation)
+        for (Property property : mFilteredProperties)
             for (PointOfInterest pointOfInterest : property.pointOfInterests) {
                 if (pointOfInterest.getType().contains(mRequestPointsOfInterests.get(type))
                         && !mPropertiesTempValue.contains(property)) {
@@ -241,7 +255,7 @@ public class FilterHelper {
     }
 
     private void filterIfNotFirstType(int type) {
-        for (Property property : mFilteredPropertyInformation) {
+        for (Property property : mFilteredProperties) {
             boolean isFilteredPropertyHasRequestPointOfInterest = false;
             //for each property in filtered list check if at least one point of interest match request type
             for (PointOfInterest pointOfInterest : property.pointOfInterests) {
@@ -259,7 +273,7 @@ public class FilterHelper {
         }
     }
 
-    public void resetFilter() {
+    public void resetBottomSheetValues() {
         initRangeSliderValues();
         mBottomSheetFilterLayout.bottomSheetPointOfInterestInclude.supermarketCheckBox.mCheckBox.setChecked(false);
         mBottomSheetFilterLayout.bottomSheetPointOfInterestInclude.schoolCheckBox.mCheckBox.setChecked(false);

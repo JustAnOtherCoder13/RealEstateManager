@@ -40,6 +40,14 @@ public class ConstantParameters {
     private static final String TABLE_NAME = PropertyInformation.class.getSimpleName();
     public static final Uri URI_ITEM = Uri.parse("content://" + AUTHORITY + "/" + TABLE_NAME);
 
+    //------------------------------- CONTENT PROVIDER ----------------------
+    public static final float MIN_PRICE = 100000;
+    public static final float MAX_PRICE = 1000000;
+    public static final float MIN_SURFACE = 100 ;
+    public static final float MAX_SURFACE = 1000 ;
+    public static final float MIN_ROOM = 5 ;
+    public static final float MAX_ROOM =20  ;
+
     public static final int NOTIFICATION_ID = 7;
     public static final String NOTIFICATION_TAG = "REAL_ESTATE_MANAGER";
     public static final String RADIUS = "400";

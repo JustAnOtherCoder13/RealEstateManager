@@ -51,7 +51,6 @@ public class PropertyListFragment extends BaseFragment {
     }
 
     private void initRecyclerView() {
-        mPropertyViewModel.setAllProperties();
          mAdapter = new PropertyRecyclerViewAdapter(new ArrayList<>(), requireContext());
         RecyclerView.LayoutManager linearLayout = new LinearLayoutManager(getContext());
         setCurrencySwitch(mAdapter);

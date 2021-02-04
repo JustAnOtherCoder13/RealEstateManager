@@ -76,7 +76,6 @@ public class MapsFragment extends BaseFragment implements GoogleMap.OnInfoWindow
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         initMapView(savedInstanceState);
-        mPropertyViewModel.setAllProperties();
     }
 
     @Override
@@ -210,7 +209,7 @@ public class MapsFragment extends BaseFragment implements GoogleMap.OnInfoWindow
     }
 
     private boolean isPropertyMarker(@NonNull Marker marker) {
-        return getPropertyForId(marker.getTitle()).propertyLocation.getAddress() != null;
+        return getPropertyForId(marker.getTitle()).propertyLocation != null;
     }
 
     private void removePointOfInterest() {

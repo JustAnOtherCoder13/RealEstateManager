@@ -113,12 +113,14 @@ public class AddPropertyFragment extends BaseFragment {
                 if (resultCode == RESULT_OK && data != null && data.getData() != null) {
                     initGetMediaDialog(false, data);
                 }
+                playLoader(false);
                 break;
             case GALLERY_REQUEST_CODE:
                 if (resultCode == RESULT_OK && data != null && data.getData() != null) {
                     mImageHelper.setCurrentPhotoPath(PathUtil.getPath(requireContext(), data.getData()));
                     initGetMediaDialog(true, data);
                 }
+                playLoader(false);
                 break;
         }
     }
@@ -464,6 +466,7 @@ public class AddPropertyFragment extends BaseFragment {
         if (isPermissionGrantedForRequestCode(READ_PERMISSION_CODE)) {
             Intent galleryIntent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
             startActivityForResult(galleryIntent, GALLERY_REQUEST_CODE);
+            playLoader(true);
         } else
             ActivityCompat.requestPermissions(requireActivity(), new String[]{Manifest.permission.READ_EXTERNAL_STORAGE}, READ_PERMISSION_CODE);
         mediaDialog.dismiss();
