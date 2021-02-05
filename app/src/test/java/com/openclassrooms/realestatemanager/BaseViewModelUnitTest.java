@@ -48,7 +48,7 @@ import io.reactivex.schedulers.Schedulers;
 
 import static org.mockito.Mockito.when;
 
-public abstract class BaseUnitTest {
+public abstract class BaseViewModelUnitTest {
 
     @Rule
     public InstantTaskExecutorRule instantTaskExecutorRule = new InstantTaskExecutorRule();
@@ -56,7 +56,6 @@ public abstract class BaseUnitTest {
     final int propertyId = Generator.generatePropertiesInformation().get(0).getId();
 
     PropertyInformation propertyInformationToAdd = new PropertyInformation(3, 2, "House", 120, 6, 350000, "description", 2, 1, false, "0", "0");
-    PropertyInformation firstPropertyInformationToUpdate = Generator.generatePropertiesInformation().get(0);
     Property propertyToAdd = new Property();
     List<PropertyMedia> photoForPropertyId = new ArrayList<>();
     PropertyMedia photoToAdd = new PropertyMedia(5, "newPhoto", "newDescription", 1);
@@ -66,6 +65,7 @@ public abstract class BaseUnitTest {
     PointOfInterest newPointOfInterest = new PointOfInterest(1, 1, "restaurant", 0.0, 0.0, "restaurant", "icon");
     List<PointOfInterest> pointOfInterestsToAdd = new ArrayList<>();
     List<PointOfInterest> updatedPointOfInterests = new ArrayList<>();
+    List<PropertyMedia> mediasToDelete = new ArrayList<>();
     List<Property> allProperties = new ArrayList<>();
 
     PropertyLocation propertyLocationToAdd = new PropertyLocation(3, 42.543732, 5.036950, "property3Adress", "region", propertyInformationToAdd.getId());
@@ -102,7 +102,6 @@ public abstract class BaseUnitTest {
     DeletePointOfInterestInteractor deletePointOfInterestInteractor;
     @InjectMocks
     GetAllRegionsForAllPropertiesInteractor getAllRegionsForAllPropertiesInteractor;
-    @Mock
     SavedStateHandle savedStateHandle;
 
     //mock realEstateAgentViewModel
@@ -151,6 +150,7 @@ public abstract class BaseUnitTest {
 
         updatedPropertyLocation.setRegion("new region");
 
+        mediasToDelete.add(photoToDelete);
         //initViewModels
         propertyViewModel = new PropertyViewModel(getAllPropertiesInteractor, getAllPointOfInterestForPropertyIdInteractor, getAllRegionsForAllPropertiesInteractor, addPropertyInteractor, addPropertyPointOfInterestInteractor, addPropertyMediaInteractor, deletePropertyMediaInteractor, updatePropertyInteractor, addPropertyLocationInteractor, getPropertyLocationForAddressInteractor, getNearBySearchForPropertyLocationInteractor, updatePropertyLocationInteractor, deletePointOfInterestInteractor,savedStateHandle, schedulerProvider);
         agentViewModel = new AgentViewModel(getAgentInteractor, schedulerProvider);
@@ -161,22 +161,36 @@ public abstract class BaseUnitTest {
         agentViewModel.getAgent.observeForever(agentObserver);
 
         //stub return
+        //property
         when(propertyRepository.getAllProperties())
                 .thenReturn(Observable.create(emitter -> emitter.onNext(allProperties)));
         when(propertyRepository.addProperty(propertyInformationToAdd))
                 .thenReturn(Completable.create
                         (emitter -> Objects.requireNonNull(propertyViewModel.getAllProperties.getValue()).add(propertyToAdd)));
-        when(propertyRepository.updateProperty(firstPropertyInformationToUpdate))
+        when(propertyRepository.updateProperty(allProperties.get(0).propertyInformation))
                 .thenReturn(Completable.create(CompletableEmitter::onComplete));
 
+        //point of interest
         when(propertyRepository.getAllPointOfInterestForPropertyId(propertyId))
                 .thenReturn(Observable.create(emitter -> emitter.onNext(pointOfInterestForPropertyId)));
+        when(propertyRepository.addPropertyPointOfInterest(pointOfInterestToAdd))
+                .thenReturn(Completable.create(emitter -> Objects.requireNonNull(propertyViewModel.getAllProperties.getValue()).get(0).pointOfInterests.addAll(pointOfInterestsToAdd)));
         when(propertyRepository.deletePropertyPointOfInterest(Generator.generatePointOfInterests().get(0)))
-                .thenReturn(Completable.create(CompletableEmitter::onComplete));
+                .thenReturn(Completable.create(emitter -> Objects.requireNonNull(propertyViewModel.getAllProperties.getValue()).get(0).pointOfInterests.remove(Generator.generatePointOfInterests().get(0))));
+        when(propertyRepository.addPropertyPointOfInterest(updatedPointOfInterests.get(0)))
+                .thenReturn(Completable.create(emitter -> Objects.requireNonNull(propertyViewModel.getAllProperties.getValue()).get(0).pointOfInterests.add(updatedPointOfInterests.get(0))));
         when(propertyRepository.deletePropertyPointOfInterest(pointOfInterestToAdd))
                 .thenReturn(Completable.create(CompletableEmitter::onComplete));
 
 
+        //media
+        when(propertyRepository.deletePropertyMedia(photoToDelete))
+                .thenReturn(Completable.create(emitter -> Objects.requireNonNull(propertyViewModel.getAllProperties.getValue()).get(0).medias.remove(photoToDelete)));
+        when(propertyRepository.addPropertyMedia(photoToAdd))
+                .thenReturn(Completable.create(emitter -> Objects.requireNonNull(propertyViewModel.getAllProperties.getValue()).get(0).medias.add(photoToAdd)));
+
+
+        //location
         when(propertyRepository.getPropertyLocationForPropertyId(propertyId))
                 .thenReturn(Observable.create(emitter -> emitter.onNext(Generator.generatePropertyLocation().get(0))));
         when(propertyRepository.getPropertyLocationForPropertyId(propertyInformationToAdd.getId()))

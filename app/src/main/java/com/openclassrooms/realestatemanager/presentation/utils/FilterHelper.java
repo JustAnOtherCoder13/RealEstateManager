@@ -30,7 +30,7 @@ public class FilterHelper {
     private List<Property> mFilteredProperties;
     private boolean mIsAnyFilterSelected;
 
-
+// todo review to pass unit test
     public List<Property> getFilteredProperties() {
         return mFilteredProperties;
     }

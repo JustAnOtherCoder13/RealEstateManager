@@ -332,8 +332,10 @@ public class AddPropertyFragment extends BaseFragment {
         mInnerPropertyViewModel.getMapsPointOfInterest.observe(getViewLifecycleOwner(), mapsPointOfInterests -> {
             if (mIsNewPropertyToPersist)
                 mInnerPropertyViewModel.addPropertyPointOfInterest(mapsPointOfInterests);
-            else
+            else{
+                mInnerPropertyViewModel.deletePointsOfInterestForProperty(mSelectedProperty);
                 mInnerPropertyViewModel.updatePointOfInterest(mapsPointOfInterests);
+            }
             mSelectedProperty.pointOfInterests = mapsPointOfInterests;
         });
     }
@@ -425,7 +427,7 @@ public class AddPropertyFragment extends BaseFragment {
     }
 
     private void persistAllNewPhotos() {
-        mInnerPropertyViewModel.deleteSelectedPhotosForProperty(mMediasToDelete);
+        mInnerPropertyViewModel.deleteSelectedMediaForProperty(mMediasToDelete);
         for (PropertyMedia propertyMedia : mSelectedProperty.medias)
             mInnerPropertyViewModel.addPropertyMedia(propertyMedia);
     }

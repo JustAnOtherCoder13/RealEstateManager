@@ -29,7 +29,6 @@ import com.picone.core.utils.SchedulerProvider;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
-import java.util.Objects;
 
 import io.reactivex.Observable;
 
@@ -180,6 +179,7 @@ public class PropertyViewModel extends BaseViewModel {
                         }, throwable -> checkException()));
     }
 
+    //todo change to observable.just
     public void updatePropertyLocation(@NonNull PropertyLocation propertyLocation) {
         compositeDisposable.add(
                 updatePropertyLocationInteractor.updatePropertyLocation(propertyLocation)
@@ -204,22 +204,33 @@ public class PropertyViewModel extends BaseViewModel {
 
     }
 
-    public void updatePointOfInterest(@NonNull List<PointOfInterest> mapsPointOfInterest) {
+    //todo review logic
+
+    public void deletePointsOfInterestForProperty(@NonNull Property property) {
         compositeDisposable.add(
-                Observable.fromIterable(Objects.requireNonNull(storedPointOfInterestForPropertyMutableLD.getValue()))
+                getAllPointOfInterestForPropertyIdInteractor.getAllPointOfInterestForPropertyId(property.propertyInformation.getId())
                         .subscribeOn(schedulerProvider.getIo())
-                        .flatMapCompletable(pointOfInterest ->
-                                deletePointOfInterestInteractor.deletePropertyPointOfInterest(pointOfInterest))
-                        .andThen(Observable.fromIterable(mapsPointOfInterest))
-                        .flatMapCompletable(pointOfInterest ->
-                                addPropertyPointOfInterestInteractor.addPropertyPointOfInterest(pointOfInterest))
-                        .doOnComplete(() -> completionStateMutableLD.postValue(ADD_POINT_OF_INTEREST_COMPLETE))
-                        .doOnTerminate(() -> isDataLoadingMutableLD.postValue(false))
                         .observeOn(schedulerProvider.getUi())
+                        .flatMap(Observable::fromIterable)
+                        .flatMapCompletable(pointOfInterest -> deletePointOfInterestInteractor.deletePropertyPointOfInterest(pointOfInterest))
                         .subscribe(() -> {
                         }, throwable -> checkException())
         );
     }
+
+    public void updatePointOfInterest(@NonNull List<PointOfInterest> mapsPointOfInterest) {
+        compositeDisposable.add(
+                Observable.fromIterable(mapsPointOfInterest)
+                        .observeOn(schedulerProvider.getUi())
+                        .flatMapCompletable(pointOfInterest ->
+                                addPropertyPointOfInterestInteractor.addPropertyPointOfInterest(pointOfInterest))
+                        .doOnComplete(() -> completionStateMutableLD.postValue(ADD_POINT_OF_INTEREST_COMPLETE))
+                        .doOnTerminate(() -> isDataLoadingMutableLD.postValue(false))
+                        .subscribe(() -> {
+                        }, throwable -> checkException())
+        );
+    }
+
 
     //___________________________________PROPERTY PHOTO__________________________________
 
@@ -229,19 +240,11 @@ public class PropertyViewModel extends BaseViewModel {
                         .subscribeOn(schedulerProvider.getIo())
                         .observeOn(schedulerProvider.getUi())
                         .subscribe(() -> {
-                        }, throwable -> checkException()));
+                        }, throwable -> checkException())
+        );
     }
 
-    public void deletePropertyPhoto(@NonNull PropertyMedia propertyMedia) {
-        compositeDisposable.add(
-                deletePropertyMediaInteractor.deletePropertyMedia(propertyMedia)
-                        .subscribeOn(schedulerProvider.getIo())
-                        .observeOn(schedulerProvider.getUi())
-                        .subscribe(() -> {
-                        }));
-    }
-
-    public void deleteSelectedPhotosForProperty(@NonNull List<PropertyMedia> propertyMedia) {
+    public void deleteSelectedMediaForProperty(@NonNull List<PropertyMedia> propertyMedia) {
         compositeDisposable.add(
                 deletePropertyMediaInteractor.deleteSelectedMediaForProperty(propertyMedia)
                         .subscribeOn(schedulerProvider.getIo())
