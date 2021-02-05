@@ -25,7 +25,7 @@ import static com.picone.core.utils.ConstantParameters.ADD_PHOTO;
 public class PhotoRecyclerViewAdapter extends RecyclerView.Adapter<PhotoRecyclerViewAdapter.ViewHolder> {
 
     private List<PropertyMedia> mMedias;
-    private boolean mIsPhotoHaveBeenDeleted;
+    private boolean mIsMediaHaveBeenDeleted;
 
     public PhotoRecyclerViewAdapter(List<PropertyMedia> mMedias) {
         this.mMedias = mMedias;
@@ -41,13 +41,13 @@ public class PhotoRecyclerViewAdapter extends RecyclerView.Adapter<PhotoRecycler
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-        PropertyMedia media = mMedias.get(position);
+        final PropertyMedia media = mMedias.get(position);
         //show play logo if is video
         holder.binding.propertyDetailItemPlayLogo.setVisibility(isImageFileFromPath(media.getPhotoPath()) ?
                 View.GONE
                 : View.VISIBLE);
         //if media have been deleted reset media checkbox
-        if (mIsPhotoHaveBeenDeleted) {
+        if (mIsMediaHaveBeenDeleted) {
             holder.binding.propertyDetailItemCheckBox.setChecked(false);
             holder.binding.propertyDetailItemCheckBox.setVisibility(View.GONE);
         }
@@ -76,13 +76,13 @@ public class PhotoRecyclerViewAdapter extends RecyclerView.Adapter<PhotoRecycler
         }
     }
 
-    public void updatePhotos(List<PropertyMedia> updatedPhotos) {
+    public void updateMedias(List<PropertyMedia> updatedPhotos) {
         this.mMedias = updatedPhotos;
         notifyDataSetChanged();
     }
 
-    public void isPhotoHaveBeenDeleted(boolean isPhotoHaveBeenDeleted) {
-        this.mIsPhotoHaveBeenDeleted = isPhotoHaveBeenDeleted;
+    public void isMediaHaveBeenDeleted(boolean isMediaHaveBeenDeleted) {
+        this.mIsMediaHaveBeenDeleted = isMediaHaveBeenDeleted;
     }
 
     //---------------------- HELPER -----------------------------------

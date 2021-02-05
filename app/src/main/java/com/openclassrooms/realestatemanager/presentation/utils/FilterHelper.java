@@ -111,7 +111,7 @@ public class FilterHelper {
            mIsAnyFilterSelected =true;
             // check property that don't match request
             for (Property property : mFilteredProperties) {
-                if (property.photos.size() < Integer.parseInt(mBottomSheetFilterLayout.filterPropertyNumberOfPhotoSpinner.getText()))
+                if (property.medias.size() < Integer.parseInt(mBottomSheetFilterLayout.filterPropertyNumberOfPhotoSpinner.getText()))
                     mPropertiesTempValue.add(property);
             }
         }

@@ -32,7 +32,6 @@ public abstract class BaseFragment extends Fragment {
 
     private MainActivity mMainActivity;
 
-
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -70,9 +69,7 @@ public abstract class BaseFragment extends Fragment {
         mMainActivity.playLoader(isVisible);
     }
 
-    protected Property getPropertyForId(String propertyId) {
-        return mMainActivity.getPropertyForId(propertyId);
-    }
+    protected Property getPropertyForId(String propertyId) { return mMainActivity.getPropertyForId(propertyId); }
 
     protected boolean isPermissionGrantedForRequestCode(int requestCode) {
         switch (requestCode) {

@@ -42,16 +42,16 @@ public class PropertyInformationViewModelUnitTest extends BaseUnitTest {
 
     @Test
     public void addPhotoShouldUpdatePhotoList(){
-        propertyViewModel.addPropertyPhoto(photoToAdd);
-        assertEquals(4, Objects.requireNonNull(propertyViewModel.getAllProperties.getValue()).get(0).photos.size());
-        assertTrue(propertyViewModel.getAllProperties.getValue().get(0).photos.contains(photoToAdd));
+        propertyViewModel.addPropertyMedia(photoToAdd);
+        assertEquals(4, Objects.requireNonNull(propertyViewModel.getAllProperties.getValue()).get(0).medias.size());
+        assertTrue(propertyViewModel.getAllProperties.getValue().get(0).medias.contains(photoToAdd));
     }
 
     @Test
     public void deletePhotoShouldUpdatePhotoList(){
         propertyViewModel.deletePropertyPhoto(photoToDelete);
-        assertEquals(2, Objects.requireNonNull(propertyViewModel.getAllProperties.getValue()).get(0).photos.size());
-        assertFalse(propertyViewModel.getAllProperties.getValue().get(0).photos.contains(photoToDelete));
+        assertEquals(2, Objects.requireNonNull(propertyViewModel.getAllProperties.getValue()).get(0).medias.size());
+        assertFalse(propertyViewModel.getAllProperties.getValue().get(0).medias.contains(photoToDelete));
     }
 
     @Test
@@ -77,7 +77,7 @@ public class PropertyInformationViewModelUnitTest extends BaseUnitTest {
     public void addPropertyPositionShouldAddNewPropertyLocation(){
         propertyViewModel.addPropertyLocationForProperty(propertyLocationToAdd);
         //propertyViewModel.setPropertyLocationForProperty(propertyInformationToAdd);
-        assertEquals(propertyViewModel.getAllProperties.getValue().get(0).propertyLocation.getLatitude(), propertyLocationToAdd.getLatitude(), 0.0);
+        assertEquals(Objects.requireNonNull(propertyViewModel.getAllProperties.getValue()).get(0).propertyLocation.getLatitude(), propertyLocationToAdd.getLatitude(), 0.0);
     }
 
     @Test
@@ -85,13 +85,13 @@ public class PropertyInformationViewModelUnitTest extends BaseUnitTest {
         propertyViewModel.addPropertyLocationForProperty(propertyLocationToAdd);
         propertyViewModel.updatePropertyLocation(updatedPropertyLocation);
        // propertyViewModel.setPropertyLocationForProperty(propertyInformationToAdd);
-        assertTrue(Objects.requireNonNull(propertyViewModel.getAllProperties.getValue().get(2).propertyLocation.getRegion().equalsIgnoreCase(updatedPropertyLocation.getRegion())));
+        assertTrue(Objects.requireNonNull(Objects.requireNonNull(propertyViewModel.getAllProperties.getValue()).get(2).propertyLocation.getRegion().equalsIgnoreCase(updatedPropertyLocation.getRegion())));
     }
 
     @Test
     public void UpdatePointOfInterestsShouldUpdateOriginalPointOfInterests(){
         propertyViewModel.updatePointOfInterest(updatedPointOfInterests);
-        assertEquals(1, propertyViewModel.getAllProperties.getValue().get(0).pointOfInterests.size());
+        assertEquals(1, Objects.requireNonNull(propertyViewModel.getAllProperties.getValue()).get(0).pointOfInterests.size());
         assertTrue(propertyViewModel.getAllProperties.getValue().get(0).pointOfInterests.contains(newPointOfInterest));
     }
 

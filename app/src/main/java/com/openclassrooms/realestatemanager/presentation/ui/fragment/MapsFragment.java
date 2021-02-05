@@ -190,6 +190,7 @@ public class MapsFragment extends BaseFragment implements GoogleMap.OnInfoWindow
 
         Glide.with(requireContext())
                 .load(pointOfInterest.getIcon())
+                //to adapt icon size if on phone or tab
                 .apply(getResources().getBoolean(R.bool.phone_device) ?
                         new RequestOptions()
                         : new RequestOptions().override(40))

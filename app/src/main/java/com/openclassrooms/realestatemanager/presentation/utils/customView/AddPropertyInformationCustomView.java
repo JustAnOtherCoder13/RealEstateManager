@@ -51,7 +51,5 @@ public class AddPropertyInformationCustomView extends ConstraintLayout {
     }
 
     @NonNull
-    public Boolean isEditTextEmpty() {
-        return mAddPropertyInformationEditText.getText().toString().trim().isEmpty();
-    }
+    public Boolean isEditTextEmpty() { return mAddPropertyInformationEditText.getText().toString().trim().isEmpty(); }
 }

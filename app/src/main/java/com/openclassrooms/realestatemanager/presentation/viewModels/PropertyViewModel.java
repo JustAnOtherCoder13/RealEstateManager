@@ -110,7 +110,7 @@ public class PropertyViewModel extends BaseViewModel {
         selectedPropertyMutableLD.setValue(property);
     }
 
-    public void setPhotosToDelete(List<PropertyMedia> photosToDelete) {
+    public void setMediasToDelete(List<PropertyMedia> photosToDelete) {
         photosToDeleteMutableLD.postValue(photosToDelete);
     }
 
@@ -223,7 +223,7 @@ public class PropertyViewModel extends BaseViewModel {
 
     //___________________________________PROPERTY PHOTO__________________________________
 
-    public void addPropertyPhoto(PropertyMedia propertyMedia) {
+    public void addPropertyMedia(PropertyMedia propertyMedia) {
         compositeDisposable.add(
                 addPropertyMediaInteractor.addPropertyMedia(propertyMedia)
                         .subscribeOn(schedulerProvider.getIo())

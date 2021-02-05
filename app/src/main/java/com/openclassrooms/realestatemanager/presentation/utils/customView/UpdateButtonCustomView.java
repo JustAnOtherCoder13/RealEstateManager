@@ -23,5 +23,4 @@ public class UpdateButtonCustomView extends ConstraintLayout {
         inflate(getContext(), R.layout.custom_view_update_button, this);
         mUpdateButton = findViewById(R.id.custom_view_update_image_button);
     }
-
 }

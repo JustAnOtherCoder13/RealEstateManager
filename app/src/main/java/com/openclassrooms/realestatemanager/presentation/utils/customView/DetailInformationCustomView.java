@@ -14,6 +14,7 @@ import com.openclassrooms.realestatemanager.R;
 
 public class DetailInformationCustomView extends ConstraintLayout {
 
+    private TextView detailInformationValue;
 
     public DetailInformationCustomView(@NonNull Context context, @Nullable AttributeSet attrs) {
         super(context, attrs);
@@ -25,11 +26,16 @@ public class DetailInformationCustomView extends ConstraintLayout {
 
         ImageView detailInformationIcon = findViewById(R.id.detail_information_custom_view_icon);
         TextView detailInformationTitle = findViewById(R.id.detail_information_custom_view_title);
+        detailInformationValue = findViewById(R.id.detail_information_custom_view_value);
 
         TypedArray attributes = getContext().obtainStyledAttributes(attrs, R.styleable.DetailInformationCustomView);
 
         detailInformationIcon.setImageDrawable(attributes.getDrawable(R.styleable.DetailInformationCustomView_icon));
         detailInformationTitle.setText(attributes.getText(R.styleable.DetailInformationCustomView_title));
         attributes.recycle();
+    }
+
+    public void setText(String text){
+        detailInformationValue.setText(text);
     }
 }

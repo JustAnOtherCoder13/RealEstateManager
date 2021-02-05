@@ -109,6 +109,8 @@
     <string name="notification_number_of_point_of_interst">\nnumber of points of interest</string>
     <string name="square_meter">m²</string>
     <string name="bitmap_converter_warning_message">Parameter must be an instance of BitmapDrawable or a vector drawable resource</string>
+    <string name="no_match_found">No property match your request.</string>
+    <string name="no_filter_selected">No filter selected.</string>
 
 
 </resources>

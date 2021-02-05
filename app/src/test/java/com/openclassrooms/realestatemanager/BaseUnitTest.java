@@ -129,11 +129,11 @@ public abstract class BaseUnitTest {
             Property property = new Property();
             property.propertyInformation = Generator.generatePropertiesInformation().get(i);
             property.propertyLocation = Generator.generatePropertyLocation().get(i);
-            property.photos = new ArrayList<>();
+            property.medias = new ArrayList<>();
             property.pointOfInterests = new ArrayList<>();
             for (PropertyMedia propertyMedia : Generator.generatePhotos())
                 if (propertyMedia.getPropertyId() == property.propertyInformation.getId())
-                    property.photos.add(propertyMedia);
+                    property.medias.add(propertyMedia);
             for (PointOfInterest pointOfInterest : Generator.generatePointOfInterests())
                 if (pointOfInterest.getPropertyId() == property.propertyInformation.getId())
                     property.pointOfInterests.add(pointOfInterest);

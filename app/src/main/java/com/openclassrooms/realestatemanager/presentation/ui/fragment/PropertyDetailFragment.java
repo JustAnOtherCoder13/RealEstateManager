@@ -21,7 +21,6 @@ import com.openclassrooms.realestatemanager.presentation.ui.fragment.adapter.Pho
 import com.openclassrooms.realestatemanager.presentation.ui.main.BaseFragment;
 import com.openclassrooms.realestatemanager.presentation.utils.RecyclerViewItemClickListener;
 import com.openclassrooms.realestatemanager.presentation.utils.customView.CustomMediaFullScreenDialog;
-import com.openclassrooms.realestatemanager.presentation.utils.customView.DetailInformationCustomView;
 import com.picone.core.domain.entity.Property;
 import com.picone.core.domain.entity.PropertyLocation;
 
@@ -49,7 +48,6 @@ public class PropertyDetailFragment extends BaseFragment {
         return mBinding.getRoot();
     }
 
-
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
@@ -59,7 +57,7 @@ public class PropertyDetailFragment extends BaseFragment {
                 setUpdateButtonCustomViewVisibility(!property.propertyInformation.isSold());
                 if (property.propertyInformation.getSoldFrom() != null)
                     mBinding.fragmentDetailSoldTextView.setText(getString(R.string.is_sold_from).concat(property.propertyInformation.getSoldFrom()));
-                mAdapter.updatePhotos(property.photos);
+                mAdapter.updateMedias(property.medias);
                 initClickOnMedia(property);
                 initValue(mBinding.fragmentDetailInformationLayout,
                         Objects.requireNonNull(property),
@@ -70,16 +68,16 @@ public class PropertyDetailFragment extends BaseFragment {
 
     private void initRecyclerView() {
         mAdapter = new PhotoRecyclerViewAdapter(new ArrayList<>());
-        mAdapter.isPhotoHaveBeenDeleted(false);
+        mAdapter.isMediaHaveBeenDeleted(false);
         mBinding.fragmentDetailMediaLayout.detailCustomViewRecyclerView.setAdapter(mAdapter);
     }
 
     private void initValue(@NonNull FragmentPropertyDetailInformationBinding detailInformationLayout, @NonNull Property property, @NonNull TextView descriptionTextView) {
-        setTextForCustomView(detailInformationLayout.fragmentDetailAreaCustomView, String.valueOf(property.propertyInformation.getPropertyArea()).concat(" ").concat(getString(R.string.square_meter)));
-        setTextForCustomView(detailInformationLayout.fragmentDetailLocationCustomView, property.propertyLocation.getAddress());
-        setTextForCustomView(detailInformationLayout.fragmentDetailNumbersOfRoomsCustomView, String.valueOf(property.propertyInformation.getNumberOfRooms()));
-        setTextForCustomView(detailInformationLayout.fragmentDetailNumbersOfBedroomsCustomView, String.valueOf(property.propertyInformation.getNumberOfBedrooms()));
-        setTextForCustomView(detailInformationLayout.fragmentDetailNumbersOfBathroomsCustomView, String.valueOf(property.propertyInformation.getNumberOfBathrooms()));
+        detailInformationLayout.fragmentDetailAreaCustomView.setText(String.valueOf(property.propertyInformation.getPropertyArea()).concat(" ").concat(getString(R.string.square_meter)));
+        detailInformationLayout.fragmentDetailLocationCustomView.setText(property.propertyLocation.getAddress());
+        detailInformationLayout.fragmentDetailNumbersOfRoomsCustomView.setText(String.valueOf(property.propertyInformation.getNumberOfRooms()));
+        detailInformationLayout.fragmentDetailNumbersOfBedroomsCustomView.setText(String.valueOf(property.propertyInformation.getNumberOfBedrooms()));
+        detailInformationLayout.fragmentDetailNumbersOfBathroomsCustomView.setText(String.valueOf(property.propertyInformation.getNumberOfBathrooms()));
         descriptionTextView.setText(property.propertyInformation.getDescription());
         setStaticMap(property.propertyLocation);
     }
@@ -87,36 +85,14 @@ public class PropertyDetailFragment extends BaseFragment {
     private void initClickOnMedia(Property property) {
         RecyclerViewItemClickListener.addTo(mBinding.fragmentDetailMediaLayout.detailCustomViewRecyclerView, R.layout.fragment_property_detail)
                 .setOnItemClickListener((recyclerView, position, v) -> {
-                    CustomMediaFullScreenDialog fullScreenMediaDialog = new CustomMediaFullScreenDialog(requireContext(), property.photos.get(position).getPhotoPath());
+                    CustomMediaFullScreenDialog fullScreenMediaDialog = new CustomMediaFullScreenDialog(requireContext(), property.medias.get(position).getPhotoPath());
                     fullScreenMediaDialog.show();
                 });
     }
 
-    private void setTextForCustomView(@NonNull DetailInformationCustomView customView, String text) {
-        TextView textView = customView.findViewById(R.id.detail_information_custom_view_value);
-        textView.setText(text);
-    }
-
     private void setStaticMap(@NonNull PropertyLocation propertyLocation) {
-
-        String propertyLocationStr = String.valueOf(propertyLocation.getLatitude())
-                .concat(",").concat(String.valueOf(propertyLocation.getLongitude()));
-
-        String center = "center=".concat(propertyLocationStr)
-                .concat("&zoom=").concat(String.valueOf(MAPS_CAMERA_NEAR_ZOOM));
-
-        String size = "&size=".concat(STATIC_MAP_SIZE).concat("x").concat(STATIC_MAP_SIZE);
-
-        String markerStyle = "&markers=color:0xFF4081%7C".concat(propertyLocationStr);
-
-        String uriToPass = BASE_STATIC_MAP_URI.concat(center)
-                .concat(size)
-                .concat(markerStyle)
-                .concat("&key=")
-                .concat(MAPS_KEY);
-
         Glide.with(mBinding.fragmentDetailInformationLayout.fragmentDetailMapsView)
-                .load(Uri.parse(uriToPass))
+                .load(Uri.parse(getFormatUri(propertyLocation)))
                 .centerCrop()
                 .into(new CustomTarget<Drawable>() {
                     @Override
@@ -128,5 +104,24 @@ public class PropertyDetailFragment extends BaseFragment {
                     public void onLoadCleared(@Nullable Drawable placeholder) {
                     }
                 });
+    }
+
+    @NonNull
+    private String getFormatUri(@NonNull PropertyLocation propertyLocation) {
+        String propertyLocationStr = String.valueOf(propertyLocation.getLatitude())
+                .concat(",").concat(String.valueOf(propertyLocation.getLongitude()));
+
+        String center = "center=".concat(propertyLocationStr)
+                .concat("&zoom=").concat(String.valueOf(MAPS_CAMERA_NEAR_ZOOM));
+
+        String size = "&size=".concat(STATIC_MAP_SIZE).concat("x").concat(STATIC_MAP_SIZE);
+
+        String markerStyle = "&markers=color:0xFF4081%7C".concat(propertyLocationStr);
+
+        return BASE_STATIC_MAP_URI.concat(center)
+                .concat(size)
+                .concat(markerStyle)
+                .concat("&key=")
+                .concat(MAPS_KEY);
     }
 }

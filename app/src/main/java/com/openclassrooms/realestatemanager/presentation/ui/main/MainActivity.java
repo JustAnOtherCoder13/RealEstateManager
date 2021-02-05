@@ -80,9 +80,10 @@ public class MainActivity extends AppCompatActivity {
         //reset selected property if not on add or detail fragment
         if (Objects.requireNonNull(mNavController.getCurrentDestination()).getId() != R.id.addPropertyFragment)
             mPropertyViewModel.setSelectedProperty(new Property());
-        if (Objects.requireNonNull(mNavController.getCurrentDestination()).getId()==R.id.addPropertyFragment){
+
+        if (Objects.requireNonNull(mNavController.getCurrentDestination()).getId() == R.id.addPropertyFragment) {
             mPropertyViewModel.setAllProperties();
-}
+        }
         //set back press nav
         if (mNavController.getCurrentDestination() != null && mIsPhone)
             setPhoneBackNavigation();
@@ -127,9 +128,9 @@ public class MainActivity extends AppCompatActivity {
         mNavController = Navigation.findNavController(this, R.id.nav_host_fragment);
         agentViewModel.setAgent();
         mPropertyViewModel.setAllProperties();
-        mPropertyViewModel.getAllProperties.observe(this,properties -> {
-            if (mPropertyViewModel.getSelectedProperty.getValue()!=null && mPropertyViewModel.getSelectedProperty.getValue().propertyInformation!=null)
-            mPropertyViewModel.setSelectedProperty(getPropertyForId(String.valueOf(mPropertyViewModel.getSelectedProperty.getValue().propertyInformation.getId())));
+        mPropertyViewModel.getAllProperties.observe(this, properties -> {
+            if (mPropertyViewModel.getSelectedProperty.getValue() != null && mPropertyViewModel.getSelectedProperty.getValue().propertyInformation != null)
+                mPropertyViewModel.setSelectedProperty(getPropertyForId(String.valueOf(mPropertyViewModel.getSelectedProperty.getValue().propertyInformation.getId())));
         });
         mPropertyViewModel.getErrorState.observe(this, errorHandler -> {
             if (errorHandler.equals(ErrorHandler.ON_ERROR)) {
@@ -157,9 +158,7 @@ public class MainActivity extends AppCompatActivity {
         mPropertyViewModel.getLocale.observe(this, adapter::updateLocale);
     }
 
-    //todo review filter "no filter"
     private void setBottomSheetButtonClickListener() {
-
         mBinding.bottomSheetLayout.bottomSheetCloseButton.setOnClickListener(v -> {
             mBottomSheetBehavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
             mBinding.topAppBar.mResetFilterButton.setVisibility(View.GONE);
@@ -169,12 +168,11 @@ public class MainActivity extends AppCompatActivity {
             mFilterHelper.filterProperties(mPropertyViewModel.getAllProperties.getValue());
             mFilterHelper.resetBottomSheetValues();
 
-            if (mFilterHelper.getFilteredProperties().isEmpty()){
-                Toast.makeText(this, "No property match your request.", Toast.LENGTH_SHORT).show();
+            if (mFilterHelper.getFilteredProperties().isEmpty()) {
+                Toast.makeText(this, R.string.no_match_found, Toast.LENGTH_SHORT).show();
                 return;
-            }
-            else if (!mFilterHelper.getIsAnyFilterSelected()){
-                Toast.makeText(this, "No filter selected.", Toast.LENGTH_SHORT).show();
+            } else if (!mFilterHelper.getIsAnyFilterSelected()) {
+                Toast.makeText(this, R.string.no_filter_selected, Toast.LENGTH_SHORT).show();
                 return;
             }
 
@@ -256,7 +254,6 @@ public class MainActivity extends AppCompatActivity {
         if (isForUpdate) mUpdateButton.setOnClickListener
                 (v -> mNavController.navigate
                         (R.id.action_propertyDetailFragment_to_addPropertyFragment));
-
     }
 
     protected void setSaveButtonClickListener(View.OnClickListener clickListener) {
