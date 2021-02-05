@@ -2,7 +2,6 @@ package com.openclassrooms.realestatemanager.presentation.ui.main;
 
 import android.Manifest;
 import android.content.Context;
-import android.content.pm.ActivityInfo;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.view.View;
@@ -138,18 +137,12 @@ public class MainActivity extends AppCompatActivity {
                 playLoader(false);
             }
         });
-        initView();
+        if (getResources().getBoolean(R.bool.phone_device)) {
+            assert mBinding.bottomNavBar != null;
+            NavigationUI.setupWithNavController(mBinding.bottomNavBar, mNavController);
+        }
         initBottomSheetLocationFilter();
         setBottomSheetButtonClickListener();
-    }
-
-    @SuppressWarnings("ConstantConditions")//can't be null on phone
-    private void initView() {
-        if (getResources().getBoolean(R.bool.phone_device)) {
-            NavigationUI.setupWithNavController(mBinding.bottomNavBar, mNavController);
-        } else {
-            setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
-        }
     }
 
     //-------------------------- COMPONENT --------------------------------
