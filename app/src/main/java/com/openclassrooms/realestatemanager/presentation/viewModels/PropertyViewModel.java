@@ -1,7 +1,5 @@
 package com.openclassrooms.realestatemanager.presentation.viewModels;
 
-import android.util.Log;
-
 import androidx.annotation.NonNull;
 import androidx.hilt.Assisted;
 import androidx.hilt.lifecycle.ViewModelInject;
@@ -112,7 +110,7 @@ public class PropertyViewModel extends BaseViewModel {
         selectedPropertyMutableLD.setValue(property);
     }
 
-    public void setPhotosToDelete(List<PropertyMedia> photosToDelete) {
+    public void setMediasToDelete(List<PropertyMedia> photosToDelete) {
         photosToDeleteMutableLD.postValue(photosToDelete);
     }
 
@@ -188,7 +186,7 @@ public class PropertyViewModel extends BaseViewModel {
                         .subscribeOn(schedulerProvider.getIo())
                         .observeOn(schedulerProvider.getUi())
                         .andThen(getAllPropertiesInteractor.getAllProperties())
-                        .subscribe(properties -> selectedPropertyMutableLD.postValue(new Property()), throwable -> Log.e("TAG", "updatePropertyLocation: " + throwable)));
+                        .subscribe(properties -> selectedPropertyMutableLD.postValue(new Property()), throwable -> checkException()));
 
     }
     //___________________________________PROPERTY POINT OF INTEREST__________________________________
@@ -225,7 +223,7 @@ public class PropertyViewModel extends BaseViewModel {
 
     //___________________________________PROPERTY PHOTO__________________________________
 
-    public void addPropertyPhoto(PropertyMedia propertyMedia) {
+    public void addPropertyMedia(PropertyMedia propertyMedia) {
         compositeDisposable.add(
                 addPropertyMediaInteractor.addPropertyMedia(propertyMedia)
                         .subscribeOn(schedulerProvider.getIo())

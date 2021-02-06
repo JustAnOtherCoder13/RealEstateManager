@@ -10,7 +10,7 @@ import javax.inject.Inject;
 import io.reactivex.Observable;
 
 
-public class RealEstateAgentDaoImpl {
+public class RealEstateAgentDaoImpl implements RealEstateAgentRoomDao{
 
     @Inject
     protected RealEstateManagerRoomDatabase mRoomDatabase;
@@ -21,6 +21,7 @@ public class RealEstateAgentDaoImpl {
         this.mRealEstateAgentRoomDao = mRoomDatabase.realEstateManagerRoomDao();
     }
 
+    @Override
     public Observable<RealEstateAgent> getAgent() {
         return mRealEstateAgentRoomDao.getAgent();
     }

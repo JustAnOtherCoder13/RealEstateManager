@@ -1,7 +1,11 @@
 package com.openclassrooms.realestatemanager.presentation.di;
 
+import androidx.annotation.NonNull;
+
 import com.openclassrooms.realestatemanager.presentation.ui.main.BaseFragment;
 import com.picone.core.utils.SchedulerProvider;
+
+import org.jetbrains.annotations.Contract;
 
 import dagger.Module;
 import dagger.Provides;
@@ -14,9 +18,13 @@ import io.reactivex.schedulers.Schedulers;
 @Module
 public class PresentationModule {
 
+    @NonNull
+    @Contract(" -> new")
     @Provides
     static BaseFragment provideBaseFragment() { return new BaseFragment() {}; }
 
+    @NonNull
+    @Contract(" -> new")
     @Provides
     static SchedulerProvider provideSchedulerProvider(){return new SchedulerProvider(Schedulers.io(), AndroidSchedulers.mainThread());}
 }

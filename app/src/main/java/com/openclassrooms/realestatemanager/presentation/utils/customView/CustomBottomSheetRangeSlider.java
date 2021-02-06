@@ -21,8 +21,8 @@ public class CustomBottomSheetRangeSlider extends ConstraintLayout {
 
     private Context mContext;
     private RangeSlider mRangeSlider;
-    private TextView mStartValue;
-    private TextView mEndValue;
+    private TextView mStartValue, mEndValue;
+    private float mStartFloatValue, mEndFloatValue;
 
     public CustomBottomSheetRangeSlider(@NonNull Context mContext, @Nullable AttributeSet attrs) {
         super(mContext, attrs);
@@ -48,18 +48,21 @@ public class CustomBottomSheetRangeSlider extends ConstraintLayout {
         mRangeSlider.addOnSliderTouchListener(new RangeSlider.OnSliderTouchListener() {
             @Override
             public void onStartTrackingTouch(@NonNull RangeSlider slider) {
-                mRangeSlider.addOnChangeListener((slider1, value, fromUser) ->
-                        mStartValue.setText(formatWithSpace().format(slider.getValues().get(0).intValue())));
-                mRangeSlider.addOnChangeListener((slider1, value, fromUser) ->
-                        mEndValue.setText(formatWithSpace().format(slider.getValues().get(1).intValue())));
+                slider.addOnChangeListener((slider1, value, fromUser) -> {
+                    mStartFloatValue = slider.getValues().get(0).intValue();
+                    mEndFloatValue = slider.getValues().get(1).intValue();
+                    mStartValue.setText(formatWithSpace().format(slider.getValues().get(0).intValue()));
+                    mEndValue.setText(formatWithSpace().format(slider.getValues().get(1).intValue()));
+                });
             }
 
             @Override
             public void onStopTrackingTouch(@NonNull RangeSlider slider) {
-                mRangeSlider.addOnChangeListener((slider1, value, fromUser) ->
-                        mStartValue.setText(formatWithSpace().format(slider.getValues().get(0).intValue())));
-                mRangeSlider.addOnChangeListener((slider1, value, fromUser) ->
-                        mEndValue.setText(formatWithSpace().format(slider.getValues().get(1).intValue())));
+                slider.addOnChangeListener((slider1, value, fromUser) -> {
+                    mStartValue.setText(formatWithSpace().format(slider.getValues().get(0).intValue()));
+                    mEndValue.setText(formatWithSpace().format(slider.getValues().get(1).intValue()));
+
+                });
             }
         });
     }
@@ -69,6 +72,8 @@ public class CustomBottomSheetRangeSlider extends ConstraintLayout {
         int endValueInt = (int) valueTo;
         mRangeSlider.setValueFrom(startValueInt);
         mRangeSlider.setValueTo(endValueInt);
+        mStartFloatValue = valueFrom;
+        mEndFloatValue = valueTo;
         List<Float> values = new ArrayList<>();
         values.add(valueFrom);
         values.add(valueTo);
@@ -78,12 +83,7 @@ public class CustomBottomSheetRangeSlider extends ConstraintLayout {
         mEndValue.setText(formatWithSpace().format(endValueInt));
     }
 
-    public float getStartValue() {
-        return Float.parseFloat(mStartValue.getText().toString());
-    }
+    public float getStartValue() { return mStartFloatValue; }
 
-    public float getEndValue() {
-        return Float.parseFloat(mEndValue.getText().toString());
-    }
-
+    public float getEndValue() { return mEndFloatValue; }
 }

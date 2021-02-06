@@ -76,7 +76,6 @@ public class MapsFragment extends BaseFragment implements GoogleMap.OnInfoWindow
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         initMapView(savedInstanceState);
-        mPropertyViewModel.setAllProperties();
     }
 
     @Override
@@ -191,6 +190,7 @@ public class MapsFragment extends BaseFragment implements GoogleMap.OnInfoWindow
 
         Glide.with(requireContext())
                 .load(pointOfInterest.getIcon())
+                //to adapt icon size if on phone or tab
                 .apply(getResources().getBoolean(R.bool.phone_device) ?
                         new RequestOptions()
                         : new RequestOptions().override(40))
@@ -210,7 +210,7 @@ public class MapsFragment extends BaseFragment implements GoogleMap.OnInfoWindow
     }
 
     private boolean isPropertyMarker(@NonNull Marker marker) {
-        return getPropertyForId(marker.getTitle()).propertyLocation.getAddress() != null;
+        return getPropertyForId(marker.getTitle()).propertyLocation != null;
     }
 
     private void removePointOfInterest() {

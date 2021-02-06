@@ -1,5 +1,7 @@
 package com.picone.core.data.property;
 
+import android.database.Cursor;
+
 import androidx.room.Dao;
 import androidx.room.Delete;
 import androidx.room.Insert;
@@ -58,4 +60,14 @@ public interface PropertyRoomDao {
 
     @Delete
     Completable deletePropertyMedia(PropertyMedia propertyMedia);
+
+
+    @Query("SELECT*FROM property_information_table WHERE id = :propertyId")
+    Cursor getPropertiesWithCursor(int propertyId);
+
+    @Query("SELECT*FROM property_information_table")
+    Cursor getAllPropertiesInformationWithCursor();
+
+    @Query("SELECT*FROM property_location_table WHERE id = :propertyId")
+    Cursor getLocationWithCursor(int propertyId);
 }

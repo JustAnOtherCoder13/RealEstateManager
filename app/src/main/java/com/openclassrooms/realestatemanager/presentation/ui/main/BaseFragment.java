@@ -29,17 +29,14 @@ public abstract class BaseFragment extends Fragment {
     protected AgentViewModel mAgentViewModel;
     protected PropertyViewModel mPropertyViewModel;
     protected NavController mNavController;
-    protected ImageButton mUpdateButton;
 
     private MainActivity mMainActivity;
-
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         mMainActivity = (MainActivity) getActivity();
         assert mMainActivity != null;
-        mUpdateButton = mMainActivity.mUpdateButton;
         mAgentViewModel = new ViewModelProvider(requireActivity()).get(AgentViewModel.class);
         mPropertyViewModel = new ViewModelProvider(requireActivity()).get(PropertyViewModel.class);
     }
@@ -72,14 +69,7 @@ public abstract class BaseFragment extends Fragment {
         mMainActivity.playLoader(isVisible);
     }
 
-    protected Property getPropertyForId(String propertyId) {
-        Property propertyToReturn = new Property();
-        for (Property property : Objects.requireNonNull(mPropertyViewModel.getAllProperties.getValue())) {
-            if (String.valueOf(property.propertyInformation.getId()).equalsIgnoreCase(propertyId))
-                propertyToReturn = property;
-        }
-        return propertyToReturn;
-    }
+    protected Property getPropertyForId(String propertyId) { return mMainActivity.getPropertyForId(propertyId); }
 
     protected boolean isPermissionGrantedForRequestCode(int requestCode) {
         switch (requestCode) {

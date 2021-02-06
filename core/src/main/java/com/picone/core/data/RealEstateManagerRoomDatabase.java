@@ -31,7 +31,6 @@ import static com.picone.core.utils.ConstantParameters.realEstateAgentTable;
 @androidx.room.Database(entities = {PropertyInformation.class, RealEstateAgent.class, PointOfInterest.class, PropertyMedia.class, PropertyLocation.class}, version = 1, exportSchema = false)
 public abstract class RealEstateManagerRoomDatabase extends RoomDatabase {
 
-    //todo content provider
     public abstract RealEstateAgentRoomDao realEstateManagerRoomDao();
 
     public abstract PropertyRoomDao propertyRoomDao();

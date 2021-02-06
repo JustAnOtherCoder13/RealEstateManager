@@ -80,7 +80,7 @@ public class ManageImageHelper {
     }
 
     @NonNull
-    public List<PropertyMedia> propertyPhotosWithAddButton(List<PropertyMedia> medias) {
+    public List<PropertyMedia> propertyMediasWithAddButton(List<PropertyMedia> medias) {
         List<PropertyMedia> photos = new ArrayList<>();
         PropertyMedia propertyMedia = new PropertyMedia(0, ADD_PHOTO, "", 0);
         photos.add(propertyMedia);

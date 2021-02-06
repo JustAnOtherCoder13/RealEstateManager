@@ -2,7 +2,6 @@ package com.openclassrooms.realestatemanager.presentation.ui.main;
 
 import android.Manifest;
 import android.content.Context;
-import android.content.pm.ActivityInfo;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.view.View;
@@ -52,8 +51,8 @@ public class MainActivity extends AppCompatActivity {
     private NavController mNavController;
     private FilterHelper mFilterHelper;
     private BottomSheetBehavior<ConstraintLayout> mBottomSheetBehavior;
+    private ImageButton mUpdateButton;
 
-    protected ImageButton mUpdateButton;
     protected ImageButton mAddButton;
     protected LottieAnimationView mLoader;
     protected boolean mIsCameraPermissionGranted, mIsLocationPermissionGranted, mIsReadPermissionGranted, mIsWritePermissionGranted, mIsPhone;
@@ -81,6 +80,10 @@ public class MainActivity extends AppCompatActivity {
         //reset selected property if not on add or detail fragment
         if (Objects.requireNonNull(mNavController.getCurrentDestination()).getId() != R.id.addPropertyFragment)
             mPropertyViewModel.setSelectedProperty(new Property());
+
+        if (Objects.requireNonNull(mNavController.getCurrentDestination()).getId() == R.id.addPropertyFragment) {
+            mPropertyViewModel.setAllProperties();
+        }
         //set back press nav
         if (mNavController.getCurrentDestination() != null && mIsPhone)
             setPhoneBackNavigation();
@@ -125,25 +128,22 @@ public class MainActivity extends AppCompatActivity {
         mNavController = Navigation.findNavController(this, R.id.nav_host_fragment);
         agentViewModel.setAgent();
         mPropertyViewModel.setAllProperties();
-        mPropertyViewModel.getErrorState.observe(this,errorHandler -> {
+        mPropertyViewModel.getAllProperties.observe(this, properties -> {
+            if (mPropertyViewModel.getSelectedProperty.getValue() != null && mPropertyViewModel.getSelectedProperty.getValue().propertyInformation != null)
+                mPropertyViewModel.setSelectedProperty(getPropertyForId(String.valueOf(mPropertyViewModel.getSelectedProperty.getValue().propertyInformation.getId())));
+        });
+        mPropertyViewModel.getErrorState.observe(this, errorHandler -> {
             if (errorHandler.equals(ErrorHandler.ON_ERROR)) {
                 Toast.makeText(this, ErrorHandler.ON_ERROR.label, Toast.LENGTH_LONG).show();
                 playLoader(false);
             }
         });
-        initView();
+        if (getResources().getBoolean(R.bool.phone_device)) {
+            assert mBinding.bottomNavBar != null;
+            NavigationUI.setupWithNavController(mBinding.bottomNavBar, mNavController);
+        }
         initBottomSheetLocationFilter();
         setBottomSheetButtonClickListener();
-    }
-
-    @SuppressWarnings("ConstantConditions")//can't be null on phone
-    private void initView() {
-        if (getResources().getBoolean(R.bool.phone_device)) {
-            setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
-            NavigationUI.setupWithNavController(mBinding.bottomNavBar, mNavController);
-        } else {
-            setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
-        }
     }
 
     //-------------------------- COMPONENT --------------------------------
@@ -159,7 +159,6 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void setBottomSheetButtonClickListener() {
-
         mBinding.bottomSheetLayout.bottomSheetCloseButton.setOnClickListener(v -> {
             mBottomSheetBehavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
             mBinding.topAppBar.mResetFilterButton.setVisibility(View.GONE);
@@ -167,13 +166,24 @@ public class MainActivity extends AppCompatActivity {
 
         mBinding.bottomSheetLayout.bottomSheetOkButton.setOnClickListener(v -> {
             mFilterHelper.filterProperties(mPropertyViewModel.getAllProperties.getValue());
-            mPropertyViewModel.setFilteredProperty(mFilterHelper.getFilteredPropertyInformation());
+            mFilterHelper.resetBottomSheetValues();
 
-            mBinding.topAppBar.mResetFilterButton.setVisibility(View.VISIBLE);
+            if (mFilterHelper.getFilteredProperties().isEmpty()) {
+                Toast.makeText(this, R.string.no_match_found, Toast.LENGTH_SHORT).show();
+                return;
+            } else if (!mFilterHelper.getIsAnyFilterSelected()) {
+                Toast.makeText(this, R.string.no_filter_selected, Toast.LENGTH_SHORT).show();
+                return;
+            }
+
+            mPropertyViewModel.setFilteredProperty(mFilterHelper.getFilteredProperties());
             mBottomSheetBehavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
-            mFilterHelper.resetFilter();
-            mBinding.topAppBar.mResetFilterButton.setOnClickListener(v1 ->
-                    mBinding.topAppBar.mResetFilterButton.setVisibility(View.GONE));
+            mBinding.topAppBar.mResetFilterButton.setVisibility(View.VISIBLE);
+            mBinding.topAppBar.mResetFilterButton.setOnClickListener(v1 -> {
+                mPropertyViewModel.setAllProperties();
+                mBinding.topAppBar.mResetFilterButton.setVisibility(View.GONE);
+            });
+
         });
     }
 
@@ -189,9 +199,9 @@ public class MainActivity extends AppCompatActivity {
         switch (Objects.requireNonNull(mNavController.getCurrentDestination()).getId()) {
             case R.id.addPropertyFragment:
                 mNavController.navigate(Objects.requireNonNull
-                        (mPropertyViewModel.getSelectedProperty.getValue()).propertyInformation!=null ?
+                        (mPropertyViewModel.getSelectedProperty.getValue()).propertyInformation != null ?
                         R.id.action_addPropertyFragment_to_propertyDetailFragment
-                        :R.id.action_addPropertyFragment_to_mapsFragment);
+                        : R.id.action_addPropertyFragment_to_mapsFragment);
                 break;
             case R.id.propertyDetailFragment:
                 mNavController.navigate(R.id.action_propertyDetailFragment_to_mapsFragment);
@@ -205,9 +215,9 @@ public class MainActivity extends AppCompatActivity {
     private void setPhoneBackNavigation() {
         switch (mNavController.getCurrentDestination().getId()) {
             case R.id.addPropertyFragment:
-                mNavController.navigate(mPropertyViewModel.getSelectedProperty.getValue().propertyLocation!=null?
+                mNavController.navigate(mPropertyViewModel.getSelectedProperty.getValue().propertyLocation != null ?
                         R.id.action_addPropertyFragment_to_propertyDetailFragment
-                        :R.id.action_addPropertyFragment_to_propertyListFragment);
+                        : R.id.action_addPropertyFragment_to_propertyListFragment);
                 break;
             case R.id.propertyDetailFragment:
                 mNavController.navigate(R.id.action_propertyDetailFragment_to_propertyListFragment);
@@ -232,8 +242,8 @@ public class MainActivity extends AppCompatActivity {
         mBinding.updateButtonCustomView.setVisibility(isVisible ? View.GONE : View.VISIBLE);
     }
 
-    protected void setUpdateButtonCustomViewVisibility(boolean isVisible){
-        mBinding.updateButtonCustomView.setVisibility(isVisible?View.VISIBLE:View.GONE);
+    protected void setUpdateButtonCustomViewVisibility(boolean isVisible) {
+        mBinding.updateButtonCustomView.setVisibility(isVisible ? View.VISIBLE : View.GONE);
     }
 
     protected void initUpdateButton(boolean isForUpdate) {
@@ -244,7 +254,6 @@ public class MainActivity extends AppCompatActivity {
         if (isForUpdate) mUpdateButton.setOnClickListener
                 (v -> mNavController.navigate
                         (R.id.action_propertyDetailFragment_to_addPropertyFragment));
-
     }
 
     protected void setSaveButtonClickListener(View.OnClickListener clickListener) {
@@ -262,6 +271,15 @@ public class MainActivity extends AppCompatActivity {
         mLoader.setVisibility(isVisible ? View.VISIBLE : View.GONE);
         if (isVisible) mLoader.playAnimation();
         else mLoader.pauseAnimation();
+    }
+
+    protected Property getPropertyForId(String propertyId) {
+        Property propertyToReturn = new Property();
+        for (Property property : Objects.requireNonNull(mPropertyViewModel.getAllProperties.getValue())) {
+            if (String.valueOf(property.propertyInformation.getId()).equalsIgnoreCase(propertyId))
+                propertyToReturn = property;
+        }
+        return propertyToReturn;
     }
 
     //-------------------------- PERMISSIONS --------------------------------
@@ -311,7 +329,9 @@ public class MainActivity extends AppCompatActivity {
                 != PackageManager.PERMISSION_GRANTED)
             ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, WRITE_PERMISSION_CODE);
 
-        else { mIsWritePermissionGranted = true; }
+        else {
+            mIsWritePermissionGranted = true;
+        }
     }
 
     //-----------------------------HELPERS------------------------------------

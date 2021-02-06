@@ -16,7 +16,7 @@ import static com.picone.core.utils.ConstantParameters.RADIUS;
 public class PlaceServiceDaoImpl {
 
     @Inject
-    RetrofitClient retrofitClient;
+    protected RetrofitClient retrofitClient;
 
     public PlaceServiceDaoImpl(RetrofitClient retrofitClient) {
         this.retrofitClient = retrofitClient;

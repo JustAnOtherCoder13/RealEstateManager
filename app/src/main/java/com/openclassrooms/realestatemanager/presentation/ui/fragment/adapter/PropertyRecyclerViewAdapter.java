@@ -55,10 +55,11 @@ public class PropertyRecyclerViewAdapter extends RecyclerView.Adapter<PropertyRe
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         initCurrency();
+        //load all holder to highlight the selected one
         mItems.add(holder.itemView);
         final Property property = mProperties.get(position);
-        if (!property.photos.isEmpty())
-            setPropertyPhoto(holder, property.photos.get(0));
+        if (!property.medias.isEmpty())
+            setPropertyMedia(holder, property.medias.get(0));
         holder.binding.propertyItemPrice.setText(convertedPrice(property.propertyInformation));
         holder.binding.propertyItemTown.setText(property.propertyLocation.getRegion());
         holder.binding.propertyItemType.setText(property.propertyInformation.getPropertyType());
@@ -105,7 +106,6 @@ public class PropertyRecyclerViewAdapter extends RecyclerView.Adapter<PropertyRe
         }
     }
 
-
     public void updateProperties(List<Property> updatedProperties) {
         this.mProperties = updatedProperties;
         notifyDataSetChanged();
@@ -123,7 +123,7 @@ public class PropertyRecyclerViewAdapter extends RecyclerView.Adapter<PropertyRe
 
     //---------------------------HELPERS---------------------------
 
-    private void setPropertyPhoto(@NonNull PropertyRecyclerViewAdapter.ViewHolder holder, @NonNull PropertyMedia photo) {
+    private void setPropertyMedia(@NonNull PropertyRecyclerViewAdapter.ViewHolder holder, @NonNull PropertyMedia photo) {
         Glide.with(holder.binding.propertyItemPhoto.getContext())
                 .load(photo.getPhotoPath())
                 .centerCrop()
