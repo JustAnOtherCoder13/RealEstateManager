@@ -23,6 +23,8 @@ import com.airbnb.lottie.LottieAnimationView;
 import com.google.android.material.bottomsheet.BottomSheetBehavior;
 import com.openclassrooms.realestatemanager.R;
 import com.openclassrooms.realestatemanager.databinding.ActivityMainBinding;
+import com.openclassrooms.realestatemanager.databinding.BottomSheetPropertyTypeLayoutBinding;
+import com.openclassrooms.realestatemanager.databinding.CustomBottomSheetPointOfInterestLayoutBinding;
 import com.openclassrooms.realestatemanager.presentation.ui.fragment.adapter.PropertyRecyclerViewAdapter;
 import com.openclassrooms.realestatemanager.presentation.utils.ErrorHandler;
 import com.openclassrooms.realestatemanager.presentation.utils.FilterHelper;
@@ -30,6 +32,8 @@ import com.openclassrooms.realestatemanager.presentation.viewModels.AgentViewMod
 import com.openclassrooms.realestatemanager.presentation.viewModels.PropertyViewModel;
 import com.picone.core.domain.entity.Property;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Locale;
 import java.util.Objects;
 
@@ -39,6 +43,12 @@ import dagger.hilt.android.scopes.ActivityScoped;
 import static com.openclassrooms.realestatemanager.presentation.utils.Utils.isGpsAvailable;
 import static com.picone.core.utils.ConstantParameters.CAMERA_PERMISSION_CODE;
 import static com.picone.core.utils.ConstantParameters.LOCATION_PERMISSION_CODE;
+import static com.picone.core.utils.ConstantParameters.MAX_PRICE;
+import static com.picone.core.utils.ConstantParameters.MAX_ROOM;
+import static com.picone.core.utils.ConstantParameters.MAX_SURFACE;
+import static com.picone.core.utils.ConstantParameters.MIN_PRICE;
+import static com.picone.core.utils.ConstantParameters.MIN_ROOM;
+import static com.picone.core.utils.ConstantParameters.MIN_SURFACE;
 import static com.picone.core.utils.ConstantParameters.READ_PERMISSION_CODE;
 import static com.picone.core.utils.ConstantParameters.WRITE_PERMISSION_CODE;
 
@@ -56,7 +66,6 @@ public class MainActivity extends AppCompatActivity {
     protected ImageButton mAddButton;
     protected LottieAnimationView mLoader;
     protected boolean mIsCameraPermissionGranted, mIsLocationPermissionGranted, mIsReadPermissionGranted, mIsWritePermissionGranted, mIsPhone;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -124,7 +133,9 @@ public class MainActivity extends AppCompatActivity {
     private void initValues() {
         mPropertyViewModel = new ViewModelProvider(this).get(PropertyViewModel.class);
         AgentViewModel agentViewModel = new ViewModelProvider(this).get(AgentViewModel.class);
-        mFilterHelper = new FilterHelper(mBinding.bottomSheetLayout);
+        mFilterHelper = new FilterHelper();
+        initPhotoSpinner();
+        initRangeSliderValues();
         mNavController = Navigation.findNavController(this, R.id.nav_host_fragment);
         agentViewModel.setAgent();
         mPropertyViewModel.setAllProperties();
@@ -146,6 +157,45 @@ public class MainActivity extends AppCompatActivity {
         setBottomSheetButtonClickListener();
     }
 
+    private void initPhotoSpinner() {
+        List<String> numberOfPhotos = new ArrayList<>();
+        for (int i = 1; i <= 10; i++) numberOfPhotos.add(String.valueOf(i));
+        mBinding.bottomSheetLayout
+                .filterPropertyNumberOfPhotoSpinner.setSpinnerAdapter(numberOfPhotos);
+    }
+
+    private void initRangeSliderValues() {
+        mBinding.bottomSheetLayout
+                .filterPropertyLocationPriceRangeSlider
+                .setRangeSliderValue(
+                        //Min price selectable
+                        MIN_PRICE
+                        //Max price selectable
+                        , MAX_PRICE
+                        //step
+                        , (float) (MAX_PRICE - MIN_PRICE) / 10000);
+
+        mBinding.bottomSheetLayout
+                .filterPropertyLocationSurfaceRangerSlider
+                .setRangeSliderValue(
+                        //Min area selectable
+                        MIN_SURFACE,
+                        //Max area selectable
+                        MAX_SURFACE,
+                        //step
+                        (float) (MAX_SURFACE - MIN_SURFACE) / 10);
+
+        mBinding.bottomSheetLayout
+                .filterPropertyLocationRoomRangerSlider
+                .setRangeSliderValue(
+                        //Min room
+                        MIN_ROOM,
+                        //Max room
+                        MAX_ROOM,
+                        //step
+                        1);
+    }
+
     //-------------------------- COMPONENT --------------------------------
 
     protected void setTopAppBarCurrencySwitch(@NonNull PropertyRecyclerViewAdapter adapter) {
@@ -165,8 +215,47 @@ public class MainActivity extends AppCompatActivity {
         });
 
         mBinding.bottomSheetLayout.bottomSheetOkButton.setOnClickListener(v -> {
-            mFilterHelper.filterProperties(mPropertyViewModel.getAllProperties.getValue());
-            mFilterHelper.resetBottomSheetValues();
+            mFilterHelper.setRequestPointsOfInterests(requestPointOfInterest());
+            mFilterHelper.setRequestPropertyType(requestPropertyType());
+            mFilterHelper.initFilterValue(mPropertyViewModel.getAllProperties.getValue());
+            if (!mBinding.bottomSheetLayout.filterPropertyLocationSpinner.getText().trim().isEmpty()) {
+                mFilterHelper.filterByRegion(mBinding.bottomSheetLayout.filterPropertyLocationSpinner.getText());
+            }
+            if (!mBinding.bottomSheetLayout.filterPropertyNumberOfPhotoSpinner.getText().trim().isEmpty()) {
+                mFilterHelper.filterByNumberOfMedias(mBinding.bottomSheetLayout.filterPropertyNumberOfPhotoSpinner.getText());
+            }
+            if (mBinding.bottomSheetLayout.bottomSheetPointOfInterestInclude.schoolCheckBox.mCheckBox.isChecked()
+                    || mBinding.bottomSheetLayout.bottomSheetPointOfInterestInclude.restaurantCheckBox.mCheckBox.isChecked()
+                    || mBinding.bottomSheetLayout.bottomSheetPointOfInterestInclude.supermarketCheckBox.mCheckBox.isChecked()) {
+                mFilterHelper.filterByPointOfInterest();
+
+            }
+            if (mBinding.bottomSheetLayout.bottomSheetPropertyTypeLayoutInclude.houseCheckBox.mCheckBox.isChecked()
+                    || mBinding.bottomSheetLayout.bottomSheetPropertyTypeLayoutInclude.penthouseCheckBox.mCheckBox.isChecked()
+                    || mBinding.bottomSheetLayout.bottomSheetPropertyTypeLayoutInclude.flatCheckBox.mCheckBox.isChecked()
+                    || mBinding.bottomSheetLayout.bottomSheetPropertyTypeLayoutInclude.duplexCheckBox.mCheckBox.isChecked()) {
+                mFilterHelper.filterByPropertyType();
+            }
+            if (!mBinding.bottomSheetLayout.bottomSheetOnMarketFrom.getDate().equalsIgnoreCase(getResources().getString(R.string.dd_mm_yyyy))) {
+                mFilterHelper.filterByOnMarketFrom(mBinding.bottomSheetLayout.bottomSheetOnMarketFrom.getDate());
+            }
+            if (Float.compare(mBinding.bottomSheetLayout.filterPropertyLocationPriceRangeSlider.getStartValue(), MIN_PRICE) == 1
+                    || Float.compare(mBinding.bottomSheetLayout.filterPropertyLocationPriceRangeSlider.getEndValue(), MAX_PRICE) == -1) {
+                mFilterHelper.filterByPrice(mBinding.bottomSheetLayout.filterPropertyLocationPriceRangeSlider.getStartValue(),
+                        mBinding.bottomSheetLayout.filterPropertyLocationPriceRangeSlider.getEndValue());
+            }
+            if (Float.compare(mBinding.bottomSheetLayout.filterPropertyLocationSurfaceRangerSlider.getStartValue(), MIN_SURFACE) == 1
+                    || Float.compare(mBinding.bottomSheetLayout.filterPropertyLocationSurfaceRangerSlider.getEndValue(), MAX_SURFACE) == -1) {
+                mFilterHelper.filterBySurface(mBinding.bottomSheetLayout.filterPropertyLocationSurfaceRangerSlider.getStartValue(),
+                        mBinding.bottomSheetLayout.filterPropertyLocationSurfaceRangerSlider.getEndValue());
+            }
+            if (Float.compare(mBinding.bottomSheetLayout.filterPropertyLocationRoomRangerSlider.getStartValue(), MIN_ROOM) == 1
+                    || Float.compare(mBinding.bottomSheetLayout.filterPropertyLocationRoomRangerSlider.getEndValue(), MAX_ROOM) == -1) {
+                //filter for room
+                mFilterHelper.filterByRoom(mBinding.bottomSheetLayout.filterPropertyLocationRoomRangerSlider.getStartValue(),
+                        mBinding.bottomSheetLayout.filterPropertyLocationRoomRangerSlider.getEndValue());
+            }
+            resetBottomSheetValues();
 
             if (mFilterHelper.getFilteredProperties().isEmpty()) {
                 Toast.makeText(this, R.string.no_match_found, Toast.LENGTH_SHORT).show();
@@ -350,5 +439,60 @@ public class MainActivity extends AppCompatActivity {
     private void checkGpsEnable() {
         if (!isGpsAvailable(this))
             Toast.makeText(this, R.string.gps_warning_message, Toast.LENGTH_LONG).show();
+    }
+
+    private void resetBottomSheetValues() {
+        initRangeSliderValues();
+        mBinding.bottomSheetLayout.bottomSheetPointOfInterestInclude.supermarketCheckBox.mCheckBox.setChecked(false);
+        mBinding.bottomSheetLayout.bottomSheetPointOfInterestInclude.schoolCheckBox.mCheckBox.setChecked(false);
+        mBinding.bottomSheetLayout.bottomSheetPointOfInterestInclude.restaurantCheckBox.mCheckBox.setChecked(false);
+        mBinding.bottomSheetLayout.bottomSheetPropertyTypeLayoutInclude.duplexCheckBox.mCheckBox.setChecked(false);
+        mBinding.bottomSheetLayout.bottomSheetPropertyTypeLayoutInclude.houseCheckBox.mCheckBox.setChecked(false);
+        mBinding.bottomSheetLayout.bottomSheetPropertyTypeLayoutInclude.penthouseCheckBox.mCheckBox.setChecked(false);
+        mBinding.bottomSheetLayout.bottomSheetPropertyTypeLayoutInclude.flatCheckBox.mCheckBox.setChecked(false);
+        mBinding.bottomSheetLayout.bottomSheetOnMarketFrom.resetDate();
+        mBinding.bottomSheetLayout.filterPropertyLocationSpinner.resetText();
+        mBinding.bottomSheetLayout.filterPropertyNumberOfPhotoSpinner.resetText();
+    }
+
+    //--------------------------------------LIST HELPERS--------------------------------------------------------
+
+    private List<String> requestPointOfInterest() {
+        String schoolStr = getResources().getString(R.string.school);
+        String restaurantStr = getResources().getString(R.string.restaurant);
+        String supermarketStr = getResources().getString(R.string.supermarket);
+        List<String> requestPointsOfInterests = new ArrayList<>();
+
+        CustomBottomSheetPointOfInterestLayoutBinding pointOfInterestBinding =
+                mBinding.bottomSheetLayout.bottomSheetPointOfInterestInclude;
+
+        if (pointOfInterestBinding.schoolCheckBox.mCheckBox.isChecked() && !requestPointsOfInterests.contains(schoolStr))
+            requestPointsOfInterests.add(schoolStr);
+        if (pointOfInterestBinding.restaurantCheckBox.mCheckBox.isChecked() && !requestPointsOfInterests.contains(restaurantStr))
+            requestPointsOfInterests.add(restaurantStr);
+        if (pointOfInterestBinding.supermarketCheckBox.mCheckBox.isChecked() && !requestPointsOfInterests.contains(supermarketStr))
+            requestPointsOfInterests.add(supermarketStr);
+
+        return requestPointsOfInterests;
+    }
+
+    private List<String> requestPropertyType() {
+        List<String> requestPropertyType = new ArrayList<>();
+        String houseStr = getResources().getString(R.string.house);
+        String flatStr = getResources().getString(R.string.flat);
+        String duplexStr = getResources().getString(R.string.duplex);
+        String penthouseStr = getResources().getString(R.string.penthouse);
+
+        BottomSheetPropertyTypeLayoutBinding propertyTypeBinding =
+                mBinding.bottomSheetLayout.bottomSheetPropertyTypeLayoutInclude;
+        if (propertyTypeBinding.houseCheckBox.mCheckBox.isChecked() && !requestPropertyType.contains(houseStr))
+            requestPropertyType.add(houseStr);
+        if (propertyTypeBinding.flatCheckBox.mCheckBox.isChecked() && !requestPropertyType.contains(flatStr))
+            requestPropertyType.add(flatStr);
+        if (propertyTypeBinding.duplexCheckBox.mCheckBox.isChecked() && !requestPropertyType.contains(duplexStr))
+            requestPropertyType.add(duplexStr);
+        if (propertyTypeBinding.penthouseCheckBox.mCheckBox.isChecked() && !requestPropertyType.contains(penthouseStr))
+            requestPropertyType.add(penthouseStr);
+        return requestPropertyType;
     }
 }

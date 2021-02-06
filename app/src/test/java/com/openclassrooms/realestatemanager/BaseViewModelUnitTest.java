@@ -4,6 +4,7 @@ import androidx.arch.core.executor.testing.InstantTaskExecutorRule;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.SavedStateHandle;
 
+import com.openclassrooms.realestatemanager.presentation.utils.FilterHelper;
 import com.openclassrooms.realestatemanager.presentation.viewModels.AgentViewModel;
 import com.openclassrooms.realestatemanager.presentation.viewModels.PropertyViewModel;
 import com.picone.core.data.Generator;
@@ -49,6 +50,8 @@ import io.reactivex.schedulers.Schedulers;
 import static org.mockito.Mockito.when;
 
 public abstract class BaseViewModelUnitTest {
+
+    FilterHelper filterHelper;
 
     @Rule
     public InstantTaskExecutorRule instantTaskExecutorRule = new InstantTaskExecutorRule();
@@ -139,6 +142,9 @@ public abstract class BaseViewModelUnitTest {
 
             allProperties.add(property);
         }
+
+        filterHelper = new FilterHelper();
+        filterHelper.initFilterValue(allProperties);
 
         propertyToAdd.propertyInformation = propertyInformationToAdd;
         propertyToAdd.propertyLocation = propertyLocationToAdd;
