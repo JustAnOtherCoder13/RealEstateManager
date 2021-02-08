@@ -39,7 +39,7 @@ public abstract class Generator {
     }
 
     private static List<PropertyInformation> PROPERTIES_INFORMATION = Arrays.asList(
-            new PropertyInformation(1, 1, "cotage", 500, 15, 560000, "First house description", 6, 3, false, "30/06/2020", ""),
+            new PropertyInformation(1, 1, "cottage", 500, 15, 560000, "First house description", 6, 3, false, "30/06/2020", ""),
             new PropertyInformation(2, 1, "penthouse", 200, 7, 450000, "Second house description", 3, 1, false, "15/10/2020", "")
     );
 
@@ -49,7 +49,7 @@ public abstract class Generator {
 
     private static List<PropertyLocation> PROPERTIES_LOCATION = Arrays.asList(
             new PropertyLocation(1, 43.543732, 5.036901, "Avenue Henry Barbusse, Les Tilleuls, 13250 Saint Chamas", "Bouches-du-rhône", 1),
-            new PropertyLocation(2, 43.560711, 5.072869, "Property2 address", "Bouches-du-rhône", 2)
+            new PropertyLocation(2, 43.560711, 5.072869, "Property2 address", "Var", 2)
     );
 
     public static List<PropertyLocation> generatePropertyLocation() {
