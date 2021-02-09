@@ -85,7 +85,7 @@ public class PropertyDetailFragment extends BaseFragment {
     private void initClickOnMedia(Property property) {
         RecyclerViewItemClickListener.addTo(mBinding.fragmentDetailMediaLayout.detailCustomViewRecyclerView, R.layout.fragment_property_detail)
                 .setOnItemClickListener((recyclerView, position, v) -> {
-                    CustomMediaFullScreenDialog fullScreenMediaDialog = new CustomMediaFullScreenDialog(requireContext(), property.medias.get(position).getPhotoPath());
+                    CustomMediaFullScreenDialog fullScreenMediaDialog = new CustomMediaFullScreenDialog(requireContext(), property.medias.get(position).getMediaPath());
                     fullScreenMediaDialog.show();
                 });
     }

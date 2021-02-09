@@ -36,7 +36,6 @@
     <dimen name="bottom_sheet_stroke_size">3dp</dimen>
     <dimen name="bottom_sheet_close_button_frame_size">30dp</dimen>
     <dimen name="update_button_frame_size">24dp</dimen>
-    <dimen name="min_width_for_property_list_recycler_view">300dp</dimen>
     <dimen name="custom_view_corner_radius">30dp</dimen>
     <dimen name="custom_switch_track_height">20dp</dimen>
     <dimen name="custom_switch_track_stroke_width">1dp</dimen>

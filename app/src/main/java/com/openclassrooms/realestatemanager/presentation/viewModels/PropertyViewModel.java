@@ -33,6 +33,7 @@ import java.util.Locale;
 import io.reactivex.Observable;
 
 import static com.openclassrooms.realestatemanager.presentation.viewModels.BaseViewModel.CompletionState.ADD_POINT_OF_INTEREST_COMPLETE;
+import static com.openclassrooms.realestatemanager.presentation.viewModels.BaseViewModel.CompletionState.DELETE_POINT_OF_INTEREST_COMPLETE;
 import static com.picone.core.utils.ConstantParameters.MAPS_KEY;
 
 public class PropertyViewModel extends BaseViewModel {
@@ -51,6 +52,7 @@ public class PropertyViewModel extends BaseViewModel {
     private MutableLiveData<Boolean> isDataLoadingMutableLD = new MutableLiveData<>();
     private MutableLiveData<List<String>> knownRegionsMutableLD = new MutableLiveData<>(new ArrayList<>());
     private MutableLiveData<Locale> localeMutableLD = new MutableLiveData<>();
+    private MutableLiveData<List<PropertyMedia>> mediasToAdMutableLD = new MutableLiveData<>(new ArrayList<>());
 
     public LiveData<Locale> getLocale = localeMutableLD;
     public LiveData<List<String>> getKnownRegions = knownRegionsMutableLD;
@@ -61,6 +63,7 @@ public class PropertyViewModel extends BaseViewModel {
     public LiveData<List<PropertyMedia>> getPhotosToDelete = photosToDeleteMutableLD;
     public LiveData<PropertyLocation> getLocationForAddress = locationForAddressMutableLD;
     public LiveData<Boolean> isDataLoading = isDataLoadingMutableLD;
+    public LiveData<List<PropertyMedia>> getMediasToAdd = mediasToAdMutableLD;
 
     @ViewModelInject
     public PropertyViewModel(GetAllPropertiesInteractor getAllPropertiesInteractor
@@ -109,8 +112,12 @@ public class PropertyViewModel extends BaseViewModel {
         selectedPropertyMutableLD.setValue(property);
     }
 
-    public void setMediasToDelete(List<PropertyMedia> photosToDelete) {
-        photosToDeleteMutableLD.postValue(photosToDelete);
+    public void setMediasToDelete(List<PropertyMedia> mediasToDelete) {
+        photosToDeleteMutableLD.postValue(mediasToDelete);
+    }
+
+    public void setMediaToAdd(List<PropertyMedia > mediasToAdd){
+        mediasToAdMutableLD.setValue(mediasToAdd);
     }
 
     public void resetCompletionState() {
@@ -174,19 +181,18 @@ public class PropertyViewModel extends BaseViewModel {
                 addPropertyLocationInteractor.addPropertyLocation(propertyLocation)
                         .subscribeOn(schedulerProvider.getIo())
                         .observeOn(schedulerProvider.getUi())
-                        .doOnComplete(() -> completionStateMutableLD.setValue(CompletionState.ADD_LOCATION_COMPLETE))
                         .subscribe(() -> {
                         }, throwable -> checkException()));
     }
 
-    //todo change to observable.just
     public void updatePropertyLocation(@NonNull PropertyLocation propertyLocation) {
         compositeDisposable.add(
                 updatePropertyLocationInteractor.updatePropertyLocation(propertyLocation)
                         .subscribeOn(schedulerProvider.getIo())
                         .observeOn(schedulerProvider.getUi())
-                        .andThen(getAllPropertiesInteractor.getAllProperties())
-                        .subscribe(properties -> selectedPropertyMutableLD.postValue(new Property()), throwable -> checkException()));
+                        .andThen(Observable.just(new Property()))
+                        .subscribe(newProperty -> selectedPropertyMutableLD.postValue(newProperty),
+                                throwable -> checkException()));
 
     }
     //___________________________________PROPERTY POINT OF INTEREST__________________________________
@@ -204,16 +210,14 @@ public class PropertyViewModel extends BaseViewModel {
 
     }
 
-    //todo review logic
-
     public void deletePointsOfInterestForProperty(@NonNull Property property) {
         compositeDisposable.add(
-                getAllPointOfInterestForPropertyIdInteractor.getAllPointOfInterestForPropertyId(property.propertyInformation.getId())
+                Observable.fromIterable(property.pointOfInterests)
                         .subscribeOn(schedulerProvider.getIo())
-                        .observeOn(schedulerProvider.getUi())
-                        .flatMap(Observable::fromIterable)
                         .flatMapCompletable(pointOfInterest -> deletePointOfInterestInteractor.deletePropertyPointOfInterest(pointOfInterest))
-                        .subscribe(() -> {
+                        .observeOn(schedulerProvider.getUi())
+                        .doOnComplete(() -> completionStateMutableLD.postValue(DELETE_POINT_OF_INTEREST_COMPLETE))
+                        .subscribe(()-> {
                         }, throwable -> checkException())
         );
     }
@@ -221,9 +225,10 @@ public class PropertyViewModel extends BaseViewModel {
     public void updatePointOfInterest(@NonNull List<PointOfInterest> mapsPointOfInterest) {
         compositeDisposable.add(
                 Observable.fromIterable(mapsPointOfInterest)
-                        .observeOn(schedulerProvider.getUi())
+                        .subscribeOn(schedulerProvider.getIo())
                         .flatMapCompletable(pointOfInterest ->
                                 addPropertyPointOfInterestInteractor.addPropertyPointOfInterest(pointOfInterest))
+                        .observeOn(schedulerProvider.getUi())
                         .doOnComplete(() -> completionStateMutableLD.postValue(ADD_POINT_OF_INTEREST_COMPLETE))
                         .doOnTerminate(() -> isDataLoadingMutableLD.postValue(false))
                         .subscribe(() -> {

@@ -43,7 +43,7 @@ public class PhotoRecyclerViewAdapter extends RecyclerView.Adapter<PhotoRecycler
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         final PropertyMedia media = mMedias.get(position);
         //show play logo if is video
-        holder.binding.propertyDetailItemPlayLogo.setVisibility(isImageFileFromPath(media.getPhotoPath()) ?
+        holder.binding.propertyDetailItemPlayLogo.setVisibility(isImageFileFromPath(media.getMediaPath()) ?
                 View.GONE
                 : View.VISIBLE);
         //if media have been deleted reset media checkbox
@@ -52,7 +52,7 @@ public class PhotoRecyclerViewAdapter extends RecyclerView.Adapter<PhotoRecycler
             holder.binding.propertyDetailItemCheckBox.setVisibility(View.GONE);
         }
         //if ADD_PHOTO init add view
-        if (media.getPhotoPath().equals(ADD_PHOTO)) {
+        if (media.getMediaPath().equals(ADD_PHOTO)) {
             playLoader(false,holder.binding.propertyDetailItemLoader.animationView);
             holder.binding.propertyDetailItemPlayLogo.setVisibility(View.GONE);
             holder.binding.propertyDetailItemMedia.setImageResource(R.drawable.img_add_photo);
@@ -89,7 +89,7 @@ public class PhotoRecyclerViewAdapter extends RecyclerView.Adapter<PhotoRecycler
 
     private void setPropertyMedia(@NonNull ViewHolder holder, @NonNull PropertyMedia media) {
         Glide.with(holder.binding.propertyDetailItemMedia.getContext())
-                .load(media.getPhotoPath())
+                .load(media.getMediaPath())
                 .centerCrop()
                 .into(new CustomTarget<Drawable>() {
                     @Override

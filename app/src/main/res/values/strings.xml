@@ -59,7 +59,7 @@
     <string name="information_not_filled">Please, fill all \"Information\" values and at least one photo before register</string>
     <string name="no_camera_warning">You have no camera on your phone, so you can\'t use camera button to add pictures. You could always add pictures from your image folder.</string>
     <string name="no_internet_message">Network is not available, you\'ll not be able to download position or points of interests.\n \n   Please try again when internet is available</string>
-    <string name="add_date_message">you have to enter a date if sold is set</string>
+    <string name="add_date_message">You have to enter a date if sold is set</string>
     <string name="enter_description">You have to enter a description before accept.</string>
 
     <!--_______________________CUSTOM ALERT DIALOG___________________ -->
@@ -90,7 +90,7 @@
     <string name="euro">€</string>
     <string name="dollar">$</string>
     <string name="play_logo_if_video">play logo if video</string>
-    <string name="is_sold_from">Is sold from : </string>
+    <string name="is_sold_from">Is sold from :\u0020 </string>
 
 
 
@@ -103,14 +103,14 @@
     <string name="notification_add_message_title">ADD PROPERTY</string>
     <string name="notification_update_start_message">You have updated property : \n</string>
     <string name="notification_update_message_title">UPDATE PROPERTY</string>
-    <string name="notification_id">id : </string>
-    <string name="notification_address">\naddress : </string>
-    <string name="notification_number_of_photos">\nnumber of photo : </string>
-    <string name="notification_number_of_point_of_interst">\nnumber of points of interest</string>
+    <string name="notification_id">id :\u0020</string>
+    <string name="notification_address">\naddress :\u0020 </string>
+    <string name="notification_number_of_photos">\nnumber of media :\u0020 </string>
+    <string name="notification_number_of_point_of_interst">\nnumber of points of interest : \u0020</string>
     <string name="square_meter">m²</string>
-    <string name="bitmap_converter_warning_message">Parameter must be an instance of BitmapDrawable or a vector drawable resource</string>
     <string name="no_match_found">No property match your request.</string>
     <string name="no_filter_selected">No filter selected.</string>
+    <string name="media_click_info">Long click to select/deselect</string>
 
 
 </resources>
