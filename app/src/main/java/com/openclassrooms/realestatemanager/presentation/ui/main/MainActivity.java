@@ -6,7 +6,9 @@ import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
+import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -14,6 +16,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
+import androidx.core.content.res.ResourcesCompat;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
@@ -21,6 +24,7 @@ import androidx.navigation.ui.NavigationUI;
 
 import com.airbnb.lottie.LottieAnimationView;
 import com.google.android.material.bottomsheet.BottomSheetBehavior;
+import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.openclassrooms.realestatemanager.R;
 import com.openclassrooms.realestatemanager.databinding.ActivityMainBinding;
 import com.openclassrooms.realestatemanager.databinding.BottomSheetPropertyTypeLayoutBinding;
@@ -31,8 +35,10 @@ import com.openclassrooms.realestatemanager.presentation.utils.FilterHelper;
 import com.openclassrooms.realestatemanager.presentation.viewModels.AgentViewModel;
 import com.openclassrooms.realestatemanager.presentation.viewModels.PropertyViewModel;
 import com.picone.core.domain.entity.Property;
+import com.picone.core.domain.entity.RealEstateAgent;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 import java.util.Locale;
 import java.util.Objects;
@@ -153,8 +159,14 @@ public class MainActivity extends AppCompatActivity {
             assert mBinding.bottomNavBar != null;
             NavigationUI.setupWithNavController(mBinding.bottomNavBar, mNavController);
         }
+
+        agentViewModel.getAgent.observe(this,agent -> {
+            if (agent.getName().trim().isEmpty()) initDialogForNewAgent(agentViewModel, agent);
+        });
         initBottomSheet();
     }
+
+
 
     private void initPhotoSpinner() {
         List<String> numberOfPhotos = new ArrayList<>();
@@ -489,6 +501,24 @@ public class MainActivity extends AppCompatActivity {
         mBinding.bottomSheetLayout.bottomSheetOnMarketFrom.resetDate();
         mBinding.bottomSheetLayout.filterPropertyLocationSpinner.resetText();
         mBinding.bottomSheetLayout.filterPropertyNumberOfPhotoSpinner.resetText();
+    }
+
+    private void initDialogForNewAgent(AgentViewModel agentViewModel, RealEstateAgent agent) {
+        MaterialAlertDialogBuilder builder = new MaterialAlertDialogBuilder(this);
+        builder.setBackground(ResourcesCompat.getDrawable(getResources(), R.drawable.custom_dialog_shape, null));
+        builder.setMessage(R.string.welcome_message);
+        final EditText input = new EditText(MainActivity.this);
+        LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(
+                LinearLayout.LayoutParams.MATCH_PARENT,
+                LinearLayout.LayoutParams.MATCH_PARENT);
+        input.setLayoutParams(lp);
+        builder.setView(input);
+        builder.setPositiveButton(R.string.ok, (dialog, which) -> {
+            agent.setTimestamp(Calendar.getInstance().getTimeInMillis());
+            agent.setName(input.getText().toString());
+            agentViewModel.initAgent(agent);
+        });
+        builder.show();
     }
 
     //--------------------------------------LIST HELPERS--------------------------------------------------------

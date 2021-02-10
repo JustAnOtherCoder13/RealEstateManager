@@ -7,6 +7,7 @@ import com.picone.core.domain.entity.RealEstateAgent;
 
 import javax.inject.Inject;
 
+import io.reactivex.Completable;
 import io.reactivex.Observable;
 
 
@@ -24,6 +25,11 @@ public class RealEstateAgentDaoImpl implements RealEstateAgentRoomDao{
     @Override
     public Observable<RealEstateAgent> getAgent() {
         return mRealEstateAgentRoomDao.getAgent();
+    }
+
+    @Override
+    public Completable setAgent(RealEstateAgent agent) {
+        return mRealEstateAgentRoomDao.setAgent(agent);
     }
 
 }

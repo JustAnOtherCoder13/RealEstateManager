@@ -6,6 +6,7 @@ import androidx.lifecycle.ViewModel;
 
 import com.openclassrooms.realestatemanager.presentation.utils.ErrorHandler;
 import com.picone.core.domain.interactors.agent.GetAgentInteractor;
+import com.picone.core.domain.interactors.agent.SetAgentInteractor;
 import com.picone.core.domain.interactors.property.AddPropertyInteractor;
 import com.picone.core.domain.interactors.property.GetAllPropertiesInteractor;
 import com.picone.core.domain.interactors.property.UpdatePropertyInteractor;
@@ -36,6 +37,7 @@ public abstract class BaseViewModel extends ViewModel {
     //------------------------REAL ESTATE AGENT INTERACTORS----------------------------
 
     protected GetAgentInteractor getAgentInteractor;
+    protected SetAgentInteractor setAgentInteractor;
 
     //------------------------PROPERTY INTERACTORS----------------------------
 

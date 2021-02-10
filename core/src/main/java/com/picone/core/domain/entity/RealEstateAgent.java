@@ -1,6 +1,8 @@
 package com.picone.core.domain.entity;
 
+import androidx.room.ColumnInfo;
 import androidx.room.Entity;
+import androidx.room.Ignore;
 import androidx.room.PrimaryKey;
 
 import static com.picone.core.utils.ConstantParameters.realEstateAgentTable;
@@ -9,29 +11,34 @@ import static com.picone.core.utils.ConstantParameters.realEstateAgentTable;
 public class RealEstateAgent {
 
     @PrimaryKey
-    private final int id;
-
-    private String address;
+    @ColumnInfo(defaultValue = "1")
+    private long id;
+    @ColumnInfo(defaultValue = "1")
+    private long timestamp;
+    @ColumnInfo(defaultValue = " ")
     private String name;
-    private String avatar;
 
-    public RealEstateAgent(int id, String address, String name, String avatar) {
+
+    public RealEstateAgent(long id, long timestamp, String name) {
         this.id = id;
-        this.address = address;
+        this.timestamp = timestamp;
         this.name = name;
-        this.avatar = avatar;
     }
 
-    public int getId() {
+    @Ignore
+    public RealEstateAgent() {
+    }
+
+    public long getId() {
         return id;
     }
 
-    public String getAddress() {
-        return address;
+    public long getTimestamp() {
+        return timestamp;
     }
 
-    public void setAddress(String address) {
-        this.address = address;
+    public void setTimestamp(long timestamp) {
+        this.timestamp = timestamp;
     }
 
     public String getName() {
@@ -40,13 +47,5 @@ public class RealEstateAgent {
 
     public void setName(String name) {
         this.name = name;
-    }
-
-    public String getAvatar() {
-        return avatar;
-    }
-
-    public void setAvatar(String avatar) {
-        this.avatar = avatar;
     }
 }

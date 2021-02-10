@@ -20,7 +20,8 @@ public class AgentViewModelViewModelUnitTest extends BaseViewModelUnitTest {
     }
 
     @Test
-    public void getAllAgentShouldReturnGeneratedAgent(){
-        assertEquals(Generator.generateAgents().getAddress(), Objects.requireNonNull(agentViewModel.getAgent.getValue()).getAddress());
+    public void getAllAgentShouldReturnGeneratedAgent() {
+        agentViewModel.setAgent();
+        assertEquals(Generator.generateAgents().getName(), Objects.requireNonNull(agentViewModel.getAgent.getValue()).getName());
     }
 }

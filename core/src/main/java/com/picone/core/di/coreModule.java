@@ -11,6 +11,7 @@ import com.picone.core.data.realEstateAgent.RealEstateAgentDaoImpl;
 import com.picone.core.data.realEstateAgent.RealEstateAgentRepository;
 import com.picone.core.data.service.RetrofitClient;
 import com.picone.core.domain.interactors.agent.GetAgentInteractor;
+import com.picone.core.domain.interactors.agent.SetAgentInteractor;
 import com.picone.core.domain.interactors.property.AddPropertyInteractor;
 import com.picone.core.domain.interactors.property.GetAllPropertiesInteractor;
 import com.picone.core.domain.interactors.property.UpdatePropertyInteractor;
@@ -87,6 +88,11 @@ public final class coreModule {
     @Provides
     static GetAgentInteractor provideGetAllRoomAgents(@ApplicationContext Context context) {
         return new GetAgentInteractor(provideRealEstateAgentDataSource(context));
+    }
+
+    @Provides
+    static SetAgentInteractor provideSetAgent(@ApplicationContext Context context){
+        return new SetAgentInteractor(provideRealEstateAgentDataSource(context));
     }
 
     //--------------------------------------PROPERTY INTERACTORS-----------------------------------------------------

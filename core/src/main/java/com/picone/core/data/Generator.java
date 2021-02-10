@@ -13,7 +13,7 @@ import java.util.List;
 public abstract class Generator {
 
     public static RealEstateAgent generateAgents() {
-        return new RealEstateAgent(1, "Manager1 address", "Frank", "Manager1Avatar");
+        return new RealEstateAgent(1L,1L,"");
     }
 
     private static List<PropertyMedia> PHOTOS = Arrays.asList(

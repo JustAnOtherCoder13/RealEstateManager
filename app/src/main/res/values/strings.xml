@@ -111,6 +111,7 @@
     <string name="no_match_found">No property match your request.</string>
     <string name="no_filter_selected">No filter selected.</string>
     <string name="media_click_info">Long click to select/deselect</string>
+    <string name="welcome_message">\"Welcome to Real Estate Manager,\nplease enter your name : \"</string>
 
 
 </resources>
