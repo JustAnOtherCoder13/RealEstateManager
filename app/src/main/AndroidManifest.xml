@@ -16,6 +16,7 @@
         android:xlargeScreens="true" />
 
     <application
+        android:configChanges="orientation|screenSize"
         android:name=".presentation.ui.main.RealEstateManagerApplication"
         android:allowBackup="false"
         android:fullBackupContent="true"

@@ -37,16 +37,17 @@ public class ConstantParameters {
     public static final int WRITE_PERMISSION_CODE = 104;
     public static final int GALLERY_REQUEST_CODE = 105;
 
+
     //------------------------------- CONTENT PROVIDER ----------------------
     private static final String AUTHORITY = "com.openclassrooms.realestatemanager.provider";
     private static final String TABLE_NAME = PropertyInformation.class.getSimpleName();
     public static final Uri URI_ITEM = Uri.parse("content://" + AUTHORITY + "/" + TABLE_NAME);
 
     //------------------------------- CONTENT PROVIDER ----------------------
-    public static final float MIN_PRICE = 100000;
-    public static final float MAX_PRICE = 1000000;
-    public static final float MIN_SURFACE = 100;
-    public static final float MAX_SURFACE = 1000;
+    public static final float MIN_PRICE = 10000000;
+    public static final float MAX_PRICE = 100000000;
+    public static final float MIN_SURFACE = 500;
+    public static final float MAX_SURFACE = 1500;
     public static final float MIN_ROOM = 5;
     public static final float MAX_ROOM = 20;
 

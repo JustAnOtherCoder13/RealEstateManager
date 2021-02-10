@@ -101,6 +101,15 @@ public class AddPropertyFragment extends BaseFragment {
     }
 
     @Override
+    public void onPause() {
+        super.onPause();
+        if (!mIsNewPropertyToPersist && mSelectedProperty != null) {
+            updateKnownProperty(mSelectedProperty);
+            mPropertyViewModel.setSelectedProperty(mSelectedProperty);
+        }
+    }
+
+    @Override
     public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         switch (requestCode) {
@@ -136,7 +145,8 @@ public class AddPropertyFragment extends BaseFragment {
     private void initViewModel() {
         mInnerPropertyViewModel.resetCompletionState();
         if (!mIsNewPropertyToPersist) {//if is not a new property set value for selected property
-            mSelectedProperty = mPropertyViewModel.getSelectedProperty.getValue();
+            if (mSelectedProperty == null)
+                mSelectedProperty = mPropertyViewModel.getSelectedProperty.getValue();
             //to have ref of stored point of interest
             mInnerPropertyViewModel.setAllPointOfInterestForProperty(mSelectedProperty);
             mAdapter.updateMedias(mImageHelper.propertyMediasWithAddButton(mSelectedProperty.medias));
@@ -386,8 +396,7 @@ public class AddPropertyFragment extends BaseFragment {
                 Objects.requireNonNull(mPropertyViewModel.getAllProperties.getValue()).size() + 1
                 : Objects.requireNonNull(mPropertyViewModel.getSelectedProperty.getValue()).propertyInformation.getId());
         if (isMediaAlreadySaved(propertyMedia)) return;
-        List<PropertyMedia> propertyMediaList = mInnerPropertyViewModel.getMediasToAdd.getValue();
-        assert propertyMediaList != null;
+        List<PropertyMedia> propertyMediaList = new ArrayList<>(mSelectedProperty.medias);
         propertyMediaList.add(propertyMedia);
         mInnerPropertyViewModel.setMediaToAdd(propertyMediaList);
         mSelectedProperty.medias.add(propertyMedia);
