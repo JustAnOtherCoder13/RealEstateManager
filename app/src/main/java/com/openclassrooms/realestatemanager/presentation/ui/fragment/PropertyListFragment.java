@@ -20,6 +20,7 @@ import com.picone.core.domain.entity.Property;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 
 public class PropertyListFragment extends BaseFragment {
@@ -43,7 +44,7 @@ public class PropertyListFragment extends BaseFragment {
         configureOnClickRecyclerView();
         mPropertyViewModel.getSelectedProperty.observe(getViewLifecycleOwner(), property -> {
             mAdapter.updateSelectedProperty(property);
-            if (property.propertyInformation != null && property.propertyLocation.getAddress() != null && getResources().getBoolean(R.bool.phone_device))
+            if (property.propertyInformation != null && property.propertyLocation.getAddress() != null && getResources().getBoolean(R.bool.phone_device)&& Objects.requireNonNull(mNavController.getCurrentDestination()).getId()==R.id.propertyListFragment)
                 mNavController.navigate(R.id.action_propertyListFragment_to_propertyDetailFragment);
             else if (property.propertyInformation != null && property.propertyLocation.getAddress() != null && !getResources().getBoolean(R.bool.phone_device))
                 mNavController.navigate(R.id.propertyDetailFragment);

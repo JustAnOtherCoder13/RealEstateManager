@@ -23,6 +23,7 @@ public class PresentationModule {
     @Provides
     static BaseFragment provideBaseFragment() { return new BaseFragment() {}; }
 
+
     @NonNull
     @Contract(" -> new")
     @Provides

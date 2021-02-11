@@ -6,18 +6,20 @@ import androidx.lifecycle.MutableLiveData;
 
 import com.picone.core.domain.entity.RealEstateAgent;
 import com.picone.core.domain.interactors.agent.GetAgentInteractor;
+import com.picone.core.domain.interactors.agent.SetAgentInteractor;
 import com.picone.core.utils.SchedulerProvider;
 
 public class AgentViewModel extends BaseViewModel {
 
-    private MutableLiveData<RealEstateAgent> AgentMutableLD = new MutableLiveData<>();
+    private MutableLiveData<RealEstateAgent> agentMutableLD = new MutableLiveData<>();
 
-    public LiveData<RealEstateAgent> getAgent = AgentMutableLD;
+    public LiveData<RealEstateAgent> getAgent = agentMutableLD;
 
     @ViewModelInject
-    public AgentViewModel(GetAgentInteractor getAgentInteractor
+    public AgentViewModel(GetAgentInteractor getAgentInteractor, SetAgentInteractor setAgentInteractor
             , SchedulerProvider schedulerProvider) {
         this.getAgentInteractor = getAgentInteractor;
+        this.setAgentInteractor = setAgentInteractor;
         this.schedulerProvider = schedulerProvider;
     }
 
@@ -26,6 +28,17 @@ public class AgentViewModel extends BaseViewModel {
                 getAgentInteractor.getAgent()
                         .subscribeOn(schedulerProvider.getIo())
                         .observeOn(schedulerProvider.getUi())
-                        .subscribe(realEstateAgents -> AgentMutableLD.postValue(realEstateAgents)));
+                        .subscribe(realEstateAgents -> agentMutableLD.postValue(realEstateAgents)));
+    }
+
+    public void initAgent(RealEstateAgent agent) {
+        compositeDisposable.add(
+                setAgentInteractor.setAgent(agent)
+                        .subscribeOn(schedulerProvider.getIo())
+                        .observeOn(schedulerProvider.getUi())
+                        .andThen(getAgentInteractor.getAgent())
+                        .subscribe(realEstateAgent->
+                                agentMutableLD.postValue(realEstateAgent),
+                                throwable -> checkException()));
     }
 }

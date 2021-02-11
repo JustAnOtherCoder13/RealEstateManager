@@ -125,7 +125,7 @@ public class PropertyRecyclerViewAdapter extends RecyclerView.Adapter<PropertyRe
 
     private void setPropertyMedia(@NonNull PropertyRecyclerViewAdapter.ViewHolder holder, @NonNull PropertyMedia photo) {
         Glide.with(holder.binding.propertyItemPhoto.getContext())
-                .load(photo.getPhotoPath())
+                .load(photo.getMediaPath())
                 .centerCrop()
                 .into(new CustomTarget<Drawable>() {
                     @Override

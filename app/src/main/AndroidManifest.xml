@@ -3,7 +3,10 @@
     xmlns:tools="http://schemas.android.com/tools"
     package="com.openclassrooms.realestatemanager">
 
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
+    <uses-permission android:name="android.permission.CHANGE_WIFI_STATE" />
+
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.CAMERA" />
@@ -16,6 +19,7 @@
         android:xlargeScreens="true" />
 
     <application
+        android:configChanges="orientation|screenSize"
         android:name=".presentation.ui.main.RealEstateManagerApplication"
         android:allowBackup="false"
         android:fullBackupContent="true"

@@ -19,7 +19,7 @@ public class PropertyInformation {
 
     // ESSENTIALS INFORMATION
     @ColumnInfo(index = true)
-    private int realEstateAgentId;
+    private long realEstateAgentId;
     private String propertyType;
     private int propertyArea;
     private int numberOfRooms;
@@ -40,7 +40,7 @@ public class PropertyInformation {
     public PropertyInformation() {
     }
 
-    public PropertyInformation(int id, int realEstateAgentId, String propertyType, int propertyArea, int numberOfRooms, int price, String description, int numberOfBedrooms, int numberOfBathrooms, boolean isSold, String enterOnMarket, String soldFrom) {
+    public PropertyInformation(int id, long realEstateAgentId, String propertyType, int propertyArea, int numberOfRooms, int price, String description, int numberOfBedrooms, int numberOfBathrooms, boolean isSold, String enterOnMarket, String soldFrom) {
         this.id = id;
         this.realEstateAgentId = realEstateAgentId;
         this.propertyType = propertyType;
@@ -63,11 +63,11 @@ public class PropertyInformation {
         this.id = id;
     }
 
-    public int getRealEstateAgentId() {
+    public long getRealEstateAgentId() {
         return realEstateAgentId;
     }
 
-    public void setRealEstateAgentId(int realEstateAgentId) {
+    public void setRealEstateAgentId(long realEstateAgentId) {
         this.realEstateAgentId = realEstateAgentId;
     }
 

@@ -15,14 +15,14 @@ public class PropertyMedia {
 
     @PrimaryKey(autoGenerate = true)
     private int id;
-    private String photoPath;
+    private String mediaPath;
     private String description;
     @ColumnInfo(index = true)
     private int propertyId;
 
-    public PropertyMedia(int id, String photoPath, String description, int propertyId) {
+    public PropertyMedia(int id, String mediaPath, String description, int propertyId) {
         this.id = id;
-        this.photoPath = photoPath;
+        this.mediaPath = mediaPath;
         this.description = description;
         this.propertyId = propertyId;
     }
@@ -39,12 +39,12 @@ public class PropertyMedia {
         this.id = id;
     }
 
-    public String getPhotoPath() {
-        return photoPath;
+    public String getMediaPath() {
+        return mediaPath;
     }
 
-    public void setPhotoPath(String photoPath) {
-        this.photoPath = photoPath;
+    public void setMediaPath(String mediaPath) {
+        this.mediaPath = mediaPath;
     }
 
     public String getDescription() {

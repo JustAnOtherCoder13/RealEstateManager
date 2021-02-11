@@ -2,7 +2,6 @@ package com.openclassrooms.realestatemanager.presentation.ui.main;
 
 import android.os.Bundle;
 import android.view.View;
-import android.widget.ImageButton;
 
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
@@ -13,8 +12,6 @@ import com.openclassrooms.realestatemanager.presentation.ui.fragment.adapter.Pro
 import com.openclassrooms.realestatemanager.presentation.viewModels.AgentViewModel;
 import com.openclassrooms.realestatemanager.presentation.viewModels.PropertyViewModel;
 import com.picone.core.domain.entity.Property;
-
-import java.util.Objects;
 
 import dagger.hilt.android.AndroidEntryPoint;
 
