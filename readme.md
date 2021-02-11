@@ -7,10 +7,6 @@
 + **JavaVersion :** 1_8.
 
 ## 2. Preview.
-
-### RealEstateAgent presentation.
-
-+ presentation of the app structure and more : https://slides.com/justanothercoder/deck-bb2c2f
   
 ### Made for tablette and phone, support Portrait and Landscape.
 ![phonePortraitLandscape](gif_preview/phone_portrait_landscape.gif)
