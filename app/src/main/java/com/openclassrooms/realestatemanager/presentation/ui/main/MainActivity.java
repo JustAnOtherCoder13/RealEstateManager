@@ -184,7 +184,7 @@ public class MainActivity extends AppCompatActivity {
                         //Max price selectable
                         , MAX_PRICE
                         //step
-                        , (float) (MAX_PRICE - MIN_PRICE) / 10000);
+                        , (MAX_PRICE - MIN_PRICE) / 10000);
 
         mBinding.bottomSheetLayout
                 .filterPropertyLocationSurfaceRangerSlider
@@ -194,7 +194,7 @@ public class MainActivity extends AppCompatActivity {
                         //Max area selectable
                         MAX_SURFACE,
                         //step
-                        (float) (MAX_SURFACE - MIN_SURFACE) / 10);
+                        (MAX_SURFACE - MIN_SURFACE) / 10);
 
         mBinding.bottomSheetLayout
                 .filterPropertyLocationRoomRangerSlider
