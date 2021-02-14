@@ -21,16 +21,16 @@ public class PropertyInformation {
     @ColumnInfo(index = true)
     private long realEstateAgentId;
     private String propertyType;
-    private int propertyArea;
-    private int numberOfRooms;
-    private int price;
+    private int propertyArea=0;
+    private int numberOfRooms=0;
+    private int price=0;
 
     //DESCRIPTION
     private String description;
 
     //ADDITIONAL INFORMATION
-    private int numberOfBedrooms;
-    private int numberOfBathrooms;
+    private int numberOfBedrooms=0;
+    private int numberOfBathrooms=0;
     private boolean isSold;
     private String enterOnMarket;
     private String soldFrom;

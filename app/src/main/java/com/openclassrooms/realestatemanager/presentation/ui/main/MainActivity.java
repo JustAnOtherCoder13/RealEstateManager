@@ -166,8 +166,6 @@ public class MainActivity extends AppCompatActivity {
         initBottomSheet();
     }
 
-
-
     private void initPhotoSpinner() {
         List<String> numberOfPhotos = new ArrayList<>();
         for (int i = 1; i <= 10; i++) numberOfPhotos.add(String.valueOf(i));
@@ -210,7 +208,7 @@ public class MainActivity extends AppCompatActivity {
     //-------------------------- COMPONENT --------------------------------
 
     protected void setTopAppBarCurrencySwitch(@NonNull PropertyRecyclerViewAdapter adapter) {
-        mBinding.topAppBar.mCurrencySwitch.setOnClickListener(v -> {
+        mBinding.topAppBar.mCurrencySwitch.setOnCheckedChangeListener((buttonView, isChecked) -> {
             assert mBinding.topAppBar.mCurrencySwitch != null;
             mPropertyViewModel.setLocale(mBinding.topAppBar.mCurrencySwitch.isChecked() ?
                     Locale.FRANCE
