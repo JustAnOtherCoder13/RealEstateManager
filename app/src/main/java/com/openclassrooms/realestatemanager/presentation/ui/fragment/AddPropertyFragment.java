@@ -150,20 +150,20 @@ public class AddPropertyFragment extends BaseFragment {
             //to have ref of stored point of interest
             mInnerPropertyViewModel.setAllPointOfInterestForProperty(mSelectedProperty);
             mAdapter.updateMedias(mImageHelper.propertyMediasWithAddButton(mSelectedProperty.medias));
-            initViewIfUpdateKnownProperty(mBinding.addPropertyInformationLayout, mSelectedProperty);
         } else {//else create new property and hide sold layout
             mBinding.addPropertySoldLayout.getRoot().setVisibility(View.GONE);
             mSelectedProperty = PROPERTY_TO_ADD(Objects.requireNonNull(mAgentViewModel.getAgent.getValue()));
             if (mInnerPropertyViewModel.getMediasToAdd.getValue() == null)
                 mInnerPropertyViewModel.setMediaToAdd(new ArrayList<>());
         }
+        setInformationEditText(mBinding.addPropertyInformationLayout, mSelectedProperty);
         mInnerPropertyViewModel.getPhotosToDelete.observe(getViewLifecycleOwner(), photosToDelete ->
                 mBinding.addPropertyMediaLayout.detailCustomViewDeleteButton.setVisibility(photosToDelete.isEmpty() ? View.GONE : View.VISIBLE));
     }
 
     //___________________________________VIEW_____________________________________________
 
-    private void initViewIfUpdateKnownProperty(@NonNull FragmentAddPropertyInformationLayoutBinding addPropertyInformationCustomView, @NonNull Property property) {
+    private void setInformationEditText(@NonNull FragmentAddPropertyInformationLayoutBinding addPropertyInformationCustomView, @NonNull Property property) {
         mInnerPropertyViewModel.setMediasToDelete(new ArrayList<>());
         EditText descriptionEditText = mBinding.addPropertyDescriptionLayout.addPropertyDescriptionEditText;
         addPropertyInformationCustomView.addPropertyInformationPrice.setText(String.valueOf(property.propertyInformation.getPrice()));
@@ -211,8 +211,8 @@ public class AddPropertyFragment extends BaseFragment {
     }
 
     private void initSoldCheckBoxClickListener() {
-        mBinding.addPropertySoldLayout.addPropertySoldCheckbox.setOnClickListener(v ->
-                mBinding.addPropertySoldLayout.addPropertySoldEditText.setVisibility(
+        mBinding.addPropertySoldLayout.addPropertySoldCheckbox.setOnCheckedChangeListener(
+                (buttonView, isChecked) -> mBinding.addPropertySoldLayout.addPropertySoldEditText.setVisibility(
                         mBinding.addPropertySoldLayout.addPropertySoldCheckbox.isChecked() ?
                                 View.VISIBLE : View.GONE));
     }
