@@ -14,6 +14,7 @@ import com.picone.core.data.RealEstateManagerRoomDatabase;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.mockito.Mock;
 
 import static com.picone.core.utils.ConstantParameters.URI_ITEM;
 import static org.hamcrest.Matchers.is;
@@ -24,6 +25,8 @@ import static org.junit.Assert.assertThat;
 public class PropertyContentProviderTest {
 
     private ContentResolver contentResolver;
+    @Mock
+    RealEstateManagerRoomDatabase database;
 
     @Before
     public void setup() {
@@ -36,8 +39,9 @@ public class PropertyContentProviderTest {
 
     @Test
     public void getPropertyInformationShouldReturnPropertyValue() {
+        String[] projection ={"test"};
         final Cursor cursor =
-                contentResolver.query(ContentUris.withAppendedId(URI_ITEM, Generator.generatePropertiesInformation().get(0).getId()), null, "property", null, null);
+                contentResolver.query(ContentUris.withAppendedId(URI_ITEM, Generator.generatePropertiesInformation().get(0).getId()), projection, "property", null, null);
         assertNotNull(cursor);
         assertThat(cursor.getCount(), is(1));
         assertThat(cursor.moveToFirst(), is(true));
