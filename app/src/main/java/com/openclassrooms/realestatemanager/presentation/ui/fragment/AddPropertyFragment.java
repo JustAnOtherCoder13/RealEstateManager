@@ -103,10 +103,14 @@ public class AddPropertyFragment extends BaseFragment {
     @Override
     public void onPause() {
         super.onPause();
-        if (!mIsNewPropertyToPersist && mSelectedProperty != null) {
+        if (mSelectedProperty!=null){
             updateKnownProperty(mSelectedProperty);
-            mPropertyViewModel.setSelectedProperty(mSelectedProperty);
-        }
+            if (!mIsNewPropertyToPersist) {
+                mPropertyViewModel.setSelectedProperty(mSelectedProperty);
+            }
+            if (mIsNewPropertyToPersist) {
+                mInnerPropertyViewModel.setNewProperty(mSelectedProperty);
+            }}
     }
 
     @Override
@@ -153,26 +157,38 @@ public class AddPropertyFragment extends BaseFragment {
         } else {//else create new property and hide sold layout
             mBinding.addPropertySoldLayout.getRoot().setVisibility(View.GONE);
             mSelectedProperty = PROPERTY_TO_ADD(Objects.requireNonNull(mAgentViewModel.getAgent.getValue()));
+            mInnerPropertyViewModel.getNewProperty.observe(getViewLifecycleOwner(),property ->
+                    mSelectedProperty = property);
             if (mInnerPropertyViewModel.getMediasToAdd.getValue() == null)
                 mInnerPropertyViewModel.setMediaToAdd(new ArrayList<>());
         }
-        setInformationEditText(mBinding.addPropertyInformationLayout, mSelectedProperty);
+        setInformationEditText(mBinding.addPropertyInformationLayout);
         mInnerPropertyViewModel.getPhotosToDelete.observe(getViewLifecycleOwner(), photosToDelete ->
                 mBinding.addPropertyMediaLayout.detailCustomViewDeleteButton.setVisibility(photosToDelete.isEmpty() ? View.GONE : View.VISIBLE));
     }
 
     //___________________________________VIEW_____________________________________________
 
-    private void setInformationEditText(@NonNull FragmentAddPropertyInformationLayoutBinding addPropertyInformationCustomView, @NonNull Property property) {
+    private void setInformationEditText(@NonNull FragmentAddPropertyInformationLayoutBinding addPropertyInformationCustomView) {
         mInnerPropertyViewModel.setMediasToDelete(new ArrayList<>());
         EditText descriptionEditText = mBinding.addPropertyDescriptionLayout.addPropertyDescriptionEditText;
-        addPropertyInformationCustomView.addPropertyInformationPrice.setText(String.valueOf(property.propertyInformation.getPrice()));
-        addPropertyInformationCustomView.addPropertyInformationArea.setText(String.valueOf(property.propertyInformation.getPropertyArea()));
-        addPropertyInformationCustomView.addPropertyInformationNumberOfBathrooms.setText(String.valueOf(property.propertyInformation.getNumberOfBathrooms()));
-        addPropertyInformationCustomView.addPropertyInformationNumberOfBedrooms.setText(String.valueOf(property.propertyInformation.getNumberOfBedrooms()));
-        addPropertyInformationCustomView.addPropertyInformationNumberOfRooms.setText(String.valueOf(property.propertyInformation.getNumberOfRooms()));
-        addPropertyInformationCustomView.addPropertyInformationAddress.setText(property.propertyLocation.getAddress());
-        descriptionEditText.setText(property.propertyInformation.getDescription());
+        addPropertyInformationCustomView.addPropertyInformationPrice.setText(mSelectedProperty.propertyInformation.getPrice()!=0?
+                String.valueOf(mSelectedProperty.propertyInformation.getPrice())
+                :null);
+        addPropertyInformationCustomView.addPropertyInformationArea.setText(mSelectedProperty.propertyInformation.getPropertyArea()!=0?
+                String.valueOf(mSelectedProperty.propertyInformation.getPropertyArea())
+                :null);
+        addPropertyInformationCustomView.addPropertyInformationNumberOfBathrooms.setText(mSelectedProperty.propertyInformation.getNumberOfBathrooms()!=0?
+                String.valueOf(mSelectedProperty.propertyInformation.getNumberOfBathrooms())
+                :null);
+        addPropertyInformationCustomView.addPropertyInformationNumberOfBedrooms.setText(mSelectedProperty.propertyInformation.getNumberOfBedrooms()!=0?
+                String.valueOf(mSelectedProperty.propertyInformation.getNumberOfBedrooms())
+                :null);
+        addPropertyInformationCustomView.addPropertyInformationNumberOfRooms.setText(mSelectedProperty.propertyInformation.getNumberOfRooms()!=0?
+                String.valueOf(mSelectedProperty.propertyInformation.getNumberOfRooms())
+                :null);
+        addPropertyInformationCustomView.addPropertyInformationAddress.setText(mSelectedProperty.propertyLocation.getAddress());
+        descriptionEditText.setText(mSelectedProperty.propertyInformation.getDescription());
     }
 
     private void initPropertyTypeDropDownMenu() {
@@ -404,7 +420,6 @@ public class AddPropertyFragment extends BaseFragment {
         mIsMediaListHaveBeenChanged = true;
     }
 
-
     @NonNull
     private Property updateProperty(@NonNull Property originalProperty) {
         originalProperty.propertyLocation.setPropertyId(originalProperty.propertyInformation.getId());
@@ -417,11 +432,22 @@ public class AddPropertyFragment extends BaseFragment {
     @NonNull
     @Contract("_ -> param1")
     private Property updateKnownProperty(@NonNull Property property) {
-        property.propertyInformation.setNumberOfRooms(Integer.parseInt(mBinding.addPropertyInformationLayout.addPropertyInformationNumberOfRooms.getValueForView()));
-        property.propertyInformation.setNumberOfBathrooms(Integer.parseInt((mBinding.addPropertyInformationLayout.addPropertyInformationNumberOfBathrooms.getValueForView())));
-        property.propertyInformation.setNumberOfBedrooms(Integer.parseInt(mBinding.addPropertyInformationLayout.addPropertyInformationNumberOfBedrooms.getValueForView()));
-        property.propertyInformation.setPropertyArea(Integer.parseInt(mBinding.addPropertyInformationLayout.addPropertyInformationArea.getValueForView()));
-        property.propertyInformation.setPrice(Integer.parseInt(mBinding.addPropertyInformationLayout.addPropertyInformationPrice.getValueForView()));
+        property.propertyInformation.setNumberOfRooms(!mBinding.addPropertyInformationLayout.addPropertyInformationNumberOfRooms.getValueForView().trim().isEmpty()?
+                Integer.parseInt(mBinding.addPropertyInformationLayout.addPropertyInformationNumberOfRooms.getValueForView())
+                :0);
+        property.propertyInformation.setNumberOfBathrooms(!mBinding.addPropertyInformationLayout.addPropertyInformationNumberOfBathrooms.getValueForView().trim().isEmpty()?
+                Integer.parseInt((mBinding.addPropertyInformationLayout.addPropertyInformationNumberOfBathrooms.getValueForView()))
+                :0);
+        property.propertyInformation.setNumberOfBedrooms(!mBinding.addPropertyInformationLayout.addPropertyInformationNumberOfBedrooms.getValueForView().trim().isEmpty()?
+                Integer.parseInt(mBinding.addPropertyInformationLayout.addPropertyInformationNumberOfBedrooms.getValueForView())
+                :0);
+        property.propertyInformation.setPropertyArea(!mBinding.addPropertyInformationLayout.addPropertyInformationArea.getValueForView().trim().isEmpty()?
+                Integer.parseInt(mBinding.addPropertyInformationLayout.addPropertyInformationArea.getValueForView())
+                :0);
+        property.propertyInformation.setPrice(!mBinding.addPropertyInformationLayout.addPropertyInformationPrice.getValueForView().trim().isEmpty()?
+                Integer.parseInt(mBinding.addPropertyInformationLayout.addPropertyInformationPrice.getValueForView())
+                :0);
+        property.propertyLocation.setAddress(mBinding.addPropertyInformationLayout.addPropertyInformationAddress.getValueForView());
         if (!mBinding.addPropertyInformationLayout.addPropertyInformationTypeCustomViewAutocompleteTextView.getText().toString().trim().isEmpty())
             mSelectedProperty.propertyInformation.setPropertyType(mBinding.addPropertyInformationLayout.addPropertyInformationTypeCustomViewAutocompleteTextView.getText().toString());
         property.propertyInformation.setDescription(mBinding.addPropertyDescriptionLayout.addPropertyDescriptionEditText.getText().toString());
@@ -525,7 +551,7 @@ public class AddPropertyFragment extends BaseFragment {
     }
 
     private boolean isMediaAlreadySaved(PropertyMedia propertyMedia) {
-        if (Objects.requireNonNull(mInnerPropertyViewModel.getMediasToAdd.getValue()).isEmpty())
+        if (!Objects.requireNonNull(mInnerPropertyViewModel.getMediasToAdd.getValue()).isEmpty())
             for (PropertyMedia media : mInnerPropertyViewModel.getMediasToAdd.getValue())
                 if (media.getMediaPath().equalsIgnoreCase(propertyMedia.getMediaPath()))
                     return true;

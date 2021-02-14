@@ -39,21 +39,21 @@
         app:layout_constraintStart_toStartOf="@id/nav_host_fragment" />
 
     <FrameLayout
-        android:layout_width="@dimen/shadow_width"
-        android:layout_height="match_parent"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/shadow_width"
         android:alpha="0.2"
         android:background="@color/black"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="@id/nav_host_fragment"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/nav_host_fragment" />
 
     <FrameLayout
-        android:layout_width="@dimen/vertical_separator_width"
-        android:layout_height="match_parent"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/vertical_separator_width"
         android:background="?attr/colorPrimary"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="@id/nav_host_fragment"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/nav_host_fragment" />
 
     <com.openclassrooms.realestatemanager.presentation.utils.customView.TopAppBarCustomView
         android:id="@+id/top_app_bar"

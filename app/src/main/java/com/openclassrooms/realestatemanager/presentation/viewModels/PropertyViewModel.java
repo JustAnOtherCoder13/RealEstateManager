@@ -53,7 +53,10 @@ public class PropertyViewModel extends BaseViewModel {
     private MutableLiveData<List<String>> knownRegionsMutableLD = new MutableLiveData<>(new ArrayList<>());
     private MutableLiveData<Locale> localeMutableLD = new MutableLiveData<>();
     private MutableLiveData<List<PropertyMedia>> mediasToAdMutableLD = new MutableLiveData<>(new ArrayList<>());
+    private MutableLiveData<Property> newPropertyToPersistMutableLD = new MutableLiveData<>();
 
+
+    public LiveData<Property> getNewProperty = newPropertyToPersistMutableLD;
     public LiveData<Locale> getLocale = localeMutableLD;
     public LiveData<List<String>> getKnownRegions = knownRegionsMutableLD;
     public LiveData<List<PointOfInterest>> getMapsPointOfInterest = mapsPointOfInterestForPropertyMutableLD;
@@ -102,6 +105,10 @@ public class PropertyViewModel extends BaseViewModel {
 
     public void setLocale(Locale locale) {
         localeMutableLD.setValue(locale);
+    }
+
+    public void setNewProperty(Property newProperty){
+        newPropertyToPersistMutableLD.setValue(newProperty);
     }
 
     public void setFilteredProperty(List<Property> filteredProperties) {
